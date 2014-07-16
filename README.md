@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Rotations
 
 [![Build Status](https://travis-ci.org/ronisbr/Rotations.jl.svg?branch=master)](https://travis-ci.org/ronisbr/Rotations.jl)
@@ -16,3 +17,7 @@ Roadmap
 -------
 
 A roadmap is not defined yet, but I expect to add many functions related to 3D rotations using Quaternions, Euler axes, Rodrigues parameters, etc.
+=======
+Rotations.jl
+============
+>>>>>>> 29a48e45c83c62b23177d589ccd514d702e41a7f
