@@ -30,3 +30,4 @@ for rot_seq in rot_seq_array
     # If everything is fine, the norm of the matrix error should be small.
     @test norm(error) < 10*eps()
 end
+
