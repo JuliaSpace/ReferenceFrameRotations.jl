@@ -1,5 +1,13 @@
 module Rotations
 
-# package code goes here
+export EulerAngles, RotationSequenceError, create_rotation_matrix, angle2dcm, dcm2angle
+
+import Base: sin, cos
+
+include("types.jl")
+include("exceptions.jl")
+
+include("DCM.jl")
+include("euler_angles.jl")
 
 end # module
