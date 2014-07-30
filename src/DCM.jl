@@ -1,10 +1,17 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 #                          Direction Cosine Matrices
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+#==#
 #
-# Functions that converts DCMs into Euler Angles.
-# 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# @brief Convert a DCM to Euler Angles given a rotation sequence.
+#
+# @param [in] DCM Direct Cosine Matrix.
+# @param [in] rot_seq Rotation sequence.
+#
+# @return The Euler Angles.
+#
+#==#
 
 function dcm2angle{T}(dcm::Array{T,2}, rot_seq::String="ZYX")
     # Check if the dcm is a 3x3 matrix.
