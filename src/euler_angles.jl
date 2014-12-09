@@ -96,7 +96,7 @@ end
 # 
 #==#
 
-function angle2dcm(eulerang::EulerAngles)
+function angle2dcm{T}(eulerang::EulerAngles{T})
     angle2dcm(eulerang.a1,
               eulerang.a2,
               eulerang.a3,
