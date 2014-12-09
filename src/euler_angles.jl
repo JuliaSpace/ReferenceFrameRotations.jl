@@ -15,23 +15,26 @@
 #==#
 
 function create_rotation_matrix{T}(angle::T, axis::Char)
+    cos_angle = cos(angle)
+    sin_angle = sin(angle)
+
     if (axis == 'x') || (axis == 'X')
 
-        matrix = [1       0           0    ;
-                  0  cos(angle)  sin(angle);
-                  0 -sin(angle)  cos(angle);];
+        matrix = [1      0         0    ;
+                  0  cos_angle sin_angle;
+                  0 -sin_angle cos_angle;];
 
     elseif (axis == 'y') || (axis == 'Y')
 
-        matrix = [ cos(angle) 0 -sin(angle);
-                        0     1       0;
-                   sin(angle) 0  cos(angle);];
+        matrix = [ cos_angle 0 -sin_angle;
+                       0     1      0;
+                   sin_angle 0  cos_angle;];
 
     elseif (axis == 'z') || (axis == 'Z')
 
-        matrix = [  cos(angle) sin(angle)  0;
-                   -sin(angle) cos(angle)  0;
-                         0          0      1;];
+        matrix = [  cos_angle sin_angle 0;
+                   -sin_angle cos_angle 0;
+                        0         0     1;];
     
     else
         error("axis must be X, Y, or Z");
