@@ -14,7 +14,7 @@
 #
 #==#
 
-function create_rotation_matrix(angle::Number, axis::Char)
+function create_rotation_matrix{T}(angle::T, axis::Char)
     if (axis == 'x') || (axis == 'X')
 
         matrix = [1       0           0    ;
@@ -61,7 +61,11 @@ end
 # 
 #==#
 
-function angle2dcm(angle_r1, angle_r2, angle_r3, rot_seq::String="ZYX")
+function angle2dcm{T}(angle_r1::T,
+                      angle_r2::T,
+                      angle_r3::T,
+                      rot_seq::String="ZYX")
+    
     # Check if rot_seq has at least three characters.
     if (length(rot_seq) < 3)
         throw(ArgumentError)
