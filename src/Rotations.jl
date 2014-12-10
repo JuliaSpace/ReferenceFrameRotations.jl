@@ -1,6 +1,7 @@
 module Rotations
 
 export EulerAngles, RotationSequenceError
+export create_rotation_matrix!, angle2dcm!
 export create_rotation_matrix, angle2dcm, dcm2angle
 
 import Base: sin, cos
