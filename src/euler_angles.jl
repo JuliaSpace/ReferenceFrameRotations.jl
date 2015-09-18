@@ -85,7 +85,7 @@ function create_rotation_matrix{T}(angle::T, axis::Char)
 end
 
 #==#
-# 
+#
 # @brief Convert Euler angles to a direction cosine matrix.
 #
 # @param [out] dcm Pre-allocated direction cosine matrix.
@@ -93,16 +93,16 @@ end
 # @param [in]  angle_r2 Angle of the second rotation.
 # @param [in]  angle_r3 Angle of the third rotation.
 # @param [in]  rot_seq Rotation sequence.
-#     
+#
 # @remarks This function assigns dcm = A1*A2*A3, in which Ai is the DCM related
 # with the i-th rotation.
-# 
+#
 # Example:
 # @code
 #     dcm = Array(Float64, (3,3)
 #     angle2dcm!(dcm, pi/2, pi/3, pi/4, "ZYX")
 # @endcode
-# 
+#
 #==#
 
 function angle2dcm!{T}(dcm::Array{T,2},
@@ -128,43 +128,43 @@ function angle2dcm!{T}(dcm::Array{T,2},
     # Check the rotation sequence and compute the DCM.
     rot_seq = uppercase(rot_seq)
 
-    if ( beginswith(rot_seq, "ZYX") )
+    if ( startswith(rot_seq, "ZYX") )
         dcm[1,1] = c2*c1;
         dcm[1,2] = c2*s1;
         dcm[1,3] = -s2;
-        
+
         dcm[2,1] = s3*s2*c1 - c3*s1;
         dcm[2,2] = s3*s2*s1 + c3*c1;
         dcm[2,3] = s3*c2;
-        
+
         dcm[3,1] = c3*s2*c1 + s3*s1;
         dcm[3,2] = c3*s2*s1 - s3*c1;
         dcm[3,3] = c3*c2;
-    elseif ( beginswith(rot_seq, "XYX") )
+    elseif ( startswith(rot_seq, "XYX") )
         dcm[1,1] = c2;
         dcm[1,2] = s1*s2;
         dcm[1,3] = -c1*s2;
-        
+
         dcm[2,1] = s2*s3;
         dcm[2,2] = -s1*c2*s3 + c1*c3;
         dcm[2,3] = c1*c2*s3 + s1*c3;
-        
+
         dcm[3,1] = s2*c3;
         dcm[3,2] = -s1*c3*c2 - c1*s3;
         dcm[3,3] = c1*c3*c2 - s1*s3;
-    elseif ( beginswith(rot_seq, "XYZ") )
+    elseif ( startswith(rot_seq, "XYZ") )
         dcm[1,1] = c2*c3;
         dcm[1,2] = s1*s2*c3 + c1*s3;
         dcm[1,3] = -c1*s2*c3 + s1*s3;
-        
+
         dcm[2,1] = -c2*s3;
         dcm[2,2] = -s1*s2*s3 + c1*c3;
         dcm[2,3] = c1*s2*s3 + s1*c3;
-        
+
         dcm[3,1] = s2;
         dcm[3,2] = -s1*c2;
         dcm[3,3] = c1*c2;
-    elseif ( beginswith(rot_seq, "XZX") )
+    elseif ( startswith(rot_seq, "XZX") )
         dcm[1,1] = c2;
         dcm[1,2] = c1*s2;
         dcm[1,3] = s1*s2;
@@ -176,31 +176,31 @@ function angle2dcm!{T}(dcm::Array{T,2},
         dcm[3,1] = s2*s3;
         dcm[3,2] = -c1*c2*s3 - s1*c3;
         dcm[3,3] = -s1*c2*s3 + c1*c3;
-    elseif ( beginswith(rot_seq, "XZY") )
+    elseif ( startswith(rot_seq, "XZY") )
         dcm[1,1] = c3*c2;
         dcm[1,2] = c1*c3*s2 + s1*s3;
         dcm[1,3] = s1*c3*s2 - c1*s3;
-        
+
         dcm[2,1] = -s2;
         dcm[2,2] = c1*c2;
         dcm[2,3] = s1*c2;
-        
+
         dcm[3,1] = s3*c2;
         dcm[3,2] = c1*s2*s3 - s1*c3;
         dcm[3,3] = s1*s2*s3 + c1*c3;
-    elseif ( beginswith(rot_seq, "YXY") )
+    elseif ( startswith(rot_seq, "YXY") )
         dcm[1,1] = -s1*c2*s3 + c1*c3;
         dcm[1,2] = s2*s3;
         dcm[1,3] = -c1*c2*s3 - s1*c3;
-        
+
         dcm[2,1] = s1*s2;
-        dcm[2,2] = c2;        
+        dcm[2,2] = c2;
         dcm[2,3] = c1*s2;
-        
+
         dcm[3,1] = s1*c3*c2 + c1*s3;
         dcm[3,2] = -s2*c3;
         dcm[3,3] = c1*c3*c2 - s1*s3;
-    elseif ( beginswith(rot_seq, "YXZ") )
+    elseif ( startswith(rot_seq, "YXZ") )
         dcm[1,1] = c1*c3 + s2*s1*s3;
         dcm[1,2] = c2*s3;
         dcm[1,3] = -s1*c3 + s2*c1*s3;
@@ -212,7 +212,7 @@ function angle2dcm!{T}(dcm::Array{T,2},
         dcm[3,1] = s1*c2;
         dcm[3,2] = -s2;
         dcm[3,3] = c2*c1;
-    elseif ( beginswith(rot_seq, "YZX") )
+    elseif ( startswith(rot_seq, "YZX") )
         dcm[1,1] = c1*c2;
         dcm[1,2] = s2;
         dcm[1,3] = -s1*c2;
@@ -224,19 +224,19 @@ function angle2dcm!{T}(dcm::Array{T,2},
         dcm[3,1] = s3*c1*s2 + c3*s1;
         dcm[3,2] = -s3*c2;
         dcm[3,3] = -s3*s1*s2 + c3*c1;
-    elseif ( beginswith(rot_seq, "YZY") )
+    elseif ( startswith(rot_seq, "YZY") )
         dcm[1,1] = c1*c3*c2 - s1*s3;
         dcm[1,2] = s2*c3;
         dcm[1,3] = -s1*c3*c2 - c1*s3;
-        
+
         dcm[2,1] = -c1*s2;
         dcm[2,2] = c2;
         dcm[2,3] = s1*s2;
-        
+
         dcm[3,1] = c1*c2*s3 + s1*c3;
         dcm[3,2] = s2*s3;
         dcm[3,3] = -s1*c2*s3 + c1*c3;
-    elseif ( beginswith(rot_seq, "ZXY") )
+    elseif ( startswith(rot_seq, "ZXY") )
         dcm[1,1] = c3*c1 - s2*s3*s1;
         dcm[1,2] = c3*s1 + s2*s3*c1;
         dcm[1,3] = -s3*c2;
@@ -248,7 +248,7 @@ function angle2dcm!{T}(dcm::Array{T,2},
         dcm[3,1] = s3*c1 + s2*c3*s1;
         dcm[3,2] = s3*s1 - s2*c3*c1;
         dcm[3,3] = c2*c3;
-    elseif ( beginswith(rot_seq, "ZXZ") )
+    elseif ( startswith(rot_seq, "ZXZ") )
         dcm[1,1] = -s1*c2*s3 + c1*c3;
         dcm[1,2] = c1*c2*s3 + s1*c3;
         dcm[1,3] = s2*s3;
@@ -260,17 +260,17 @@ function angle2dcm!{T}(dcm::Array{T,2},
         dcm[3,1] = s1*s2;
         dcm[3,2] = -c1*s2;
         dcm[3,3] = c2;
-    elseif ( beginswith(rot_seq, "ZYZ") )
+    elseif ( startswith(rot_seq, "ZYZ") )
         dcm[1,1] = c1*c3*c2 - s1*s3;
         dcm[1,2] = s1*c3*c2 + c1*s3;
         dcm[1,3] = -s2*c3;
-        
+
         dcm[2,1] = -c1*c2*s3 - s1*c3;
         dcm[2,2] = -s1*c2*s3 + c1*c3;
         dcm[2,3] = s2*s3;
-        
+
         dcm[3,1] = c1*s2;
-        dcm[3,2] = s1*s2;  
+        dcm[3,2] = s1*s2;
         dcm[3,3] = c2;
     else
         throw(RotationSequenceError)
@@ -280,31 +280,31 @@ function angle2dcm!{T}(dcm::Array{T,2},
 end
 
 #==#
-# 
+#
 # @brief Convert Euler angles to a direction cosine matrix.
-# 
+#
 # @param [in] angle_r1 Angle of the first rotation.
 # @param [in] angle_r2 Angle of the second rotation.
 # @param [in] angle_r3 Angle of the third rotation.
 # @param [in] rot_seq Rotation sequence.
-#     
+#
 # @return The direction cossine matrix.
-# 
+#
 # @remarks This function returns the matrix R = A1*A2*A3, in which Ai is the DCM
 # related with the i-th rotation.
-# 
+#
 # Example:
 # @code
 #     dcm = angle2dcm(pi/2, pi/3, pi/4, "ZYX")
 # @endcode
-# 
+#
 #==#
 
 function angle2dcm{T}(angle_r1::T,
                       angle_r2::T,
                       angle_r3::T,
                       rot_seq::String="ZYX")
-    
+
     # Check if rot_seq has at least three characters.
     if (length(rot_seq) < 3)
         throw(ArgumentError)
@@ -321,23 +321,23 @@ function angle2dcm{T}(angle_r1::T,
 end
 
 #==#
-# 
+#
 # @brief Convert Euler angles to a direction cosine matrix.
 #
 # @param [out] dcm Pre-allocated direction cosine matrix.
 # @param [in]  eulerang Euler angles (@see EulerAngle).
-#     
+#
 # @return The direction cossine matrix.
-# 
+#
 # @remarks This function assigns dcm = A1*A2*A3, in which Ai is the DCM related
 # with the i-th rotation.
-# 
+#
 # Example:
 # @code
 #     dcm = Array(Float64, (3,3))
 #     dcm = angle2dcm(EulerAngle(pi/2, pi/3, pi/4, "ZYX"))
 # @endcode
-# 
+#
 #==#
 
 function angle2dcm!{T}(dcm::Array{T,2}, eulerang::EulerAngles{T})
@@ -349,21 +349,21 @@ function angle2dcm!{T}(dcm::Array{T,2}, eulerang::EulerAngles{T})
 end
 
 #==#
-# 
+#
 # @brief Convert Euler angles to a direction cosine matrix.
-# 
+#
 # @param [in] eulerang Euler angles (@see EulerAngle).
-#     
+#
 # @return The direction cossine matrix.
-# 
+#
 # @remarks This function returns the matrix R = A1*A2*A3, in which Ai is the DCM
 # related with the i-th rotation.
-# 
+#
 # Example:
 # @code
 #     dcm = angle2dcm(EulerAngle(pi/2, pi, pi/4, "ZYX"))
 # @endcode
-# 
+#
 #==#
 
 function angle2dcm{T}(eulerang::EulerAngles{T})
