@@ -13,7 +13,7 @@
 #
 #==#
 
-function dcm2angle{T}(dcm::Array{T,2}, rot_seq::String="ZYX")
+function dcm2angle{T}(dcm::Array{T,2}, rot_seq::AbstractString="ZYX")
     # Check if the dcm is a 3x3 matrix.
     if (size(dcm,1) != 3) || (size(dcm,2) != 3)
         throw(ArgumentError)

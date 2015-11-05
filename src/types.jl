@@ -11,5 +11,5 @@ type EulerAngles{T}
     a1::T
     a2::T
     a3::T
-    rot_seq::String
+    rot_seq::AbstractString
 end

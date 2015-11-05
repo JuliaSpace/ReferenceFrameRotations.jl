@@ -109,7 +109,7 @@ function angle2dcm!{T}(dcm::Array{T,2},
                        angle_r1::T,
                        angle_r2::T,
                        angle_r3::T,
-                       rot_seq::String="ZYX")
+                       rot_seq::AbstractString="ZYX")
     # Check if rot_seq has at least three characters.
     if (length(rot_seq) < 3)
         throw(ArgumentError)
@@ -303,7 +303,7 @@ end
 function angle2dcm{T}(angle_r1::T,
                       angle_r2::T,
                       angle_r3::T,
-                      rot_seq::String="ZYX")
+                      rot_seq::AbstractString="ZYX")
 
     # Check if rot_seq has at least three characters.
     if (length(rot_seq) < 3)
