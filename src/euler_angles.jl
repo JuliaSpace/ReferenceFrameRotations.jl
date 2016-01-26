@@ -106,7 +106,7 @@ Convert Euler angles to a direction cosing matrix.
 
 ##### Remarks
 
-This function assings dcm = A1 * A2 * A3 in which Ai is the DCM related with the
+This function assigns dcm = A1 * A2 * A3 in which Ai is the DCM related with the
 i-th rotation, i Є [1,2,3].
 
 ##### Example
@@ -308,7 +308,7 @@ Convert Euler angles to direction cosine matrix.
 
 ##### Remarks
 
-This function assings dcm = A1 * A2 * A3 in which Ai is the DCM related with the
+This function assigns dcm = A1 * A2 * A3 in which Ai is the DCM related with the
 i-th rotation, i Є [1,2,3].
 
 ##### Example
@@ -345,7 +345,7 @@ Convert Euler angles to a direction cosine matrix.
 
 ##### Args
 
-* dcm: (OUTPUT) Pre-allocated direction cossine matrix.
+* dcm: (OUTPUT) Pre-allocated direction cosine matrix.
 * eulerang: Euler angles (*see* EulerAngle).
 
 ##### Returns
@@ -354,7 +354,7 @@ Convert Euler angles to a direction cosine matrix.
 
 ##### Remarks
 
-This function assings dcm = A1 * A2 * A3 in which Ai is the DCM related with the
+This function assigns dcm = A1 * A2 * A3 in which Ai is the DCM related with the
 i-th rotation, i Є [1,2,3].
 
 ##### Example
@@ -387,7 +387,7 @@ Convert Euler angles to a direction cosine matrix.
 
 ##### Remarks
 
-This function assings dcm = A1 * A2 * A3 in which Ai is the DCM related with the
+This function assigns dcm = A1 * A2 * A3 in which Ai is the DCM related with the
 i-th rotation, i Є [1,2,3].
 
 ##### Example
