@@ -2,17 +2,19 @@
 #                                 Euler Angles
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-#==#
-#
-# @brief Create a rotation matrix that rotates a coordinate system about a
-# specified axis.
-#
-# @param [out] dcm Pre-allocated rotation matrix that rotates the coordinate
-# frame about 'axis'.
-# @param [in]  angle Angle.
-# @param [in]  axis Axis, must be 'x', 'X', 'y', 'Y', 'z', and 'Z'.
-#
-#==#
+"""
+### function create_rotation_matrix!{T}(dcm::Array{Float64, 2}, angle::T, axis::Char)
+
+Create a rotation matrix that rotates a coordinate frame about a specified axis.
+
+##### Args
+
+* dcm: (OUTPUT) Pre-allocated matrix in which the rotation matrix that rotates
+the coordinate frame about 'axis' will be written.
+* angle: Angle.
+* axis: Axis, must be 'x', 'X', 'y', 'Y', 'z', or 'Z'.
+
+"""
 
 function create_rotation_matrix!{T}(dcm::Array{Float64, 2}, angle::T, axis::Char)
     cos_angle = cos(angle)
@@ -61,17 +63,22 @@ function create_rotation_matrix!{T}(dcm::Array{Float64, 2}, angle::T, axis::Char
     nothing
 end
 
-#==#
-#
-# @brief Create a rotation matrix that rotates a coordinate system about a
-# specified axis.
-#
-# @param [in] angle Angle.
-# @param [in] axis Axis, must be 'x', 'X', 'y', 'Y', 'z', and 'Z'.
-#
-# @return The rotation matrix that rotates the coordinate frame about 'axis'.
-#
-#==#
+"""
+### function create_rotation_matrix{T}(angle::T, axis::Char)
+
+Create a rotation matrix that rotates a coordinate frame about a specified axis.
+
+##### Args
+
+* angle: Angle.
+
+* axis: Axis, must be 'x', 'X', 'y', 'Y', 'z', or 'Z'.
+
+##### Returns
+
+* The rotation matrix that rotates the coordinate frame about 'axis'.
+
+"""
 
 function create_rotation_matrix{T}(angle::T, axis::Char)
     # Allocate the rotation matrix.
@@ -84,26 +91,30 @@ function create_rotation_matrix{T}(angle::T, axis::Char)
     dcm
 end
 
-#==#
-#
-# @brief Convert Euler angles to a direction cosine matrix.
-#
-# @param [out] dcm Pre-allocated direction cosine matrix.
-# @param [in]  angle_r1 Angle of the first rotation.
-# @param [in]  angle_r2 Angle of the second rotation.
-# @param [in]  angle_r3 Angle of the third rotation.
-# @param [in]  rot_seq Rotation sequence.
-#
-# @remarks This function assigns dcm = A1*A2*A3, in which Ai is the DCM related
-# with the i-th rotation.
-#
-# Example:
-# @code
-#     dcm = Array(Float64, (3,3)
-#     angle2dcm!(dcm, pi/2, pi/3, pi/4, "ZYX")
-# @endcode
-#
-#==#
+"""
+### function angle2dcm!{T}(dcm::Array{T,2}, angle_r1::T, angle_r2::T, angle_r3::T, rot_seq::AbstractString="ZYX")
+
+Convert Euler angles to a direction cosing matrix.
+
+##### Args
+
+* dcm: (OUTPUT) Pre-allocated direction cosine matrix.
+* angle_r1: Angle of the first rotation.
+* angle_r2: Angle of the second rotation.
+* angle_r3: Angle of the third rotation.
+* rot_set: Rotation sequence.
+
+##### Remarks
+
+This function assings dcm = A1 * A2 * A3 in which Ai is the DCM related with the
+i-th rotation, i Є [1,2,3].
+
+##### Example
+
+     dcm = Array(Float64, (3,3)
+     angle2dcm!(dcm, pi/2, pi/3, pi/4, "ZYX")
+
+"""
 
 function angle2dcm!{T}(dcm::Array{T,2},
                        angle_r1::T,
@@ -279,26 +290,32 @@ function angle2dcm!{T}(dcm::Array{T,2},
     nothing
 end
 
-#==#
-#
-# @brief Convert Euler angles to a direction cosine matrix.
-#
-# @param [in] angle_r1 Angle of the first rotation.
-# @param [in] angle_r2 Angle of the second rotation.
-# @param [in] angle_r3 Angle of the third rotation.
-# @param [in] rot_seq Rotation sequence.
-#
-# @return The direction cossine matrix.
-#
-# @remarks This function returns the matrix R = A1*A2*A3, in which Ai is the DCM
-# related with the i-th rotation.
-#
-# Example:
-# @code
-#     dcm = angle2dcm(pi/2, pi/3, pi/4, "ZYX")
-# @endcode
-#
-#==#
+"""
+### function angle2dcm{T}(angle_r1::T, angle_r2::T, angle_r3::T, rot_seq::AbstractString="ZYX")
+
+Convert Euler angles to direction cosine matrix.
+
+##### Args
+
+* angle_r1: Angle of the first rotation.
+* angle_r2: Angle of the second rotation.
+* angle_r3: Angle of the third rotation.
+* rot_seq: Rotation sequence.
+
+##### Returns
+
+* The direction cosine matrix.
+
+##### Remarks
+
+This function assings dcm = A1 * A2 * A3 in which Ai is the DCM related with the
+i-th rotation, i Є [1,2,3].
+
+##### Example
+
+     dcm = angle2dcm(pi/2, pi/3, pi/4, "ZYX")
+
+"""
 
 function angle2dcm{T}(angle_r1::T,
                       angle_r2::T,
@@ -320,25 +337,32 @@ function angle2dcm{T}(angle_r1::T,
     dcm
 end
 
-#==#
-#
-# @brief Convert Euler angles to a direction cosine matrix.
-#
-# @param [out] dcm Pre-allocated direction cosine matrix.
-# @param [in]  eulerang Euler angles (@see EulerAngle).
-#
-# @return The direction cossine matrix.
-#
-# @remarks This function assigns dcm = A1*A2*A3, in which Ai is the DCM related
-# with the i-th rotation.
-#
-# Example:
-# @code
-#     dcm = Array(Float64, (3,3))
-#     dcm = angle2dcm(EulerAngle(pi/2, pi/3, pi/4, "ZYX"))
-# @endcode
-#
-#==#
+
+"""
+### function angle2dcm!{T}(dcm::Array{T,2}, eulerang::EulerAngles{T})
+
+Convert Euler angles to a direction cosine matrix.
+
+##### Args
+
+* dcm: (OUTPUT) Pre-allocated direction cossine matrix.
+* eulerang: Euler angles (*see* EulerAngle).
+
+##### Returns
+
+* The direction cosine matrix.
+
+##### Remarks
+
+This function assings dcm = A1 * A2 * A3 in which Ai is the DCM related with the
+i-th rotation, i Є [1,2,3].
+
+##### Example
+
+     dcm = Array(Float64, (3,3))
+     dcm = angle2dcm(EulerAngle(pi/2, pi/3, pi/4, "ZYX"))
+
+"""
 
 function angle2dcm!{T}(dcm::Array{T,2}, eulerang::EulerAngles{T})
     angle2dcm!(dcm,
@@ -348,23 +372,29 @@ function angle2dcm!{T}(dcm::Array{T,2}, eulerang::EulerAngles{T})
                eulerang.rot_seq)
 end
 
-#==#
-#
-# @brief Convert Euler angles to a direction cosine matrix.
-#
-# @param [in] eulerang Euler angles (@see EulerAngle).
-#
-# @return The direction cossine matrix.
-#
-# @remarks This function returns the matrix R = A1*A2*A3, in which Ai is the DCM
-# related with the i-th rotation.
-#
-# Example:
-# @code
-#     dcm = angle2dcm(EulerAngle(pi/2, pi, pi/4, "ZYX"))
-# @endcode
-#
-#==#
+"""
+### function angle2dcm{T}(eulerang::EulerAngles{T})
+
+Convert Euler angles to a direction cosine matrix.
+
+##### Args
+
+* eulerang Euler angles (*see* EulerAngle).
+
+##### Returns
+
+* The direction cosine matrix.
+
+##### Remarks
+
+This function assings dcm = A1 * A2 * A3 in which Ai is the DCM related with the
+i-th rotation, i Є [1,2,3].
+
+##### Example
+
+     dcm = angle2dcm(EulerAngle(pi/2, pi, pi/4, "ZYX"))
+
+"""
 
 function angle2dcm{T}(eulerang::EulerAngles{T})
     angle2dcm(eulerang.a1,
