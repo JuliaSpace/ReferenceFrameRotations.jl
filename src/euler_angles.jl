@@ -82,7 +82,7 @@ Create a rotation matrix that rotates a coordinate frame about a specified axis.
 
 function create_rotation_matrix{T}(angle::T, axis::Char)
     # Allocate the rotation matrix.
-    dcm = Array(T, (3,3))
+    dcm = Array{T}(3,3)
 
     # Fill the rotation matrix.
     create_rotation_matrix!(dcm, angle, axis)
@@ -111,7 +111,7 @@ i-th rotation, i Є [1,2,3].
 
 ##### Example
 
-     dcm = Array(Float64, (3,3)
+     dcm = Array{Float64}(3,3)
      angle2dcm!(dcm, pi/2, pi/3, pi/4, "ZYX")
 
 """
@@ -328,7 +328,7 @@ function angle2dcm{T}(angle_r1::T,
     end
 
     # Allocate the output matrix.
-    dcm = Array(T, (3,3))
+    dcm = Array{T}(3,3)
 
     # Fill the DCM.
     angle2dcm!(dcm, angle_r1, angle_r2, angle_r3, rot_seq)
@@ -359,7 +359,7 @@ i-th rotation, i Є [1,2,3].
 
 ##### Example
 
-     dcm = Array(Float64, (3,3))
+     dcm = Array{Float64}(3,3)
      dcm = angle2dcm(EulerAngle(pi/2, pi/3, pi/4, "ZYX"))
 
 """
