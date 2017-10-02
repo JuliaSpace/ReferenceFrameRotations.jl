@@ -6,5 +6,7 @@
 #
 ################################################################################
 
+export RotationSequenceError
+
 type RotationSequenceError <: Exception end
 
