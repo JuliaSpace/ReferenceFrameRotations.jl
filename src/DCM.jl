@@ -2,6 +2,13 @@
 #                          Direction Cosine Matrices
 ################################################################################
 
+export create_rotation_matrix, create_rotation_matrix!
+export dcm2angle
+
+################################################################################
+#                                  Functions
+################################################################################
+
 """
 ### function create_rotation_matrix!{T}(dcm::Array{Float64, 2}, angle::T, axis::Char)
 
