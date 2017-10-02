@@ -10,7 +10,7 @@ export dcm2angle
 ################################################################################
 
 """
-### function create_rotation_matrix!{T}(dcm::Array{Float64, 2}, angle::T, axis::Char)
+### function create_rotation_matrix!(dcm::Array{Float64, 2}, angle::T, axis::Char) where T<: Real
 
 Create a rotation matrix that rotates a coordinate frame about a specified axis.
 
@@ -23,7 +23,9 @@ the coordinate frame about 'axis' will be written.
 
 """
 
-function create_rotation_matrix!{T}(dcm::Array{Float64, 2}, angle::T, axis::Char)
+function create_rotation_matrix!(dcm::Array{Float64, 2},
+                                 angle::T,
+                                 axis::Char) where T<:Real
     cos_angle = cos(angle)
     sin_angle = sin(angle)
 
@@ -71,7 +73,7 @@ function create_rotation_matrix!{T}(dcm::Array{Float64, 2}, angle::T, axis::Char
 end
 
 """
-### function create_rotation_matrix{T}(angle::T, axis::Char)
+### function create_rotation_matrix(angle::T, axis::Char) where T<:Real
 
 Create a rotation matrix that rotates a coordinate frame about a specified axis.
 
@@ -87,7 +89,7 @@ Create a rotation matrix that rotates a coordinate frame about a specified axis.
 
 """
 
-function create_rotation_matrix{T}(angle::T, axis::Char)
+function create_rotation_matrix(angle::T, axis::Char) where T<:Real
     # Allocate the rotation matrix.
     dcm = Array{T}(3,3)
 
@@ -100,7 +102,7 @@ end
 
 
 """
-### function dcm2angle{T}(dcm::Array{T,2}, rot_seq::AbstractString="ZYX")
+### function dcm2angle(dcm::Array{T,2}, rot_seq::AbstractString="ZYX") where T<:Real
 
 Convert a DCM to Euler Angles given a rotation sequence.
 
@@ -115,7 +117,7 @@ Convert a DCM to Euler Angles given a rotation sequence.
 
 """
 
-function dcm2angle{T}(dcm::Array{T,2}, rot_seq::AbstractString="ZYX")
+function dcm2angle(dcm::Array{T,2}, rot_seq::AbstractString="ZYX") where T<:Real
     # Check if the dcm is a 3x3 matrix.
     if (size(dcm,1) != 3) || (size(dcm,2) != 3)
         throw(ArgumentError)

@@ -10,7 +10,7 @@ export angle2dcm, angle2dcm!
 ################################################################################
 
 """
-### type EulerAngles where T<: Real
+### type EulerAngles{T<:Real}
 
 The definition of Euler Angles, which is composed of three angles `a1`, `a2`,
 and `a3` together with a rotation sequence `rot_seq`. The latter is provided by
@@ -30,7 +30,7 @@ end
 ################################################################################
 
 """
-### function angle2dcm!{T}(dcm::Array{T,2}, angle_r1::T, angle_r2::T, angle_r3::T, rot_seq::AbstractString="ZYX")
+### function angle2dcm!(dcm::Array{T,2}, angle_r1::T, angle_r2::T, angle_r3::T, rot_seq::AbstractString="ZYX") where T<:Real
 
 Convert Euler angles to a direction cosing matrix.
 
@@ -54,11 +54,11 @@ i-th rotation, i Є [1,2,3].
 
 """
 
-function angle2dcm!{T}(dcm::Array{T,2},
-                       angle_r1::T,
-                       angle_r2::T,
-                       angle_r3::T,
-                       rot_seq::AbstractString="ZYX")
+function angle2dcm!(dcm::Array{T,2},
+                    angle_r1::T,
+                    angle_r2::T,
+                    angle_r3::T,
+                    rot_seq::AbstractString="ZYX") where T<:Real
     # Check if rot_seq has at least three characters.
     if (length(rot_seq) < 3)
         throw(ArgumentError)
@@ -229,7 +229,7 @@ function angle2dcm!{T}(dcm::Array{T,2},
 end
 
 """
-### function angle2dcm{T}(angle_r1::T, angle_r2::T, angle_r3::T, rot_seq::AbstractString="ZYX")
+### function angle2dcm(angle_r1::T, angle_r2::T, angle_r3::T, rot_seq::AbstractString="ZYX") where T<:Real
 
 Convert Euler angles to direction cosine matrix.
 
@@ -255,10 +255,10 @@ i-th rotation, i Є [1,2,3].
 
 """
 
-function angle2dcm{T}(angle_r1::T,
-                      angle_r2::T,
-                      angle_r3::T,
-                      rot_seq::AbstractString="ZYX")
+function angle2dcm(angle_r1::T,
+                   angle_r2::T,
+                   angle_r3::T,
+                   rot_seq::AbstractString="ZYX") where T<:Real
 
     # Check if rot_seq has at least three characters.
     if (length(rot_seq) < 3)
@@ -277,7 +277,7 @@ end
 
 
 """
-### function angle2dcm!{T}(dcm::Array{T,2}, eulerang::EulerAngles{T})
+### function angle2dcm!(dcm::Array{T,2}, eulerang::EulerAngles{T}) where T<:Real
 
 Convert Euler angles to a direction cosine matrix.
 
@@ -302,7 +302,7 @@ i-th rotation, i Є [1,2,3].
 
 """
 
-function angle2dcm!{T}(dcm::Array{T,2}, eulerang::EulerAngles{T})
+function angle2dcm!(dcm::Array{T,2}, eulerang::EulerAngles{T}) where T<:Real
     angle2dcm!(dcm,
                eulerang.a1,
                eulerang.a2,
@@ -311,7 +311,7 @@ function angle2dcm!{T}(dcm::Array{T,2}, eulerang::EulerAngles{T})
 end
 
 """
-### function angle2dcm{T}(eulerang::EulerAngles{T})
+### function angle2dcm(eulerang::EulerAngles{T}) where T<:Real
 
 Convert Euler angles to a direction cosine matrix.
 
@@ -334,7 +334,7 @@ i-th rotation, i Є [1,2,3].
 
 """
 
-function angle2dcm{T}(eulerang::EulerAngles{T})
+function angle2dcm(eulerang::EulerAngles{T}) where T<:Real
     angle2dcm(eulerang.a1,
               eulerang.a2,
               eulerang.a3,

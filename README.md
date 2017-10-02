@@ -4,6 +4,11 @@
 
 This module contains functions related to rotations of coordinate frames.
 
+Requirements
+------------
+
+* Julia >= v0.6
+
 Status
 ------
 
