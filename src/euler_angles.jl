@@ -2,32 +2,14 @@
 #                                 Euler Angles
 ################################################################################
 
-export EulerAngles
 export angle2dcm, angle2dcm!
 
 ################################################################################
-#                                    Types
+#                                 Conversions
 ################################################################################
 
-"""
-### type EulerAngles{T<:Real}
-
-The definition of Euler Angles, which is composed of three angles `a1`, `a2`,
-and `a3` together with a rotation sequence `rot_seq`. The latter is provided by
-a string with three characters, each one indicating the rotation axis of the
-corresponding angle.
-"""
-
-type EulerAngles{T<:Real}
-    a1::T
-    a2::T
-    a3::T
-    rot_seq::AbstractString
-end
-
-################################################################################
-#                                  Functions
-################################################################################
+# Direction Cosine Matrix
+# ==============================================================================
 
 """
 ### function angle2dcm!(dcm::Array{T,2}, angle_r1::T, angle_r2::T, angle_r3::T, rot_seq::AbstractString="ZYX") where T<:Real

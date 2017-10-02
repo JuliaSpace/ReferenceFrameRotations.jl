@@ -12,12 +12,31 @@ Requirements
 Status
 ------
 
-Only the following functions are implemented currently:
+This packages supports the following representations of rotations:
 
-* **angle2dcm**: Convert Euler Angles to Direct Cosine Matrix.
-* **dcm2angle**: Convert a Direct Cosine Matrix to Euler Angles.
+* **Euler Angles**;
+* **Direction Cosine Matrices**;
+* **Quaternions**.
+
+Furthermore, the following conversions between representations are available:
+
+* **Direction Cosine Matrices** to **Euler Angles**;
+* **Direction Cosine Matrices** to **Quaternions**;
+* **Euler Angles** to **Direction Cosine Matrices**;
+* **Quaternions** to **Direction Cosine Matrices**;
+* **Quaternions** to **Euler Angles**.
+
+The functions were constructed to match the syntax provided by the ones in
+Mathworks® Matlab. The set of functions currently available are:
+
+    angle2dcm, angle2dcm!
+    dcm2angle
+    dcm2quat, dcm2quat!
+    quat2dcm, quat2dcm!
+    quat2angle
 
 Roadmap
 -------
 
-A roadmap is not defined yet, but I expect to add many functions related to 3D rotations using Quaternions, Euler axes, Rodrigues parameters, etc.
+A roadmap is not defined yet, but I expect to add many functions related to 3D
+rotations using Quaternions, Euler axes, Rodrigues parameters, etc.

@@ -3,7 +3,7 @@
 ################################################################################
 
 export create_rotation_matrix, create_rotation_matrix!
-export dcm2angle
+export dcm2angle, dcm2quat, dcm2quat!
 
 ################################################################################
 #                                  Functions
@@ -218,4 +218,71 @@ function dcm2angle(dcm::Array{T,2}, rot_seq::AbstractString="ZYX") where T<:Real
     else
         throw(RotationSequenceError)
     end
+end
+
+"""
+### function dcm2quat!(q::Quaternion{T1}, dcm::Array{T2,2}) where T1<:Real where T2<:Real
+
+Convert a quaternion to a Direction Cosine Matrix.
+
+This algorithm was obtained from:
+
+    http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/
+
+##### Args
+
+* q: (OUTPUT) Pre-allocated quaternion.
+* dcm: Direction Cosine Matrix that will be converted.
+
+##### Example
+
+    dcm = angle2dcm(pi/2,0.0,0.0,"XYZ")
+    q   = Quaternion(1.0,0.0,0.0,0.0)
+    dcm2quat!(q,dcm)
+
+"""
+
+function dcm2quat!(q::Quaternion{T1},
+                   dcm::Array{T2,2}) where T1<:Real where T2<:Real
+
+    q.q0 = sqrt( max( 0, 1 + dcm[1,1] + dcm[2,2] + dcm[3,3] ) )/2
+    q.q1 = sqrt( max( 0, 1 + dcm[1,1] - dcm[2,2] - dcm[3,3] ) )/2
+    q.q2 = sqrt( max( 0, 1 - dcm[1,1] + dcm[2,2] - dcm[3,3] ) )/2
+    q.q3 = sqrt( max( 0, 1 - dcm[1,1] - dcm[2,2] + dcm[3,3] ) )/2
+
+    q.q1 = copysign(q.q1, dcm[2,3] - dcm[3,2])
+    q.q2 = copysign(q.q2, dcm[3,1] - dcm[1,3])
+    q.q3 = copysign(q.q3, dcm[1,2] - dcm[2,1])
+
+    nothing
+end
+
+"""
+### function dcm2quat(dcm::Array{T,2}) where T<:Real
+
+Convert a quaternion to a Direction Cosine Matrix.
+
+This algorithm was obtained from:
+
+    http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/
+
+##### Args
+
+* dcm: Direction Cosine Matrix that will be converted.
+
+##### Returns
+
+* The quaternion that represents the same rotation of the `dcm`.
+
+##### Example
+
+    dcm = angle2dcm(pi/2,0.0,0.0,"XYZ")
+    q   = dcm2quat(dcm)
+
+"""
+
+function dcm2quat(dcm::Array{T,2}) where T<:Real
+    q = Quaternion{T}(T(0), T(0), T(0), T(0))
+    dcm2quat!(q,dcm)
+    q
 end
