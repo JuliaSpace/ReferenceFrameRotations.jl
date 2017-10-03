@@ -2,8 +2,7 @@
 #                                 Quaternions
 ################################################################################
 
-import Base: +, -, *, /, ctranspose, conj, copy, inv, imag, norm, real, show
-import Base: transpose
+import Base: +, -, *, /, conj, copy, inv, imag, norm, real, show
 
 export quat2angle, quat2dcm, quat2dcm!, vect
 
@@ -274,52 +273,6 @@ Compute the division `q/λ`.
 
 function /(q::Quaternion{T1}, λ::T2) where T1<:Real where T2<:Real
     q*(1/λ)
-end
-
-# Operation: ' (ctranspose)
-# ==============================================================================
-
-"""
-### function ctranspose(q::Quaternion{T}) where T<:Real
-
-For quaternions, the transpose operation will be defined as the inverse
-operation. Hence, `q' = inv(q)`.
-
-##### Args
-
-* q: Quaternion.
-
-##### Returns
-
-* The inverse of the quaternion.
-
-"""
-
-function ctranspose(q::Quaternion{T}) where T<:Real
-    inv(q)
-end
-
-# Operation: transpose  => Compatibility with v0.7
-# ==============================================================================
-
-"""
-### function transpose(q::Quaternion{T}) where T<:Real
-
-For quaternions, the transpose operation will be defined as the inverse
-operation. Hence, `q' = inv(q)`.
-
-##### Args
-
-* q: Quaternion.
-
-##### Returns
-
-* The inverse of the quaternion.
-
-"""
-
-function transpose(q::Quaternion{T}) where T<:Real
-    inv(q)
 end
 
 ################################################################################
