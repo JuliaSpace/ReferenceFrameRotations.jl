@@ -354,11 +354,8 @@ Compute the inverse of the quaternion `q`.
 """
 
 function inv(q::Quaternion{T}) where T<:Real
-    # Compute the norm of the quaternion.
-    norm_q = norm(q)
-
     # Compute the inverse of the quaternion.
-    q_conj = conj(q)/norm_q
+    conj(q)/(q.q0*q.q0 + q.q1*q.q1 + q.q2*q.q2 + q.q3*q.q3)
 end
 
 """
