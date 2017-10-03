@@ -8,5 +8,5 @@
 
 export RotationSequenceError
 
-type RotationSequenceError <: Exception end
+mutable struct RotationSequenceError <: Exception end
 
