@@ -1,5 +1,4 @@
-using Rotations
-using Base.Test
+using Base.Test, Rotations
 
 # Available rotations.
 rot_seq_array = ["XYX",
