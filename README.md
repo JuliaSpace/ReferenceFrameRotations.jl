@@ -1,6 +1,7 @@
 # Rotations
 
 [![Build Status](https://travis-ci.org/ronisbr/Rotations.jl.svg?branch=master)](https://travis-ci.org/ronisbr/Rotations.jl)
+[![Coverage Status](https://coveralls.io/repos/github/ronisbr/Rotations.jl/badge.svg?branch=master)](https://coveralls.io/github/ronisbr/Rotations.jl?branch=master)
 
 This module contains functions related to rotations of coordinate frames.
 
