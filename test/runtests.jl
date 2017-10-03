@@ -1,4 +1,7 @@
-using Base.Test, Rotations
+VERSION >= v"0.7.0-DEV.2036" && using Test
+VERSION <  v"0.7.0-DEV.2036" && using Base.Test
+
+using Rotations
 
 # Available rotations.
 rot_seq_array = ["XYX",
