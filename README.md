@@ -77,6 +77,7 @@ There are several ways to create a quaternion:
 
 ```julia
 q = Quaternion(1.0, 0.0, 0.0, 0.0)
+
     Quaternion{Float64}:
       + 1.0 + 0.0.i + 0.0.j + 0.0.k
 ```
@@ -95,10 +96,11 @@ q = Quaternion(r,v)
 3. Provide just the imaginary part, in this case the real part will be 0:
 
 ```julia
-v = [1.0;0.0;0.0]
+v = [1.;0.;0.]
+q = Quaternion(v)
 
-    Quaternion{Int64}:
-      + 0 + 1.i + 0.j + 0.k
+    Quaternion{Float64}:
+      + 0.0 + 1.0.i + 0.0.j + 0.0.k
 ```
 
 4. Create an identity quaternion using the `eye` function:
