@@ -296,55 +296,6 @@ dcm2angle(dcm, "XYZ")
     Rotations.EulerAngles{Float64}(-1.5707963267948966, 0.0, 0.0, "XYZ")
 ```
 
-### Euler Angles to Direction Cosine Matrices
-
-Euler angles can be converted to DCMs using two functions. The first
-`angle2dcm!` requires a pre-allocated 3x3 matrix, whereas the second `angle2dcm`
-allocates a new 3x3 matrix. The available methods are:
-
-    function angle2dcm!(dcm, angle_r1, angle_r2, angle_r3, rot_seq="ZYX")
-    function angle2dcm(angle_r1, angle_r2, angle_r3, rot_seq="ZYX")
-    function angle2dcm!(dcm, eulerang)
-    function angle2dcm(eulerang)
-
-**Example**:
-
-```julia
-dcm = eye(3)
-angle2dcm!(dcm, pi/2, pi/4, pi/3, "ZYX")
-dcm
-
-    3×3 Array{Float64,2}:
-      4.32978e-17  0.707107  -0.707107
-     -0.5          0.612372   0.612372
-      0.866025     0.353553   0.353553
-
-dcm    = eye(3)
-angles = EulerAngles(pi/2, pi/4, pi/3, "ZYX")
-angle2dcm!(dcm,angles)
-dcm
-
-    3×3 Array{Float64,2}:
-      4.32978e-17  0.707107  -0.707107
-     -0.5          0.612372   0.612372
-      0.866025     0.353553   0.353553
-
-dcm = angle2dcm(pi/2, pi/4, pi/3, "ZYX")
-
-    3×3 Array{Float64,2}:
-      4.32978e-17  0.707107  -0.707107
-     -0.5          0.612372   0.612372
-      0.866025     0.353553   0.353553
-
-angles = EulerAngles(pi/2, pi/4, pi/3, "ZYX")
-dcm    = angle2dcm(angles)
-
-    3×3 Array{Float64,2}:
-      4.32978e-17  0.707107  -0.707107
-     -0.5          0.612372   0.612372
-      0.866025     0.353553   0.353553
-```
-
 ### Direction Cosine Matrices to Quaternions
 
 A DCM can be converted to quaternion using these two methods:
@@ -355,7 +306,7 @@ A DCM can be converted to quaternion using these two methods:
 The first `dcm2quat!` requires a pre-allocated quaternion, whereas the second
 `dcm2quat` allocates a new quaternion.
 
-**Examples**
+**Example**
 
 ```julia
 q   = Quaternion(1.0,0.0,0.0,0.0)
@@ -403,6 +354,55 @@ angleaxis2quat(angleaxis)
 
     Quaternion{Float64}:
       + 0.8660254037844387 + 0.2886751345948128.i + 0.2886751345948128.j + 0.2886751345948128.k
+```
+
+### Euler Angles to Direction Cosine Matrices
+
+Euler angles can be converted to DCMs using two functions. The first
+`angle2dcm!` requires a pre-allocated 3x3 matrix, whereas the second `angle2dcm`
+allocates a new 3x3 matrix. The available methods are:
+
+    function angle2dcm!(dcm, angle_r1, angle_r2, angle_r3, rot_seq="ZYX")
+    function angle2dcm(angle_r1, angle_r2, angle_r3, rot_seq="ZYX")
+    function angle2dcm!(dcm, eulerang)
+    function angle2dcm(eulerang)
+
+**Example**:
+
+```julia
+dcm = eye(3)
+angle2dcm!(dcm, pi/2, pi/4, pi/3, "ZYX")
+dcm
+
+    3×3 Array{Float64,2}:
+      4.32978e-17  0.707107  -0.707107
+     -0.5          0.612372   0.612372
+      0.866025     0.353553   0.353553
+
+dcm    = eye(3)
+angles = EulerAngles(pi/2, pi/4, pi/3, "ZYX")
+angle2dcm!(dcm,angles)
+dcm
+
+    3×3 Array{Float64,2}:
+      4.32978e-17  0.707107  -0.707107
+     -0.5          0.612372   0.612372
+      0.866025     0.353553   0.353553
+
+dcm = angle2dcm(pi/2, pi/4, pi/3, "ZYX")
+
+    3×3 Array{Float64,2}:
+      4.32978e-17  0.707107  -0.707107
+     -0.5          0.612372   0.612372
+      0.866025     0.353553   0.353553
+
+angles = EulerAngles(pi/2, pi/4, pi/3, "ZYX")
+dcm    = angle2dcm(angles)
+
+    3×3 Array{Float64,2}:
+      4.32978e-17  0.707107  -0.707107
+     -0.5          0.612372   0.612372
+      0.866025     0.353553   0.353553
 ```
 
 ### Euler Angles to Quaternions
@@ -488,5 +488,6 @@ in REPL.
     
 ## Roadmap
 
-This package will be continuously enhanced. Next steps will be to add others
-representation of 3D rotations such as Euler axes, Rodrigues parameters, etc.
+This package will be continuously enhanced. Next steps will be to add other
+representations of 3D rotations such as Euler angle and axis (initial support is
+already available), Rodrigues parameters, etc.
