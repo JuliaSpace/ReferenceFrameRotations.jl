@@ -98,6 +98,25 @@ a = eye(q)  # Creates an identity quaternion with the same type of `q`.
       + 1.0 + 0.0.i + 0.0.j + 0.0.k
 ```
 
+5. Create a zero quaternion using the `zeros` function:
+
+```julia
+q = zeros(Quaternion)  # Creates a zero quaternion of type `Float64`.
+
+    Quaternion{Float64}:
+      + 0.0 + 0.0.i + 0.0.j + 0.0.k
+
+q = zeros(Quaternion{Float32})  # Creates a zero quaternion of type `Float32`.
+
+    Quaternion{Float32}:
+      + 0.0 + 0.0.i + 0.0.j + 0.0.k
+
+a = zeros(q)  # Creates a zero quaternion with the same type of `q`.
+
+    Quaternion{Float32}:
+      + 0.0 + 0.0.i + 0.0.j + 0.0.k
+```
+
 Note that the individual elements of the quaternion can be accessed by:
 
 ```julia
