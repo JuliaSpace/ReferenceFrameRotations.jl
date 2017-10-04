@@ -2,9 +2,10 @@
 #                                 Quaternions
 ################################################################################
 
-import Base: +, -, *, /, conj, copy, eye, inv, imag, norm, real, show, zeros
+import Base: +, -, *, /, conj, copy, eye, getindex, inv, imag, norm, real, show
+import Base: zeros
 
-export quat2angle, quat2angleaxis, quat2dcm, quat2dcm!, vect
+export dquat, quat2angle, quat2angleaxis, quat2dcm, quat2dcm!, vect
 
 ################################################################################
 #                                 Initializers
@@ -273,6 +274,28 @@ Compute the division `q/λ`.
 
 function /(q::Quaternion{T1}, λ::T2) where T1<:Real where T2<:Real
     q*(1/λ)
+end
+
+# Operation: [:]
+# ==============================================================================
+
+"""
+### function getindex(q::Quaternion{T}, ::Colon) where T<:Real
+
+Transform the quaternion into a 4x1 vector of type `T`.
+
+##### Args
+
+* q: Quaternion.
+
+##### Returns
+
+* A 4x1 vector of type `T` with the elements of the quaternion.
+
+"""
+
+function getindex(q::Quaternion{T}, ::Colon) where T<:Real
+    [q.q0;q.q1;q.q2;q.q3]
 end
 
 ################################################################################
@@ -699,3 +722,45 @@ function quat2angle(q::Quaternion{T},
     dcm2angle(dcm, rot_seq)
 end
 
+################################################################################
+#                                  Kinematics
+################################################################################
+
+"""
+### function dquat(qba::Quaternion{T1}, wba_b::Vector{T2})
+
+Compute the time-derivative of a quaternion that rotates a reference frame `a`
+into alignment to the reference frame `b` in which the angular velocity of `b`
+with respect to `a` and represented in `b` is `wba_b`.
+
+##### Args
+
+* qba: Quaternion that rotates the reference frame `a` into alignment with the
+reference frame `b`.
+* wba_b: Angular velocity of the reference frame `a` with respect to the
+reference frame `b` represented in the reference frame `b`.
+
+##### Returns
+
+* A 4x1 vector with the time-derivative of `qba`.
+
+"""
+
+function dquat(qba::Quaternion{T1},
+               wba_b::Vector{T2}) where T1<:Real where T2<:Real
+    # Auxiliary variable.
+    w = wba_b
+
+    # Check the dimensions.
+    if length(wba_b) != 3
+        throw(ArgumentError("The angular velocity vector must have three components."))
+    end
+
+    Ωba_b = Array{T2}([  0   -w[1] -w[2] -w[3] ;
+                       +w[1]   0   +w[3] -w[2] ;
+                       +w[2] -w[3]   0   +w[1] ;
+                       +w[3] +w[2] -w[1]   0   ])
+
+    # Return the time-derivative.
+    (Ωba_b/2)*qba[:]
+end
