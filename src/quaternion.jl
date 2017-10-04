@@ -2,7 +2,7 @@
 #                                 Quaternions
 ################################################################################
 
-import Base: +, -, *, /, conj, copy, inv, imag, norm, real, show
+import Base: +, -, *, /, conj, copy, eye, inv, imag, norm, real, show
 
 export quat2angle, quat2dcm, quat2dcm!, vect
 
@@ -316,6 +316,64 @@ Create a copy of the quaternion `q`.
 
 function copy(q::Quaternion{T}) where T<:Real
     Quaternion{T}(q.q0, q.q1, q.q2, q.q3)
+end
+
+"""
+### function eye(::Type{Quaternion{T}}) where T<:Real
+
+Create an identity quaternion (`1 + 0.i + 0.j + 0.k)` of type `T`.
+
+##### Args
+
+* Quaternion{T}, where `T` is the desired type.
+
+##### Returns
+
+* An identity quaternion of type `T`.
+
+"""
+
+function eye(::Type{Quaternion{T}}) where T<:Real
+    Quaternion{T}(1,0,0,0)
+end
+
+"""
+### function eye(::Type{Quaternion})
+
+Create an identity quaternion (`1 + 0.i + 0.j + 0.k)` of type `Float64`.
+
+##### Args
+
+* Quaternion (no type specified).
+
+##### Returns
+
+* An identity quaternion of type `Float64`.
+
+"""
+
+function eye(::Type{Quaternion})
+    Quaternion{Float64}(1,0,0,0)
+end
+
+"""
+### function eye(q::Quaternion{T}) where T<:Real
+
+Create an identity quaternion (`1 + 0.i + 0.j + 0.k`) with the same type of
+another quaternion `q`.
+
+##### Args
+
+* q: A quaternion of type `T`.
+
+##### Returns
+
+* An identity quaternion of type `T`.
+
+"""
+
+function eye(q::Quaternion{T}) where T<:Real
+    eye(Quaternion{T})
 end
 
 """

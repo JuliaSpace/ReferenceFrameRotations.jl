@@ -79,6 +79,25 @@ v = [1.0;0.0;0.0]
       + 0 + 1.i + 0.j + 0.k
 ```
 
+4. Create an identity quaternion using the `eye` function:
+
+```julia
+q = eye(Quaternion)  # Creates an identity quaternion of type `Float64`.
+
+    Quaternion{Float32}:
+      + 1.0 + 0.0.i + 0.0.j + 0.0.k
+
+q = eye(Quaternion{Float32})  # Creates an identity quaternion of type `Float32`.
+
+    Quaternion{Float32}:
+      + 1.0 + 0.0.i + 0.0.j + 0.0.k
+
+a = eye(q)  # Creates an identity quaternion with the same type of `q`.
+
+    Quaternion{Float32}:
+      + 1.0 + 0.0.i + 0.0.j + 0.0.k
+```
+
 Note that the individual elements of the quaternion can be accessed by:
 
 ```julia
