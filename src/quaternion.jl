@@ -4,7 +4,7 @@
 
 import Base: +, -, *, /, conj, copy, eye, inv, imag, norm, real, show, zeros
 
-export quat2angle, quat2dcm, quat2dcm!, vect
+export quat2angle, quat2angleaxis, quat2dcm, quat2dcm!, vect
 
 ################################################################################
 #                                 Initializers
@@ -634,6 +634,38 @@ function quat2dcm(q::Quaternion{T}) where T<:Real
     dcm = zeros(T,3,3)
     quat2dcm!(dcm,q)
     dcm
+end
+
+# Euler Angle and Axis
+# ==============================================================================
+
+"""
+### function quat2angleaxis(q::Quaternion{T}) where T<:Real
+
+Convert a quaternion to a Euler angle and axis representation.
+
+##### Args
+
+* q: The quaternion that will be converted.
+
+##### Returns
+
+* The quaternion represented using the Euler angle and axis.
+
+##### Remarks
+
+This function will not fail if the quaternion norm is not 1. However, the
+meaning of the results will not be defined, because the input quaternion does
+not represent a 3D rotation. The user must handle such situations.
+
+"""
+
+function quat2angleaxis(q::Quaternion{T}) where T<:Real
+    a = atan2( norm(vect(q)), q.q0 )*2
+    v = vect(q)/sin(a/2)
+
+    # TODO: Change this when the functions of Euler Angle and Axis are defined.
+    EulerAngleAxis(a, v)
 end
 
 # Euler Angles

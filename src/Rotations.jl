@@ -2,7 +2,7 @@ VERSION >= v"0.4.0-dev+6521" && __precompile__()
 
 module Rotations
 
-export EulerAngles, Quaternion
+export EulerAngleAxis, EulerAngles, Quaternion
 
 import Base: sin, cos
 
@@ -26,6 +26,19 @@ mutable struct EulerAngles{T<:Real}
     rot_seq::AbstractString
 end
 
+"""
+### mutable struct EulerAngleAxis{T<:Real}
+
+The definition of Euler Angle and Axis to represent a 3D rotation.
+
+* `a` is the Euler angle [rad].
+* `v` is a unitary vector aligned with the Euler axis.
+"""
+
+mutable struct EulerAngleAxis{T<:Real}
+    a::T
+    v::Vector{T}
+end
 
 """
 ### mutable struct Quaternion{T<:Real}
@@ -50,6 +63,7 @@ end
 include("exceptions.jl")
 
 include("DCM.jl")
+include("euler_angle_axis.jl")
 include("euler_angles.jl")
 include("quaternion.jl")
 

@@ -15,6 +15,7 @@ National Institute for Space Research (INPE)](http://www.inpe.br).
 
 This packages supports the following representations of 3D rotations:
 
+* **Euler Angle and Axis** (INCOMPLETE);
 * **Euler Angles**;
 * **Direction Cosine Matrices (DCMs)**;
 * **Quaternions**.
@@ -26,7 +27,27 @@ available:
 * **Direction Cosine Matrices** to **Quaternions**;
 * **Euler Angles** to **Direction Cosine Matrices**;
 * **Quaternions** to **Direction Cosine Matrices**;
+* **Quaternions** to **Euler Angle and Axis**;
 * **Quaternions** to **Euler Angles**.
+
+## Euler Angle and Axis
+
+The Euler angle and axis representation is defined by the following mutable
+structure:
+
+```julia
+mutable struct EulerAngleAxis{T<:Real}
+    a::T
+    v::Vector{T}
+end
+```
+
+in which `a` is the Euler Angle and `v` is a unitary vector aligned with the
+Euler axis.
+
+**NOTE**: The support of this representation is still incomplete. Only the
+conversion to and from quaternions are implemented. Furthermore, there is no
+support for operations using Euler angles and axes.
 
 ## Euler Angles
 
@@ -359,6 +380,31 @@ q   = dcm2quat(dcm)
 because it can lead to `InexactError()` when converting to Quaternions. This bug
 will be addressed in a future version of **Rotations.jl**.
 
+### Euler Angle and Axis to Quaternions
+
+A Euler angle and axis representation can be converted to quaternion using these
+two methods:
+
+    function angleaxis2quat(a, v)
+    function angleaxis2quat(angleaxis)
+
+**Example**
+
+```julia
+a = 60.0*pi/180
+v = [sqrt(3)/3;sqrt(3)/3;sqrt(3)/3]
+angleaxis2quat(a,v)
+
+    Quaternion{Float64}:
+      + 0.8660254037844387 + 0.2886751345948128.i + 0.2886751345948128.j + 0.2886751345948128.k
+
+angleaxis = EulerAngleAxis(a,v)
+angleaxis2quat(angleaxis)
+
+    Quaternion{Float64}:
+      + 0.8660254037844387 + 0.2886751345948128.i + 0.2886751345948128.j + 0.2886751345948128.k
+```
+
 ### Euler Angles to Quaternions
 
 There are currently no dedicated methods available to convert Euler Angles to
@@ -393,6 +439,24 @@ dcm = quat2dcm(q)
      1.0   0.0       0.0
      0.0   0.707107  0.707107
      0.0  -0.707107  0.707107
+```
+
+### Quaternions to Euler Angle and Axis
+
+A quaternion can be converted to Euler Angle and Axis representation using the
+following function:
+
+    function quat2angleaxis(q)
+
+**Example**
+
+```julia
+v = [sqrt(3)/3;sqrt(3)/3;sqrt(3)/3]
+a = 60.0*pi/180
+q = Quaternion(cos(a/2), v*sin(a/2))
+quat2angleaxis(q)
+
+    Rotations.EulerAngleAxis{Float64}(1.0471975511965974, [0.57735, 0.57735, 0.57735])
 ```
 
 ### Quaternions to Euler Angles
