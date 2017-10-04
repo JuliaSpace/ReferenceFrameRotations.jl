@@ -25,6 +25,7 @@ available:
 
 * **Direction Cosine Matrices** to **Euler Angles**;
 * **Direction Cosine Matrices** to **Quaternions**;
+* **Euler Angle and Axis** to **Quaternions**;
 * **Euler Angles** to **Direction Cosine Matrices**;
 * **Quaternions** to **Direction Cosine Matrices**;
 * **Quaternions** to **Euler Angle and Axis**;
