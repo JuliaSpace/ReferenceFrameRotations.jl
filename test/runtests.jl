@@ -183,6 +183,9 @@ for i = 1:samples
     # Other functions
     # ===============
 
+    # eye
+    # ---
+
     # Create a random quaternion with Float32 type.
     q = Quaternion{Float32}(randn(), randn(), randn(), randn())
     q = q/norm(q)
@@ -200,6 +203,26 @@ for i = 1:samples
     # Check if the value of the quaternion is correct.
     @test norm(vect(q_eye_3)) == 0.0
     @test real(q_eye_3) == 1.0
+
+    # zeros
+    # -----
+
+    # Create a random quaternion with Float32 type.
+    q = Quaternion{Float32}(randn(), randn(), randn(), randn())
+    q = q/norm(q)
+
+    # Creata a zero quaternion using many methods.
+    q_zeros_1 = zeros(Quaternion)
+    q_zeros_2 = zeros(Quaternion{Float32})
+    q_zeros_3 = zeros(q)
+
+    # Check if the types are correct.
+    @test eltype(q_zeros_1.q0) != eltype(q.q0)
+    @test eltype(q_zeros_2.q0) == eltype(q.q0)
+    @test eltype(q_zeros_3.q0) == eltype(q.q0)
+
+    # Check if the value of the quaternion is correct.
+    @test norm(q_zeros_3) == 0.0
 end
 
 ################################################################################
