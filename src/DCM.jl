@@ -100,6 +100,12 @@ function create_rotation_matrix(angle::T, axis::Char) where T<:Real
     dcm
 end
 
+################################################################################
+#                                 Conversions
+################################################################################
+
+# Euler Angles
+# ==============================================================================
 
 """
 ### function dcm2angle(dcm::Array{T,2}, rot_seq::AbstractString="ZYX") where T<:Real
@@ -219,6 +225,9 @@ function dcm2angle(dcm::Array{T,2}, rot_seq::AbstractString="ZYX") where T<:Real
         throw(RotationSequenceError)
     end
 end
+
+# Quaternions
+# ==============================================================================
 
 """
 ### function dcm2quat!(q::Quaternion{T1}, dcm::Array{T2,2}) where T1<:Real where T2<:Real
