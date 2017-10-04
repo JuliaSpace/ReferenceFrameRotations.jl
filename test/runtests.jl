@@ -179,6 +179,27 @@ for i = 1:samples
 
     # Test the angle between the two representations.
     @test abs(sin(ang)-sin_ang) < 1e-10
+
+    # Other functions
+    # ===============
+
+    # Create a random quaternion with Float32 type.
+    q = Quaternion{Float32}(randn(), randn(), randn(), randn())
+    q = q/norm(q)
+
+    # Creata an identity quaternion using many methods.
+    q_eye_1 = eye(Quaternion)
+    q_eye_2 = eye(Quaternion{Float32})
+    q_eye_3 = eye(q)
+
+    # Check if the types are correct.
+    @test eltype(q_eye_1.q0) != eltype(q.q0)
+    @test eltype(q_eye_2.q0) == eltype(q.q0)
+    @test eltype(q_eye_3.q0) == eltype(q.q0)
+
+    # Check if the value of the quaternion is correct.
+    @test norm(vect(q_eye_3)) == 0.0
+    @test real(q_eye_3) == 1.0
 end
 
 ################################################################################
