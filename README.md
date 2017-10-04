@@ -84,7 +84,7 @@ v = [1.0;0.0;0.0]
 ```julia
 q = eye(Quaternion)  # Creates an identity quaternion of type `Float64`.
 
-    Quaternion{Float32}:
+    Quaternion{Float64}:
       + 1.0 + 0.0.i + 0.0.j + 0.0.k
 
 q = eye(Quaternion{Float32})  # Creates an identity quaternion of type `Float32`.
