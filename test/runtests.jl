@@ -330,3 +330,69 @@ for k = 1:samples
     # The vector representation must be the same after the rotation.
     @test norm(r-r_rot) < 1e-10
 end
+
+################################################################################
+#                               TEST: Kinematics
+################################################################################
+
+# DCM
+# ==============================================================================
+
+println("Testing the kinematics for DCMs ($samples samples)...")
+
+for i = 1:samples
+    # Create a random DCM.
+    q      = Quaternion(randn(), randn(), randn(), randn())
+    q      = q/norm(q)
+    Dba0   = quat2dcm(q)
+
+    # Create a random velocity vector.
+    wba_a = randn(3)
+
+    # Propagate the initial DCM using the sampled velocity vector.
+    Δ   = 0.01
+    Dba = copy(Dba0)
+    for k = 1:1000
+        dDba = ddcm(Dba,Dba0*wba_a)
+
+        Dba  = Dba + dDba*Δ
+    end
+
+    # In the end, the vector aligned with w must not change.
+    v1 = Dba0*wba_a
+    v2 = Dba*wba_a
+
+    @test norm(v2-v1) < 1e-10
+end
+
+# Quaternions
+# ==============================================================================
+
+println("Testing the kinematics for Quaternions ($samples samples)...")
+
+for i = 1:samples
+    # Create a random quaternion.
+    qba0 = Quaternion(randn(), randn(), randn(), randn())
+    qba0 = qba0/norm(qba0)
+
+    # Create a random velocity vector.
+    wba_a = randn(3)
+
+    # Propagate the initial DCM using the sampled velocity vector.
+    Δ   = 0.01
+    qba = copy(qba0)
+    for k = 1:1000
+        dqba = dquat(qba,vect(inv(qba)*wba_a*qba))
+
+        qba  = qba + dqba*Δ
+    end
+
+    # In the end, the vector aligned with w must not change.
+    v1 = vect(inv(qba0)*wba_a*qba0)
+    v2 = vect(inv(qba)*wba_a*qba)
+
+    @test norm(v2-v1) < 1e-10
+end
+
+
+
