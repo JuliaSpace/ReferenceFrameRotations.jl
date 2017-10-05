@@ -756,10 +756,10 @@ function dquat(qba::Quaternion{T1},
         throw(ArgumentError("The angular velocity vector must have three components."))
     end
 
-    Ωba_b = Array{T2}([  0   -w[1] -w[2] -w[3] ;
-                       +w[1]   0   +w[3] -w[2] ;
-                       +w[2] -w[3]   0   +w[1] ;
-                       +w[3] +w[2] -w[1]   0   ])
+    Ωba_b = T2[zero(T2)  -w[1]    -w[2]    -w[3]  ;
+                +w[1]   zero(T2)  +w[3]    -w[2]  ;
+                +w[2]    -w[3]   zero(T2)  +w[1]  ;
+                +w[3]    +w[2]    -w[1]   zero(T2);]
 
     # Return the time-derivative.
     (Ωba_b/2)*qba[:]
