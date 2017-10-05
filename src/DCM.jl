@@ -254,10 +254,10 @@ This algorithm was obtained from:
 function dcm2quat!(q::Quaternion{T1},
                    dcm::Array{T2,2}) where T1<:Real where T2<:Real
 
-    q.q0 = sqrt( max( 0, 1 + dcm[1,1] + dcm[2,2] + dcm[3,3] ) )/2
-    q.q1 = sqrt( max( 0, 1 + dcm[1,1] - dcm[2,2] - dcm[3,3] ) )/2
-    q.q2 = sqrt( max( 0, 1 - dcm[1,1] + dcm[2,2] - dcm[3,3] ) )/2
-    q.q3 = sqrt( max( 0, 1 - dcm[1,1] - dcm[2,2] + dcm[3,3] ) )/2
+    q.q0 = sqrt( max( zero(T1), one(T1) + dcm[1,1] + dcm[2,2] + dcm[3,3] ) )/2
+    q.q1 = sqrt( max( zero(T1), one(T1) + dcm[1,1] - dcm[2,2] - dcm[3,3] ) )/2
+    q.q2 = sqrt( max( zero(T1), one(T1) - dcm[1,1] + dcm[2,2] - dcm[3,3] ) )/2
+    q.q3 = sqrt( max( zero(T1), one(T1) - dcm[1,1] - dcm[2,2] + dcm[3,3] ) )/2
 
     q.q1 = copysign(q.q1, dcm[2,3] - dcm[3,2])
     q.q2 = copysign(q.q2, dcm[3,1] - dcm[1,3])
@@ -291,7 +291,7 @@ This algorithm was obtained from:
 """
 
 function dcm2quat(dcm::Array{T,2}) where T<:Real
-    q = Quaternion{T}(T(0), T(0), T(0), T(0))
+    q = zeros(Quaternion{T})
     dcm2quat!(q,dcm)
     q
 end
