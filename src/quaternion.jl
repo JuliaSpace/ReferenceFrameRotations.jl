@@ -14,10 +14,16 @@ export dquat, quat2angle, quat2angleaxis, quat2dcm, quat2dcm!, vect
 """
 ### function Quaternion(v::Vector{T}) where T<:Real
 
-Create a quaternion in which the real part is `0` and the vectorial or imaginary
-part has the same components of the vector `v`. In other words:
+If the vector has 3 components, then create a quaternion in which the real part
+is `0` and the vectorial or imaginary part has the same components of the vector
+`v`. In other words:
 
    q = 0 + v[1].i + v[2].j + v[3].k
+
+Otherwise, if the vector has 4 components, then create a quaternion in which the
+elements match those of the input vector:
+
+   q = v[1] + v[2].i + v[3].j + v[4].k
 
 ##### Args
 
@@ -30,12 +36,16 @@ part has the same components of the vector `v`. In other words:
 """
 
 function Quaternion(v::Vector{T}) where T<:Real
-    # The vector must have 3 components.
-    if length(v) != 3
-        throw(ArgumentError("The input vector must have 3 components."))
+    # The vector must have 3 or 4 components.
+    if length(v) != 3 && length(v) != 4
+        throw(ArgumentError("The input vector must have 3 or 4 components."))
     end
 
-    Quaternion{T}(zero(T), v[1], v[2], v[3])
+    if length(v) == 3
+        Quaternion{T}(zero(T), v[1], v[2], v[3])
+    else
+        Quaternion{T}(v[1], v[2], v[3], v[4])
+    end
 end
 
 """

@@ -82,7 +82,7 @@ q = Quaternion(1.0, 0.0, 0.0, 0.0)
       + 1.0 + 0.0.i + 0.0.j + 0.0.k
 ```
 
-2. Provide the real and imaginary part:
+2. Provide the real and imaginary parts as separated numbers:
 
 ```julia
 r = sqrt(2)/2
@@ -93,7 +93,17 @@ q = Quaternion(r,v)
       + 0.7071067811865476 + 0.7071067811865476.i + 0.0.j + 0.0.k
 ```
 
-3. Provide just the imaginary part, in this case the real part will be 0:
+3. Provide the real and imaginary parts as one single vector:
+
+```julia
+v = [1.;2.;3.;4.]
+q = Quaternion(v)
+
+    Quaternion{Float64}:
+      + 1.0 + 2.0.i + 3.0.j + 4.0.k
+```
+
+4. Provide just the imaginary part, in this case the real part will be 0:
 
 ```julia
 v = [1.;0.;0.]
@@ -103,7 +113,7 @@ q = Quaternion(v)
       + 0.0 + 1.0.i + 0.0.j + 0.0.k
 ```
 
-4. Create an identity quaternion using the `eye` function:
+5. Create an identity quaternion using the `eye` function:
 
 ```julia
 q = eye(Quaternion)  # Creates an identity quaternion of type `Float64`.
@@ -122,7 +132,7 @@ a = eye(q)  # Creates an identity quaternion with the same type of `q`.
       + 1.0 + 0.0.i + 0.0.j + 0.0.k
 ```
 
-5. Create a zero quaternion using the `zeros` function:
+6. Create a zero quaternion using the `zeros` function:
 
 ```julia
 q = zeros(Quaternion)  # Creates a zero quaternion of type `Float64`.
