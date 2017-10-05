@@ -772,5 +772,5 @@ function dquat(qba::Quaternion{T1},
                 +w[3]    +w[2]    -w[1]   zero(T2);]
 
     # Return the time-derivative.
-    (Ωba_b/2)*qba[:]
+    Quaternion((Ωba_b/2)*qba[:])
 end
