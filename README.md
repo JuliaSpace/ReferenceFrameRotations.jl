@@ -492,6 +492,55 @@ quat2angle(q, "XYZ")
     Rotations.EulerAngles{Float64}(0.7853981633974484, 0.0, -0.0, "XYZ")
 ```
 
+## Kinematics
+
+### Direction Cosine Matrix
+
+The user can use this function
+
+    function ddcm(Dba, wba_b)
+
+to obtain the time-derivative of a DCM. In this case, `Dba` is a DCM that
+rotates the reference frame `a` into alignment to reference frame `b` in which
+the angular velocity of `b` with respect to `a` and represented in `b` is
+`wba_b`.
+
+**Example**
+
+The following code can be used to integrate a DCM by one sampling step Δ:
+
+```julia
+dDba = ddcm(Dba,wba_b)
+Dba  = Dba + dDba*Δ
+```
+
+**NOTE**: In this case, the sampling step must be small to avoid numerical
+problems. To avoid that, use better integration algorithms.
+
+### Quaternions
+
+The user can use this function
+
+    function dquat(qba, wba_b)
+
+to obtain the time-derivative of a quaternion. In this case, `qba` is a
+quaternion that rotates the reference frame `a` into alignment to reference
+frame `b` in which the angular velocity of `b` with respect to `a` and
+represented in `b` is wba_b.
+
+**Example**
+
+The following code can be used to integrate a quaternion by one sampling step Δ:
+
+```julia
+dqba = dquat(qba,wba_b)
+qba  = qba + dqba*Δ
+qba  = qba/norm(qba)
+```
+
+**NOTE**: In this case, the sampling step must be small to avoid numerical
+problems. To avoid that, use better integration algorithms.
+
 ## Remarks
 
 In other to improve the readability of this document, the methods described here
