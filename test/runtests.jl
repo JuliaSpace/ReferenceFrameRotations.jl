@@ -350,7 +350,7 @@ for i = 1:samples
     wba_a = randn(3)
 
     # Propagate the initial DCM using the sampled velocity vector.
-    Δ   = 0.01
+    Δ   = 0.0001
     Dba = copy(Dba0)
     for k = 1:1000
         dDba = ddcm(Dba,Dba0*wba_a)
@@ -379,7 +379,7 @@ for i = 1:samples
     wba_a = randn(3)
 
     # Propagate the initial DCM using the sampled velocity vector.
-    Δ   = 0.01
+    Δ   = 0.0001
     qba = copy(qba0)
     for k = 1:1000
         dqba = dquat(qba,vect(inv(qba)*wba_a*qba))
