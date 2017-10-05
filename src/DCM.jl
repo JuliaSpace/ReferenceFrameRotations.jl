@@ -3,7 +3,7 @@
 ################################################################################
 
 export create_rotation_matrix, create_rotation_matrix!
-export dcm2angle, dcm2quat, dcm2quat!
+export ddcm, dcm2angle, dcm2quat, dcm2quat!
 
 ################################################################################
 #                                  Functions
@@ -295,3 +295,46 @@ function dcm2quat(dcm::Array{T,2}) where T<:Real
     dcm2quat!(q,dcm)
     q
 end
+
+################################################################################
+#                                  Kinematics
+################################################################################
+
+"""
+### function ddcm(Dba::Matrix{T1}, wba_b::Vector{T2}) where T1<:Real where T2<:Real
+
+Compute the time-derivative of a DCM that rotates a reference frame `a` into
+alignment to the reference frame `b` in which the angular velocity of `b` with
+respect to `a` and represented in `b` is `wba_b`.
+
+##### Args
+
+* Dba: DCM that rotates the reference frame `a` into alignment with the
+reference frame `b`.
+* wba_b: Angular velocity of the reference frame `a` with respect to the
+reference frame `b` represented in the reference frame `b`.
+
+##### Returns
+
+* The time-derivative of `Dba` (3x3 matrix).
+
+"""
+
+function ddcm(Dba::Matrix{T1}, wba_b::Vector{T2}) where T1<:Real where T2<:Real
+    # Auxiliary variable.
+    w = wba_b
+
+    # Check the dimensions.
+    if length(wba_b) != 3
+        throw(ArgumentError("The angular velocity vector must have three components."))
+    end
+
+    wx = T2[ zero(T2)  -w[3]    +w[2];
+              +w[3]   zero(T2)  -w[1];
+              -w[2]    +w[1]   zero(T2) ]
+
+    # Return the time-derivative.
+    -wx*Dba
+end
+
+
