@@ -35,7 +35,7 @@ function Quaternion(v::Vector{T}) where T<:Real
         throw(ArgumentError("The input vector must have 3 components."))
     end
 
-    Quaternion{T}(T(0), v[1], v[2], v[3])
+    Quaternion{T}(zero(T), v[1], v[2], v[3])
 end
 
 """
@@ -357,7 +357,7 @@ Create an identity quaternion (`1 + 0.i + 0.j + 0.k)` of type `T`.
 """
 
 function eye(::Type{Quaternion{T}}) where T<:Real
-    Quaternion{T}(1,0,0,0)
+    Quaternion{T}(one(T),zero(T),zero(T),zero(T))
 end
 
 """
@@ -376,7 +376,7 @@ Create an identity quaternion (`1 + 0.i + 0.j + 0.k)` of type `Float64`.
 """
 
 function eye(::Type{Quaternion})
-    Quaternion{Float64}(1,0,0,0)
+    Quaternion{Float64}(1.0,0.0,0.0,0.0)
 end
 
 """
@@ -513,7 +513,7 @@ Create a zero quaternion (`0 + 0.i + 0.j + 0.k)` of type `T`.
 """
 
 function zeros(::Type{Quaternion{T}}) where T<:Real
-    Quaternion{T}(0,0,0,0)
+    Quaternion{T}(zero(T),zero(T),zero(T),zero(T))
 end
 
 """
@@ -532,7 +532,7 @@ Create a zero quaternion (`0 + 0.i + 0.j + 0.k)` of type `Float64`.
 """
 
 function zeros(::Type{Quaternion})
-    Quaternion{Float64}(0,0,0,0)
+    Quaternion{Float64}(0.0,0.0,0.0,0.0)
 end
 
 """
