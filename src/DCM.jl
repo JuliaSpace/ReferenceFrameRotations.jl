@@ -243,6 +243,12 @@ This algorithm was obtained from:
 * q: (OUTPUT) Pre-allocated quaternion.
 * dcm: Direction Cosine Matrix that will be converted.
 
+##### Remarks
+
+By convention, the real part of the quaternion will always be positive.
+Moreover, the function does not check if `dcm` is a valid direction cosine
+matrix. This must be handle by the user.
+
 ##### Example
 
     dcm = angle2dcm(pi/2,0.0,0.0,"XYZ")
@@ -254,14 +260,57 @@ This algorithm was obtained from:
 function dcm2quat!(q::Quaternion{T1},
                    dcm::Array{T2,2}) where T1<:Real where T2<:Real
 
-    q.q0 = sqrt( max( zero(T1), one(T1) + dcm[1,1] + dcm[2,2] + dcm[3,3] ) )/2
-    q.q1 = sqrt( max( zero(T1), one(T1) + dcm[1,1] - dcm[2,2] - dcm[3,3] ) )/2
-    q.q2 = sqrt( max( zero(T1), one(T1) - dcm[1,1] + dcm[2,2] - dcm[3,3] ) )/2
-    q.q3 = sqrt( max( zero(T1), one(T1) - dcm[1,1] - dcm[2,2] + dcm[3,3] ) )/2
+    if  trace(dcm) > 0
+        # f = 4*q0
+        f = sqrt(trace(dcm)+one(T2))*2
 
-    q.q1 = copysign(q.q1, dcm[2,3] - dcm[3,2])
-    q.q2 = copysign(q.q2, dcm[3,1] - dcm[1,3])
-    q.q3 = copysign(q.q3, dcm[1,2] - dcm[2,1])
+        q.q0 = f/4
+        q.q1 = (dcm[2,3]-dcm[3,2])/f
+        q.q2 = (dcm[3,1]-dcm[1,3])/f
+        q.q3 = (dcm[1,2]-dcm[2,1])/f
+    elseif (dcm[1,1] > dcm[2,2]) && (dcm[1,1] > dcm[3,3])
+        # f = 4*q1
+        f = sqrt(one(T2) + dcm[1,1] - dcm[2,2] - dcm[3,3])*2
+
+        # Real part.
+        q.q0 = (dcm[2,3]-dcm[3,2])/f
+
+        # Make sure that the real part is always positive.
+        s = (q.q0 > 0) ? one(T2) : -one(T2)
+
+        q.q0 = s*q.q0
+        q.q1 = s*f/4
+        q.q2 = s*(dcm[1,2]+dcm[2,1])/f
+        q.q3 = s*(dcm[3,1]+dcm[1,3])/f
+    elseif (dcm[2,2] > dcm[3,3])
+        # f = 4*q2
+        f = sqrt(one(T2) + dcm[2,2] - dcm[1,1] - dcm[3,3])*2
+
+        # Real part.
+        q.q0 = (dcm[3,1]-dcm[1,3])/f
+
+        # Make sure that the real part is always posiive.
+        s = (q.q0 > 0) ? one(T2) : -one(T2)
+
+        q.q0 = s*q.q0
+        q.q1 = s*(dcm[1,2]+dcm[2,1])/f
+        q.q2 = s*f/4
+        q.q3 = s*(dcm[3,2]+dcm[2,3])/f
+    else
+        # f = 4*q3
+        f = sqrt(one(T2) + dcm[3,3] - dcm[1,1] - dcm[2,2])*2
+
+        # Real part.
+        q.q0 = (dcm[1,2]-dcm[2,1])/f
+
+        # Make sure that the real part is always posiive.
+        s = (q.q0 > 0) ? one(T2) : -one(T2)
+
+        q.q0 = s*q.q0
+        q.q1 = s*(dcm[1,3]+dcm[3,1])/f
+        q.q2 = s*(dcm[2,3]+dcm[3,2])/f
+        q.q3 = s*f/4
+    end
 
     nothing
 end
@@ -282,6 +331,12 @@ This algorithm was obtained from:
 ##### Returns
 
 * The quaternion that represents the same rotation of the `dcm`.
+
+##### Remarks
+
+By convention, the real part of the quaternion will always be positive.
+Moreover, the function does not check if `dcm` is a valid direction cosine
+matrix. This must be handle by the user.
 
 ##### Example
 
