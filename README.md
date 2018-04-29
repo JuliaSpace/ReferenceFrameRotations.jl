@@ -1,7 +1,7 @@
-# Rotations
+# ReferenceFrameRotations
 
-[![Build Status](https://travis-ci.org/ronisbr/Rotations.jl.svg?branch=master)](https://travis-ci.org/ronisbr/Rotations.jl)
-[![Coverage Status](https://coveralls.io/repos/github/ronisbr/Rotations.jl/badge.svg?branch=master)](https://coveralls.io/github/ronisbr/Rotations.jl?branch=master)
+[![Build Status](https://travis-ci.org/ronisbr/ReferenceFrameRotations.jl.svg?branch=master)](https://travis-ci.org/ronisbr/ReferenceFrameRotations.jl)
+[![Coverage Status](https://coveralls.io/repos/github/ronisbr/ReferenceFrameRotations.jl/badge.svg?branch=master)](https://coveralls.io/github/ronisbr/ReferenceFrameRotations.jl?branch=master)
 
 This module contains functions related to the representation of 3D rotations of
 coordinate frames. It is used on a daily basis on projects at the [Brazilian
@@ -302,11 +302,11 @@ following function:
 dcm = [1 0 0; 0 0 -1; 0 1 0]
 dcm2angle(dcm)
 
-    Rotations.EulerAngles{Float64}(0.0, 0.0, -1.5707963267948966, "ZYX")
+    ReferenceFrameRotations.EulerAngles{Float64}(0.0, 0.0, -1.5707963267948966, "ZYX")
 
 dcm2angle(dcm, "XYZ")
 
-    Rotations.EulerAngles{Float64}(-1.5707963267948966, 0.0, 0.0, "XYZ")
+    ReferenceFrameRotations.EulerAngles{Float64}(-1.5707963267948966, 0.0, 0.0, "XYZ")
 ```
 
 ### Direction Cosine Matrices to Quaternions
@@ -342,7 +342,7 @@ q   = dcm2quat(dcm)
     dcm = [1 0 0; 0 0 -1; 0 1 0]
 
 because it can lead to `InexactError()` when converting to Quaternions. This bug
-will be addressed in a future version of **Rotations.jl**.
+will be addressed in a future version of **ReferenceFrameRotations.jl**.
 
 ### Euler Angle and Axis to Quaternions
 
@@ -421,7 +421,8 @@ dcm    = angle2dcm(angles)
 ### Euler Angles to Quaternions
 
 There are currently no dedicated methods available to convert Euler Angles to
-Quaternions. This will be addressed in a future version of **Rotations.jl**.
+Quaternions. This will be addressed in a future version of
+**ReferenceFrameRotations.jl**.
 
 ### Quaternions to Direction Cosine Matrices
 
@@ -469,7 +470,7 @@ a = 60.0*pi/180
 q = Quaternion(cos(a/2), v*sin(a/2))
 quat2angleaxis(q)
 
-    Rotations.EulerAngleAxis{Float64}(1.0471975511965974, [0.57735, 0.57735, 0.57735])
+    ReferenceFrameRotations.EulerAngleAxis{Float64}(1.0471975511965974, [0.57735, 0.57735, 0.57735])
 ```
 
 ### Quaternions to Euler Angles
@@ -481,7 +482,7 @@ Currently, there are only one method to convert quaternions to Euler Angles:
 However, it first transforms the quaternion to DCM using `quat2dcm` and then
 transforms the DCM into the Euler Angles. Hence, the performance will be poor.
 The improvement of this conversion will be addressed in a future version of
-**Rotations.jl**.
+**ReferenceFrameRotations.jl**.
 
 **Example**
 
@@ -489,7 +490,7 @@ The improvement of this conversion will be addressed in a future version of
 q = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0)
 quat2angle(q, "XYZ")
 
-    Rotations.EulerAngles{Float64}(0.7853981633974484, 0.0, -0.0, "XYZ")
+    ReferenceFrameRotations.EulerAngles{Float64}(0.7853981633974484, 0.0, -0.0, "XYZ")
 ```
 
 ## Kinematics

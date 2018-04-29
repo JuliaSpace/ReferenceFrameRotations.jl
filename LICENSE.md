@@ -1,4 +1,4 @@
-The Rotations.jl package is licensed under the MIT "Expat" License:
+The ReferenceFrameRotations.jl package is licensed under the MIT "Expat" License:
 
 > Copyright (c) 2017: Ronan Arraes Jardim Chagas.
 >
