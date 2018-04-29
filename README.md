@@ -4,7 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/ronisbr/ReferenceFrameRotations.jl/badge.svg?branch=master)](https://coveralls.io/github/ronisbr/ReferenceFrameRotations.jl?branch=master)
 
 This module contains functions related to the representation of 3D rotations of
-coordinate frames. It is used on a daily basis on projects at the [Brazilian
+reference frames. It is used on a daily basis on projects at the [Brazilian
 National Institute for Space Research (INPE)](http://www.inpe.br).
 
 ## Requirements
