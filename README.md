@@ -27,6 +27,7 @@ available:
 * **Direction Cosine Matrices** to **Quaternions**;
 * **Euler Angle and Axis** to **Quaternions**;
 * **Euler Angles** to **Direction Cosine Matrices**;
+* **Euler Angles** to **Quaternions**;
 * **Quaternions** to **Direction Cosine Matrices**;
 * **Quaternions** to **Euler Angle and Axis**;
 * **Quaternions** to **Euler Angles**.
@@ -420,9 +421,44 @@ dcm    = angle2dcm(angles)
 
 ### Euler Angles to Quaternions
 
-There are currently no dedicated methods available to convert Euler Angles to
-Quaternions. This will be addressed in a future version of
-**ReferenceFrameRotations.jl**.
+Euler angles can be converted to quaternions using two functions. The first
+`angle2quat!` requires a pre-allocated quaternion, whereas the second
+`angle2quat` allocates a new quaternion. The available methods are:
+
+    function angle2quat!(q, angle_r1, angle_r2, angle_r3, rot_seq="ZYX")
+    function angle2quat(angle_r1, angle_r2, angle_r3, rot_seq="ZYX")
+    function angle2quat!(q, eulerang)
+    function angle2quat(eulerang)
+
+**Example**:
+
+```julia
+q = eye(Quaternion)
+angle2quat!(q, pi/2, pi/4, pi/3, "ZYX")
+q
+
+    Quaternion{Float64}:
+      + 0.7010573846499779 + 0.09229595564125723.i + 0.5609855267969309.j + 0.43045933457687935.k
+
+q      = eye(Quaternion)
+angles = EulerAngles(pi/2, pi/4, pi/3, "ZYX")
+angle2quat!(q,angles)
+q
+
+    Quaternion{Float64}:
+      + 0.7010573846499779 + 0.09229595564125723.i + 0.5609855267969309.j + 0.43045933457687935.k
+
+q = angle2quat(pi/2, pi/4, pi/3, "ZYX")
+
+    Quaternion{Float64}:
+      + 0.7010573846499779 + 0.09229595564125723.i + 0.5609855267969309.j + 0.43045933457687935.k
+
+angles = EulerAngles(pi/2, pi/4, pi/3, "ZYX")
+q    = angle2quat(angles)
+
+    Quaternion{Float64}:
+      + 0.7010573846499779 + 0.09229595564125723.i + 0.5609855267969309.j + 0.43045933457687935.k
+```
 
 ### Quaternions to Direction Cosine Matrices
 
