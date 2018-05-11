@@ -376,65 +376,65 @@ function angle2quat!(q::Quaternion{T},
     rot_seq = uppercase(rot_seq)
 
     if ( startswith(rot_seq, "ZYX") )
-        q[1] = c1*c2*c3 + s1*s2*s3
-        q[2] = c1*c2*s3 - s1*s2*c3
-        q[3] = c1*s2*c3 + s1*c2*s3
-        q[4] = s1*c2*c3 - c1*s2*s3
+        q.q0 = c1*c2*c3 + s1*s2*s3
+        q.q1 = c1*c2*s3 - s1*s2*c3
+        q.q2 = c1*s2*c3 + s1*c2*s3
+        q.q3 = s1*c2*c3 - c1*s2*s3
     elseif ( startswith(rot_seq, "XYX") )
-        q[1] = c1*c2*c3 - s1*c2*s3
-        q[2] = c1*c2*s3 + s1*c2*c3
-        q[3] = c1*s2*c3 + s1*s2*s3
-        q[4] = s1*s2*c3 - c1*s2*s3
+        q.q0 = c1*c2*c3 - s1*c2*s3
+        q.q1 = c1*c2*s3 + s1*c2*c3
+        q.q2 = c1*s2*c3 + s1*s2*s3
+        q.q3 = s1*s2*c3 - c1*s2*s3
     elseif ( startswith(rot_seq, "XYZ") )
-        q[1] = c1*c2*c3 - s1*s2*s3
-        q[2] = s1*c2*c3 + c1*s2*s3
-        q[3] = c1*s2*c3 - s1*c2*s3
-        q[4] = c1*c2*s3 + s1*s2*c3
+        q.q0 = c1*c2*c3 - s1*s2*s3
+        q.q1 = s1*c2*c3 + c1*s2*s3
+        q.q2 = c1*s2*c3 - s1*c2*s3
+        q.q3 = c1*c2*s3 + s1*s2*c3
     elseif ( startswith(rot_seq, "XZX") )
-        q[1] = c1*c2*c3 - s1*c2*s3
-        q[2] = c1*c2*s3 + s1*c2*c3
-        q[3] = c1*s2*s3 - s1*s2*c3
-        q[4] = c1*s2*c3 + s1*s2*s3
+        q.q0 = c1*c2*c3 - s1*c2*s3
+        q.q1 = c1*c2*s3 + s1*c2*c3
+        q.q2 = c1*s2*s3 - s1*s2*c3
+        q.q3 = c1*s2*c3 + s1*s2*s3
     elseif ( startswith(rot_seq, "XZY") )
-        q[1] = c1*c2*c3 + s1*s2*s3
-        q[2] = s1*c2*c3 - c1*s2*s3
-        q[3] = c1*c2*s3 - s1*s2*c3
-        q[4] = c1*s2*c3 + s1*c2*s3
+        q.q0 = c1*c2*c3 + s1*s2*s3
+        q.q1 = s1*c2*c3 - c1*s2*s3
+        q.q2 = c1*c2*s3 - s1*s2*c3
+        q.q3 = c1*s2*c3 + s1*c2*s3
     elseif ( startswith(rot_seq, "YXY") )
-        q[1] = c1*c2*c3 - s1*c2*s3
-        q[2] = c1*s2*c3 + s1*s2*s3
-        q[3] = c1*c2*s3 + s1*c2*c3
-        q[4] = c1*s2*s3 - s1*s2*c3
+        q.q0 = c1*c2*c3 - s1*c2*s3
+        q.q1 = c1*s2*c3 + s1*s2*s3
+        q.q2 = c1*c2*s3 + s1*c2*c3
+        q.q3 = c1*s2*s3 - s1*s2*c3
     elseif ( startswith(rot_seq, "YXZ") )
-        q[1] = c1*c2*c3 + s1*s2*s3
-        q[2] = c1*s2*c3 + s1*c2*s3
-        q[3] = s1*c2*c3 - c1*s2*s3
-        q[4] = c1*c2*s3 - s1*s2*c3
+        q.q0 = c1*c2*c3 + s1*s2*s3
+        q.q1 = c1*s2*c3 + s1*c2*s3
+        q.q2 = s1*c2*c3 - c1*s2*s3
+        q.q3 = c1*c2*s3 - s1*s2*c3
     elseif ( startswith(rot_seq, "YZX") )
-        q[1] = c1*c2*c3 - s1*s2*s3
-        q[2] = c1*c2*s3 + s1*s2*c3
-        q[3] = s1*c2*c3 + c1*s2*s3
-        q[4] = c1*s2*c3 - s1*c2*s3
+        q.q0 = c1*c2*c3 - s1*s2*s3
+        q.q1 = c1*c2*s3 + s1*s2*c3
+        q.q2 = s1*c2*c3 + c1*s2*s3
+        q.q3 = c1*s2*c3 - s1*c2*s3
     elseif ( startswith(rot_seq, "YZY") )
-        q[1] = c1*c2*c3 - s1*c2*s3
-        q[2] = s1*s2*c3 - c1*s2*s3
-        q[3] = c1*c2*s3 + s1*c2*c3
-        q[4] = c1*s2*c3 + s1*s2*s3
+        q.q0 = c1*c2*c3 - s1*c2*s3
+        q.q1 = s1*s2*c3 - c1*s2*s3
+        q.q2 = c1*c2*s3 + s1*c2*c3
+        q.q3 = c1*s2*c3 + s1*s2*s3
     elseif ( startswith(rot_seq, "ZXY") )
-        q[1] = c1*c2*c3 - s1*s2*s3
-        q[2] = c1*s2*c3 - s1*c2*s3
-        q[3] = c1*c2*s3 + s1*s2*c3
-        q[4] = s1*c2*c3 + c1*s2*s3
+        q.q0 = c1*c2*c3 - s1*s2*s3
+        q.q1 = c1*s2*c3 - s1*c2*s3
+        q.q2 = c1*c2*s3 + s1*s2*c3
+        q.q3 = s1*c2*c3 + c1*s2*s3
     elseif ( startswith(rot_seq, "ZXZ") )
-        q[1] = c1*c2*c3 - s1*c2*s3
-        q[2] = c1*s2*c3 + s1*s2*s3
-        q[3] = s1*s2*c3 - c1*s2*s3
-        q[4] = c1*c2*s3 + s1*c2*c3
+        q.q0 = c1*c2*c3 - s1*c2*s3
+        q.q1 = c1*s2*c3 + s1*s2*s3
+        q.q2 = s1*s2*c3 - c1*s2*s3
+        q.q3 = c1*c2*s3 + s1*c2*c3
     elseif ( startswith(rot_seq, "ZYZ") )
-        q[1] = c1*c2*c3 - s1*c2*s3
-        q[2] = c1*s2*s3 - s1*s2*c3
-        q[3] = c1*s2*c3 + s1*s2*s3
-        q[4] = c1*c2*s3 + s1*c2*c3
+        q.q0 = c1*c2*c3 - s1*c2*s3
+        q.q1 = c1*s2*s3 - s1*s2*c3
+        q.q2 = c1*s2*c3 + s1*s2*s3
+        q.q3 = c1*c2*s3 + s1*c2*c3
     else
         throw(RotationSequenceError)
     end
