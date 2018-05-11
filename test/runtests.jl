@@ -124,7 +124,7 @@ for i = 1:samples
     ang = -pi + 2pi*rand()
 
     # Create a quaternion that rotates about X axis.
-    q = Quaternion(cos(ang/2), sin(ang/2)*[1;0;0])
+    q = angle2quat(ang, 0.0, 0.0, "XYZ")
 
     # Create a vector that does not have X component.
     v = [0;randn();randn()]
@@ -145,7 +145,7 @@ for i = 1:samples
     ang = -pi + 2pi*rand()
 
     # Create a quaternion that rotates about Y axis.
-    q = Quaternion(cos(ang/2), sin(ang/2)*[0;1;0])
+    q = angle2quat(ang, 0.0, 0.0, "YXZ")
 
     # Create a vector that does not have Y component.
     v = [randn();0;randn()]
@@ -166,7 +166,7 @@ for i = 1:samples
     ang = -pi + 2pi*rand()
 
     # Create a quaternion that rotates about Z axis.
-    q = Quaternion(cos(ang/2), sin(ang/2)*[0;0;1])
+    q = angle2quat(ang, 0.0, 0.0, "ZXY")
 
     # Create a vector that does not have Z component.
     v = [randn();randn();0]
@@ -294,6 +294,38 @@ for k = 1:samples
 
     # Compare.
     @test norm(v_rot_q-v_rot_dcm) < 1e-10
+end
+
+################################################################################
+#                         Euler Angles <=> Quaternions
+################################################################################
+
+println("Testing Euler Angles <=> Quaternion conversions...")
+
+for rot_seq in rot_seq_array
+    println("    Rotation sequence $rot_seq ($samples samples)...")
+
+    for k = 1:samples
+        # Sample a vector.
+        v = randn(3)
+
+        # Sample three angles form a uniform distribution [-pi,pi].
+        eulerang = EulerAngles(-pi + 2*pi*rand(),
+                               -pi + 2*pi*rand(),
+                               -pi + 2*pi*rand(),
+                               rot_seq)
+
+        # Rotate the vector using a DCM (which was already tested).
+        DCM = angle2dcm(eulerang)
+        rv_dcm = DCM*v
+
+        # Rotate the vector using a quaternion.
+        q = angle2quat(eulerang)
+        rv_quat = vect(inv(q)*v*q)
+
+        # Compare.
+        @test norm(rv_quat-rv_dcm) < 1e-10
+    end
 end
 
 ################################################################################

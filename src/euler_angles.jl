@@ -2,7 +2,8 @@
 #                                 Euler Angles
 ################################################################################
 
-export angle2dcm, angle2dcm!
+export angle2dcm,  angle2dcm!
+export angle2quat, angle2quat!
 
 ################################################################################
 #                                 Conversions
@@ -321,4 +322,200 @@ function angle2dcm(eulerang::EulerAngles{T}) where T<:Real
               eulerang.a2,
               eulerang.a3,
               eulerang.rot_seq)
+end
+
+# Quaternion
+# ==============================================================================
+
+"""
+### function angle2quat!(q::Quaternion{T}, angle_r1::T, angle_r2::T, angle_r3::T, rot_seq::AbstractString="ZYX") where T<:Real
+
+Convert Euler angles to a quaternion.
+
+##### Args
+
+* q: (OUTPUT) Pre-allocated quaternion.
+* angle_r1: Angle of the first rotation.
+* angle_r2: Angle of the second rotation.
+* angle_r3: Angle of the third rotation.
+* rot_seq: Rotation sequence.
+
+##### Remarks
+
+This function assigns q = q1 * q2 * q3 in which qi is the quaternion related
+with the i-th rotation, i Є [1,2,3].
+
+##### Example
+
+    q = zeros(Quaternion)
+    angle2quat!(q, pi/2, pi/3, pi/4, "ZYX")
+
+"""
+
+function angle2quat!(q::Quaternion{T},
+                     angle_r1::T,
+                     angle_r2::T,
+                     angle_r3::T,
+                     rot_seq::AbstractString="ZYX") where T<:Real
+    # Check if rot_seq has at least three characters.
+    if (length(rot_seq) < 3)
+        throw(ArgumentError)
+    end
+
+    # Compute the sines and cosines of half angle.
+    c1 = cos(angle_r1/2)
+    s1 = sin(angle_r1/2)
+
+    c2 = cos(angle_r2/2)
+    s2 = sin(angle_r2/2)
+
+    c3 = cos(angle_r3/2)
+    s3 = sin(angle_r3/2)
+
+    # Check the rotation sequence and compute the DCM.
+    rot_seq = uppercase(rot_seq)
+
+    if ( startswith(rot_seq, "ZYX") )
+        q[1] = c1*c2*c3 + s1*s2*s3
+        q[2] = c1*c2*s3 - s1*s2*c3
+        q[3] = c1*s2*c3 + s1*c2*s3
+        q[4] = s1*c2*c3 - c1*s2*s3
+    elseif ( startswith(rot_seq, "XYX") )
+        q[1] = c1*c2*c3 - s1*c2*s3
+        q[2] = c1*c2*s3 + s1*c2*c3
+        q[3] = c1*s2*c3 + s1*s2*s3
+        q[4] = s1*s2*c3 - c1*s2*s3
+    elseif ( startswith(rot_seq, "XYZ") )
+        q[1] = c1*c2*c3 - s1*s2*s3
+        q[2] = s1*c2*c3 + c1*s2*s3
+        q[3] = c1*s2*c3 - s1*c2*s3
+        q[4] = c1*c2*s3 + s1*s2*c3
+    elseif ( startswith(rot_seq, "XZX") )
+        q[1] = c1*c2*c3 - s1*c2*s3
+        q[2] = c1*c2*s3 + s1*c2*c3
+        q[3] = c1*s2*s3 - s1*s2*c3
+        q[4] = c1*s2*c3 + s1*s2*s3
+    elseif ( startswith(rot_seq, "XZY") )
+        q[1] = c1*c2*c3 + s1*s2*s3
+        q[2] = s1*c2*c3 - c1*s2*s3
+        q[3] = c1*c2*s3 - s1*s2*c3
+        q[4] = c1*s2*c3 + s1*c2*s3
+    elseif ( startswith(rot_seq, "YXY") )
+        q[1] = c1*c2*c3 - s1*c2*s3
+        q[2] = c1*s2*c3 + s1*s2*s3
+        q[3] = c1*c2*s3 + s1*c2*c3
+        q[4] = c1*s2*s3 - s1*s2*c3
+    elseif ( startswith(rot_seq, "YXZ") )
+        q[1] = c1*c2*c3 + s1*s2*s3
+        q[2] = c1*s2*c3 + s1*c2*s3
+        q[3] = s1*c2*c3 - c1*s2*s3
+        q[4] = c1*c2*s3 - s1*s2*c3
+    elseif ( startswith(rot_seq, "YZX") )
+        q[1] = c1*c2*c3 - s1*s2*s3
+        q[2] = c1*c2*s3 + s1*s2*c3
+        q[3] = s1*c2*c3 + c1*s2*s3
+        q[4] = c1*s2*c3 - s1*c2*s3
+    elseif ( startswith(rot_seq, "YZY") )
+        q[1] = c1*c2*c3 - s1*c2*s3
+        q[2] = s1*s2*c3 - c1*s2*s3
+        q[3] = c1*c2*s3 + s1*c2*c3
+        q[4] = c1*s2*c3 + s1*s2*s3
+    elseif ( startswith(rot_seq, "ZXY") )
+        q[1] = c1*c2*c3 - s1*s2*s3
+        q[2] = c1*s2*c3 - s1*c2*s3
+        q[3] = c1*c2*s3 + s1*s2*c3
+        q[4] = s1*c2*c3 + c1*s2*s3
+    elseif ( startswith(rot_seq, "ZXZ") )
+        q[1] = c1*c2*c3 - s1*c2*s3
+        q[2] = c1*s2*c3 + s1*s2*s3
+        q[3] = s1*s2*c3 - c1*s2*s3
+        q[4] = c1*c2*s3 + s1*c2*c3
+    elseif ( startswith(rot_seq, "ZYZ") )
+        q[1] = c1*c2*c3 - s1*c2*s3
+        q[2] = c1*s2*s3 - s1*s2*c3
+        q[3] = c1*s2*c3 + s1*s2*s3
+        q[4] = c1*c2*s3 + s1*c2*c3
+    else
+        throw(RotationSequenceError)
+    end
+
+    nothing
+end
+
+"""
+### function angle2quat(angle_r1::T, angle_r2::T, angle_r3::T, rot_seq::AbstractString="ZYX") where T<:Real
+
+Convert Euler angles to a quaternion.
+
+##### Args
+
+* angle_r1: Angle of the first rotation.
+* angle_r2: Angle of the second rotation.
+* angle_r3: Angle of the third rotation.
+* rot_seq: Rotation sequence.
+
+##### Returns
+
+* The quaternion.
+
+##### Remarks
+
+This function assigns q = q1 * q2 * q3 in which qi is the quaternion related
+with the i-th rotation, i Є [1,2,3].
+
+##### Example
+
+     q = angle2quat(pi/2, pi/3, pi/4, "ZYX")
+
+"""
+
+function angle2quat(angle_r1::T,
+                    angle_r2::T,
+                    angle_r3::T,
+                    rot_seq::AbstractString="ZYX") where T<:Real
+
+    # Check if rot_seq has at least three characters.
+    if (length(rot_seq) < 3)
+        throw(ArgumentError)
+    end
+
+    # Allocate the output quaternion.
+    q = Quaternion{T}(0,0,0,0)
+
+    # Fill the quaternion.
+    angle2quat!(q, angle_r1, angle_r2, angle_r3, rot_seq)
+
+    # Return the quaternion.
+    q
+end
+
+"""
+### function angle2quat(eulerang::EulerAngles{T}) where T<:Real
+
+Convert Euler angles to a quaternion.
+
+##### Args
+
+* eulerang Euler angles (*see* EulerAngle).
+
+##### Returns
+
+* The quaternion.
+
+##### Remarks
+
+This function assigns q = q1 * q2 * q3 in which qi is the quaternion related
+with the i-th rotation, i Є [1,2,3].
+
+##### Example
+
+     q = angle2quat(pi/2, pi/3, pi/4, "ZYX")
+
+"""
+
+function angle2quat(eulerang::EulerAngles{T}) where T<:Real
+    angle2quat(eulerang.a1,
+               eulerang.a2,
+               eulerang.a3,
+               eulerang.rot_seq)
 end
