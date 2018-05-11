@@ -497,6 +497,37 @@ function angle2quat(angle_r1::Number,
 end
 
 """
+### function angle2quat!(q::Quaternion{T},eulerang::EulerAngles) where T<:Real
+
+Convert the Euler angles `eulerang` (see `EulerAngles`) to a quaternion that
+will be stored in `q`.
+
+##### Args
+
+* q: Pre-allocated quaternion.
+* eulerang: Euler angles (see `EulerAngles`).
+
+##### Returns
+
+The quaternion.
+
+##### Remarks
+
+This function assigns `q = q1 * q2 * q3` in which `qi` is the quaternion related
+with the *i*-th rotation, `i Є [1,2,3]`.
+
+##### Example
+
+    q = zeros(Quaternion)
+    angle2quat!(q, EulerAngles(pi/2, pi/3, pi/4, "ZYX"))
+
+"""
+
+function angle2quat!(q::Quaternion{T}, eulerang::EulerAngles) where T<:Real
+    angle2quat!(q, eulerang.a1, eulerang.a2, eulerang.a3, eulerang.rot_seq)
+end
+
+"""
 ### function angle2quat(eulerang::EulerAngles{T}) where T<:Real
 
 Convert the Euler angles `eulerang` (see `EulerAngles`) to a quaternion.
