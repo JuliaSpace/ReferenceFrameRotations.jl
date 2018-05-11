@@ -638,13 +638,31 @@ qba  = qba/norm(qba)
 **NOTE**: In this case, the sampling step must be small to avoid numerical
 problems. To avoid that, use better integration algorithms.
 
+## Composing rotations
+
+Multiple rotations using Direction Cosine Matrices or Quaternions can be
+composed by the function:
+
+    compose_rotation(R1,R2,R3,R4...)
+
+in which `R1`, `R2`, `R3`, ..., must be simultaneously DCMs or Quaternions. This
+method returns the following rotation:
+
+     First Rotation
+     |
+     |
+    R1 => R2 => R3 => R4 => ...
+           |
+           |
+           Second Rotation
+
 ## Remarks
 
 In other to improve the readability of this document, the methods described here
 are not presented with their entire signature. Nevertheless, they are fully
 documented using Julia documentation system, which can be accessed by typing `?`
 in REPL.
-    
+
 ## Roadmap
 
 This package will be continuously enhanced. Next steps will be to add other

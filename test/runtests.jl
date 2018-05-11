@@ -462,5 +462,122 @@ for i = 1:samples
     @test norm(v2-v1) < 1e-10
 end
 
+################################################################################
+#                           TESTE: Compose Rotations
+################################################################################
 
+# DCMs
+# ==============================================================================
 
+println("Testing the compose rotations for DCMs ($samples samples)...")
+
+for i = 1:samples
+    # Sample 8 DCMs.
+    D1 = angle2dcm(EulerAngles(-pi + 2*pi*rand(),
+                               -pi + 2*pi*rand(),
+                               -pi + 2*pi*rand(),
+                               rand(rot_seq_array)))
+
+    D2 = angle2dcm(EulerAngles(-pi + 2*pi*rand(),
+                               -pi + 2*pi*rand(),
+                               -pi + 2*pi*rand(),
+                               rand(rot_seq_array)))
+
+    D3 = angle2dcm(EulerAngles(-pi + 2*pi*rand(),
+                               -pi + 2*pi*rand(),
+                               -pi + 2*pi*rand(),
+                               rand(rot_seq_array)))
+
+    D4 = angle2dcm(EulerAngles(-pi + 2*pi*rand(),
+                               -pi + 2*pi*rand(),
+                               -pi + 2*pi*rand(),
+                               rand(rot_seq_array)))
+
+    D5 = angle2dcm(EulerAngles(-pi + 2*pi*rand(),
+                               -pi + 2*pi*rand(),
+                               -pi + 2*pi*rand(),
+                               rand(rot_seq_array)))
+
+    D6 = angle2dcm(EulerAngles(-pi + 2*pi*rand(),
+                               -pi + 2*pi*rand(),
+                               -pi + 2*pi*rand(),
+                               rand(rot_seq_array)))
+
+    D7 = angle2dcm(EulerAngles(-pi + 2*pi*rand(),
+                               -pi + 2*pi*rand(),
+                               -pi + 2*pi*rand(),
+                               rand(rot_seq_array)))
+
+    D8 = angle2dcm(EulerAngles(-pi + 2*pi*rand(),
+                               -pi + 2*pi*rand(),
+                               -pi + 2*pi*rand(),
+                               rand(rot_seq_array)))
+
+    # Test the function `compose_rotation`.
+    @test                   D2*D1 ≈ compose_rotation(D1,D2)                   atol=1e-14
+    @test                D3*D2*D1 ≈ compose_rotation(D1,D2,D3)                atol=1e-14
+    @test             D4*D3*D2*D1 ≈ compose_rotation(D1,D2,D3,D4)             atol=1e-14
+    @test          D5*D4*D3*D2*D1 ≈ compose_rotation(D1,D2,D3,D4,D5)          atol=1e-14
+    @test       D6*D5*D4*D3*D2*D1 ≈ compose_rotation(D1,D2,D3,D4,D5,D6)       atol=1e-14
+    @test    D7*D6*D5*D4*D3*D2*D1 ≈ compose_rotation(D1,D2,D3,D4,D5,D6,D7)    atol=1e-14
+    @test D8*D7*D6*D5*D4*D3*D2*D1 ≈ compose_rotation(D1,D2,D3,D4,D5,D6,D7,D8) atol=1e-14
+
+end
+
+# Quaternions
+# ==============================================================================
+
+println("Testing the compose rotations for Quaternions ($samples samples)...")
+
+for i = 1:samples
+    # Sample 8 quaternions.
+    q1 = angle2quat(EulerAngles(-pi + 2*pi*rand(),
+                                -pi + 2*pi*rand(),
+                                -pi + 2*pi*rand(),
+                                rand(rot_seq_array)))
+
+    q2 = angle2quat(EulerAngles(-pi + 2*pi*rand(),
+                                -pi + 2*pi*rand(),
+                                -pi + 2*pi*rand(),
+                                rand(rot_seq_array)))
+
+    q3 = angle2quat(EulerAngles(-pi + 2*pi*rand(),
+                                -pi + 2*pi*rand(),
+                                -pi + 2*pi*rand(),
+                                rand(rot_seq_array)))
+
+    q4 = angle2quat(EulerAngles(-pi + 2*pi*rand(),
+                                -pi + 2*pi*rand(),
+                                -pi + 2*pi*rand(),
+                                rand(rot_seq_array)))
+
+    q5 = angle2quat(EulerAngles(-pi + 2*pi*rand(),
+                                -pi + 2*pi*rand(),
+                                -pi + 2*pi*rand(),
+                                rand(rot_seq_array)))
+
+    q6 = angle2quat(EulerAngles(-pi + 2*pi*rand(),
+                                -pi + 2*pi*rand(),
+                                -pi + 2*pi*rand(),
+                                rand(rot_seq_array)))
+
+    q7 = angle2quat(EulerAngles(-pi + 2*pi*rand(),
+                                -pi + 2*pi*rand(),
+                                -pi + 2*pi*rand(),
+                                rand(rot_seq_array)))
+
+    q8 = angle2quat(EulerAngles(-pi + 2*pi*rand(),
+                                -pi + 2*pi*rand(),
+                                -pi + 2*pi*rand(),
+                                rand(rot_seq_array)))
+
+    # Test the function `compose_rotation`.
+    @test                   (q1*q2)[:] ≈ compose_rotation(q1,q2)[:]                   atol=1e-14
+    @test                (q1*q2*q3)[:] ≈ compose_rotation(q1,q2,q3)[:]                atol=1e-14
+    @test             (q1*q2*q3*q4)[:] ≈ compose_rotation(q1,q2,q3,q4)[:]             atol=1e-14
+    @test          (q1*q2*q3*q4*q5)[:] ≈ compose_rotation(q1,q2,q3,q4,q5)[:]          atol=1e-14
+    @test       (q1*q2*q3*q4*q5*q6)[:] ≈ compose_rotation(q1,q2,q3,q4,q5,q6)[:]       atol=1e-14
+    @test    (q1*q2*q3*q4*q5*q6*q7)[:] ≈ compose_rotation(q1,q2,q3,q4,q5,q6,q7)[:]    atol=1e-14
+    @test (q1*q2*q3*q4*q5*q6*q7*q8)[:] ≈ compose_rotation(q1,q2,q3,q4,q5,q6,q7,q8)[:] atol=1e-14
+
+end
