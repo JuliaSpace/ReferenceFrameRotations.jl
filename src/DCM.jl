@@ -12,12 +12,13 @@ export ddcm, dcm2angle, dcm2quat, dcm2quat!
 """
 ### function create_rotation_matrix!(dcm::Matrix{T}, angle::Number, axis::Char) where T<:Real
 
-Create a rotation matrix that rotates a coordinate frame about a specified axis.
+Compute a rotation matrix, which will be written to `dcm`, that rotates a
+coordinate frame about the axis `axis` by the angle `angle`.
 
 ##### Args
 
-* dcm: (OUTPUT) Pre-allocated matrix in which the rotation matrix that rotates
-the coordinate frame about 'axis' will be written.
+* dcm: Pre-allocated matrix in which the rotation matrix that rotates the
+       coordinate frame about 'axis' will be written.
 * angle: Angle.
 * axis: Axis, must be 'x', 'X', 'y', 'Y', 'z', or 'Z'.
 
@@ -75,17 +76,18 @@ end
 """
 ### function create_rotation_matrix(angle::T, axis::Char) where T<:Real
 
-Create a rotation matrix that rotates a coordinate frame about a specified axis.
+Create a rotation matrix that rotates a coordinate frame about the axis `axis`
+by the angle `angle`.
 
 ##### Args
 
 * angle: Angle.
-
 * axis: Axis, must be 'x', 'X', 'y', 'Y', 'z', or 'Z'.
 
 ##### Returns
 
-* The rotation matrix that rotates the coordinate frame about 'axis'.
+The rotation matrix that rotates the coordinate frame about the axis `axis` by
+the angle `angle`.
 
 """
 
@@ -110,7 +112,7 @@ end
 """
 ### function dcm2angle(dcm::Matrix{T}, rot_seq::AbstractString="ZYX") where T<:Real
 
-Convert a DCM to Euler Angles given a rotation sequence.
+Convert the DCM `dcm` to Euler Angles given a rotation sequence `rot_seq`.
 
 ##### Args
 
@@ -119,7 +121,7 @@ Convert a DCM to Euler Angles given a rotation sequence.
 
 ##### Returns
 
-* The Euler angles.
+The Euler angles (see `EulerAngles`).
 
 """
 
@@ -232,15 +234,11 @@ end
 """
 ### function dcm2quat!(q::Quaternion{T1}, dcm::Matrix{T2}) where T1<:Real where T2<:Real
 
-Convert a quaternion to a Direction Cosine Matrix.
-
-This algorithm was obtained from:
-
-    http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/
+Convert the DCM `dcm` to a quaternion, which will be stored in `q`.
 
 ##### Args
 
-* q: (OUTPUT) Pre-allocated quaternion.
+* q: Pre-allocated quaternion.
 * dcm: Direction Cosine Matrix that will be converted.
 
 ##### Remarks
@@ -248,6 +246,10 @@ This algorithm was obtained from:
 By convention, the real part of the quaternion will always be positive.
 Moreover, the function does not check if `dcm` is a valid direction cosine
 matrix. This must be handle by the user.
+
+This algorithm was obtained from:
+
+    http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/
 
 ##### Example
 
@@ -318,11 +320,7 @@ end
 """
 ### function dcm2quat(dcm::Matrix{T}) where T<:Real
 
-Convert a quaternion to a Direction Cosine Matrix.
-
-This algorithm was obtained from:
-
-    http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/
+Convert the DCM `dcm` the a quaternion.
 
 ##### Args
 
@@ -330,13 +328,17 @@ This algorithm was obtained from:
 
 ##### Returns
 
-* The quaternion that represents the same rotation of the `dcm`.
+The quaternion that represents the same rotation of the DCM `dcm`.
 
 ##### Remarks
 
 By convention, the real part of the quaternion will always be positive.
 Moreover, the function does not check if `dcm` is a valid direction cosine
 matrix. This must be handle by the user.
+
+This algorithm was obtained from:
+
+    http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/
 
 ##### Example
 
@@ -358,20 +360,20 @@ end
 """
 ### function ddcm(Dba::Matrix{T1}, wba_b::Vector{T2}) where T1<:Real where T2<:Real
 
-Compute the time-derivative of a DCM that rotates a reference frame `a` into
-alignment to the reference frame `b` in which the angular velocity of `b` with
-respect to `a` and represented in `b` is `wba_b`.
+Compute the time-derivative of the DCM `dcm` that rotates a reference frame `a`
+into alignment to the reference frame `b` in which the angular velocity of `b`
+with respect to `a`, and represented in `b`, is `wba_b`.
 
 ##### Args
 
 * Dba: DCM that rotates the reference frame `a` into alignment with the
-reference frame `b`.
+       reference frame `b`.
 * wba_b: Angular velocity of the reference frame `a` with respect to the
-reference frame `b` represented in the reference frame `b`.
+         reference frame `b` represented in the reference frame `b`.
 
 ##### Returns
 
-* The time-derivative of `Dba` (3x3 matrix).
+The time-derivative of the DCM `Dba` (3x3 matrix).
 
 """
 
@@ -391,5 +393,4 @@ function ddcm(Dba::Matrix{T1}, wba_b::Vector{T2}) where T1<:Real where T2<:Real
     # Return the time-derivative.
     -wx*Dba
 end
-
 

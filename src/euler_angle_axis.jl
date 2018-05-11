@@ -14,7 +14,8 @@ export angleaxis2quat
 """
 ### function angleaxis2quat(a::Number, v::Vector)
 
-Convert a Euler angle and axis to quaternion.
+Convert the Euler angle `a` and Euler axis `v`, which must be a unit vector, to
+a quaternion.
 
 ##### Args
 
@@ -23,8 +24,7 @@ Convert a Euler angle and axis to quaternion.
 
 ##### Returns
 
-* A quaternion that represents the same rotation of the Euler angle and axis
-provided.
+A quaternion that represents the same rotation of the Euler angle and axis.
 
 ##### Remarks
 
@@ -46,17 +46,17 @@ end
 """
 ### function angleaxis2quat(angleaxis::EulerAngleAxis{T}) where T<:Real
 
-Convert a Euler angle and axis to quaternion.
+Convert a Euler angle and Euler axis `angleaxis` (see `EulerAngleAxis`) to a
+quaternion.
 
 ##### Args
 
 * angleaxis: Structure of type `EulerAngleAxis` with the Euler angle [rad] and
-a unit vector that is aligned with the Euler angle.
+             a unit vector that is aligned with the Euler axis.
 
 ##### Returns
 
-* A quaternion that represents the same rotation of the Euler angle and axis
-provided.
+A quaternion that represents the same rotation of the Euler angle and axis.
 
 ##### Remarks
 

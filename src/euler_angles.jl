@@ -15,25 +15,27 @@ export angle2quat, angle2quat!
 """
 ### function angle2dcm!(dcm::Matrix{T}, angle_r1::Number, angle_r2::Number, angle_r3::Number, rot_seq::AbstractString="ZYX") where T<:Real
 
-Convert Euler angles to a direction cosing matrix.
+Convert the Euler angles `angle_r1`, `angle_r2`, and `angle_r3` with the
+rotation sequence `rot_seq` to a direction cosine matrix that will be stored in
+`dcm`.
 
 ##### Args
 
-* dcm: (OUTPUT) Pre-allocated direction cosine matrix.
-* angle_r1: Angle of the first rotation.
-* angle_r2: Angle of the second rotation.
-* angle_r3: Angle of the third rotation.
+* dcm: Pre-allocated direction cosine matrix.
+* angle_r1: Angle of the first rotation [rad].
+* angle_r2: Angle of the second rotation [rad].
+* angle_r3: Angle of the third rotation [rad].
 * rot_set: Rotation sequence.
 
 ##### Remarks
 
-This function assigns dcm = A1 * A2 * A3 in which Ai is the DCM related with the
-i-th rotation, i Є [1,2,3].
+This function assigns `dcm = A3 * A2 * A1` in which `Ai` is the DCM related with
+the *i*-th rotation, `i Є [1,2,3]`.
 
 ##### Example
 
-     dcm = Array{Float64}(3,3)
-     angle2dcm!(dcm, pi/2, pi/3, pi/4, "ZYX")
+    dcm = Array{Float64}(3,3)
+    angle2dcm!(dcm, pi/2, pi/3, pi/4, "ZYX")
 
 """
 
@@ -214,27 +216,28 @@ end
 """
 ### function angle2dcm(angle_r1::Number, angle_r2::Number, angle_r3::Number, rot_seq::AbstractString="ZYX")
 
-Convert Euler angles to direction cosine matrix.
+Convert the Euler angles `angle_r1`, `angle_r2`, and `angle_r3` with the
+rotation sequence `rot_seq` to a direction cosine matrix.
 
 ##### Args
 
-* angle_r1: Angle of the first rotation.
-* angle_r2: Angle of the second rotation.
-* angle_r3: Angle of the third rotation.
+* angle_r1: Angle of the first rotation [rad].
+* angle_r2: Angle of the second rotation [rad].
+* angle_r3: Angle of the third rotation [rad].
 * rot_seq: Rotation sequence.
 
 ##### Returns
 
-* The direction cosine matrix.
+The direction cosine matrix.
 
 ##### Remarks
 
-This function assigns dcm = A1 * A2 * A3 in which Ai is the DCM related with the
-i-th rotation, i Є [1,2,3].
+This function assigns `dcm = A3 * A2 * A1` in which `Ai` is the DCM related with
+the *i*-th rotation, `i Є [1,2,3]`.
 
 ##### Example
 
-     dcm = angle2dcm(pi/2, pi/3, pi/4, "ZYX")
+    dcm = angle2dcm(pi/2, pi/3, pi/4, "ZYX")
 
 """
 
@@ -262,26 +265,27 @@ end
 """
 ### function angle2dcm!(dcm::Matrix{T}, eulerang::EulerAngles) where T<:Real
 
-Convert Euler angles to a direction cosine matrix.
+Convert the Euler angles `eulerang` (see `EulerAngles`) to a direction cosine
+matrix that will be stored in `dcm`.
 
 ##### Args
 
-* dcm: (OUTPUT) Pre-allocated direction cosine matrix.
-* eulerang: Euler angles (*see* EulerAngle).
+* dcm: Pre-allocated direction cosine matrix.
+* eulerang: Euler angles (see `EulerAngles`).
 
 ##### Returns
 
-* The direction cosine matrix.
+The direction cosine matrix.
 
 ##### Remarks
 
-This function assigns dcm = A1 * A2 * A3 in which Ai is the DCM related with the
-i-th rotation, i Є [1,2,3].
+This function assigns `dcm = A3 * A2 * A1` in which `Ai` is the DCM related with
+the *i*-th rotation, `i Є [1,2,3]`.
 
 ##### Example
 
-     dcm = Array{Float64}(3,3)
-     dcm = angle2dcm(EulerAngle(pi/2, pi/3, pi/4, "ZYX"))
+    dcm = Array{Float64}(3,3)
+    dcm = angle2dcm(EulerAngles(pi/2, pi/3, pi/4, "ZYX"))
 
 """
 
@@ -296,24 +300,25 @@ end
 """
 ### function angle2dcm(eulerang::EulerAngles{T}) where T<:Real
 
-Convert Euler angles to a direction cosine matrix.
+Convert the Euler angles `eulerang` (see `EulerAngles`) to a direction cosine
+matrix.
 
 ##### Args
 
-* eulerang Euler angles (*see* EulerAngle).
+* eulerang: Euler angles (see `EulerAngles`).
 
 ##### Returns
 
-* The direction cosine matrix.
+The direction cosine matrix.
 
 ##### Remarks
 
-This function assigns dcm = A1 * A2 * A3 in which Ai is the DCM related with the
-i-th rotation, i Є [1,2,3].
+This function assigns `dcm = A3 * A2 * A1` in which `Ai` is the DCM related with
+the *i*-th rotation, `i Є [1,2,3]`.
 
 ##### Example
 
-     dcm = angle2dcm(EulerAngle(pi/2, pi, pi/4, "ZYX"))
+    dcm = angle2dcm(EulerAngles(pi/2, pi, pi/4, "ZYX"))
 
 """
 
@@ -330,20 +335,21 @@ end
 """
 ### function angle2quat!(q::Quaternion{T}, angle_r1::Number, angle_r2::Number, angle_r3::Number, rot_seq::AbstractString="ZYX") where T<:Real
 
-Convert Euler angles to a quaternion.
+Convert the Euler angles `angle_r1`, `angle_r2`, and `angle_r3` with the
+rotation sequence `rot_seq` to a quaternion that will be stored in `q`.
 
 ##### Args
 
-* q: (OUTPUT) Pre-allocated quaternion.
-* angle_r1: Angle of the first rotation.
-* angle_r2: Angle of the second rotation.
-* angle_r3: Angle of the third rotation.
-* rot_seq: Rotation sequence.
+* q: Pre-allocated quaternion.
+* angle_r1: Angle of the first rotation [rad].
+* angle_r2: Angle of the second rotation [rad].
+* angle_r3: Angle of the third rotation [rad].
+* rot_seq: Rotation sequence [rad].
 
 ##### Remarks
 
-This function assigns q = q1 * q2 * q3 in which qi is the quaternion related
-with the i-th rotation, i Є [1,2,3].
+This function assigns `q = q1 * q2 * q3` in which `qi` is the quaternion related
+with the *i*-th rotation, `i Є [1,2,3]`.
 
 ##### Example
 
@@ -445,27 +451,28 @@ end
 """
 ### function angle2quat(angle_r1::Number, angle_r2::Number, angle_r3::Number, rot_seq::AbstractString="ZYX")
 
-Convert Euler angles to a quaternion.
+Convert the Euler angles `angle_r1`, `angle_r2`, and `angle_r3` with the
+rotation sequence `rot_seq` to a quaternion.
 
 ##### Args
 
-* angle_r1: Angle of the first rotation.
-* angle_r2: Angle of the second rotation.
-* angle_r3: Angle of the third rotation.
+* angle_r1: Angle of the first rotation [rad].
+* angle_r2: Angle of the second rotation [rad].
+* angle_r3: Angle of the third rotation [rad].
 * rot_seq: Rotation sequence.
 
 ##### Returns
 
-* The quaternion.
+The quaternion.
 
 ##### Remarks
 
-This function assigns q = q1 * q2 * q3 in which qi is the quaternion related
-with the i-th rotation, i Є [1,2,3].
+This function assigns `q = q1 * q2 * q3` in which `qi` is the quaternion related
+with the *i*-th rotation, `i Є [1,2,3]`.
 
 ##### Example
 
-     q = angle2quat(pi/2, pi/3, pi/4, "ZYX")
+    q = angle2quat(pi/2, pi/3, pi/4, "ZYX")
 
 """
 
@@ -492,24 +499,24 @@ end
 """
 ### function angle2quat(eulerang::EulerAngles{T}) where T<:Real
 
-Convert Euler angles to a quaternion.
+Convert the Euler angles `eulerang` (see `EulerAngles`) to a quaternion.
 
 ##### Args
 
-* eulerang Euler angles (*see* EulerAngle).
+* eulerang: Euler angles (see `EulerAngles`).
 
 ##### Returns
 
-* The quaternion.
+The quaternion.
 
 ##### Remarks
 
-This function assigns q = q1 * q2 * q3 in which qi is the quaternion related
-with the i-th rotation, i Є [1,2,3].
+This function assigns `q = q1 * q2 * q3` in which `qi` is the quaternion related
+with the *i*-th rotation, `i Є [1,2,3]`.
 
 ##### Example
 
-     q = angle2quat(pi/2, pi/3, pi/4, "ZYX")
+    q = angle2quat(EulerAngles(pi/2, pi/3, pi/4, "ZYX"))
 
 """
 
