@@ -67,10 +67,7 @@ The quaternion `r + v[1].i + v[2].j + v[3].k`.
 """
 
 function Quaternion(r::T, v::Vector{T}) where T<:Real
-    q    = Quaternion(v)
-    q.q0 = r
-
-    q
+    Quaternion(r, v[1], v[2], v[3])
 end
 
 ################################################################################
@@ -367,7 +364,7 @@ The complex conjugate of the quaternion `q`: `q0 - q1.i - q2.j - q3.k`.
 
 function conj(q::Quaternion{T}) where T<:Real
     # Compute the complex conjugate of the quaternion.
-    Quaternion(q.q0, -q.q1, -q.q2, -q.q3)
+    Quaternion{T}(q.q0, -q.q1, -q.q2, -q.q3)
 end
 
 """
@@ -508,7 +505,7 @@ The Euclidean norm of `q`.
 """
 
 function norm(q::Quaternion{T}) where T<:Real
-    sqrt( q.q0*q.q0 + q.q1*q.q1 + q.q2*q.q2 + q.q3*q.q3)
+    sqrt(q.q0*q.q0 + q.q1*q.q1 + q.q2*q.q2 + q.q3*q.q3)
 end
 
 """
@@ -764,7 +761,7 @@ The Euler angles (see `EulerAngles`).
 
 """
 function quat2angle(q::Quaternion{T},
-                     rot_seq::AbstractString="ZYX") where T<:Real
+                    rot_seq::AbstractString="ZYX") where T<:Real
     # TODO: This function calls uses `angle2dcm` to convert the quaternion to a
     # Direction Cosine Matrix. It **must** be rewritten to avoid this
     # intermediate step to increase the performance.
