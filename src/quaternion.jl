@@ -3,7 +3,7 @@
 ################################################################################
 
 import Base: +, -, *, /, conj, copy, eye, getindex, inv, imag, norm, real, show
-import Base: zeros
+import Base: setindex!, zeros
 
 export dquat, quat2angle, quat2angleaxis, quat2dcm, quat2dcm!, vect
 
@@ -306,6 +306,36 @@ Transform the quaternion into a 4x1 vector of type `T`.
 
 function getindex(q::Quaternion{T}, ::Colon) where T<:Real
     [q.q0;q.q1;q.q2;q.q3]
+end
+
+# Operation: setindex!
+# ==============================================================================
+
+"""
+### function setindex!(q::Quaternion{T}, v::Number, i::Int)
+
+Set the `i`-th element of the quaternion `q` with the value `v`.
+
+##### Args
+
+* q: Quaternion.
+* v: New value.
+* i: Index (`1 <= i <= 4`).
+
+"""
+
+function setindex!(q::Quaternion{T}, v::Number, i::Int) where T<:Real
+    if i == 1
+        q.q0 = v
+    elseif i == 2
+        q.q1 = v
+    elseif i == 3
+        q.q2 = v
+    elseif i == 4
+        q.q3 = v
+    else
+        throw(BoundsError(q,i))
+    end
 end
 
 ################################################################################
