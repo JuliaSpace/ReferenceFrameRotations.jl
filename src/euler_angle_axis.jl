@@ -12,7 +12,7 @@ export angleaxis2quat
 # ==============================================================================
 
 """
-### function angleaxis2quat(a::T, v::Vector{T}) where T<:Real
+### function angleaxis2quat(a::Number, v::Vector)
 
 Convert a Euler angle and axis to quaternion.
 
@@ -33,7 +33,7 @@ performed inside the function. The user must handle this situation.
 
 """
 
-function angleaxis2quat(a::T, v::Vector{T}) where T<:Real
+function angleaxis2quat(a::Number, v::Vector)
     # Check the arguments.
     if length(v) > 3
         throw(ArgumentError("The provided vector for the Euler axis must have 3 elements."))

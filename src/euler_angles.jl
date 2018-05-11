@@ -13,7 +13,7 @@ export angle2quat, angle2quat!
 # ==============================================================================
 
 """
-### function angle2dcm!(dcm::Array{T,2}, angle_r1::T, angle_r2::T, angle_r3::T, rot_seq::AbstractString="ZYX") where T<:Real
+### function angle2dcm!(dcm::Matrix{T}, angle_r1::Number, angle_r2::Number, angle_r3::Number, rot_seq::AbstractString="ZYX") where T<:Real
 
 Convert Euler angles to a direction cosing matrix.
 
@@ -37,10 +37,10 @@ i-th rotation, i Є [1,2,3].
 
 """
 
-function angle2dcm!(dcm::Array{T,2},
-                    angle_r1::T,
-                    angle_r2::T,
-                    angle_r3::T,
+function angle2dcm!(dcm::Matrix{T},
+                    angle_r1::Number,
+                    angle_r2::Number,
+                    angle_r3::Number,
                     rot_seq::AbstractString="ZYX") where T<:Real
     # Check if rot_seq has at least three characters.
     if (length(rot_seq) < 3)
@@ -212,7 +212,7 @@ function angle2dcm!(dcm::Array{T,2},
 end
 
 """
-### function angle2dcm(angle_r1::T, angle_r2::T, angle_r3::T, rot_seq::AbstractString="ZYX") where T<:Real
+### function angle2dcm(angle_r1::Number, angle_r2::Number, angle_r3::Number, rot_seq::AbstractString="ZYX")
 
 Convert Euler angles to direction cosine matrix.
 
@@ -238,10 +238,10 @@ i-th rotation, i Є [1,2,3].
 
 """
 
-function angle2dcm(angle_r1::T,
-                   angle_r2::T,
-                   angle_r3::T,
-                   rot_seq::AbstractString="ZYX") where T<:Real
+function angle2dcm(angle_r1::Number,
+                   angle_r2::Number,
+                   angle_r3::Number,
+                   rot_seq::AbstractString="ZYX")
 
     # Check if rot_seq has at least three characters.
     if (length(rot_seq) < 3)
@@ -249,7 +249,7 @@ function angle2dcm(angle_r1::T,
     end
 
     # Allocate the output matrix.
-    dcm = Array{T}(3,3)
+    dcm = Array{Float64}(3,3)
 
     # Fill the DCM.
     angle2dcm!(dcm, angle_r1, angle_r2, angle_r3, rot_seq)
@@ -260,7 +260,7 @@ end
 
 
 """
-### function angle2dcm!(dcm::Array{T,2}, eulerang::EulerAngles{T}) where T<:Real
+### function angle2dcm!(dcm::Matrix{T}, eulerang::EulerAngles) where T<:Real
 
 Convert Euler angles to a direction cosine matrix.
 
@@ -285,7 +285,7 @@ i-th rotation, i Є [1,2,3].
 
 """
 
-function angle2dcm!(dcm::Array{T,2}, eulerang::EulerAngles{T}) where T<:Real
+function angle2dcm!(dcm::Matrix{T}, eulerang::EulerAngles) where T<:Real
     angle2dcm!(dcm,
                eulerang.a1,
                eulerang.a2,
@@ -328,7 +328,7 @@ end
 # ==============================================================================
 
 """
-### function angle2quat!(q::Quaternion{T}, angle_r1::T, angle_r2::T, angle_r3::T, rot_seq::AbstractString="ZYX") where T<:Real
+### function angle2quat!(q::Quaternion{T}, angle_r1::Number, angle_r2::Number, angle_r3::Number, rot_seq::AbstractString="ZYX") where T<:Real
 
 Convert Euler angles to a quaternion.
 
@@ -353,9 +353,9 @@ with the i-th rotation, i Є [1,2,3].
 """
 
 function angle2quat!(q::Quaternion{T},
-                     angle_r1::T,
-                     angle_r2::T,
-                     angle_r3::T,
+                     angle_r1::Number,
+                     angle_r2::Number,
+                     angle_r3::Number,
                      rot_seq::AbstractString="ZYX") where T<:Real
     # Check if rot_seq has at least three characters.
     if (length(rot_seq) < 3)
@@ -443,7 +443,7 @@ function angle2quat!(q::Quaternion{T},
 end
 
 """
-### function angle2quat(angle_r1::T, angle_r2::T, angle_r3::T, rot_seq::AbstractString="ZYX") where T<:Real
+### function angle2quat(angle_r1::Number, angle_r2::Number, angle_r3::Number, rot_seq::AbstractString="ZYX")
 
 Convert Euler angles to a quaternion.
 
@@ -469,10 +469,10 @@ with the i-th rotation, i Є [1,2,3].
 
 """
 
-function angle2quat(angle_r1::T,
-                    angle_r2::T,
-                    angle_r3::T,
-                    rot_seq::AbstractString="ZYX") where T<:Real
+function angle2quat(angle_r1::Number,
+                    angle_r2::Number,
+                    angle_r3::Number,
+                    rot_seq::AbstractString="ZYX")
 
     # Check if rot_seq has at least three characters.
     if (length(rot_seq) < 3)
@@ -480,7 +480,7 @@ function angle2quat(angle_r1::T,
     end
 
     # Allocate the output quaternion.
-    q = Quaternion{T}(0,0,0,0)
+    q = Quaternion{Float64}(0,0,0,0)
 
     # Fill the quaternion.
     angle2quat!(q, angle_r1, angle_r2, angle_r3, rot_seq)

@@ -10,7 +10,7 @@ export ddcm, dcm2angle, dcm2quat, dcm2quat!
 ################################################################################
 
 """
-### function create_rotation_matrix!(dcm::Array{Float64, 2}, angle::T, axis::Char) where T<: Real
+### function create_rotation_matrix!(dcm::Matrix{T}, angle::Number, axis::Char) where T<:Real
 
 Create a rotation matrix that rotates a coordinate frame about a specified axis.
 
@@ -23,8 +23,8 @@ the coordinate frame about 'axis' will be written.
 
 """
 
-function create_rotation_matrix!(dcm::Array{Float64, 2},
-                                 angle::T,
+function create_rotation_matrix!(dcm::Matrix{T},
+                                 angle::Number,
                                  axis::Char) where T<:Real
     cos_angle = cos(angle)
     sin_angle = sin(angle)
@@ -108,7 +108,7 @@ end
 # ==============================================================================
 
 """
-### function dcm2angle(dcm::Array{T,2}, rot_seq::AbstractString="ZYX") where T<:Real
+### function dcm2angle(dcm::Matrix{T}, rot_seq::AbstractString="ZYX") where T<:Real
 
 Convert a DCM to Euler Angles given a rotation sequence.
 
@@ -123,7 +123,7 @@ Convert a DCM to Euler Angles given a rotation sequence.
 
 """
 
-function dcm2angle(dcm::Array{T,2}, rot_seq::AbstractString="ZYX") where T<:Real
+function dcm2angle(dcm::Matrix{T}, rot_seq::AbstractString="ZYX") where T<:Real
     # Check if the dcm is a 3x3 matrix.
     if (size(dcm,1) != 3) || (size(dcm,2) != 3)
         throw(ArgumentError)
@@ -230,7 +230,7 @@ end
 # ==============================================================================
 
 """
-### function dcm2quat!(q::Quaternion{T1}, dcm::Array{T2,2}) where T1<:Real where T2<:Real
+### function dcm2quat!(q::Quaternion{T1}, dcm::Matrix{T2}) where T1<:Real where T2<:Real
 
 Convert a quaternion to a Direction Cosine Matrix.
 
@@ -258,7 +258,7 @@ matrix. This must be handle by the user.
 """
 
 function dcm2quat!(q::Quaternion{T1},
-                   dcm::Array{T2,2}) where T1<:Real where T2<:Real
+                   dcm::Matrix{T2}) where T1<:Real where T2<:Real
 
     if  trace(dcm) > 0
         # f = 4*q0
@@ -316,7 +316,7 @@ function dcm2quat!(q::Quaternion{T1},
 end
 
 """
-### function dcm2quat(dcm::Array{T,2}) where T<:Real
+### function dcm2quat(dcm::Matrix{T}) where T<:Real
 
 Convert a quaternion to a Direction Cosine Matrix.
 
@@ -345,7 +345,7 @@ matrix. This must be handle by the user.
 
 """
 
-function dcm2quat(dcm::Array{T,2}) where T<:Real
+function dcm2quat(dcm::Matrix{T}) where T<:Real
     q = zeros(Quaternion{T})
     dcm2quat!(q,dcm)
     q
