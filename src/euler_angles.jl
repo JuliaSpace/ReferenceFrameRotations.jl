@@ -2,8 +2,10 @@
 #                                 Euler Angles
 ################################################################################
 
-export angle2dcm,  angle2dcm!
-export angle2quat, angle2quat!
+export angle2dcm,       angle2dcm!
+export angle2quat,      angle2quat!
+export smallangle2dcm,  smallangle2dcm!
+export smallangle2quat, smallangle2quat!
 
 ################################################################################
 #                                 Conversions
@@ -329,6 +331,79 @@ function angle2dcm(eulerang::EulerAngles{T}) where T<:Real
               eulerang.rot_seq)
 end
 
+"""
+### function smallangle2dcm!(dcm::Matrix{T}, θx::Number, θy::Number, θz::Number) where T<:Real
+
+Create a direction cosine matrix, which will be stored in `dcm`, from three
+small rotations of angles `θx`, `θy`, and `θz` about the axes X, Y, and Z,
+respectively.
+
+##### Args
+
+* dcm: Pre-allocated direction cosine matrix.
+* θx: Angle of the rotation about the X-axis [rad].
+* θy: Angle of the rotation about the Y-axis [rad].
+* θz: Angle of the rotation about the Z-axis [rad].
+
+##### Remarks
+
+No process of ortho-normalization is performed with the computed DCM.
+
+##### Example
+
+    dcm = Array{Float64}(3,3)
+    smallangle2dcm!(dcm, +0.01, -0.01, +0.01)
+
+"""
+
+function smallangle2dcm!(dcm::Matrix{T},
+                         θx::Number,
+                         θy::Number,
+                         θz::Number) where T<:Real
+    dcm .= [ 1  +θz -θy;
+            -θz  1  +θx;
+            +θy -θx  1 ;]
+
+    nothing
+end
+
+"""
+### function smallangle2dcm(θx::Number, θy::Number, θz::Number) where T<:Real
+
+Create a direction cosine matrix from three small rotations of angles `θx`,
+`θy`, and `θz` about the axes X, Y, and Z, respectively.
+
+##### Args
+
+* θx: Angle of the rotation about the X-axis [rad].
+* θy: Angle of the rotation about the Y-axis [rad].
+* θz: Angle of the rotation about the Z-axis [rad].
+
+##### Returns
+
+The direction cosine matrix.
+
+##### Remarks
+
+No process of ortho-normalization is performed with the computed DCM.
+
+##### Example
+
+    dcm = smallangle2dcm(+0.01, -0.01, +0.01)
+
+"""
+
+function smallangle2dcm(θx::Number, θy::Number, θz::Number)
+    # Allocate the output matrix.
+    dcm = Array{Float64}(3,3)
+
+    # Fill the DCM.
+    smallangle2dcm!(dcm, θx, θy, θz)
+
+    # Return the DCM.
+    dcm
+end
+
 # Quaternion
 # ==============================================================================
 
@@ -556,4 +631,83 @@ function angle2quat(eulerang::EulerAngles{T}) where T<:Real
                eulerang.a2,
                eulerang.a3,
                eulerang.rot_seq)
+end
+
+"""
+### function smallangle2quat!(q::Quaternion{T}, θx::Number, θy::Number, θz::Number) where T<:Real
+
+Create a quaternion, which will be stored in `q`, from three small rotations of
+angles `θx`, `θy`, and `θz` about the axes X, Y, and Z, respectively.
+
+##### Args
+
+* q: Pre-allocated quaternion.
+* θx: Angle of the rotation about the X-axis [rad].
+* θy: Angle of the rotation about the Y-axis [rad].
+* θz: Angle of the rotation about the Z-axis [rad].
+
+##### Remarks
+
+The quaternion is normalized.
+
+##### Example
+
+    q = zeros(Quaternion)
+    smallangle2quat!(q, +0.01, -0.01, +0.01)
+
+"""
+
+function smallangle2quat!(q::Quaternion{T},
+                         θx::Number,
+                         θy::Number,
+                         θz::Number) where T<:Real
+    q.q0 = 1
+    q.q1 = θx/2
+    q.q2 = θy/2
+    q.q3 = θz/2
+
+    norm_q  = norm(q)
+    q.q0   /= norm_q
+    q.q1   /= norm_q
+    q.q2   /= norm_q
+    q.q3   /= norm_q
+
+    nothing
+end
+
+"""
+### function smallangle2quat(θx::Number, θy::Number, θz::Number) where T<:Real
+
+Create a quaternion from three small rotations of angles `θx`, `θy`, and `θz`
+about the axes X, Y, and Z, respectively.
+
+##### Args
+
+* θx: Angle of the rotation about the X-axis [rad].
+* θy: Angle of the rotation about the Y-axis [rad].
+* θz: Angle of the rotation about the Z-axis [rad].
+
+##### Returns
+
+The quaternion.
+
+##### Remarks
+
+The quaternion is normalized.
+
+##### Example
+
+    q = smallangle2quat(+0.01, -0.01, +0.01)
+
+"""
+
+function smallangle2quat(θx::Number, θy::Number, θz::Number)
+    # Allocate the quaternion.
+    q = Quaternion{Float64}(0,0,0,0)
+
+    # Fill the quaternion.
+    smallangle2quat!(q, θx, θy, θz)
+
+    # Return the quaternion.
+    q
 end

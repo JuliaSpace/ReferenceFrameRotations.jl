@@ -28,6 +28,8 @@ available:
 * **Euler Angle and Axis** to **Quaternions**;
 * **Euler Angles** to **Direction Cosine Matrices**;
 * **Euler Angles** to **Quaternions**;
+* **Small Euler Angles** to **Direction Cosine Matrices**;
+* **Small Euler Angles** to **Quaternions**;
 * **Quaternions** to **Direction Cosine Matrices**;
 * **Quaternions** to **Euler Angle and Axis**;
 * **Quaternions** to **Euler Angles**.
@@ -459,6 +461,64 @@ q    = angle2quat(angles)
     Quaternion{Float64}:
       + 0.7010573846499779 + 0.09229595564125723.i + 0.5609855267969309.j + 0.43045933457687935.k
 ```
+
+### Small Euler Angles to Direction Cosine Matrices
+
+Small Euler angles can be converted to DCMs using two functions. The first
+`smallangle2dcm!` requires a pre-allocated 3x3 matrix, whereas the second
+`smallangle2dcm` allocates a new 3x3 matrix. The available methods are:
+
+    function smallangle2dcm!(dcm, θx, θy, θz)
+    function smallangle2dcm(θx, θy, θz)
+
+**Example**:
+
+```julia
+dcm = eye(3)
+smallangle2dcm!(dcm, 0.001, -0.002, +0.003)
+dcm
+
+    3×3 Array{Float64,2}:
+      1.0     0.003  0.002
+     -0.003   1.0    0.001
+     -0.002  -0.001  1.0
+
+dcm = smallangle2dcm(0.001, -0.002, +0.003)
+
+    3×3 Array{Float64,2}:
+      1.0     0.003  0.002
+     -0.003   1.0    0.001
+     -0.002  -0.001  1.0
+```
+
+**NOTE**: The computed DCM **is not** ortho-normalized.
+
+### Small Euler Angles to Quaternions
+
+Small Euler angles can be converted to quaternions using two functions. The
+first `smallangle2quat!` requires a pre-allocated quaternion, whereas the second
+`smallangle2quat` allocates a new quaternion. The available methods are:
+
+    function smallangle2quat!(q, θx, θy, θz)
+    function smallangle2quat(θx, θy, θz)
+
+**Example**:
+
+```julia
+q = eye(Quaternion)
+smallangle2quat!(q, 0.001, -0.002, +0.003)
+q
+
+    Quaternion{Float64}:
+      + 0.9999982500045936 + 0.0004999991250022968.i - 0.0009999982500045936.j + 0.0014999973750068907.k
+
+q = smallangle2quat(0.001, -0.002, +0.003)
+
+    Quaternion{Float64}:
+      + 0.9999982500045936 + 0.0004999991250022968.i - 0.0009999982500045936.j + 0.0014999973750068907.k
+```
+
+**NOTE**: The computed quaternion **is** normalized.
 
 ### Quaternions to Direction Cosine Matrices
 

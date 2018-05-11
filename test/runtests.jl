@@ -249,6 +249,24 @@ for k = 1:samples
     end
 end
 
+println("Testing DCM <=> Small Euler Angles conversions ($samples samples)...")
+
+for k = 1:samples
+    # Sample three angles form a uniform distribution [-0.0001,0.0001].
+    eulerang = EulerAngles(-0.0001 + 0.0002*rand(),
+                           -0.0001 + 0.0002*rand(),
+                           -0.0001 + 0.0002*rand(),
+                           "XYZ")
+
+    # Get the error between the exact rotation and the small angle
+    # approximation.
+    error = angle2dcm(eulerang) -
+    smallangle2dcm(eulerang.a1, eulerang.a2, eulerang.a3)
+
+    # If everything is fine, the norm of the matrix error should be small.
+    @test norm(error) < 1e-7
+end
+
 ################################################################################
 #                          TEST: DCM <=> Quaternions
 ################################################################################
@@ -326,6 +344,24 @@ for rot_seq in rot_seq_array
         # Compare.
         @test norm(rv_quat-rv_dcm) < 1e-10
     end
+end
+
+println("Testing Small Euler Angles <=> Quaternion conversions ($samples samples)...")
+
+for k = 1:samples
+    # Sample three angles form a uniform distribution [-0.0001,0.0001].
+    eulerang = EulerAngles(-0.0001 + 0.0002*rand(),
+                           -0.0001 + 0.0002*rand(),
+                           -0.0001 + 0.0002*rand(),
+                           "XYZ")
+
+    # Get the error between the exact rotation and the small angle
+    # approximation.
+    error = angle2quat(eulerang) -
+            smallangle2quat(eulerang.a1, eulerang.a2, eulerang.a3)
+
+    # If everything is fine, the norm of the matrix error should be small.
+    @test norm(error) < 1e-7
 end
 
 ################################################################################
