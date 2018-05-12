@@ -6,6 +6,8 @@ export EulerAngleAxis, EulerAngles, Quaternion
 
 import Base: sin, cos
 
+importall StaticArrays
+
 ################################################################################
 #                                    Types
 ################################################################################

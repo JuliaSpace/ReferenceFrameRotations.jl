@@ -42,18 +42,24 @@ The composed rotation.
 # TODO: It turns out that after 5 multiplications, the function with a `for`
 # performs better in a specific computer. This needs further verification.
 
-@inline compose_rotation(D1::Matrix, D2::Matrix) = D2*D1
-@inline compose_rotation(D1::Matrix, D2::Matrix, D3::Matrix) = D3*D2*D1
-@inline compose_rotation(D1::Matrix, D2::Matrix, D3::Matrix, D4::Matrix) =
+@inline compose_rotation(D1::SMatrix{3,3},
+                         D2::SMatrix{3,3}) = D2*D1
+@inline compose_rotation(D1::SMatrix{3,3},
+                         D2::SMatrix{3,3},
+                         D3::SMatrix{3,3}) = D3*D2*D1
+@inline compose_rotation(D1::SMatrix{3,3},
+                         D2::SMatrix{3,3},
+                         D3::SMatrix{3,3},
+                         D4::SMatrix{3,3}) =
     D4*D3*D2*D1
-@inline compose_rotation(D1::Matrix,
-                         D2::Matrix,
-                         D3::Matrix,
-                         D4::Matrix,
-                         D5::Matrix) =
+@inline compose_rotation(D1::SMatrix{3,3},
+                         D2::SMatrix{3,3},
+                         D3::SMatrix{3,3},
+                         D4::SMatrix{3,3},
+                         D5::SMatrix{3,3}) =
     D5*D4*D3*D2*D1
 
-@inline function compose_rotation(D1::Matrix, D2::Matrix, Ds::Matrix...)
+@inline function compose_rotation(D1::SMatrix{3,3}, D2::SMatrix{3,3}, Ds::SMatrix{3,3}...)
     result = D2*D1
 
     for Di in Ds

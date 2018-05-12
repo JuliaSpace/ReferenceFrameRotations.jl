@@ -2,7 +2,7 @@
 #                          Direction Cosine Matrices
 ################################################################################
 
-export create_rotation_matrix, create_rotation_matrix!
+export create_rotation_matrix
 export ddcm, dcm2angle, dcm2quat, dcm2quat!
 
 ################################################################################
@@ -10,73 +10,9 @@ export ddcm, dcm2angle, dcm2quat, dcm2quat!
 ################################################################################
 
 """
-### function create_rotation_matrix!(dcm::Matrix{T}, angle::Number, axis::Char) where T<:Real
+### function create_rotation_matrix(angle::Number, axis::Char) where T<:Real
 
-Compute a rotation matrix, which will be written to `dcm`, that rotates a
-coordinate frame about the axis `axis` by the angle `angle`.
-
-##### Args
-
-* dcm: Pre-allocated matrix in which the rotation matrix that rotates the
-       coordinate frame about 'axis' will be written.
-* angle: Angle.
-* axis: Axis, must be 'x', 'X', 'y', 'Y', 'z', or 'Z'.
-
-"""
-
-function create_rotation_matrix!(dcm::Matrix{T},
-                                 angle::Number,
-                                 axis::Char) where T<:Real
-    cos_angle = cos(angle)
-    sin_angle = sin(angle)
-
-    if (axis == 'x') || (axis == 'X')
-        dcm[1,1] = 1
-        dcm[1,2] = 0
-        dcm[1,3] = 0
-
-        dcm[2,1] = 0
-        dcm[2,2] = cos_angle
-        dcm[2,3] = sin_angle
-
-        dcm[3,1] = 0
-        dcm[3,2] = -sin_angle
-        dcm[3,3] = cos_angle
-    elseif (axis == 'y') || (axis == 'Y')
-        dcm[1,1] = cos_angle
-        dcm[1,2] = 0
-        dcm[1,3] = -sin_angle
-
-        dcm[2,1] = 0
-        dcm[2,2] = 1
-        dcm[2,3] = 0
-
-        dcm[3,1] = sin_angle
-        dcm[3,2] = 0
-        dcm[3,3] = cos_angle
-    elseif (axis == 'z') || (axis == 'Z')
-        dcm[1,1] = cos_angle
-        dcm[1,2] = sin_angle
-        dcm[1,3] = 0
-
-        dcm[2,1] = -sin_angle
-        dcm[2,2] = cos_angle
-        dcm[2,3] = 0
-
-        dcm[3,1] = 0
-        dcm[3,2] = 0
-        dcm[3,3] = 1
-    else
-        error("axis must be X, Y, or Z");
-    end
-
-    nothing
-end
-
-"""
-### function create_rotation_matrix(angle::T, axis::Char) where T<:Real
-
-Create a rotation matrix that rotates a coordinate frame about the axis `axis`
+Compute a rotation matrix that rotates a coordinate frame about the axis `axis`
 by the angle `angle`.
 
 ##### Args
@@ -84,22 +20,30 @@ by the angle `angle`.
 * angle: Angle.
 * axis: Axis, must be 'x', 'X', 'y', 'Y', 'z', or 'Z'.
 
-##### Returns
-
-The rotation matrix that rotates the coordinate frame about the axis `axis` by
-the angle `angle`.
-
 """
 
-function create_rotation_matrix(angle::T, axis::Char) where T<:Real
-    # Allocate the rotation matrix.
-    dcm = Array{T}(3,3)
+function create_rotation_matrix(angle::Number, axis::Char)
+    cos_angle = cos(angle)
+    sin_angle = sin(angle)
 
-    # Fill the rotation matrix.
-    create_rotation_matrix!(dcm, angle, axis)
-
-    # Return the rotation matrix.
-    dcm
+    if (axis == 'x') || (axis == 'X')
+        dcm = SMatrix{3,3}(1,      0,          0,
+                           0, +cos_angle, +sin_angle,
+                           0, -sin_angle, +cos_angle)'
+        return dcm
+    elseif (axis == 'y') || (axis == 'Y')
+        dcm = SMatrix{3,3}(+cos_angle, 0, -sin_angle,
+                                0,     1,      0,
+                           +sin_angle, 0, +cos_angle)'
+        return dcm
+    elseif (axis == 'z') || (axis == 'Z')
+        dcm = SMatrix{3,3}(+cos_angle, +sin_angle, 0,
+                           -sin_angle, +cos_angle, 0,
+                                0,          0,     1)'
+        return dcm
+    else
+        error("axis must be X, Y, or Z");
+    end
 end
 
 ################################################################################
@@ -125,7 +69,7 @@ The Euler angles (see `EulerAngles`).
 
 """
 
-function dcm2angle(dcm::Matrix{T}, rot_seq::AbstractString="ZYX") where T<:Real
+function dcm2angle(dcm::SMatrix{3,3}, rot_seq::AbstractString="ZYX")
     # Check if the dcm is a 3x3 matrix.
     if (size(dcm,1) != 3) || (size(dcm,2) != 3)
         throw(ArgumentError)
@@ -232,7 +176,7 @@ end
 # ==============================================================================
 
 """
-### function dcm2quat!(q::Quaternion{T1}, dcm::Matrix{T2}) where T1<:Real where T2<:Real
+### function dcm2quat!(q::Quaternion{T1}, dcm::SMatrix{3,3,T2}) where T1<:Real where T2<:Real
 
 Convert the DCM `dcm` to a quaternion, which will be stored in `q`.
 
@@ -260,7 +204,7 @@ This algorithm was obtained from:
 """
 
 function dcm2quat!(q::Quaternion{T1},
-                   dcm::Matrix{T2}) where T1<:Real where T2<:Real
+                   dcm::SMatrix{3,3,T2}) where T1<:Real where T2<:Real
 
     if  trace(dcm) > 0
         # f = 4*q0
@@ -318,7 +262,7 @@ function dcm2quat!(q::Quaternion{T1},
 end
 
 """
-### function dcm2quat(dcm::Matrix{T}) where T<:Real
+### function dcm2quat(dcm::SMatrix{3,3,T}) where T<:Real
 
 Convert the DCM `dcm` the a quaternion.
 
@@ -347,7 +291,7 @@ This algorithm was obtained from:
 
 """
 
-function dcm2quat(dcm::Matrix{T}) where T<:Real
+function dcm2quat(dcm::SMatrix{3,3,T}) where T<:Real
     q = zeros(Quaternion{T})
     dcm2quat!(q,dcm)
     q
@@ -358,7 +302,7 @@ end
 ################################################################################
 
 """
-### function ddcm(Dba::Matrix{T1}, wba_b::Vector{T2}) where T1<:Real where T2<:Real
+### function ddcm(Dba::SMatrix{3,3,T1}, wba_b::Vector{T2}) where T1<:Real where T2<:Real
 
 Compute the time-derivative of the DCM `dcm` that rotates a reference frame `a`
 into alignment to the reference frame `b` in which the angular velocity of `b`
@@ -373,11 +317,11 @@ with respect to `a`, and represented in `b`, is `wba_b`.
 
 ##### Returns
 
-The time-derivative of the DCM `Dba` (3x3 matrix).
+The time-derivative of the DCM `Dba` (3x3 matrix of type `SMatrix{3,3}`).
 
 """
 
-function ddcm(Dba::Matrix{T1}, wba_b::Vector{T2}) where T1<:Real where T2<:Real
+function ddcm(Dba::SMatrix{3,3}, wba_b::AbstractArray)
     # Auxiliary variable.
     w = wba_b
 
@@ -386,9 +330,9 @@ function ddcm(Dba::Matrix{T1}, wba_b::Vector{T2}) where T1<:Real where T2<:Real
         throw(ArgumentError("The angular velocity vector must have three components."))
     end
 
-    wx = T2[ zero(T2)  -w[3]    +w[2];
-              +w[3]   zero(T2)  -w[1];
-              -w[2]    +w[1]   zero(T2) ]
+    wx = SMatrix{3,3}(  0  , -w[3], +w[2],
+                      +w[3],   0  , -w[1],
+                      -w[2], +w[1],   0  )'
 
     # Return the time-derivative.
     -wx*Dba

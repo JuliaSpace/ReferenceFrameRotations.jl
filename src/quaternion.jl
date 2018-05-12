@@ -643,48 +643,7 @@ end
 # ==============================================================================
 
 """
-### function quat2dcm!(dcm::Matrix{T1}, q::Quaternion{T2})
-
-Convert the quaternion `q` to a Direction Cosine Matrix that will be stored in
-`dcm`.
-
-##### Args
-
-* dcm: Pre-allocated Direction Cosine Matrix.
-* q: Quaternion that will be converted.
-
-##### Example
-
-    q   = Quaternion(sqrt(2)/2, sqrt(2)/2, 0.0, 0.0)
-    dcm = zeros(3,3)
-    quat2dcm!(dcm,q)
-
-"""
-
-function quat2dcm!(dcm::Matrix{T1},
-                   q::Quaternion{T2}) where T1<:Real where T2<:Real
-
-    # Auxiliary variables.
-    q0 = q.q0
-    q1 = q.q1
-    q2 = q.q2
-    q3 = q.q3
-
-    dcm[1,1] = q0^2+q1^2-q2^2-q3^2
-    dcm[1,2] =   2(q1*q2+q0*q3)
-    dcm[1,3] =   2(q1*q3-q0*q2)
-    dcm[2,1] =   2(q1*q2-q0*q3)
-    dcm[2,2] = q0^2-q1^2+q2^2-q3^2
-    dcm[2,3] =   2(q2*q3+q0*q1)
-    dcm[3,1] =   2(q1*q3+q0*q2)
-    dcm[3,2] =   2(q2*q3-q0*q1)
-    dcm[3,3] = q0^2-q1^2-q2^2+q3^2
-
-    nothing
-end
-
-"""
-### function quat2dcm(q::Quaternion{T}) where T<:Real
+### function quat2dcm(q::Quaternion)
 
 Convert the quaternion `q` to a Direction Cosine Matrix.
 
@@ -698,10 +657,16 @@ The Direction Cosine Matrix.
 
 """
 
-function quat2dcm(q::Quaternion{T}) where T<:Real
-    dcm = zeros(T,3,3)
-    quat2dcm!(dcm,q)
-    dcm
+function quat2dcm(q::Quaternion)
+    # Auxiliary variables.
+    q0 = q.q0
+    q1 = q.q1
+    q2 = q.q2
+    q3 = q.q3
+
+    SMatrix{3,3}(q0^2+q1^2-q2^2-q3^2,   2(q1*q2+q0*q3)   ,   2(q1*q3-q0*q2),
+                   2(q1*q2-q0*q3)   , q0^2-q1^2+q2^2-q3^2,   2(q2*q3+q0*q1),
+                   2(q1*q3+q0*q2)   ,   2(q2*q3-q0*q1)   , q0^2-q1^2-q2^2+q3^2)'
 end
 
 # Euler Angle and Axis
