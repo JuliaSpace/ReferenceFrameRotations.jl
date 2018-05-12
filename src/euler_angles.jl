@@ -376,5 +376,5 @@ function smallangle2quat(θx::Number, θy::Number, θz::Number)
     q3     = θz/2
     norm_q = sqrt(q0^2 + q1^2 + q2^2 + q3^2)
 
-    Quaternion(q0,q1,q2,q3)
+    Quaternion(q0/norm_q, q1/norm_q, q2/norm_q, q3/norm_q)
 end
