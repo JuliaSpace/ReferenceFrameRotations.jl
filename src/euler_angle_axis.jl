@@ -68,4 +68,3 @@ function angleaxis2quat(angleaxis::EulerAngleAxis{T}) where T<:Real
     # Create a quaternion using the provided Euler angle and axis.
     angleaxis2quat(angleaxis.a, angleaxis.v)
 end
-

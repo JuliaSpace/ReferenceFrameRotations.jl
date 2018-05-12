@@ -14,11 +14,11 @@ for rot_seq in rot_seq_array
                                rot_seq)
 
         # Rotate the vector using a DCM (which was already tested).
-        DCM = angle2dcm(eulerang)
+        DCM    = angle2rot(eulerang)
         rv_dcm = DCM*v
 
         # Rotate the vector using a quaternion.
-        q = angle2quat(eulerang)
+        q       = angle2rot(Quaternion,eulerang)
         rv_quat = vect(inv(q)*v*q)
 
         # Compare.
@@ -35,8 +35,8 @@ for k = 1:samples
 
     # Get the error between the exact rotation and the small angle
     # approximation.
-    error = angle2quat(eulerang) -
-            smallangle2quat(eulerang.a1, eulerang.a2, eulerang.a3)
+    error = angle2rot(Quaternion,eulerang) -
+            smallangle2rot(Quaternion,eulerang.a1, eulerang.a2, eulerang.a3)
 
     # If everything is fine, the norm of the matrix error should be small.
     @test norm(error) < 1e-7

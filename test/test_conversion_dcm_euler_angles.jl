@@ -10,10 +10,10 @@ for k = 1:samples
                                -pi + 2*pi*rand(),
                                rot_seq)
 
-        # Get the error matrix related to the conversion from DCM => Euler Angles =>
-        # DCM.
-        error = angle2dcm(dcm2angle(angle2dcm(eulerang),rot_seq)) -
-        angle2dcm(eulerang)
+        # Get the error matrix related to the conversion from DCM => Euler
+        # Angles => DCM.
+        error = angle2rot(dcm2angle(angle2dcm(eulerang),rot_seq)) -
+                angle2rot(eulerang)
 
         # If everything is fine, the norm of the matrix error should be small.
         @test norm(error) < 1e-10
@@ -29,8 +29,8 @@ for k = 1:samples
 
     # Get the error between the exact rotation and the small angle
     # approximation.
-    error = angle2dcm(eulerang) -
-    smallangle2dcm(eulerang.a1, eulerang.a2, eulerang.a3)
+    error = angle2rot(eulerang) -
+            smallangle2rot(eulerang.a1, eulerang.a2, eulerang.a3)
 
     # If everything is fine, the norm of the matrix error should be small.
     @test norm(error) < 1e-7

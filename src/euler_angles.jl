@@ -2,8 +2,8 @@
 #                                 Euler Angles
 ################################################################################
 
-export angle2dcm,      angle2quat
-export smallangle2dcm, smallangle2quat
+export angle2dcm,      angle2quat,      angle2rot
+export smallangle2dcm, smallangle2quat, smallangle2rot
 
 ################################################################################
 #                                 Conversions
@@ -373,3 +373,117 @@ function smallangle2quat(θx::Number, θy::Number, θz::Number)
 
     Quaternion(q0/norm_q, q1/norm_q, q2/norm_q, q3/norm_q)
 end
+
+################################################################################
+#                                     API
+################################################################################
+
+"""
+### function angle2rot([T,] angle_r1::Number, angle_r2::Number, angle_r3::Number, rot_seq::Symbol = :ZYX)
+
+Convert the Euler angles `angle_r1`, `angle_r2`, and `angle_r3` with the
+rotation sequence `rot_seq` to a rotation description of type `T`, which can be
+`DCM` or `Quaternion`.
+
+The rotation sequence is defined by a `:Symbol`. The possible values are:
+`:XYX`, `XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`,
+`:ZYX`, and `:ZYZ`.
+
+##### Args
+
+* T: (OPTIONAL) Type of the rotation description (**Default** = `DCM`).
+* angle_r1: Angle of the first rotation [rad].
+* angle_r2: Angle of the second rotation [rad].
+* angle_r3: Angle of the third rotation [rad].
+* rot_seq: (OPTIONAL) Rotation sequence (**Default** = `:ZYX`).
+
+##### Returns
+
+The rotation description according to the type `T`.
+
+##### Example
+
+    dcm = angle2rot(pi/2, pi/3, pi/4, :ZYX)
+    q   = angle2rot(Quaternion,pi/2, pi/3, pi/4, :ZYX)
+
+"""
+@inline angle2rot(θx::Number, θy::Number, θz::Number, rot_seq::Symbol) =
+    angle2dcm(θx, θy, θz, rot_seq)
+
+@inline angle2rot(::Type{DCM},
+                  θx::Number,
+                  θy::Number,
+                  θz::Number,
+                  rot_seq::Symbol) =
+    angle2dcm(θx, θy, θz, rot_seq)
+
+@inline angle2rot(::Type{Quaternion},
+                  θx::Number,
+                  θy::Number,
+                  θz::Number,
+                  rot_seq::Symbol) =
+    angle2quat(θx, θy, θz, rot_seq)
+
+"""
+### function angle2rot([T,] angle_r1::Number, angle_r2::Number, angle_r3::Number, rot_seq::Symbol = :ZYX)
+
+Convert the Euler angles `eulerang` (see `EulerAngles`) to a rotation
+description of type `T`, which can be `DCM` or `Quaternion`.
+
+##### Args
+
+* T: (OPTIONAL) Type of the rotation description (**Default** = `DCM`).
+* eulerang: Euler angles (see `EulerAngles`).
+
+##### Returns
+
+The rotation description according to the type `T`.
+
+##### Example
+
+    dcm = angle2drot(EulerAngles(pi/2, pi, pi/4, "ZYX"))
+    q   = angle2drot(Quaternion,EulerAngles(pi/2, pi, pi/4, "ZYX"))
+
+"""
+@inline angle2rot(eulerang::EulerAngles) =
+    angle2dcm(eulerang.a1, eulerang.a2, eulerang.a3, eulerang.rot_seq)
+
+@inline angle2rot(::Type{DCM}, eulerang::EulerAngles) =
+    angle2dcm(eulerang.a1, eulerang.a2, eulerang.a3, eulerang.rot_seq)
+
+@inline angle2rot(::Type{Quaternion}, eulerang::EulerAngles) =
+    angle2quat(eulerang.a1, eulerang.a2, eulerang.a3, eulerang.rot_seq)
+
+"""
+### function smallangle2rot([T,] θx::Number, θy::Number, θz::Number)
+
+Create a rotation description of type `T` from three small rotations of angles
+`θx`, `θy`, and `θz` about the axes X, Y, and Z, respectively.
+
+The type `T` of the rotation description can be `DCM` or `Quaternion`.
+
+##### Args
+
+* T: (OPTIONAL) Type of the rotation description (**Default** = `DCM`).
+* θx: Angle of the rotation about the X-axis [rad].
+* θy: Angle of the rotation about the Y-axis [rad].
+* θz: Angle of the rotation about the Z-axis [rad].
+
+##### Returns
+
+The rotation description according to the type `T`.
+
+##### Example
+
+    dcm = smallangle2rot(+0.01, -0.01, +0.01)
+    q   = smallangle2rot(Quaternion,+0.01, -0.01, +0.01)
+
+"""
+@inline smallangle2rot(θx::Number, θy::Number, θz::Number) =
+    smallangle2dcm(θx, θy, θz)
+
+@inline smallangle2rot(::Type{DCM}, θx::Number, θy::Number, θz::Number) =
+    smallangle2dcm(θx, θy, θz)
+
+@inline smallangle2rot(::Type{Quaternion}, θx::Number, θy::Number, θz::Number) =
+    smallangle2quat(θx, θy, θz)
