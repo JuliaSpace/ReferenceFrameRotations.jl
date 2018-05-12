@@ -62,21 +62,21 @@ with real part `v[1]` and imaginary part `v[2:4]`.
 
 """
 
-function Quaternion(v::Vector{T}) where T<:Real
+function Quaternion(v::AbstractVector)
     # The vector must have 3 or 4 components.
     if length(v) != 3 && length(v) != 4
         throw(ArgumentError("The input vector must have 3 or 4 components."))
     end
 
     if length(v) == 3
-        Quaternion{T}(zero(T), v[1], v[2], v[3])
+        Quaternion(0, v[1], v[2], v[3])
     else
-        Quaternion{T}(v[1], v[2], v[3], v[4])
+        Quaternion(v[1], v[2], v[3], v[4])
     end
 end
 
 """
-### function Quaternion(r::T, v::Vector{T}) where T<:Real
+### function Quaternion(r::Number, v::AbstractVector)
 
 Create a quaternion with real part `r` and vectorial or imaginary part `v`.
 
@@ -91,7 +91,7 @@ The quaternion `r + v[1].i + v[2].j + v[3].k`.
 
 """
 
-function Quaternion(r::T, v::Vector{T}) where T<:Real
+function Quaternion(r::Number, v::AbstractVector)
     Quaternion(r, v[1], v[2], v[3])
 end
 
@@ -449,12 +449,12 @@ The following vector: `[q1; q2; q3]`.
 
 """
 
-@inline function imag(q::Quaternion{T}) where T<:Real
-    Vector{T}([q.q1; q.q2; q.q3])
+@inline function imag(q::Quaternion)
+    SVector{3}(q.q1, q.q2, q.q3)
 end
 
 """
-### function inv(q::Quaternion{T}) where T<:Real
+### function inv(q::Quaternion)
 
 Compute the inverse of the quaternion `q`.
 
@@ -468,7 +468,7 @@ Inverse of the quaternion `q`.
 
 """
 
-@inline function inv(q::Quaternion{T}) where T<:Real
+@inline function inv(q::Quaternion)
     # Compute the inverse of the quaternion.
     norm_q = q.q0*q.q0 + q.q1*q.q1 + q.q2*q.q2 + q.q3*q.q3
     Quaternion(q.q0/norm_q, -q.q1/norm_q, -q.q2/norm_q, -q.q3/norm_q)
@@ -528,8 +528,8 @@ The following vector: `[q1; q2; q3]`.
 
 """
 
-@inline function vect(q::Quaternion{T}) where T<:Real
-    Vector{T}([q.q1; q.q2; q.q3])
+@inline function vect(q::Quaternion)
+    SVector{3}(q.q1, q.q2, q.q3)
 end
 
 """
@@ -664,7 +664,7 @@ end
 # ==============================================================================
 
 """
-### function quat2angleaxis(q::Quaternion{T}) where T<:Real
+### function quat2angleaxis(q::Quaternion)
 
 Convert the quaternion `q` to a Euler angle and axis representation.
 
@@ -684,12 +684,12 @@ not represent a 3D rotation. The user must handle such situations.
 
 """
 
-function quat2angleaxis(q::Quaternion{T}) where T<:Real
+function quat2angleaxis(q::Quaternion)
     a = atan2( norm(vect(q)), q.q0 )*2
     v = vect(q)/sin(a/2)
 
     # TODO: Change this when the functions of Euler Angle and Axis are defined.
-    EulerAngleAxis(a, v)
+    EulerAngleAxis(a, Vector(v))
 end
 
 # Euler Angles
@@ -731,7 +731,7 @@ end
 ################################################################################
 
 """
-### function dquat(qba::Quaternion{T1}, wba_b::Vector{T2})
+### function dquat(qba::Quaternion{T1}, wba_b::AbstractVector)
 
 Compute the time-derivative of the quaternion `qba` that rotates a reference
 frame `a` into alignment to the reference frame `b` in which the angular
@@ -751,7 +751,7 @@ The quaternion with the time-derivative of `qba`.
 """
 
 function dquat(qba::Quaternion{T1},
-               wba_b::Vector{T2}) where T1<:Real where T2<:Real
+               wba_b::AbstractVector{T2}) where T1<:Real where T2<:Real
     # Auxiliary variable.
     w = wba_b
 
@@ -760,11 +760,13 @@ function dquat(qba::Quaternion{T1},
         throw(ArgumentError("The angular velocity vector must have three components."))
     end
 
-    Ωba_b = T2[zero(T2)  -w[1]    -w[2]    -w[3]  ;
-                +w[1]   zero(T2)  +w[3]    -w[2]  ;
-                +w[2]    -w[3]   zero(T2)  +w[1]  ;
-                +w[3]    +w[2]    -w[1]   zero(T2);]
-
     # Return the time-derivative.
-    Quaternion((Ωba_b/2)*qba[:])
+    #         1         x
+    #   dq = --- (wba_b) . q
+    #         2
+
+    Quaternion(               -w[1]/2*qba.q1 -w[2]/2*qba.q2 -w[3]/2*qba.q3,
+               +w[1]/2*qba.q0                +w[3]/2*qba.q2 -w[2]/2*qba.q3,
+               +w[2]/2*qba.q0 -w[3]/2*qba.q1                +w[1]/2*qba.q3,
+               +w[3]/2*qba.q0 +w[2]/2*qba.q1 -w[1]/2*qba.q2                )
 end
