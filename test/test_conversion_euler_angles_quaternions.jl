@@ -14,8 +14,8 @@ for rot_seq in rot_seq_array
                                rot_seq)
 
         # Rotate the vector using a DCM (which was already tested).
-        DCM    = angle2rot(eulerang)
-        rv_dcm = DCM*v
+        D      = angle2rot(eulerang)
+        rv_dcm = D*v
 
         # Rotate the vector using a quaternion.
         q       = angle2rot(Quaternion,eulerang)
@@ -23,6 +23,18 @@ for rot_seq in rot_seq_array
 
         # Compare.
         @test norm(rv_quat-rv_dcm) < 1e-10
+
+        # Compute the Euler angles using the Quaternion.
+        eulerang_quat = quat2angle(q, eulerang.rot_seq)
+
+        # Create the quaternion using those Euler angles and compare to the
+        # original.
+        q2 = angle2rot(Quaternion,eulerang_quat)
+
+        @test q2.q0 ≈ q.q0 atol=1e-10
+        @test q2.q1 ≈ q.q1 atol=1e-10
+        @test q2.q2 ≈ q.q2 atol=1e-10
+        @test q2.q3 ≈ q.q3 atol=1e-10
     end
 end
 
@@ -41,3 +53,5 @@ for k = 1:samples
     # If everything is fine, the norm of the matrix error should be small.
     @test norm(error) < 1e-7
 end
+
+

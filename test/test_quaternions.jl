@@ -27,6 +27,15 @@ for i = 1:samples
     # Test the angle between the two representations.
     @test abs(sin(ang)-sin_ang) < 1e-10
 
+    # Test the same algorithm using different functions.
+    v_r = imag((1/q)*(v*q))
+
+    # Get the sine of the angle between the representations.
+    sin_ang = (cross(v_r, v)/norm(v)^2)[1]
+
+    # Test the angle between the two representations.
+    @test abs(sin(ang)-sin_ang) < 1e-10
+
     # Y Axis
     # ------
 
@@ -48,6 +57,16 @@ for i = 1:samples
     # Test the angle between the two representations.
     @test abs(sin(ang)-sin_ang) < 1e-10
 
+    # Test the same algorithm using different functions.
+    v_r = imag((1/q)*(v*q))
+
+    # Get the sine of the angle between the representations.
+    sin_ang = (cross(v_r, v)/norm(v)^2)[2]
+
+    # Test the angle between the two representations.
+    @test abs(sin(ang)-sin_ang) < 1e-10
+
+
     # Z Axis
     # ------
 
@@ -68,6 +87,16 @@ for i = 1:samples
 
     # Test the angle between the two representations.
     @test abs(sin(ang)-sin_ang) < 1e-10
+
+    # Test the same algorithm using different functions.
+    v_r = imag((1/q)*(v*q))
+
+    # Get the sine of the angle between the representations.
+    sin_ang = (cross(v_r, v)/norm(v)^2)[3]
+
+    # Test the angle between the two representations.
+    @test abs(sin(ang)-sin_ang) < 1e-10
+
 
     # Other functions
     # ===============
@@ -112,4 +141,35 @@ for i = 1:samples
 
     # Check if the value of the quaternion is correct.
     @test norm(q_zeros_3) == 0.0
+
 end
+
+# Operations that were not tested yet.
+# ====================================
+
+q = Quaternion(1.,0,0.f0,0)
+@test typeof(q) == Quaternion{Float64}
+
+q = Quaternion(SVector{3}(1.,2.,3.))
+@test q.q0 == 0
+@test q.q1 == 1
+@test q.q2 == 2
+@test q.q3 == 3
+
+q = Quaternion(SVector{4}(1.,2.,3.,4.))
+@test q.q0 == 1
+@test q.q1 == 2
+@test q.q2 == 3
+@test q.q3 == 4
+
+q = 3*q
+@test q.q0 == 3
+@test q.q1 == 6
+@test q.q2 == 9
+@test q.q3 == 12
+
+qc = conj(q)
+@test qc.q0 == +3
+@test qc.q1 == -6
+@test qc.q2 == -9
+@test qc.q3 == -12
