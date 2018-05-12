@@ -74,11 +74,6 @@ The Euler angles (see `EulerAngles`).
 """
 
 function dcm2angle(dcm::SMatrix{3,3}, rot_seq::Symbol=:ZYX)
-    # Check if the dcm is a 3x3 matrix.
-    if (size(dcm,1) != 3) || (size(dcm,2) != 3)
-        throw(ArgumentError)
-    end
-
     if rot_seq == :ZYX
 
         EulerAngles(atan2(+dcm[1,2],+dcm[1,1]),
