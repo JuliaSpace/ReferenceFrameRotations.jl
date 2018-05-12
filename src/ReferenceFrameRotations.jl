@@ -43,7 +43,7 @@ mutable struct EulerAngleAxis{T<:Real}
 end
 
 """
-### mutable struct Quaternion{T<:Real}
+### struct Quaternion{T<:Real}
 
 The definition of the quaternion. It has four values of the same type. The
 quaternion representation is:
@@ -51,7 +51,7 @@ quaternion representation is:
     q0 + q1.i + q2.j + q3.k
 """
 
-mutable struct Quaternion{T<:Real}
+struct Quaternion{T<:Real}
     q0::T
     q1::T
     q2::T

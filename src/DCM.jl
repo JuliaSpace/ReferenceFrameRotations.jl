@@ -3,7 +3,7 @@
 ################################################################################
 
 export create_rotation_matrix
-export ddcm, dcm2angle, dcm2quat, dcm2quat!
+export ddcm, dcm2angle, dcm2quat
 
 ################################################################################
 #                                  Functions
@@ -176,93 +176,7 @@ end
 # ==============================================================================
 
 """
-### function dcm2quat!(q::Quaternion{T1}, dcm::SMatrix{3,3,T2}) where T1<:Real where T2<:Real
-
-Convert the DCM `dcm` to a quaternion, which will be stored in `q`.
-
-##### Args
-
-* q: Pre-allocated quaternion.
-* dcm: Direction Cosine Matrix that will be converted.
-
-##### Remarks
-
-By convention, the real part of the quaternion will always be positive.
-Moreover, the function does not check if `dcm` is a valid direction cosine
-matrix. This must be handle by the user.
-
-This algorithm was obtained from:
-
-    http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/
-
-##### Example
-
-    dcm = angle2dcm(pi/2,0.0,0.0,"XYZ")
-    q   = Quaternion(1.0,0.0,0.0,0.0)
-    dcm2quat!(q,dcm)
-
-"""
-
-function dcm2quat!(q::Quaternion{T1},
-                   dcm::SMatrix{3,3,T2}) where T1<:Real where T2<:Real
-
-    if  trace(dcm) > 0
-        # f = 4*q0
-        f = sqrt(trace(dcm)+one(T2))*2
-
-        q.q0 = f/4
-        q.q1 = (dcm[2,3]-dcm[3,2])/f
-        q.q2 = (dcm[3,1]-dcm[1,3])/f
-        q.q3 = (dcm[1,2]-dcm[2,1])/f
-    elseif (dcm[1,1] > dcm[2,2]) && (dcm[1,1] > dcm[3,3])
-        # f = 4*q1
-        f = sqrt(one(T2) + dcm[1,1] - dcm[2,2] - dcm[3,3])*2
-
-        # Real part.
-        q.q0 = (dcm[2,3]-dcm[3,2])/f
-
-        # Make sure that the real part is always positive.
-        s = (q.q0 > 0) ? one(T2) : -one(T2)
-
-        q.q0 = s*q.q0
-        q.q1 = s*f/4
-        q.q2 = s*(dcm[1,2]+dcm[2,1])/f
-        q.q3 = s*(dcm[3,1]+dcm[1,3])/f
-    elseif (dcm[2,2] > dcm[3,3])
-        # f = 4*q2
-        f = sqrt(one(T2) + dcm[2,2] - dcm[1,1] - dcm[3,3])*2
-
-        # Real part.
-        q.q0 = (dcm[3,1]-dcm[1,3])/f
-
-        # Make sure that the real part is always posiive.
-        s = (q.q0 > 0) ? one(T2) : -one(T2)
-
-        q.q0 = s*q.q0
-        q.q1 = s*(dcm[1,2]+dcm[2,1])/f
-        q.q2 = s*f/4
-        q.q3 = s*(dcm[3,2]+dcm[2,3])/f
-    else
-        # f = 4*q3
-        f = sqrt(one(T2) + dcm[3,3] - dcm[1,1] - dcm[2,2])*2
-
-        # Real part.
-        q.q0 = (dcm[1,2]-dcm[2,1])/f
-
-        # Make sure that the real part is always posiive.
-        s = (q.q0 > 0) ? one(T2) : -one(T2)
-
-        q.q0 = s*q.q0
-        q.q1 = s*(dcm[1,3]+dcm[3,1])/f
-        q.q2 = s*(dcm[2,3]+dcm[3,2])/f
-        q.q3 = s*f/4
-    end
-
-    nothing
-end
-
-"""
-### function dcm2quat(dcm::SMatrix{3,3,T}) where T<:Real
+### function dcm2quat(dcm::SMatrix{3,3})
 
 Convert the DCM `dcm` the a quaternion.
 
@@ -292,9 +206,57 @@ This algorithm was obtained from:
 """
 
 function dcm2quat(dcm::SMatrix{3,3,T}) where T<:Real
-    q = zeros(Quaternion{T})
-    dcm2quat!(q,dcm)
-    q
+    if  trace(dcm) > 0
+        # f = 4*q0
+        f = sqrt(trace(dcm)+1)*2
+
+        return Quaternion{T}(f/4,
+                             (dcm[2,3]-dcm[3,2])/f,
+                             (dcm[3,1]-dcm[1,3])/f,
+                             (dcm[1,2]-dcm[2,1])/f)
+    elseif (dcm[1,1] > dcm[2,2]) && (dcm[1,1] > dcm[3,3])
+        # f = 4*q1
+        f = sqrt(1 + dcm[1,1] - dcm[2,2] - dcm[3,3])*2
+
+        # Real part.
+        q0 = (dcm[2,3]-dcm[3,2])/f
+
+        # Make sure that the real part is always positive.
+        s = (q0 > 0) ? +1 : -1
+
+        return Quaternion{T}(s*q0,
+                             s*f/4,
+                             s*(dcm[1,2]+dcm[2,1])/f,
+                             s*(dcm[3,1]+dcm[1,3])/f)
+    elseif (dcm[2,2] > dcm[3,3])
+        # f = 4*q2
+        f = sqrt(1 + dcm[2,2] - dcm[1,1] - dcm[3,3])*2
+
+        # Real part.
+        q0 = (dcm[3,1]-dcm[1,3])/f
+
+        # Make sure that the real part is always posiive.
+        s = (q0 > 0) ? +1 : -1
+
+        return Quaternion{T}(s*q0,
+                             s*(dcm[1,2]+dcm[2,1])/f,
+                             s*f/4,
+                             s*(dcm[3,2]+dcm[2,3])/f)
+    else
+        # f = 4*q3
+        f = sqrt(1 + dcm[3,3] - dcm[1,1] - dcm[2,2])*2
+
+        # Real part.
+        q0 = (dcm[1,2]-dcm[2,1])/f
+
+        # Make sure that the real part is always posiive.
+        s = (q0 > 0) ? +1 : -1
+
+        return Quaternion{T}(s*q0,
+                             s*(dcm[1,3]+dcm[3,1])/f,
+                             s*(dcm[2,3]+dcm[3,2])/f,
+                             s*f/4)
+    end
 end
 
 ################################################################################

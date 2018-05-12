@@ -3,13 +3,38 @@
 ################################################################################
 
 import Base: +, -, *, /, conj, copy, eye, getindex, inv, imag, norm, real, show
-import Base: setindex!, zeros
+import Base: zeros
 
-export dquat, quat2angle, quat2angleaxis, quat2dcm, quat2dcm!, vect
+export dquat, quat2angle, quat2angleaxis, quat2dcm, vect
 
 ################################################################################
 #                                 Initializers
 ################################################################################
+
+"""
+### function Quaternion(q0::Number, q1::Number, q2::Number, q3::Number)
+
+Create the following quaternion:
+
+    q0 + q1.i + q2.j + q3.k
+
+##### Args
+
+* q0: Real part of the quaternion.
+* q1: X component of the quaternion vectorial part.
+* q2: Y component of the quaternion vectorial part.
+* q3: Z component of the quaternion vectorial part.
+
+##### Returns
+
+The new quaternion.
+
+"""
+
+function Quaternion(q0::Number, q1::Number, q2::Number, q3::Number)
+    (q0p, q1p, q2p, q3p) = promote(q0,q1,q2,q3)
+    Quaternion(q0p,q1p,q2p,q3p)
+end
 
 """
 ### function Quaternion(v::Vector{T}) where T<:Real
@@ -300,40 +325,6 @@ A 4x1 vector of type `T` with the elements of the quaternion.
 
 @inline function getindex(q::Quaternion{T}, ::Colon) where T<:Real
     [q.q0;q.q1;q.q2;q.q3]
-end
-
-# Operation: setindex!
-# ==============================================================================
-
-"""
-### function setindex!(q::Quaternion{T}, v::Number, i::Int)
-
-Set the `i`-th element of the quaternion `q` with the value `v`.
-
-##### Args
-
-* q: Quaternion.
-* v: New value.
-* i: Index (`1 <= i <= 4`).
-
-##### Returns
-
-The new value of the element `q[i]`.
-
-"""
-
-function setindex!(q::Quaternion{T}, v::Number, i::Int) where T<:Real
-    if i == 1
-        q.q0 = v
-    elseif i == 2
-        q.q1 = v
-    elseif i == 3
-        q.q2 = v
-    elseif i == 4
-        q.q3 = v
-    else
-        throw(BoundsError(q,i))
-    end
 end
 
 ################################################################################
