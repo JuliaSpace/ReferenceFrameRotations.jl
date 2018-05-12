@@ -33,6 +33,8 @@ Version 0.2.0
       `dcm = DCM([1 0 0; 0 -1 0; 0 0 -1])`.
     * The `RotationSequenceError` exception were removed and replaced by
       `ArgumentError` with a useful error message.
+    * The function `angle2quat` was modified so that the real part of the
+      quaternion is always positive.
 
 - Dropped functions:
     * `<Function>!`: All functions that modifies a parameter (the ones that end
