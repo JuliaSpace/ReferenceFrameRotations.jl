@@ -27,19 +27,19 @@ function create_rotation_matrix(angle::Number, axis::Symbol = :X)
     sin_angle = sin(angle)
 
     if axis == :X
-        dcm = SMatrix{3,3}(1,      0,          0,
-                           0, +cos_angle, +sin_angle,
-                           0, -sin_angle, +cos_angle)'
+        dcm = DCM(1,      0,          0,
+                  0, +cos_angle, +sin_angle,
+                  0, -sin_angle, +cos_angle)'
         return dcm
     elseif axis == :Y
-        dcm = SMatrix{3,3}(+cos_angle, 0, -sin_angle,
-                                0,     1,      0,
-                           +sin_angle, 0, +cos_angle)'
+        dcm = DCM(+cos_angle, 0, -sin_angle,
+                       0,     1,      0,
+                  +sin_angle, 0, +cos_angle)'
         return dcm
     elseif axis == :Z
-        dcm = SMatrix{3,3}(+cos_angle, +sin_angle, 0,
-                           -sin_angle, +cos_angle, 0,
-                                0,          0,     1)'
+        dcm = DCM(+cos_angle, +sin_angle, 0,
+                  -sin_angle, +cos_angle, 0,
+                       0,          0,     1)'
         return dcm
     else
         error("axis must be :X, :Y, or :Z");
@@ -54,7 +54,7 @@ end
 # ==============================================================================
 
 """
-### function dcm2angle(dcm::SMatrix{3,3}, rot_seq::Symbol=:ZYX)
+### function dcm2angle(dcm::DCM, rot_seq::Symbol=:ZYX)
 
 Convert the DCM `dcm` to Euler Angles given a rotation sequence `rot_seq`.
 
@@ -73,7 +73,7 @@ The Euler angles (see `EulerAngles`).
 
 """
 
-function dcm2angle(dcm::SMatrix{3,3}, rot_seq::Symbol=:ZYX)
+function dcm2angle(dcm::DCM, rot_seq::Symbol=:ZYX)
     if rot_seq == :ZYX
 
         EulerAngles(atan2(+dcm[1,2],+dcm[1,1]),
@@ -167,7 +167,7 @@ end
 # ==============================================================================
 
 """
-### function dcm2quat(dcm::SMatrix{3,3})
+### function dcm2quat(dcm::DCM{T}) where T<:Real
 
 Convert the DCM `dcm` the a quaternion.
 
@@ -196,7 +196,7 @@ This algorithm was obtained from:
 
 """
 
-function dcm2quat(dcm::SMatrix{3,3,T}) where T<:Real
+function dcm2quat(dcm::DCM{T}) where T<:Real
     if  trace(dcm) > 0
         # f = 4*q0
         f = sqrt(trace(dcm)+1)*2
@@ -255,7 +255,7 @@ end
 ################################################################################
 
 """
-### function ddcm(Dba::SMatrix{3,3,T1}, wba_b::Vector{T2}) where T1<:Real where T2<:Real
+### function ddcm(Dba::DCM, wba_b::AbstractArray)
 
 Compute the time-derivative of the DCM `dcm` that rotates a reference frame `a`
 into alignment to the reference frame `b` in which the angular velocity of `b`
@@ -274,7 +274,7 @@ The time-derivative of the DCM `Dba` (3x3 matrix of type `SMatrix{3,3}`).
 
 """
 
-function ddcm(Dba::SMatrix{3,3}, wba_b::AbstractArray)
+function ddcm(Dba::DCM, wba_b::AbstractArray)
     # Auxiliary variable.
     w = wba_b
 

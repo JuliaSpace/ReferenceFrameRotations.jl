@@ -40,9 +40,8 @@ The composed rotation.
 # This algorithm was proposed by @Per in
 #
 #   https://discourse.julialang.org/t/improve-the-performance-of-multiplication-of-an-arbitrary-number-of-matrices/10835/24
-@inline compose_rotation(D::SMatrix{3,3}) = D
-@inline compose_rotation(D::SMatrix{3,3}, Ds::SMatrix{3,3}...) =
-    compose_rotation(Ds...)*D
+@inline compose_rotation(D::DCM) = D
+@inline compose_rotation(D::DCM, Ds::DCM...) = compose_rotation(Ds...)*D
 
 @inline compose_rotation(q::Quaternion) = q
 @inline compose_rotation(q::Quaternion, qs::Quaternion...) =

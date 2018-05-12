@@ -2,7 +2,7 @@ VERSION >= v"0.4.0-dev+6521" && __precompile__()
 
 module ReferenceFrameRotations
 
-export EulerAngleAxis, EulerAngles, Quaternion
+export DCM, EulerAngleAxis, EulerAngles, Quaternion
 
 import Base: sin, cos
 
@@ -11,6 +11,12 @@ importall StaticArrays
 ################################################################################
 #                                    Types
 ################################################################################
+
+"""
+The Direction Cosine Matrice is a `SMatrix{3,3}`, which is a 3x3 static matrix.
+
+"""
+DCM{T} = SMatrix{3,3,T}
 
 """
 ### struct EulerAngles{T<:Real}

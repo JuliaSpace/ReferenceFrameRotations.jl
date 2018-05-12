@@ -59,75 +59,75 @@ function angle2dcm(angle_r1::Number,
     s3 = sin(angle_r3)
 
     if rot_seq == :ZYX
-        dcm = SMatrix{3,3}(       c2*c1    ,        c2*s1    , -s2  ,
-                           s3*s2*c1 - c3*s1, s3*s2*s1 + c3*c1, s3*c2,
-                           c3*s2*c1 + s3*s1, c3*s2*s1 - s3*c1, c3*c2)'
+        dcm = DCM(       c2*c1    ,        c2*s1    , -s2  ,
+                  s3*s2*c1 - c3*s1, s3*s2*s1 + c3*c1, s3*c2,
+                  c3*s2*c1 + s3*s1, c3*s2*s1 - s3*c1, c3*c2)'
         return dcm
 
     elseif rot_seq == :XYX
-        dcm = SMatrix{3,3}( c2  ,         s1*s2    ,       -c1*s2    ,
-                           s2*s3, -s1*c2*s3 + c1*c3, c1*c2*s3 + s1*c3,
-                           s2*c3, -s1*c3*c2 - c1*s3, c1*c3*c2 - s1*s3)'
+        dcm = DCM( c2  ,         s1*s2    ,       -c1*s2    ,
+                  s2*s3, -s1*c2*s3 + c1*c3, c1*c2*s3 + s1*c3,
+                  s2*c3, -s1*c3*c2 - c1*s3, c1*c3*c2 - s1*s3)'
         return dcm
 
     elseif rot_seq == :XYZ
-        dcm = SMatrix{3,3}( c2*c3,  s1*s2*c3 + c1*s3, -c1*s2*c3 + s1*s3,
-                           -c2*s3, -s1*s2*s3 + c1*c3,  c1*s2*s3 + s1*c3,
-                              s2 ,        -s1*c2    ,       c1*c2)'
+        dcm = DCM( c2*c3,  s1*s2*c3 + c1*s3, -c1*s2*c3 + s1*s3,
+                  -c2*s3, -s1*s2*s3 + c1*c3,  c1*s2*s3 + s1*c3,
+                     s2 ,        -s1*c2    ,       c1*c2)'
         return dcm
 
     elseif rot_seq == :XZX
-        dcm = SMatrix{3,3}(   c2 ,         c1*s2    ,         s1*s2    ,
-                           -s2*c3,  c1*c3*c2 - s1*s3,  s1*c3*c2 + c1*s3,
-                            s2*s3, -c1*c2*s3 - s1*c3, -s1*c2*s3 + c1*c3)'
+        dcm = DCM(   c2 ,         c1*s2    ,         s1*s2    ,
+                  -s2*c3,  c1*c3*c2 - s1*s3,  s1*c3*c2 + c1*s3,
+                   s2*s3, -c1*c2*s3 - s1*c3, -s1*c2*s3 + c1*c3)'
         return dcm
 
     elseif rot_seq == :XZY
-        dcm = SMatrix{3,3}(c3*c2, c1*c3*s2 + s1*s3, s1*c3*s2 - c1*s3,
-                            -s2 ,        c1*c2    ,        s1*c2    ,
-                           s3*c2, c1*s2*s3 - s1*c3, s1*s2*s3 + c1*c3)'
+        dcm = DCM(c3*c2, c1*c3*s2 + s1*s3, s1*c3*s2 - c1*s3,
+                   -s2 ,        c1*c2    ,        s1*c2    ,
+                  s3*c2, c1*s2*s3 - s1*c3, s1*s2*s3 + c1*c3)'
         return dcm
 
     elseif rot_seq == :YXY
-        dcm = SMatrix{3,3}(-s1*c2*s3 + c1*c3, s2*s3 , -c1*c2*s3 - s1*c3,
-                                   s1*s2    ,   c2  ,         c1*s2    ,
-                            s1*c3*c2 + c1*s3, -s2*c3,  c1*c3*c2 - s1*s3)'
+        dcm = DCM(-s1*c2*s3 + c1*c3, s2*s3 , -c1*c2*s3 - s1*c3,
+                         s1*s2    ,   c2  ,         c1*s2    ,
+                  s1*c3*c2 + c1*s3, -s2*c3,  c1*c3*c2 - s1*s3)'
         return dcm
 
     elseif rot_seq == :YXZ
-        dcm = SMatrix{3,3}( c1*c3 + s2*s1*s3, c2*s3, -s1*c3 + s2*c1*s3,
-                           -c1*s3 + s2*s1*c3, c2*c3,  s1*s3 + s2*c1*c3,
-                                s1*c2       ,  -s2 ,      c2*c1       )'
+        dcm = DCM( c1*c3 + s2*s1*s3, c2*s3, -s1*c3 + s2*c1*s3,
+                  -c1*s3 + s2*s1*c3, c2*c3,  s1*s3 + s2*c1*c3,
+                       s1*c2       ,  -s2 ,      c2*c1       )'
         return dcm
 
     elseif rot_seq == :YZX
-        dcm = SMatrix{3,3}(        c1*c2    ,    s2 ,        -s1*c2    ,
-                           -c3*c1*s2 + s3*s1,  c2*c3,  c3*s1*s2 + s3*c1,
-                            s3*c1*s2 + c3*s1, -s3*c2, -s3*s1*s2 + c3*c1)'
+        dcm = DCM(        c1*c2    ,    s2 ,        -s1*c2    ,
+                  -c3*c1*s2 + s3*s1,  c2*c3,  c3*s1*s2 + s3*c1,
+                   s3*c1*s2 + c3*s1, -s3*c2, -s3*s1*s2 + c3*c1)'
         return dcm
 
     elseif rot_seq == :YZY
-        dcm = SMatrix{3,3}(c1*c3*c2 - s1*s3, s2*c3, -s1*c3*c2 - c1*s3,
-                                 -c1*s2    ,   c2 ,         s1*s2    ,
-                           c1*c2*s3 + s1*c3, s2*s3, -s1*c2*s3 + c1*c3)'
+        dcm = DCM(c1*c3*c2 - s1*s3, s2*c3, -s1*c3*c2 - c1*s3,
+                        -c1*s2    ,   c2 ,         s1*s2    ,
+                  c1*c2*s3 + s1*c3, s2*s3, -s1*c2*s3 + c1*c3)'
         return dcm
 
     elseif rot_seq == :ZXY
-        dcm = SMatrix{3,3}(c3*c1 - s2*s3*s1, c3*s1 + s2*s3*c1, -s3*c2,
-                              -c2*s1       ,     c2*c1       ,    s2 ,
-                           s3*c1 + s2*c3*s1, s3*s1 - s2*c3*c1,  c2*c3)'
+        dcm = DCM(c3*c1 - s2*s3*s1, c3*s1 + s2*s3*c1, -s3*c2,
+                     -c2*s1       ,     c2*c1       ,    s2 ,
+                  s3*c1 + s2*c3*s1, s3*s1 - s2*c3*c1,  c2*c3)'
         return dcm
 
     elseif rot_seq == :ZXZ
-        dcm = SMatrix{3,3}(-s1*c2*s3 + c1*c3, c1*c2*s3 + s1*c3, s2*s3,
-                           -s1*c3*c2 - c1*s3, c1*c3*c2 - s1*s3, s2*c3,
-                                   s1*s2    ,       -c1*s2    ,  c2)'
+        dcm = DCM(-s1*c2*s3 + c1*c3, c1*c2*s3 + s1*c3, s2*s3,
+                  -s1*c3*c2 - c1*s3, c1*c3*c2 - s1*s3, s2*c3,
+                          s1*s2    ,       -c1*s2    ,  c2)'
         return dcm
 
     elseif rot_seq == :ZYZ
-        dcm = SMatrix{3,3}( c1*c3*c2 - s1*s3,  s1*c3*c2 + c1*s3, -s2*c3,
-                           -c1*c2*s3 - s1*c3, -s1*c2*s3 + c1*c3,  s2*s3,
-                                   c1*s2    ,         s1*s2    ,    c2)'
+        dcm = DCM( c1*c3*c2 - s1*s3,  s1*c3*c2 + c1*s3, -s2*c3,
+                  -c1*c2*s3 - s1*c3, -s1*c2*s3 + c1*c3,  s2*s3,
+                          c1*s2    ,         s1*s2    ,    c2)'
         return dcm
     else
         throw(RotationSequenceError)
@@ -192,9 +192,9 @@ No process of ortho-normalization is performed with the computed DCM.
 
 """
 function smallangle2dcm( θx::Number, θy::Number, θz::Number)
-    SMatrix{3,3}(  1, +θz, -θy,
-                 -θz,   1, +θx,
-                 +θy, -θx,   1)'
+    DCM(  1, +θz, -θy,
+        -θz,   1, +θx,
+        +θy, -θx,   1)'
 end
 
 # Quaternion
