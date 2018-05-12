@@ -32,7 +32,6 @@ It is expected that the vector `v` is unitary. However, no verification is
 performed inside the function. The user must handle this situation.
 
 """
-
 function angleaxis2quat(a::Number, v::Vector)
     # Check the arguments.
     if length(v) > 3
@@ -65,7 +64,6 @@ verification is performed inside the function. The user must handle this
 situation.
 
 """
-
 function angleaxis2quat(angleaxis::EulerAngleAxis{T}) where T<:Real
     # Create a quaternion using the provided Euler angle and axis.
     angleaxis2quat(angleaxis.a, angleaxis.v)

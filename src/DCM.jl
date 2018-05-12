@@ -21,7 +21,6 @@ by the angle `angle`.
 * axis: Axis, must be 'x', 'X', 'y', 'Y', 'z', or 'Z'.
 
 """
-
 function create_rotation_matrix(angle::Number, axis::Symbol = :X)
     cos_angle = cos(angle)
     sin_angle = sin(angle)
@@ -72,7 +71,6 @@ The rotation sequence is defined by a `:Symbol`. The possible values are:
 The Euler angles (see `EulerAngles`).
 
 """
-
 function dcm2angle(dcm::DCM, rot_seq::Symbol=:ZYX)
     if rot_seq == :ZYX
 
@@ -195,7 +193,6 @@ This algorithm was obtained from:
     q   = dcm2quat(dcm)
 
 """
-
 function dcm2quat(dcm::DCM{T}) where T<:Real
     if  trace(dcm) > 0
         # f = 4*q0
@@ -273,7 +270,6 @@ with respect to `a`, and represented in `b`, is `wba_b`.
 The time-derivative of the DCM `Dba` (3x3 matrix of type `SMatrix{3,3}`).
 
 """
-
 function ddcm(Dba::DCM, wba_b::AbstractArray)
     # Auxiliary variable.
     w = wba_b

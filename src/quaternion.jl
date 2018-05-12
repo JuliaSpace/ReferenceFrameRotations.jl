@@ -30,7 +30,6 @@ Create the following quaternion:
 The new quaternion.
 
 """
-
 function Quaternion(q0::Number, q1::Number, q2::Number, q3::Number)
     (q0p, q1p, q2p, q3p) = promote(q0,q1,q2,q3)
     Quaternion(q0p,q1p,q2p,q3p)
@@ -61,7 +60,6 @@ part is `0` and the imaginary part is `v`. Otherwise, it returns the quaternion
 with real part `v[1]` and imaginary part `v[2:4]`.
 
 """
-
 function Quaternion(v::AbstractVector)
     # The vector must have 3 or 4 components.
     if length(v) != 3 && length(v) != 4
@@ -90,7 +88,6 @@ Create a quaternion with real part `r` and vectorial or imaginary part `v`.
 The quaternion `r + v[1].i + v[2].j + v[3].k`.
 
 """
-
 function Quaternion(r::Number, v::AbstractVector)
     Quaternion(r, v[1], v[2], v[3])
 end
@@ -117,7 +114,6 @@ Sum the quaternion `qa` with the quaternion `qb`.
 The quaternion `qa + qb`.
 
 """
-
 @inline function +(qa::Quaternion, qb::Quaternion)
     Quaternion(qa.q0 + qb.q0, qa.q1 + qb.q1, qa.q2 + qb.q2, qa.q3 + qb.q3)
 end
@@ -140,7 +136,6 @@ Subtract quaternion `qb` from quaternion `qa`.
 The quaternion `qa - qb`.
 
 """
-
 @inline function -(qa::Quaternion, qb::Quaternion)
     Quaternion(qa.q0 - qb.q0, qa.q1 - qb.q1, qa.q2 - qb.q2, qa.q3 - qb.q3)
 end
@@ -163,7 +158,6 @@ Multiply the quaternion `q` by the scalar `λ`.
 The quaternion `λ*q`.
 
 """
-
 @inline function *(λ::Number, q::Quaternion)
     Quaternion(λ*q.q0, λ*q.q1, λ*q.q2, λ*q.q3)
 end
@@ -183,7 +177,6 @@ Multiply the quaternion `q` by the scalar `λ`.
 The quaternion `q*λ`.
 
 """
-
 @inline function *(q::Quaternion, λ::Number)
     Quaternion(λ*q.q0, λ*q.q1, λ*q.q2, λ*q.q3)
 end
@@ -203,7 +196,6 @@ Compute the multiplication `q1*q2`.
 The quaternion `q1*q2`.
 
 """
-
 @inline function *(q1::Quaternion, q2::Quaternion)
     Quaternion(q1.q0*q2.q0 - q1.q1*q2.q1 - q1.q2*q2.q2 - q1.q3*q2.q3,
                q1.q0*q2.q1 + q1.q1*q2.q0 + q1.q2*q2.q3 - q1.q3*q2.q2,
@@ -228,7 +220,6 @@ Compute the multiplication `v*q` in which `v` is a quaternion with real part
 The quaternion `v*q`.
 
 """
-
 @inline function *(v::AbstractVector, q::Quaternion)
     Quaternion(-v[1]*q.q1 - v[2]*q.q2 - v[3]*q.q3,
                +v[1]*q.q0 + v[2]*q.q3 - v[3]*q.q2,
@@ -278,7 +269,6 @@ Compute the division `λ/q`.
 The quaternion `λ/q`.
 
 """
-
 @inline function /(λ::Number, q::Quaternion)
     # Compute `λ*(1/q)`.
     norm_q = q.q0*q.q0 + q.q1*q.q1 + q.q2*q.q2 + q.q3*q.q3
@@ -300,7 +290,6 @@ Compute the division `q/λ`.
 The quaternion `q/λ`.
 
 """
-
 @inline function /(q::Quaternion{T1}, λ::T2) where T1<:Real where T2<:Real
     q*(1/λ)
 end
@@ -322,7 +311,6 @@ Transform the quaternion into a 4x1 vector of type `T`.
 A 4x1 vector of type `T` with the elements of the quaternion.
 
 """
-
 @inline function getindex(q::Quaternion{T}, ::Colon) where T<:Real
     [q.q0;q.q1;q.q2;q.q3]
 end
@@ -345,7 +333,6 @@ Compute the complex conjugate of the quaternion `q`.
 The complex conjugate of the quaternion `q`: `q0 - q1.i - q2.j - q3.k`.
 
 """
-
 @inline function conj(q::Quaternion)
     # Compute the complex conjugate of the quaternion.
     Quaternion(q.q0, -q.q1, -q.q2, -q.q3)
@@ -365,7 +352,6 @@ Create a copy of the quaternion `q`.
 The copy of the quaternion.
 
 """
-
 @inline function copy(q::Quaternion{T}) where T<:Real
     Quaternion{T}(q.q0, q.q1, q.q2, q.q3)
 end
@@ -389,7 +375,6 @@ The identity quaternion of type `T`.
     eye(Quaternion{Float32})
 
 """
-
 function eye(::Type{Quaternion{T}}) where T<:Real
     Quaternion{T}(one(T),zero(T),zero(T),zero(T))
 end
@@ -408,7 +393,6 @@ Create the identity quaternion (`1 + 0.i + 0.j + 0.k`) of type `Float64`.
 The identity quaternion of type `Float64`.
 
 """
-
 function eye(::Type{Quaternion})
     Quaternion{Float64}(1.0,0.0,0.0,0.0)
 end
@@ -428,7 +412,6 @@ another quaternion `q`.
 The identity quaternion of type `T`.
 
 """
-
 function eye(q::Quaternion{T}) where T<:Real
     eye(Quaternion{T})
 end
@@ -448,7 +431,6 @@ vector.
 The following vector: `[q1; q2; q3]`.
 
 """
-
 @inline function imag(q::Quaternion)
     SVector{3}(q.q1, q.q2, q.q3)
 end
@@ -467,7 +449,6 @@ Compute the inverse of the quaternion `q`.
 Inverse of the quaternion `q`.
 
 """
-
 @inline function inv(q::Quaternion)
     # Compute the inverse of the quaternion.
     norm_q = q.q0*q.q0 + q.q1*q.q1 + q.q2*q.q2 + q.q3*q.q3
@@ -488,7 +469,6 @@ Compute the Euclidean norm of the quaternion `q`.
 The Euclidean norm of `q`.
 
 """
-
 @inline function norm(q::Quaternion)
     sqrt(q.q0*q.q0 + q.q1*q.q1 + q.q2*q.q2 + q.q3*q.q3)
 end
@@ -507,7 +487,6 @@ Return the real part of the quaternion `q`.
 The scalar `q0`.
 
 """
-
 @inline function real(q::Quaternion)
     q.q0
 end
@@ -527,7 +506,6 @@ vector.
 The following vector: `[q1; q2; q3]`.
 
 """
-
 @inline function vect(q::Quaternion)
     SVector{3}(q.q1, q.q2, q.q3)
 end
@@ -546,7 +524,6 @@ Create the null quaternion (`0 + 0.i + 0.j + 0.k`) of type `T`.
 The null quaternion of type `T`.
 
 """
-
 function zeros(::Type{Quaternion{T}}) where T<:Real
     Quaternion{T}(zero(T),zero(T),zero(T),zero(T))
 end
@@ -565,7 +542,6 @@ Create the null quaternion (`0 + 0.i + 0.j + 0.k`) of type `Float64`.
 The null quaternion of type `Float64`.
 
 """
-
 function zeros(::Type{Quaternion})
     Quaternion{Float64}(0.0,0.0,0.0,0.0)
 end
@@ -585,7 +561,6 @@ quaternion `q`.
 The null quaternion of type `T`.
 
 """
-
 function zeros(q::Quaternion{T}) where T<:Real
     zeros(Quaternion{T})
 end
@@ -605,7 +580,6 @@ Print the quaternion `q` to the stream `io`.
 * q: The quaternion that will be printed.
 
 """
-
 function show(io::IO, q::Quaternion{T}) where T<:Real
     println(io, "Quaternion{$(T)}:")
 
@@ -647,7 +621,6 @@ Convert the quaternion `q` to a Direction Cosine Matrix.
 The Direction Cosine Matrix.
 
 """
-
 function quat2dcm(q::Quaternion)
     # Auxiliary variables.
     q0 = q.q0
@@ -683,7 +656,6 @@ meaning of the results will not be defined, because the input quaternion does
 not represent a 3D rotation. The user must handle such situations.
 
 """
-
 function quat2angleaxis(q::Quaternion)
     a = atan2( norm(vect(q)), q.q0 )*2
     v = vect(q)/sin(a/2)
@@ -749,7 +721,6 @@ velocity of `b` with respect to `a`, and represented in `b`, is `wba_b`.
 The quaternion with the time-derivative of `qba`.
 
 """
-
 function dquat(qba::Quaternion{T1},
                wba_b::AbstractVector{T2}) where T1<:Real where T2<:Real
     # Auxiliary variable.

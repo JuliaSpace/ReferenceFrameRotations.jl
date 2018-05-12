@@ -43,7 +43,6 @@ the *i*-th rotation, `i Є [1,2,3]`.
     dcm = angle2dcm(pi/2, pi/3, pi/4, "ZYX")
 
 """
-
 function angle2dcm(angle_r1::Number,
                    angle_r2::Number,
                    angle_r3::Number,
@@ -158,7 +157,6 @@ the *i*-th rotation, `i Є [1,2,3]`.
     dcm = angle2dcm(EulerAngles(pi/2, pi, pi/4, "ZYX"))
 
 """
-
 function angle2dcm(eulerang::EulerAngles{T}) where T<:Real
     angle2dcm(eulerang.a1,
               eulerang.a2,
@@ -231,7 +229,6 @@ with the *i*-th rotation, `i Є [1,2,3]`.
     q = angle2quat(pi/2, pi/3, pi/4, "ZYX")
 
 """
-
 function angle2quat(angle_r1::Number,
                     angle_r2::Number,
                     angle_r3::Number,
@@ -335,7 +332,6 @@ with the *i*-th rotation, `i Є [1,2,3]`.
     q = angle2quat(EulerAngles(pi/2, pi/3, pi/4, "ZYX"))
 
 """
-
 function angle2quat(eulerang::EulerAngles)
     angle2quat(eulerang.a1,
                eulerang.a2,
@@ -368,7 +364,6 @@ The quaternion is normalized.
     q = smallangle2quat(+0.01, -0.01, +0.01)
 
 """
-
 function smallangle2quat(θx::Number, θy::Number, θz::Number)
     q0     = 1
     q1     = θx/2

@@ -25,8 +25,8 @@ The definition of Euler Angles, which is composed of three angles `a1`, `a2`,
 and `a3` together with a rotation sequence `rot_seq`. The latter is provided by
 a symbol with three characters, each one indicating the rotation axis of the
 corresponding angle (for example, `:ZYX`).
-"""
 
+"""
 struct EulerAngles{T<:Real}
     a1::T
     a2::T
@@ -41,8 +41,8 @@ The definition of Euler Angle and Axis to represent a 3D rotation.
 
 * `a` is the Euler angle [rad].
 * `v` is a unitary vector aligned with the Euler axis.
-"""
 
+"""
 struct EulerAngleAxis{T<:Real}
     a::T
     v::Vector{T}
@@ -55,8 +55,8 @@ The definition of the quaternion. It has four values of the same type. The
 quaternion representation is:
 
     q0 + q1.i + q2.j + q3.k
-"""
 
+"""
 struct Quaternion{T<:Real}
     q0::T
     q1::T
