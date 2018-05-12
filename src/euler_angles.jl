@@ -58,83 +58,71 @@ function angle2dcm(angle_r1::Number,
     s3 = sin(angle_r3)
 
     if rot_seq == :ZYX
-        dcm = DCM(       c2*c1    ,        c2*s1    , -s2  ,
-                  s3*s2*c1 - c3*s1, s3*s2*s1 + c3*c1, s3*c2,
-                  c3*s2*c1 + s3*s1, c3*s2*s1 - s3*c1, c3*c2)'
-        return dcm
+        return DCM(       c2*c1    ,        c2*s1    , -s2  ,
+                   s3*s2*c1 - c3*s1, s3*s2*s1 + c3*c1, s3*c2,
+                   c3*s2*c1 + s3*s1, c3*s2*s1 - s3*c1, c3*c2)'
 
     elseif rot_seq == :XYX
-        dcm = DCM( c2  ,         s1*s2    ,       -c1*s2    ,
-                  s2*s3, -s1*c2*s3 + c1*c3, c1*c2*s3 + s1*c3,
-                  s2*c3, -s1*c3*c2 - c1*s3, c1*c3*c2 - s1*s3)'
-        return dcm
+        return DCM( c2  ,         s1*s2    ,       -c1*s2    ,
+                   s2*s3, -s1*c2*s3 + c1*c3, c1*c2*s3 + s1*c3,
+                   s2*c3, -s1*c3*c2 - c1*s3, c1*c3*c2 - s1*s3)'
 
     elseif rot_seq == :XYZ
-        dcm = DCM( c2*c3,  s1*s2*c3 + c1*s3, -c1*s2*c3 + s1*s3,
-                  -c2*s3, -s1*s2*s3 + c1*c3,  c1*s2*s3 + s1*c3,
-                     s2 ,        -s1*c2    ,       c1*c2)'
-        return dcm
+        return DCM( c2*c3,  s1*s2*c3 + c1*s3, -c1*s2*c3 + s1*s3,
+                   -c2*s3, -s1*s2*s3 + c1*c3,  c1*s2*s3 + s1*c3,
+                      s2 ,        -s1*c2    ,       c1*c2)'
 
     elseif rot_seq == :XZX
-        dcm = DCM(   c2 ,         c1*s2    ,         s1*s2    ,
-                  -s2*c3,  c1*c3*c2 - s1*s3,  s1*c3*c2 + c1*s3,
-                   s2*s3, -c1*c2*s3 - s1*c3, -s1*c2*s3 + c1*c3)'
-        return dcm
+        return DCM(   c2 ,         c1*s2    ,         s1*s2    ,
+                   -s2*c3,  c1*c3*c2 - s1*s3,  s1*c3*c2 + c1*s3,
+                    s2*s3, -c1*c2*s3 - s1*c3, -s1*c2*s3 + c1*c3)'
 
     elseif rot_seq == :XZY
-        dcm = DCM(c3*c2, c1*c3*s2 + s1*s3, s1*c3*s2 - c1*s3,
-                   -s2 ,        c1*c2    ,        s1*c2    ,
-                  s3*c2, c1*s2*s3 - s1*c3, s1*s2*s3 + c1*c3)'
-        return dcm
+        return DCM(c3*c2, c1*c3*s2 + s1*s3, s1*c3*s2 - c1*s3,
+                    -s2 ,        c1*c2    ,        s1*c2    ,
+                   s3*c2, c1*s2*s3 - s1*c3, s1*s2*s3 + c1*c3)'
 
     elseif rot_seq == :YXY
-        dcm = DCM(-s1*c2*s3 + c1*c3, s2*s3 , -c1*c2*s3 - s1*c3,
-                         s1*s2    ,   c2  ,         c1*s2    ,
-                  s1*c3*c2 + c1*s3, -s2*c3,  c1*c3*c2 - s1*s3)'
-        return dcm
+        return DCM(-s1*c2*s3 + c1*c3, s2*s3 , -c1*c2*s3 - s1*c3,
+                          s1*s2    ,   c2  ,         c1*s2    ,
+                   s1*c3*c2 + c1*s3, -s2*c3,  c1*c3*c2 - s1*s3)'
 
     elseif rot_seq == :YXZ
-        dcm = DCM( c1*c3 + s2*s1*s3, c2*s3, -s1*c3 + s2*c1*s3,
-                  -c1*s3 + s2*s1*c3, c2*c3,  s1*s3 + s2*c1*c3,
-                       s1*c2       ,  -s2 ,      c2*c1       )'
-        return dcm
+        return DCM( c1*c3 + s2*s1*s3, c2*s3, -s1*c3 + s2*c1*s3,
+                   -c1*s3 + s2*s1*c3, c2*c3,  s1*s3 + s2*c1*c3,
+                        s1*c2       ,  -s2 ,      c2*c1       )'
 
     elseif rot_seq == :YZX
-        dcm = DCM(        c1*c2    ,    s2 ,        -s1*c2    ,
-                  -c3*c1*s2 + s3*s1,  c2*c3,  c3*s1*s2 + s3*c1,
-                   s3*c1*s2 + c3*s1, -s3*c2, -s3*s1*s2 + c3*c1)'
-        return dcm
+        return DCM(        c1*c2    ,    s2 ,        -s1*c2    ,
+                   -c3*c1*s2 + s3*s1,  c2*c3,  c3*s1*s2 + s3*c1,
+                    s3*c1*s2 + c3*s1, -s3*c2, -s3*s1*s2 + c3*c1)'
 
     elseif rot_seq == :YZY
-        dcm = DCM(c1*c3*c2 - s1*s3, s2*c3, -s1*c3*c2 - c1*s3,
-                        -c1*s2    ,   c2 ,         s1*s2    ,
-                  c1*c2*s3 + s1*c3, s2*s3, -s1*c2*s3 + c1*c3)'
-        return dcm
+        return DCM(c1*c3*c2 - s1*s3, s2*c3, -s1*c3*c2 - c1*s3,
+                         -c1*s2    ,   c2 ,         s1*s2    ,
+                   c1*c2*s3 + s1*c3, s2*s3, -s1*c2*s3 + c1*c3)'
 
     elseif rot_seq == :ZXY
-        dcm = DCM(c3*c1 - s2*s3*s1, c3*s1 + s2*s3*c1, -s3*c2,
-                     -c2*s1       ,     c2*c1       ,    s2 ,
-                  s3*c1 + s2*c3*s1, s3*s1 - s2*c3*c1,  c2*c3)'
-        return dcm
+        return DCM(c3*c1 - s2*s3*s1, c3*s1 + s2*s3*c1, -s3*c2,
+                      -c2*s1       ,     c2*c1       ,    s2 ,
+                   s3*c1 + s2*c3*s1, s3*s1 - s2*c3*c1,  c2*c3)'
 
     elseif rot_seq == :ZXZ
-        dcm = DCM(-s1*c2*s3 + c1*c3, c1*c2*s3 + s1*c3, s2*s3,
-                  -s1*c3*c2 - c1*s3, c1*c3*c2 - s1*s3, s2*c3,
-                          s1*s2    ,       -c1*s2    ,  c2)'
-        return dcm
+        return DCM(-s1*c2*s3 + c1*c3, c1*c2*s3 + s1*c3, s2*s3,
+                   -s1*c3*c2 - c1*s3, c1*c3*c2 - s1*s3, s2*c3,
+                           s1*s2    ,       -c1*s2    ,  c2)'
 
     elseif rot_seq == :ZYZ
-        dcm = DCM( c1*c3*c2 - s1*s3,  s1*c3*c2 + c1*s3, -s2*c3,
-                  -c1*c2*s3 - s1*c3, -s1*c2*s3 + c1*c3,  s2*s3,
-                          c1*s2    ,         s1*s2    ,    c2)'
-        return dcm
+        return DCM( c1*c3*c2 - s1*s3,  s1*c3*c2 + c1*s3, -s2*c3,
+                   -c1*c2*s3 - s1*c3, -s1*c2*s3 + c1*c3,  s2*s3,
+                           c1*s2    ,         s1*s2    ,    c2)'
     else
         throw(ArgumentError("The rotation sequence :$rot_seq is not valid."))
     end
 end
 
 """
-### function angle2dcm(eulerang::EulerAngles{T}) where T<:Real
+### function angle2dcm(eulerang::EulerAngles)
 
 Convert the Euler angles `eulerang` (see `EulerAngles`) to a direction cosine
 matrix.
@@ -157,7 +145,7 @@ the *i*-th rotation, `i Є [1,2,3]`.
     dcm = angle2dcm(EulerAngles(pi/2, pi, pi/4, :ZYX))
 
 """
-function angle2dcm(eulerang::EulerAngles{T}) where T<:Real
+function angle2dcm(eulerang::EulerAngles)
     angle2dcm(eulerang.a1,
               eulerang.a2,
               eulerang.a3,
@@ -165,7 +153,7 @@ function angle2dcm(eulerang::EulerAngles{T}) where T<:Real
 end
 
 """
-### function smallangle2dcm(θx::Number, θy::Number, θz::Number) where T<:Real
+### function smallangle2dcm(θx::Number, θy::Number, θz::Number)
 
 Create a direction cosine matrix from three small rotations of angles `θx`,
 `θy`, and `θz` about the axes X, Y, and Z, respectively.
@@ -189,7 +177,7 @@ No process of ortho-normalization is performed with the computed DCM.
     dcm = smallangle2dcm(+0.01, -0.01, +0.01)
 
 """
-function smallangle2dcm( θx::Number, θy::Number, θz::Number)
+function smallangle2dcm(θx::Number, θy::Number, θz::Number)
     DCM(  1, +θz, -θy,
         -θz,   1, +θx,
         +θy, -θx,   1)'
@@ -358,7 +346,7 @@ function angle2quat(angle_r1::Number,
 end
 
 """
-### function angle2quat(eulerang::EulerAngles{T}) where T<:Real
+### function angle2quat(eulerang::EulerAngles)
 
 Convert the Euler angles `eulerang` (see `EulerAngles`) to a quaternion.
 
