@@ -40,7 +40,7 @@ the *i*-th rotation, `i Є [1,2,3]`.
 
 ##### Example
 
-    dcm = angle2dcm(pi/2, pi/3, pi/4, "ZYX")
+    dcm = angle2dcm(pi/2, pi/3, pi/4, :ZYX)
 
 """
 function angle2dcm(angle_r1::Number,
@@ -154,7 +154,7 @@ the *i*-th rotation, `i Є [1,2,3]`.
 
 ##### Example
 
-    dcm = angle2dcm(EulerAngles(pi/2, pi, pi/4, "ZYX"))
+    dcm = angle2dcm(EulerAngles(pi/2, pi, pi/4, :ZYX))
 
 """
 function angle2dcm(eulerang::EulerAngles{T}) where T<:Real
@@ -226,7 +226,7 @@ with the *i*-th rotation, `i Є [1,2,3]`.
 
 ##### Example
 
-    q = angle2quat(pi/2, pi/3, pi/4, "ZYX")
+    q = angle2quat(pi/2, pi/3, pi/4, :ZYX)
 
 """
 function angle2quat(angle_r1::Number,
@@ -329,7 +329,7 @@ with the *i*-th rotation, `i Є [1,2,3]`.
 
 ##### Example
 
-    q = angle2quat(EulerAngles(pi/2, pi/3, pi/4, "ZYX"))
+    q = angle2quat(EulerAngles(pi/2, pi/3, pi/4, :ZYX))
 
 """
 function angle2quat(eulerang::EulerAngles)
@@ -441,8 +441,8 @@ The rotation description according to the type `T`.
 
 ##### Example
 
-    dcm = angle2drot(EulerAngles(pi/2, pi, pi/4, "ZYX"))
-    q   = angle2drot(Quaternion,EulerAngles(pi/2, pi, pi/4, "ZYX"))
+    dcm = angle2drot(EulerAngles(pi/2, pi, pi/4, :ZYX))
+    q   = angle2drot(Quaternion,EulerAngles(pi/2, pi, pi/4, :ZYX))
 
 """
 @inline angle2rot(eulerang::EulerAngles) =
