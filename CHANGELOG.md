@@ -20,6 +20,9 @@ Version 0.2.0
     * A set of rotations described by Direction Cosine Matrices or Quaternions
       can now be composed using the function `compose_rotation`. The input is
       the rotations in the desired order (from the first to the last).
+    * `angle2rot` and `smallangle2rot` are two functions that can be used to
+      create rotations descriptions from Euler angles based on the type of the
+      arguments.
 
 - Changes:
     * The rotations sequences are now described by symbols instead of strings.
