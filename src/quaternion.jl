@@ -78,7 +78,7 @@ end
 # ==============================================================================
 
 """
-### function +(qa::Quaternion{T1}, qb::Quaternion{T2}) where T1<:Real where T2<:Real
+### @inline function +(qa::Quaternion, qb::Quaternion)
 
 Sum the quaternion `qa` with the quaternion `qb`.
 
@@ -93,8 +93,7 @@ The quaternion `qa + qb`.
 
 """
 
-function +(qa::Quaternion{T1}, qb::Quaternion{T2}) where T1<:Real where T2<:Real
-    # Sum `qa` and `qb`.
+@inline function +(qa::Quaternion, qb::Quaternion)
     Quaternion(qa.q0 + qb.q0, qa.q1 + qb.q1, qa.q2 + qb.q2, qa.q3 + qb.q3)
 end
 
@@ -102,7 +101,7 @@ end
 # ==============================================================================
 
 """
-### function -(qa::Quaternion{T1}, qb::Quaternion{T2}) where T1<:Real where T2<:Real
+### @inline function -(qa::Quaternion, qb::Quaternion)
 
 Subtract quaternion `qb` from quaternion `qa`.
 
@@ -117,8 +116,7 @@ The quaternion `qa - qb`.
 
 """
 
-function -(qa::Quaternion{T1}, qb::Quaternion{T2}) where T1<:Real where T2<:Real
-    # Subtract `qb` from `qa`.
+@inline function -(qa::Quaternion, qb::Quaternion)
     Quaternion(qa.q0 - qb.q0, qa.q1 - qb.q1, qa.q2 - qb.q2, qa.q3 - qb.q3)
 end
 
@@ -126,7 +124,7 @@ end
 # ==============================================================================
 
 """
-### function *(λ::T1, q::Quaternion{T2}) where T1<:Real where T2
+### @inline function *(λ::Number, q::Quaternion{T2})
 
 Multiply the quaternion `q` by the scalar `λ`.
 
@@ -141,13 +139,12 @@ The quaternion `λ*q`.
 
 """
 
-function *(λ::T1, q::Quaternion{T2}) where T1<:Real where T2<:Real
-    # Multiply all the components by the scalar λ.
+@inline function *(λ::Number, q::Quaternion)
     Quaternion(λ*q.q0, λ*q.q1, λ*q.q2, λ*q.q3)
 end
 
 """
-### function *(q::Quaternion{T1}, λ::T1) where T1<:Real where T2<:Real
+### @inline function *(q::Quaternion, λ::Number)
 
 Multiply the quaternion `q` by the scalar `λ`.
 
@@ -162,12 +159,12 @@ The quaternion `q*λ`.
 
 """
 
-function *(q::Quaternion{T1}, λ::T2) where T1<:Real where T2<:Real
-    λ*q
+@inline function *(q::Quaternion, λ::Number)
+    Quaternion(λ*q.q0, λ*q.q1, λ*q.q2, λ*q.q3)
 end
 
 """
-### function *(q1::Quaternion{T1}, q2::Quaternion{T2}) where T1<:Real where T2<:Real
+### @inline function *(q1::Quaternion, q2::Quaternion)
 
 Compute the multiplication `q1*q2`.
 
@@ -182,27 +179,15 @@ The quaternion `q1*q2`.
 
 """
 
-function *(q1::Quaternion{T1}, q2::Quaternion{T2}) where T1<:Real where T2<:Real
-    # Get the real part of the quaternions.
-    r1 = real(q1)
-    r2 = real(q2)
-
-    # Get the vectorial/imaginary part of the quaternions.
-    v1 = vect(q1)
-    v2 = vect(q2)
-
-    # Obtain the new real part of the quaternion `q1*q2`.
-    rr = r1*r2-dot(v1,v2)
-
-    # Obtain the new vectorial/imaginary part of the quaternion `q1*q2`.
-    vr = r1*v2 + r2*v1 + cross(v1,v2)
-
-    # Create the new quaternion.
-    Quaternion(rr,vr)
+@inline function *(q1::Quaternion, q2::Quaternion)
+    Quaternion(q1.q0*q2.q0 - q1.q1*q2.q1 - q1.q2*q2.q2 - q1.q3*q2.q3,
+               q1.q0*q2.q1 + q1.q1*q2.q0 + q1.q2*q2.q3 - q1.q3*q2.q2,
+               q1.q0*q2.q2 - q1.q1*q2.q3 + q1.q2*q2.q0 + q1.q3*q2.q1,
+               q1.q0*q2.q3 + q1.q1*q2.q2 - q1.q2*q2.q1 + q1.q3*q2.q0)
 end
 
 """
-### function *(v::Vector{T1}, q::Quaternion{T2}) where T1<:Real where T2<:Real
+### @inline function *(v::AbstractVector, q::Quaternion)
 
 Compute the multiplication `v*q` in which `v` is a quaternion with real part
 `0` and vectorial/imaginary part `v`.
@@ -219,12 +204,15 @@ The quaternion `v*q`.
 
 """
 
-function *(v::Vector{T1}, q::Quaternion{T2}) where T1<:Real where T2<:Real
-    Quaternion(v)*q
+@inline function *(v::AbstractVector, q::Quaternion)
+    Quaternion(-v[1]*q.q1 - v[2]*q.q2 - v[3]*q.q3,
+               +v[1]*q.q0 + v[2]*q.q3 - v[3]*q.q2,
+               -v[1]*q.q3 + v[2]*q.q0 + v[3]*q.q1,
+               +v[1]*q.q2 - v[2]*q.q1 + v[3]*q.q0)
 end
 
 """
-### function *(q::Quaternion{T1}, v::Vector{T2}) where T1<:Real where T2<:Real
+### @inline function *(q::Quaternion, v::AbstractVector)
 
 Compute the multiplication `q*v` in which `v` is a quaternion with real part
 `0` and vectorial/imaginary part `v`.
@@ -240,15 +228,18 @@ Compute the multiplication `q*v` in which `v` is a quaternion with real part
 The quaternion `q*v`.
 
 """
-function *(q::Quaternion{T1}, v::Vector{T2}) where T1<:Real where T2<:Real
-    q*Quaternion(v)
+@inline function *(q::Quaternion, v::AbstractVector)
+    Quaternion(           - q.q1*v[1] - q.q2*v[2] - q.q3*v[3],
+               q.q0*v[1]              + q.q2*v[3] - q.q3*v[2],
+               q.q0*v[2] - q.q1*v[3]              + q.q3*v[1],
+               q.q0*v[3] + q.q1*v[2] - q.q2*v[1]             )
 end
 
 # Operation: /
 # ==============================================================================
 
 """
-### function /(λ::T1, q::Quaternion{T2}) where T1<:Real where T2
+### @inline function /(λ::Number, q::Quaternion)
 
 Compute the division `λ/q`.
 
@@ -263,12 +254,14 @@ The quaternion `λ/q`.
 
 """
 
-function /(λ::T1, q::Quaternion{T2}) where T1<:Real where T2<:Real
-    λ*inv(q)
+@inline function /(λ::Number, q::Quaternion)
+    # Compute `λ*(1/q)`.
+    norm_q = q.q0*q.q0 + q.q1*q.q1 + q.q2*q.q2 + q.q3*q.q3
+    Quaternion(λ*q.q0/norm_q, -λ*q.q1/norm_q, -λ*q.q2/norm_q, -λ*q.q3/norm_q)
 end
 
 """
-### function /(q::Quaternion{T1}, λ::T1) where T1<:Real where T2<:Real
+### @inline function /(q::Quaternion{T1}, λ::T1) where T1<:Real where T2<:Real
 
 Compute the division `q/λ`.
 
@@ -283,7 +276,7 @@ The quaternion `q/λ`.
 
 """
 
-function /(q::Quaternion{T1}, λ::T2) where T1<:Real where T2<:Real
+@inline function /(q::Quaternion{T1}, λ::T2) where T1<:Real where T2<:Real
     q*(1/λ)
 end
 
@@ -291,7 +284,7 @@ end
 # ==============================================================================
 
 """
-### function getindex(q::Quaternion{T}, ::Colon) where T<:Real
+### @inline function getindex(q::Quaternion{T}, ::Colon) where T<:Real
 
 Transform the quaternion into a 4x1 vector of type `T`.
 
@@ -305,7 +298,7 @@ A 4x1 vector of type `T` with the elements of the quaternion.
 
 """
 
-function getindex(q::Quaternion{T}, ::Colon) where T<:Real
+@inline function getindex(q::Quaternion{T}, ::Colon) where T<:Real
     [q.q0;q.q1;q.q2;q.q3]
 end
 
@@ -348,7 +341,7 @@ end
 ################################################################################
 
 """
-### function conj(q::Quaternion{T}) where T<:Real
+### @inline function conj(q::Quaternion{T}) where T<:Real
 
 Compute the complex conjugate of the quaternion `q`.
 
@@ -362,13 +355,13 @@ The complex conjugate of the quaternion `q`: `q0 - q1.i - q2.j - q3.k`.
 
 """
 
-function conj(q::Quaternion{T}) where T<:Real
+@inline function conj(q::Quaternion)
     # Compute the complex conjugate of the quaternion.
-    Quaternion{T}(q.q0, -q.q1, -q.q2, -q.q3)
+    Quaternion(q.q0, -q.q1, -q.q2, -q.q3)
 end
 
 """
-### function copy(q::Quaternion{T}) where T<:Real
+### @inline function copy(q::Quaternion{T}) where T<:Real
 
 Create a copy of the quaternion `q`.
 
@@ -382,7 +375,7 @@ The copy of the quaternion.
 
 """
 
-function copy(q::Quaternion{T}) where T<:Real
+@inline function copy(q::Quaternion{T}) where T<:Real
     Quaternion{T}(q.q0, q.q1, q.q2, q.q3)
 end
 
@@ -450,7 +443,7 @@ function eye(q::Quaternion{T}) where T<:Real
 end
 
 """
-### function imag(q::Quaternion{T}) where T<:Real
+### @inline function imag(q::Quaternion{T}) where T<:Real
 
 Return the vectorial or imaginary part of the quaternion represented by a 3x1
 vector.
@@ -465,8 +458,8 @@ The following vector: `[q1; q2; q3]`.
 
 """
 
-function imag(q::Quaternion{T}) where T<:Real
-    vect(q)
+@inline function imag(q::Quaternion{T}) where T<:Real
+    Vector{T}([q.q1; q.q2; q.q3])
 end
 
 """
@@ -484,13 +477,14 @@ Inverse of the quaternion `q`.
 
 """
 
-function inv(q::Quaternion{T}) where T<:Real
+@inline function inv(q::Quaternion{T}) where T<:Real
     # Compute the inverse of the quaternion.
-    conj(q)/(q.q0*q.q0 + q.q1*q.q1 + q.q2*q.q2 + q.q3*q.q3)
+    norm_q = q.q0*q.q0 + q.q1*q.q1 + q.q2*q.q2 + q.q3*q.q3
+    Quaternion(q.q0/norm_q, -q.q1/norm_q, -q.q2/norm_q, -q.q3/norm_q)
 end
 
 """
-### function norm(q::Quaternion{T}) where T<:Real
+### @inline function norm(q::Quaternion)
 
 Compute the Euclidean norm of the quaternion `q`.
 
@@ -504,12 +498,12 @@ The Euclidean norm of `q`.
 
 """
 
-function norm(q::Quaternion{T}) where T<:Real
+@inline function norm(q::Quaternion)
     sqrt(q.q0*q.q0 + q.q1*q.q1 + q.q2*q.q2 + q.q3*q.q3)
 end
 
 """
-### function real(q::Quaternion{T}) where T<:Real
+### @inline function real(q::Quaternion)
 
 Return the real part of the quaternion `q`.
 
@@ -523,12 +517,12 @@ The scalar `q0`.
 
 """
 
-function real(q::Quaternion{T}) where T<:Real
+@inline function real(q::Quaternion)
     q.q0
 end
 
 """
-### function vect(q::Quaternion{T}) where T<:Real
+### @inline function vect(q::Quaternion{T}) where T<:Real
 
 Return the vectorial or imaginary part of the quaternion represented by a 3x1
 vector.
@@ -543,7 +537,7 @@ The following vector: `[q1; q2; q3]`.
 
 """
 
-function vect(q::Quaternion{T}) where T<:Real
+@inline function vect(q::Quaternion{T}) where T<:Real
     Vector{T}([q.q1; q.q2; q.q3])
 end
 
