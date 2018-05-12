@@ -696,22 +696,25 @@ end
 # ==============================================================================
 
 """
-### function quat2angle(q::Quaternion, rot_seq::AbstractString="ZYX") where T<:Real
+### function quat2angle(q::Quaternion, rot_seq::Symbol = :ZYX)
 
 Convert the quaternion `q` to Euler Angles given a rotation sequence `rot_seq`.
+
+The rotation sequence is defined by a `:Symbol`. The possible values are:
+`:XYX`, `XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`,
+`:ZYX`, and `:ZYZ`.
 
 ##### Args
 
 * q: Quaternion.
-* rot_seq: Rotation sequence.
+* rot_seq: (OPTIONAL) Rotation sequence (**Default** = `:ZYX`).
 
 ##### Returns
 
 The Euler angles (see `EulerAngles`).
 
 """
-function quat2angle(q::Quaternion{T},
-                    rot_seq::AbstractString="ZYX") where T<:Real
+function quat2angle(q::Quaternion, rot_seq::Symbol=:ZYX)
     # TODO: This function calls uses `angle2dcm` to convert the quaternion to a
     # Direction Cosine Matrix. It **must** be rewritten to avoid this
     # intermediate step to increase the performance.

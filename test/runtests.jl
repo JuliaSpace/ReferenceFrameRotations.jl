@@ -4,18 +4,18 @@ VERSION <  v"0.7.0-DEV.2036" && using Base.Test
 using ReferenceFrameRotations
 
 # Available rotations.
-rot_seq_array = ["XYX",
-                 "XYZ",
-                 "XZX",
-                 "XZY",
-                 "YXY",
-                 "YXZ",
-                 "YZX",
-                 "YZY",
-                 "ZXY",
-                 "ZXZ",
-                 "ZYX",
-                 "ZYZ"]
+rot_seq_array = [:XYX,
+                 :XYZ,
+                 :XZX,
+                 :XZY,
+                 :YXY,
+                 :YXZ,
+                 :YZX,
+                 :YZY,
+                 :ZXY,
+                 :ZXZ,
+                 :ZYX,
+                 :ZYZ]
 
 # Number of samples.
 samples = 1000
@@ -37,7 +37,7 @@ for k = 1:samples
     ang = -pi + 2pi*rand()
 
     # Create a DCM that rotates about X axis.
-    dcm = create_rotation_matrix(ang, 'x')
+    dcm = create_rotation_matrix(ang, :X)
 
     # Create a vector that does not have X component.
     v = [0;randn();randn()]
@@ -58,7 +58,7 @@ for k = 1:samples
     ang = -pi + 2pi*rand()
 
     # Create a DCM that rotates about Y axis.
-    dcm = create_rotation_matrix(ang, 'y')
+    dcm = create_rotation_matrix(ang, :Y)
 
     # Create a vector that does not have Y component.
     v = [randn();0;randn()]
@@ -79,7 +79,7 @@ for k = 1:samples
     ang = -pi + 2pi*rand()
 
     # Create a DCM that rotates about Z axis.
-    dcm = create_rotation_matrix(ang, 'z')
+    dcm = create_rotation_matrix(ang, :Z)
 
     # Create a vector that does not have Z component.
     v = [randn();randn();0]
@@ -97,8 +97,8 @@ for k = 1:samples
     # ==============
 
     # Sample two DCMs.
-    dcm1 = create_rotation_matrix(randn(), rand(['x','y','z']))
-    dcm2 = create_rotation_matrix(randn(), rand(['x','y','z']))
+    dcm1 = create_rotation_matrix(randn(), rand([:X,:Y,:Z]))
+    dcm2 = create_rotation_matrix(randn(), rand([:X,:Y,:Z]))
 
     # Create another DCM.
     dcm3 = dcm2*dcm1
@@ -124,7 +124,7 @@ for i = 1:samples
     ang = -pi + 2pi*rand()
 
     # Create a quaternion that rotates about X axis.
-    q = angle2quat(ang, 0.0, 0.0, "XYZ")
+    q = angle2quat(ang, 0.0, 0.0, :XYZ)
 
     # Create a vector that does not have X component.
     v = [0;randn();randn()]
@@ -145,7 +145,7 @@ for i = 1:samples
     ang = -pi + 2pi*rand()
 
     # Create a quaternion that rotates about Y axis.
-    q = angle2quat(ang, 0.0, 0.0, "YXZ")
+    q = angle2quat(ang, 0.0, 0.0, :YXZ)
 
     # Create a vector that does not have Y component.
     v = [randn();0;randn()]
@@ -166,7 +166,7 @@ for i = 1:samples
     ang = -pi + 2pi*rand()
 
     # Create a quaternion that rotates about Z axis.
-    q = angle2quat(ang, 0.0, 0.0, "ZXY")
+    q = angle2quat(ang, 0.0, 0.0, :ZXY)
 
     # Create a vector that does not have Z component.
     v = [randn();randn();0]
@@ -256,7 +256,7 @@ for k = 1:samples
     eulerang = EulerAngles(-0.0001 + 0.0002*rand(),
                            -0.0001 + 0.0002*rand(),
                            -0.0001 + 0.0002*rand(),
-                           "XYZ")
+                           :XYZ)
 
     # Get the error between the exact rotation and the small angle
     # approximation.
@@ -353,7 +353,7 @@ for k = 1:samples
     eulerang = EulerAngles(-0.0001 + 0.0002*rand(),
                            -0.0001 + 0.0002*rand(),
                            -0.0001 + 0.0002*rand(),
-                           "XYZ")
+                           :XYZ)
 
     # Get the error between the exact rotation and the small angle
     # approximation.

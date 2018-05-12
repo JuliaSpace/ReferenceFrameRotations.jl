@@ -13,17 +13,21 @@ export smallangle2dcm, smallangle2quat
 # ==============================================================================
 
 """
-### function angle2dcm(angle_r1::Number, angle_r2::Number, angle_r3::Number, rot_seq::AbstractString="ZYX")
+### function angle2dcm(angle_r1::Number, angle_r2::Number, angle_r3::Number, rot_seq::Symbol = :ZYX)
 
 Convert the Euler angles `angle_r1`, `angle_r2`, and `angle_r3` with the
 rotation sequence `rot_seq` to a direction cosine matrix.
+
+The rotation sequence is defined by a `:Symbol`. The possible values are:
+`:XYX`, `XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`,
+`:ZYX`, and `:ZYZ`.
 
 ##### Args
 
 * angle_r1: Angle of the first rotation [rad].
 * angle_r2: Angle of the second rotation [rad].
 * angle_r3: Angle of the third rotation [rad].
-* rot_seq: Rotation sequence.
+* rot_seq: (OPTIONAL) Rotation sequence (**Default** = `:ZYX`).
 
 ##### Returns
 
@@ -43,13 +47,7 @@ the *i*-th rotation, `i Є [1,2,3]`.
 function angle2dcm(angle_r1::Number,
                    angle_r2::Number,
                    angle_r3::Number,
-                   rot_seq::AbstractString="ZYX")
-
-    # Check if rot_seq has at least three characters.
-    if (length(rot_seq) < 3)
-        throw(ArgumentError)
-    end
-
+                   rot_seq::Symbol = :ZYX)
     # Compute the sines and cosines.
     c1 = cos(angle_r1)
     s1 = sin(angle_r1)
@@ -60,76 +58,73 @@ function angle2dcm(angle_r1::Number,
     c3 = cos(angle_r3)
     s3 = sin(angle_r3)
 
-    # Check the rotation sequence and compute the DCM.
-    rot_seq = uppercase(rot_seq)
-
-    if ( startswith(rot_seq, "ZYX") )
+    if rot_seq == :ZYX
         dcm = SMatrix{3,3}(       c2*c1    ,        c2*s1    , -s2  ,
                            s3*s2*c1 - c3*s1, s3*s2*s1 + c3*c1, s3*c2,
                            c3*s2*c1 + s3*s1, c3*s2*s1 - s3*c1, c3*c2)'
         return dcm
 
-    elseif ( startswith(rot_seq, "XYX") )
+    elseif rot_seq == :XYX
         dcm = SMatrix{3,3}( c2  ,         s1*s2    ,       -c1*s2    ,
                            s2*s3, -s1*c2*s3 + c1*c3, c1*c2*s3 + s1*c3,
                            s2*c3, -s1*c3*c2 - c1*s3, c1*c3*c2 - s1*s3)'
         return dcm
 
-    elseif ( startswith(rot_seq, "XYZ") )
+    elseif rot_seq == :XYZ
         dcm = SMatrix{3,3}( c2*c3,  s1*s2*c3 + c1*s3, -c1*s2*c3 + s1*s3,
                            -c2*s3, -s1*s2*s3 + c1*c3,  c1*s2*s3 + s1*c3,
                               s2 ,        -s1*c2    ,       c1*c2)'
         return dcm
 
-    elseif ( startswith(rot_seq, "XZX") )
+    elseif rot_seq == :XZX
         dcm = SMatrix{3,3}(   c2 ,         c1*s2    ,         s1*s2    ,
                            -s2*c3,  c1*c3*c2 - s1*s3,  s1*c3*c2 + c1*s3,
                             s2*s3, -c1*c2*s3 - s1*c3, -s1*c2*s3 + c1*c3)'
         return dcm
 
-    elseif ( startswith(rot_seq, "XZY") )
+    elseif rot_seq == :XZY
         dcm = SMatrix{3,3}(c3*c2, c1*c3*s2 + s1*s3, s1*c3*s2 - c1*s3,
                             -s2 ,        c1*c2    ,        s1*c2    ,
                            s3*c2, c1*s2*s3 - s1*c3, s1*s2*s3 + c1*c3)'
         return dcm
 
-    elseif ( startswith(rot_seq, "YXY") )
+    elseif rot_seq == :YXY
         dcm = SMatrix{3,3}(-s1*c2*s3 + c1*c3, s2*s3 , -c1*c2*s3 - s1*c3,
                                    s1*s2    ,   c2  ,         c1*s2    ,
                             s1*c3*c2 + c1*s3, -s2*c3,  c1*c3*c2 - s1*s3)'
         return dcm
 
-    elseif ( startswith(rot_seq, "YXZ") )
+    elseif rot_seq == :YXZ
         dcm = SMatrix{3,3}( c1*c3 + s2*s1*s3, c2*s3, -s1*c3 + s2*c1*s3,
                            -c1*s3 + s2*s1*c3, c2*c3,  s1*s3 + s2*c1*c3,
                                 s1*c2       ,  -s2 ,      c2*c1       )'
         return dcm
 
-    elseif ( startswith(rot_seq, "YZX") )
+    elseif rot_seq == :YZX
         dcm = SMatrix{3,3}(        c1*c2    ,    s2 ,        -s1*c2    ,
                            -c3*c1*s2 + s3*s1,  c2*c3,  c3*s1*s2 + s3*c1,
                             s3*c1*s2 + c3*s1, -s3*c2, -s3*s1*s2 + c3*c1)'
         return dcm
 
-    elseif ( startswith(rot_seq, "YZY") )
+    elseif rot_seq == :YZY
         dcm = SMatrix{3,3}(c1*c3*c2 - s1*s3, s2*c3, -s1*c3*c2 - c1*s3,
                                  -c1*s2    ,   c2 ,         s1*s2    ,
                            c1*c2*s3 + s1*c3, s2*s3, -s1*c2*s3 + c1*c3)'
         return dcm
 
-    elseif ( startswith(rot_seq, "ZXY") )
+    elseif rot_seq == :ZXY
         dcm = SMatrix{3,3}(c3*c1 - s2*s3*s1, c3*s1 + s2*s3*c1, -s3*c2,
                               -c2*s1       ,     c2*c1       ,    s2 ,
                            s3*c1 + s2*c3*s1, s3*s1 - s2*c3*c1,  c2*c3)'
         return dcm
 
-    elseif ( startswith(rot_seq, "ZXZ") )
+    elseif rot_seq == :ZXZ
         dcm = SMatrix{3,3}(-s1*c2*s3 + c1*c3, c1*c2*s3 + s1*c3, s2*s3,
                            -s1*c3*c2 - c1*s3, c1*c3*c2 - s1*s3, s2*c3,
                                    s1*s2    ,       -c1*s2    ,  c2)'
         return dcm
 
-    elseif ( startswith(rot_seq, "ZYZ") )
+    elseif rot_seq == :ZYZ
         dcm = SMatrix{3,3}( c1*c3*c2 - s1*s3,  s1*c3*c2 + c1*s3, -s2*c3,
                            -c1*c2*s3 - s1*c3, -s1*c2*s3 + c1*c3,  s2*s3,
                                    c1*s2    ,         s1*s2    ,    c2)'
@@ -211,12 +206,16 @@ end
 Convert the Euler angles `angle_r1`, `angle_r2`, and `angle_r3` with the
 rotation sequence `rot_seq` to a quaternion.
 
+The rotation sequence is defined by a `:Symbol`. The possible values are:
+`:XYX`, `XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`,
+`:ZYX`, and `:ZYZ`.
+
 ##### Args
 
 * angle_r1: Angle of the first rotation [rad].
 * angle_r2: Angle of the second rotation [rad].
 * angle_r3: Angle of the third rotation [rad].
-* rot_seq: Rotation sequence.
+* rot_seq: (OPTIONAL) Rotation sequence (**Default** = `:ZYX`).
 
 ##### Returns
 
@@ -236,11 +235,7 @@ with the *i*-th rotation, `i Є [1,2,3]`.
 function angle2quat(angle_r1::Number,
                     angle_r2::Number,
                     angle_r3::Number,
-                    rot_seq::AbstractString="ZYX")
-    # Check if rot_seq has at least three characters.
-    if (length(rot_seq) < 3)
-        throw(ArgumentError)
-    end
+                    rot_seq::Symbol = :ZYX)
 
     # Compute the sines and cosines of half angle.
     c1 = cos(angle_r1/2)
@@ -252,65 +247,62 @@ function angle2quat(angle_r1::Number,
     c3 = cos(angle_r3/2)
     s3 = sin(angle_r3/2)
 
-    # Check the rotation sequence and compute the DCM.
-    rot_seq = uppercase(rot_seq)
-
-    if ( startswith(rot_seq, "ZYX") )
+    if rot_seq == :ZYX
         return Quaternion(c1*c2*c3 + s1*s2*s3,
                           c1*c2*s3 - s1*s2*c3,
                           c1*s2*c3 + s1*c2*s3,
                           s1*c2*c3 - c1*s2*s3)
-    elseif ( startswith(rot_seq, "XYX") )
+    elseif rot_seq == :XYX
         return Quaternion(c1*c2*c3 - s1*c2*s3,
                           c1*c2*s3 + s1*c2*c3,
                           c1*s2*c3 + s1*s2*s3,
                           s1*s2*c3 - c1*s2*s3)
-    elseif ( startswith(rot_seq, "XYZ") )
+    elseif rot_seq == :XYZ
         return Quaternion(c1*c2*c3 - s1*s2*s3,
                           s1*c2*c3 + c1*s2*s3,
                           c1*s2*c3 - s1*c2*s3,
                           c1*c2*s3 + s1*s2*c3)
-    elseif ( startswith(rot_seq, "XZX") )
+    elseif rot_seq == :XZX
         return Quaternion(c1*c2*c3 - s1*c2*s3,
                           c1*c2*s3 + s1*c2*c3,
                           c1*s2*s3 - s1*s2*c3,
                           c1*s2*c3 + s1*s2*s3)
-    elseif ( startswith(rot_seq, "XZY") )
+    elseif rot_seq == :XZY
         return Quaternion(c1*c2*c3 + s1*s2*s3,
                           s1*c2*c3 - c1*s2*s3,
                           c1*c2*s3 - s1*s2*c3,
                           c1*s2*c3 + s1*c2*s3)
-    elseif ( startswith(rot_seq, "YXY") )
+    elseif rot_seq == :YXY
         return Quaternion(c1*c2*c3 - s1*c2*s3,
                           c1*s2*c3 + s1*s2*s3,
                           c1*c2*s3 + s1*c2*c3,
                           c1*s2*s3 - s1*s2*c3)
-    elseif ( startswith(rot_seq, "YXZ") )
+    elseif rot_seq == :YXZ
         return Quaternion(c1*c2*c3 + s1*s2*s3,
                           c1*s2*c3 + s1*c2*s3,
                           s1*c2*c3 - c1*s2*s3,
                           c1*c2*s3 - s1*s2*c3)
-    elseif ( startswith(rot_seq, "YZX") )
+    elseif rot_seq == :YZX
         return Quaternion(c1*c2*c3 - s1*s2*s3,
                           c1*c2*s3 + s1*s2*c3,
                           s1*c2*c3 + c1*s2*s3,
                           c1*s2*c3 - s1*c2*s3)
-    elseif ( startswith(rot_seq, "YZY") )
+    elseif rot_seq == :YZY
         return Quaternion(c1*c2*c3 - s1*c2*s3,
                           s1*s2*c3 - c1*s2*s3,
                           c1*c2*s3 + s1*c2*c3,
                           c1*s2*c3 + s1*s2*s3)
-    elseif ( startswith(rot_seq, "ZXY") )
+    elseif rot_seq == :ZXY
         return Quaternion(c1*c2*c3 - s1*s2*s3,
                           c1*s2*c3 - s1*c2*s3,
                           c1*c2*s3 + s1*s2*c3,
                           s1*c2*c3 + c1*s2*s3)
-    elseif ( startswith(rot_seq, "ZXZ") )
+    elseif rot_seq == :ZXZ
         return Quaternion(c1*c2*c3 - s1*c2*s3,
                           c1*s2*c3 + s1*s2*s3,
                           s1*s2*c3 - c1*s2*s3,
                           c1*c2*s3 + s1*c2*c3)
-    elseif ( startswith(rot_seq, "ZYZ") )
+    elseif rot_seq == :ZYZ
         return Quaternion(c1*c2*c3 - s1*c2*s3,
                           c1*s2*s3 - s1*s2*c3,
                           c1*s2*c3 + s1*s2*s3,

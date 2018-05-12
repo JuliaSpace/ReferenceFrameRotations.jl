@@ -10,7 +10,7 @@ export ddcm, dcm2angle, dcm2quat
 ################################################################################
 
 """
-### function create_rotation_matrix(angle::Number, axis::Char) where T<:Real
+### function create_rotation_matrix(angle::Number, axis::Symbol = :X) where T<:Real
 
 Compute a rotation matrix that rotates a coordinate frame about the axis `axis`
 by the angle `angle`.
@@ -22,27 +22,27 @@ by the angle `angle`.
 
 """
 
-function create_rotation_matrix(angle::Number, axis::Char)
+function create_rotation_matrix(angle::Number, axis::Symbol = :X)
     cos_angle = cos(angle)
     sin_angle = sin(angle)
 
-    if (axis == 'x') || (axis == 'X')
+    if axis == :X
         dcm = SMatrix{3,3}(1,      0,          0,
                            0, +cos_angle, +sin_angle,
                            0, -sin_angle, +cos_angle)'
         return dcm
-    elseif (axis == 'y') || (axis == 'Y')
+    elseif axis == :Y
         dcm = SMatrix{3,3}(+cos_angle, 0, -sin_angle,
                                 0,     1,      0,
                            +sin_angle, 0, +cos_angle)'
         return dcm
-    elseif (axis == 'z') || (axis == 'Z')
+    elseif axis == :Z
         dcm = SMatrix{3,3}(+cos_angle, +sin_angle, 0,
                            -sin_angle, +cos_angle, 0,
                                 0,          0,     1)'
         return dcm
     else
-        error("axis must be X, Y, or Z");
+        error("axis must be :X, :Y, or :Z");
     end
 end
 
@@ -54,14 +54,18 @@ end
 # ==============================================================================
 
 """
-### function dcm2angle(dcm::Matrix{T}, rot_seq::AbstractString="ZYX") where T<:Real
+### function dcm2angle(dcm::SMatrix{3,3}, rot_seq::Symbol=:ZYX)
 
 Convert the DCM `dcm` to Euler Angles given a rotation sequence `rot_seq`.
+
+The rotation sequence is defined by a `:Symbol`. The possible values are:
+`:XYX`, `XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`,
+`:ZYX`, and `:ZYZ`.
 
 ##### Args
 
 * DCM: Direction Cosine Matrix.
-* rot_seq: Rotation sequence.
+* rot_seq: (OPTIONAL) Rotation sequence (**Default** = `:ZYX`).
 
 ##### Returns
 
@@ -69,98 +73,90 @@ The Euler angles (see `EulerAngles`).
 
 """
 
-function dcm2angle(dcm::SMatrix{3,3}, rot_seq::AbstractString="ZYX")
+function dcm2angle(dcm::SMatrix{3,3}, rot_seq::Symbol=:ZYX)
     # Check if the dcm is a 3x3 matrix.
     if (size(dcm,1) != 3) || (size(dcm,2) != 3)
         throw(ArgumentError)
     end
 
-    # Check if rot_seq has at least three characters.
-    if length(rot_seq) < 3
-        throw(RotationSequenceError)
-    end
-
-    # For each rotation sequence, compute the euler angles.
-    rot_seq = uppercase(rot_seq)
-
-    if( startswith(rot_seq, "ZYX") )
+    if rot_seq == :ZYX
 
         EulerAngles(atan2(+dcm[1,2],+dcm[1,1]),
                      asin(-dcm[1,3]),
                     atan2(+dcm[2,3],+dcm[3,3]),
                     rot_seq)
 
-    elseif( startswith(rot_seq, "XYX") )
+    elseif rot_seq == :XYX
 
         EulerAngles(atan2(+dcm[1,2],-dcm[1,3]),
                      acos(+dcm[1,1]),
                     atan2(+dcm[2,1],+dcm[3,1]),
                     rot_seq)
 
-    elseif( startswith(rot_seq, "XYZ") )
+    elseif rot_seq == :XYZ
 
         EulerAngles(atan2(-dcm[3,2],+dcm[3,3]),
                      asin(+dcm[3,1]),
                     atan2(-dcm[2,1],+dcm[1,1]),
                     rot_seq)
 
-    elseif( startswith(rot_seq, "XZX") )
+    elseif rot_seq == :XZX
 
         EulerAngles(atan2(+dcm[1,3],+dcm[1,2]),
                      acos(+dcm[1,1]),
                     atan2(+dcm[3,1],-dcm[2,1]),
                     rot_seq)
 
-    elseif( startswith(rot_seq, "XZY") )
+    elseif rot_seq == :XZY
 
         EulerAngles(atan2(+dcm[2,3],+dcm[2,2]),
                      asin(-dcm[2,1]),
                     atan2(+dcm[3,1],+dcm[1,1]),
                     rot_seq)
 
-    elseif( startswith(rot_seq, "YXY") )
+    elseif rot_seq == :YXY
 
         EulerAngles(atan2(+dcm[2,1],+dcm[2,3]),
                      acos(+dcm[2,2]),
                     atan2(+dcm[1,2],-dcm[3,2]),
                     rot_seq)
 
-    elseif( startswith(rot_seq, "YXZ") )
+    elseif rot_seq == :YXZ
 
         EulerAngles(atan2(+dcm[3,1],+dcm[3,3]),
                      asin(-dcm[3,2]),
                     atan2(+dcm[1,2],+dcm[2,2]),
                     rot_seq)
 
-    elseif( startswith(rot_seq, "YZX") )
+    elseif rot_seq == :YZX
 
         EulerAngles(atan2(-dcm[1,3],+dcm[1,1]),
                      asin(+dcm[1,2]),
                     atan2(-dcm[3,2],+dcm[2,2]),
                     rot_seq)
 
-    elseif( startswith(rot_seq, "YZY") )
+    elseif rot_seq == :YZY
 
         EulerAngles(atan2(+dcm[2,3],-dcm[2,1]),
                      acos(+dcm[2,2]),
                     atan2(+dcm[3,2],+dcm[1,2]),
                     rot_seq)
 
-    elseif( startswith(rot_seq, "ZXY") )
+    elseif rot_seq == :ZXY
 
         EulerAngles(atan2(-dcm[2,1],+dcm[2,2]),
                      asin(+dcm[2,3]),
                     atan2(-dcm[1,3],+dcm[3,3]),
                     rot_seq)
 
-    elseif( startswith(rot_seq, "ZXZ") )
+    elseif rot_seq == :ZXZ
 
         EulerAngles(atan2(+dcm[3,1],-dcm[3,2]),
                      acos(+dcm[3,3]),
                     atan2(+dcm[1,3],+dcm[2,3]),
                     rot_seq)
 
-    elseif( startswith(rot_seq, "ZYZ") )
+    elseif rot_seq == :ZYZ
 
         EulerAngles(atan2(+dcm[3,2],+dcm[3,1]),
                      acos(+dcm[3,3]),
