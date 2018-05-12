@@ -36,7 +36,7 @@ available:
 
 ## Euler Angle and Axis
 
-The Euler angle and axis representation is defined by the following mutable
+The Euler angle and axis representation is defined by the following immutable
 structure:
 
 ```julia
@@ -55,22 +55,22 @@ support for operations using Euler angles and axes.
 
 ## Euler Angles
 
-The Euler Angles are defined by the following mutable structure:
+The Euler Angles are defined by the following immutable structure:
 
 ```julia
-mutable struct EulerAngles{T<:Real}
+struct EulerAngles{T<:Real}
     a1::T
     a2::T
     a3::T
-    rot_seq::AbstractString
+    rot_seq::Symbol
 end
 ```
 
-in which `a1`, `a2`, and `a3` define the angles and the `rot_seq` contains a
-string defining the axes. The valid values for `rot_seq` are:
+in which `a1`, `a2`, and `a3` define the angles and the `rot_seq` is a symbol
+that defines the axes. The valid values for `rot_seq` are:
 
-* `XYX`, `XYZ`, `XZX`, `XZY`, `YXY`, `YXZ`, `YZX`, `YZY`, `ZXY`, `ZXZ`, `ZYX`, and
-`ZYZ`.
+* `:XYX`, `:XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`,
+  `:ZXZ`, `:ZYX`, and `ZYZ`.
 
 ## Quaternions
 
@@ -167,6 +167,24 @@ in which:
 
     q = q.q0 + (q.q1).i + (q.q2).j + (q.q3).k
 
+However, since the type `Quaternion` is **immutable**, its components cannot be
+changed individually after the creation. Hence, the following operation will
+lead to an error:
+
+```julia
+q.q0 = 1.0  # This is not defined and will not work.
+```
+
+If you want to modify a single value for the quaternion, then you need to create
+another one:
+
+```julia
+q = Quaternion(1.0, q.q1, q.q2, q.q3)
+```
+
+This can be annoying sometimes, but using an immutable type provided a huge
+performance boost for the algorithm.
+
 ### Operations
 
 The sum operations between quaternions and the multiplication between a
@@ -221,7 +239,7 @@ inv(q)*q
 
 imag(q)  # Returns the vectorial / imaginary part of the quaternion.
 
-    3-element Array{Float64,1}:
+    3-element StaticArrays.SArray{Tuple{3},Float64,1,3}:
      2.0
      3.0
      4.0
@@ -236,7 +254,7 @@ real(q)  # Returns the real part of the quaternion.
 
 vect(q)  # Returns the vectorial / imaginary part of the quaternion.
 
-    3-element Array{Float64,1}:
+    3-element StaticArrays.SArray{Tuple{3},Float64,1,3}:
      2.0
      3.0
      4.0
@@ -284,11 +302,17 @@ vA  = [0;1;0]
 vB  = vect(inv(qBA)*vA*qBA)
 vB
 
-    3-element Array{Float64,1}:
+    3-element StaticArrays.SArray{Tuple{3},Float64,1,3}:
       0.0
       0.707107
      -0.707107
 ```
+
+Notice that a `SArray` is returned instead of the usual `Array`. This is a
+static vector created by the package
+[**StaticArrays**](https://github.com/JuliaArrays/StaticArrays.jl). Generally,
+you can treat this vector as any other one. The only downside is that you cannot
+modify individual components because it is immutable.
 
 ## Conversions
 
@@ -302,38 +326,26 @@ following function:
 **Example**:
 
 ```julia
-dcm = [1 0 0; 0 0 -1; 0 1 0]
+dcm = DCM([1 0 0; 0 0 -1; 0 1 0])
 dcm2angle(dcm)
 
-    ReferenceFrameRotations.EulerAngles{Float64}(0.0, 0.0, -1.5707963267948966, "ZYX")
+    ReferenceFrameRotations.EulerAngles{Float64}(0.0, 0.0, -1.5707963267948966, :ZYX)
 
-dcm2angle(dcm, "XYZ")
+dcm2angle(dcm, :XYZ)
 
-    ReferenceFrameRotations.EulerAngles{Float64}(-1.5707963267948966, 0.0, 0.0, "XYZ")
+    ReferenceFrameRotations.EulerAngles{Float64}(-1.5707963267948966, 0.0, 0.0, :XYZ)
 ```
 
 ### Direction Cosine Matrices to Quaternions
 
-A DCM can be converted to quaternion using these two methods:
+A DCM can be converted to quaternion using the following method:
 
-    function dcm2quat!(q, dcm)
     function dcm2quat(dcm)
-
-The first `dcm2quat!` requires a pre-allocated quaternion, whereas the second
-`dcm2quat` allocates a new quaternion.
 
 **Example**
 
 ```julia
-q   = Quaternion(1.0,0.0,0.0,0.0)
-dcm = [1.0 0.0 0.0; 0.0 0.0 -1.0; 0.0 1.0 0.0]
-dcm2quat!(q, dcm)
-q
-
-    Quaternion{Float64}:
-      + 0.7071067811865476 - 0.7071067811865476.i + 0.0.j + 0.0.k
-
-dcm = [1.0 0.0 0.0; 0.0 0.0 -1.0; 0.0 1.0 0.0]
+dcm = DCM([1.0 0.0 0.0; 0.0 0.0 -1.0; 0.0 1.0 0.0])
 q   = dcm2quat(dcm)
 
     Quaternion{Float64}:
@@ -342,7 +354,7 @@ q   = dcm2quat(dcm)
 
 **NOTE**: Avoid using DCMs with `Int` numbers like:
 
-    dcm = [1 0 0; 0 0 -1; 0 1 0]
+    dcm = DCM([1 0 0; 0 0 -1; 0 1 0])
 
 because it can lead to `InexactError()` when converting to Quaternions. This bug
 will be addressed in a future version of **ReferenceFrameRotations.jl**.
@@ -374,48 +386,25 @@ angleaxis2quat(angleaxis)
 
 ### Euler Angles to Direction Cosine Matrices
 
-Euler angles can be converted to DCMs using two functions. The first
-`angle2dcm!` requires a pre-allocated 3x3 matrix, whereas the second `angle2dcm`
-allocates a new 3x3 matrix. The available methods are:
+Euler angles can be converted to DCMs using the following functions:
 
-    function angle2dcm!(dcm, angle_r1, angle_r2, angle_r3, rot_seq="ZYX")
-    function angle2dcm(angle_r1, angle_r2, angle_r3, rot_seq="ZYX")
-    function angle2dcm!(dcm, eulerang)
+    function angle2dcm(angle_r1, angle_r2, angle_r3, rot_seq=:ZYX)
     function angle2dcm(eulerang)
 
 **Example**:
 
 ```julia
-dcm = eye(3)
-angle2dcm!(dcm, pi/2, pi/4, pi/3, "ZYX")
-dcm
+dcm = angle2dcm(pi/2, pi/4, pi/3, :ZYX)
 
-    3×3 Array{Float64,2}:
+    3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
       4.32978e-17  0.707107  -0.707107
      -0.5          0.612372   0.612372
       0.866025     0.353553   0.353553
 
-dcm    = eye(3)
-angles = EulerAngles(pi/2, pi/4, pi/3, "ZYX")
-angle2dcm!(dcm,angles)
-dcm
-
-    3×3 Array{Float64,2}:
-      4.32978e-17  0.707107  -0.707107
-     -0.5          0.612372   0.612372
-      0.866025     0.353553   0.353553
-
-dcm = angle2dcm(pi/2, pi/4, pi/3, "ZYX")
-
-    3×3 Array{Float64,2}:
-      4.32978e-17  0.707107  -0.707107
-     -0.5          0.612372   0.612372
-      0.866025     0.353553   0.353553
-
-angles = EulerAngles(pi/2, pi/4, pi/3, "ZYX")
+angles = EulerAngles(pi/2, pi/4, pi/3, :ZYX)
 dcm    = angle2dcm(angles)
 
-    3×3 Array{Float64,2}:
+    3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
       4.32978e-17  0.707107  -0.707107
      -0.5          0.612372   0.612372
       0.866025     0.353553   0.353553
@@ -423,39 +412,20 @@ dcm    = angle2dcm(angles)
 
 ### Euler Angles to Quaternions
 
-Euler angles can be converted to quaternions using two functions. The first
-`angle2quat!` requires a pre-allocated quaternion, whereas the second
-`angle2quat` allocates a new quaternion. The available methods are:
+Euler angles can be converted to quaternions using the following functions:
 
-    function angle2quat!(q, angle_r1, angle_r2, angle_r3, rot_seq="ZYX")
     function angle2quat(angle_r1, angle_r2, angle_r3, rot_seq="ZYX")
-    function angle2quat!(q, eulerang)
     function angle2quat(eulerang)
 
 **Example**:
 
 ```julia
-q = eye(Quaternion)
-angle2quat!(q, pi/2, pi/4, pi/3, "ZYX")
-q
+q = angle2quat(pi/2, pi/4, pi/3, :ZYX)
 
     Quaternion{Float64}:
       + 0.7010573846499779 + 0.09229595564125723.i + 0.5609855267969309.j + 0.43045933457687935.k
 
-q      = eye(Quaternion)
-angles = EulerAngles(pi/2, pi/4, pi/3, "ZYX")
-angle2quat!(q,angles)
-q
-
-    Quaternion{Float64}:
-      + 0.7010573846499779 + 0.09229595564125723.i + 0.5609855267969309.j + 0.43045933457687935.k
-
-q = angle2quat(pi/2, pi/4, pi/3, "ZYX")
-
-    Quaternion{Float64}:
-      + 0.7010573846499779 + 0.09229595564125723.i + 0.5609855267969309.j + 0.43045933457687935.k
-
-angles = EulerAngles(pi/2, pi/4, pi/3, "ZYX")
+angles = EulerAngles(pi/2, pi/4, pi/3, :ZYX)
 q    = angle2quat(angles)
 
     Quaternion{Float64}:
@@ -464,25 +434,13 @@ q    = angle2quat(angles)
 
 ### Small Euler Angles to Direction Cosine Matrices
 
-Small Euler angles can be converted to DCMs using two functions. The first
-`smallangle2dcm!` requires a pre-allocated 3x3 matrix, whereas the second
-`smallangle2dcm` allocates a new 3x3 matrix. The available methods are:
+Small Euler angles can be converted to DCMs using the following function:
 
-    function smallangle2dcm!(dcm, θx, θy, θz)
     function smallangle2dcm(θx, θy, θz)
 
 **Example**:
 
 ```julia
-dcm = eye(3)
-smallangle2dcm!(dcm, 0.001, -0.002, +0.003)
-dcm
-
-    3×3 Array{Float64,2}:
-      1.0     0.003  0.002
-     -0.003   1.0    0.001
-     -0.002  -0.001  1.0
-
 dcm = smallangle2dcm(0.001, -0.002, +0.003)
 
     3×3 Array{Float64,2}:
@@ -495,23 +453,13 @@ dcm = smallangle2dcm(0.001, -0.002, +0.003)
 
 ### Small Euler Angles to Quaternions
 
-Small Euler angles can be converted to quaternions using two functions. The
-first `smallangle2quat!` requires a pre-allocated quaternion, whereas the second
-`smallangle2quat` allocates a new quaternion. The available methods are:
+Small Euler angles can be converted to quaternions using the following function:
 
-    function smallangle2quat!(q, θx, θy, θz)
     function smallangle2quat(θx, θy, θz)
 
 **Example**:
 
 ```julia
-q = eye(Quaternion)
-smallangle2quat!(q, 0.001, -0.002, +0.003)
-q
-
-    Quaternion{Float64}:
-      + 0.9999982500045936 + 0.0004999991250022968.i - 0.0009999982500045936.j + 0.0014999973750068907.k
-
 q = smallangle2quat(0.001, -0.002, +0.003)
 
     Quaternion{Float64}:
@@ -522,30 +470,17 @@ q = smallangle2quat(0.001, -0.002, +0.003)
 
 ### Quaternions to Direction Cosine Matrices
 
-A quaternion can be converted to DCM using these two methods:
+A quaternion can be converted to DCM using the following method:
 
-    function quat2dcm!(dcm, q)
     function quat2dcm(q)
-
-The first `quat2dcm!` requires a pre-allocated 3x3 matrix, whereas the second
-`quat2dcm` allocates a new 3x3 matrix.
 
 **Example**
 
 ```julia
 q   = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0)
-dcm = eye(3)
-quat2dcm!(dcm,q)
-
-    3×3 Array{Float64,2}:
-     1.0   0.0       0.0
-     0.0   0.707107  0.707107
-     0.0  -0.707107  0.707107
-
-q   = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0)
 dcm = quat2dcm(q)
 
-    3×3 Array{Float64,2}:
+    3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
      1.0   0.0       0.0
      0.0   0.707107  0.707107
      0.0  -0.707107  0.707107
@@ -584,9 +519,9 @@ The improvement of this conversion will be addressed in a future version of
 
 ```julia
 q = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0)
-quat2angle(q, "XYZ")
+quat2angle(q, :XYZ)
 
-    ReferenceFrameRotations.EulerAngles{Float64}(0.7853981633974484, 0.0, -0.0, "XYZ")
+    ReferenceFrameRotations.EulerAngles{Float64}(0.7853981633974484, 0.0, -0.0, :XYZ)
 ```
 
 ## Kinematics
