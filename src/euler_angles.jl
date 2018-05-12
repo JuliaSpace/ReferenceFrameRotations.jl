@@ -245,65 +245,113 @@ function angle2quat(angle_r1::Number,
     s3 = sin(angle_r3/2)
 
     if rot_seq == :ZYX
-        return Quaternion(c1*c2*c3 + s1*s2*s3,
-                          c1*c2*s3 - s1*s2*c3,
-                          c1*s2*c3 + s1*c2*s3,
-                          s1*c2*c3 - c1*s2*s3)
+        q0 = c1*c2*c3 + s1*s2*s3
+
+        s = (q0 < 0) ? -1 : +1
+
+        return Quaternion(s*q0,
+                          s*(c1*c2*s3 - s1*s2*c3),
+                          s*(c1*s2*c3 + s1*c2*s3),
+                          s*(s1*c2*c3 - c1*s2*s3))
     elseif rot_seq == :XYX
-        return Quaternion(c1*c2*c3 - s1*c2*s3,
-                          c1*c2*s3 + s1*c2*c3,
-                          c1*s2*c3 + s1*s2*s3,
-                          s1*s2*c3 - c1*s2*s3)
+        q0 = c1*c2*c3 - s1*c2*s3
+
+        s = (q0 < 0) ? -1 : +1
+
+        return Quaternion(s*q0,
+                          s*(c1*c2*s3 + s1*c2*c3),
+                          s*(c1*s2*c3 + s1*s2*s3),
+                          s*(s1*s2*c3 - c1*s2*s3))
     elseif rot_seq == :XYZ
-        return Quaternion(c1*c2*c3 - s1*s2*s3,
-                          s1*c2*c3 + c1*s2*s3,
-                          c1*s2*c3 - s1*c2*s3,
-                          c1*c2*s3 + s1*s2*c3)
+        q0 = c1*c2*c3 - s1*s2*s3
+
+        s = (q0 < 0) ? -1 : +1
+
+        return Quaternion(s*q0,
+                          s*(s1*c2*c3 + c1*s2*s3),
+                          s*(c1*s2*c3 - s1*c2*s3),
+                          s*(c1*c2*s3 + s1*s2*c3))
     elseif rot_seq == :XZX
-        return Quaternion(c1*c2*c3 - s1*c2*s3,
-                          c1*c2*s3 + s1*c2*c3,
-                          c1*s2*s3 - s1*s2*c3,
-                          c1*s2*c3 + s1*s2*s3)
+        q0 = c1*c2*c3 - s1*c2*s3
+
+        s = (q0 < 0) ? -1 : +1
+
+        return Quaternion(s*q0,
+                          s*(c1*c2*s3 + s1*c2*c3),
+                          s*(c1*s2*s3 - s1*s2*c3),
+                          s*(c1*s2*c3 + s1*s2*s3))
     elseif rot_seq == :XZY
-        return Quaternion(c1*c2*c3 + s1*s2*s3,
-                          s1*c2*c3 - c1*s2*s3,
-                          c1*c2*s3 - s1*s2*c3,
-                          c1*s2*c3 + s1*c2*s3)
+        q0 = c1*c2*c3 + s1*s2*s3
+
+        s = (q0 < 0) ? -1 : +1
+
+        return Quaternion(s*q0,
+                          s*(s1*c2*c3 - c1*s2*s3),
+                          s*(c1*c2*s3 - s1*s2*c3),
+                          s*(c1*s2*c3 + s1*c2*s3))
     elseif rot_seq == :YXY
-        return Quaternion(c1*c2*c3 - s1*c2*s3,
-                          c1*s2*c3 + s1*s2*s3,
-                          c1*c2*s3 + s1*c2*c3,
-                          c1*s2*s3 - s1*s2*c3)
+        q0 = c1*c2*c3 - s1*c2*s3
+
+        s = (q0 < 0) ? -1 : +1
+
+        return Quaternion(s*q0,
+                          s*(c1*s2*c3 + s1*s2*s3),
+                          s*(c1*c2*s3 + s1*c2*c3),
+                          s*(c1*s2*s3 - s1*s2*c3))
     elseif rot_seq == :YXZ
-        return Quaternion(c1*c2*c3 + s1*s2*s3,
-                          c1*s2*c3 + s1*c2*s3,
-                          s1*c2*c3 - c1*s2*s3,
-                          c1*c2*s3 - s1*s2*c3)
+        q0 = c1*c2*c3 + s1*s2*s3
+
+        s = (q0 < 0) ? -1 : +1
+
+        return Quaternion(s*q0,
+                          s*(c1*s2*c3 + s1*c2*s3),
+                          s*(s1*c2*c3 - c1*s2*s3),
+                          s*(c1*c2*s3 - s1*s2*c3))
     elseif rot_seq == :YZX
-        return Quaternion(c1*c2*c3 - s1*s2*s3,
-                          c1*c2*s3 + s1*s2*c3,
-                          s1*c2*c3 + c1*s2*s3,
-                          c1*s2*c3 - s1*c2*s3)
+        q0 = c1*c2*c3 - s1*s2*s3
+
+        s = (q0 < 0) ? -1 : +1
+
+        return Quaternion(s*q0,
+                          s*(c1*c2*s3 + s1*s2*c3),
+                          s*(s1*c2*c3 + c1*s2*s3),
+                          s*(c1*s2*c3 - s1*c2*s3))
     elseif rot_seq == :YZY
-        return Quaternion(c1*c2*c3 - s1*c2*s3,
-                          s1*s2*c3 - c1*s2*s3,
-                          c1*c2*s3 + s1*c2*c3,
-                          c1*s2*c3 + s1*s2*s3)
+        q0 = c1*c2*c3 - s1*c2*s3
+
+        s = (q0 < 0) ? -1 : +1
+
+        return Quaternion(s*q0,
+                          s*(s1*s2*c3 - c1*s2*s3),
+                          s*(c1*c2*s3 + s1*c2*c3),
+                          s*(c1*s2*c3 + s1*s2*s3))
     elseif rot_seq == :ZXY
-        return Quaternion(c1*c2*c3 - s1*s2*s3,
-                          c1*s2*c3 - s1*c2*s3,
-                          c1*c2*s3 + s1*s2*c3,
-                          s1*c2*c3 + c1*s2*s3)
+        q0 = c1*c2*c3 - s1*s2*s3
+
+        s = (q0 < 0) ? -1 : +1
+
+        return Quaternion(s*q0,
+                          s*(c1*s2*c3 - s1*c2*s3),
+                          s*(c1*c2*s3 + s1*s2*c3),
+                          s*(s1*c2*c3 + c1*s2*s3))
     elseif rot_seq == :ZXZ
-        return Quaternion(c1*c2*c3 - s1*c2*s3,
-                          c1*s2*c3 + s1*s2*s3,
-                          s1*s2*c3 - c1*s2*s3,
-                          c1*c2*s3 + s1*c2*c3)
+        q0 = c1*c2*c3 - s1*c2*s3
+
+        s = (q0 < 0) ? -1 : +1
+
+        return Quaternion(s*q0,
+                          s*(c1*s2*c3 + s1*s2*s3),
+                          s*(s1*s2*c3 - c1*s2*s3),
+                          s*(c1*c2*s3 + s1*c2*c3))
     elseif rot_seq == :ZYZ
-        return Quaternion(c1*c2*c3 - s1*c2*s3,
-                          c1*s2*s3 - s1*s2*c3,
-                          c1*s2*c3 + s1*s2*s3,
-                          c1*c2*s3 + s1*c2*c3)
+        q0 = c1*c2*c3 - s1*c2*s3
+
+        s = (q0 < 0) ? -1 : +1
+
+        return Quaternion(s*q0,
+                          s*(c1*s2*s3 - s1*s2*c3),
+                          s*(c1*s2*c3 + s1*s2*s3),
+                          s*(c1*c2*s3 + s1*c2*c3))
     else
         throw(ArgumentError("The rotation sequence :$rot_seq is not valid."))
     end
