@@ -1,5 +1,6 @@
 VERSION >= v"0.7.0-DEV.2036" && using Test
 VERSION <  v"0.7.0-DEV.2036" && using Base.Test
+VERSION >= v"0.7.0-DEV"      && using LinearAlgebra
 
 using ReferenceFrameRotations
 

@@ -2,9 +2,6 @@
 #                                 Quaternions
 ################################################################################
 
-import Base: +, -, *, /, conj, copy, eye, getindex, inv, imag, norm, real, show
-import Base: zeros
-
 export dquat, quat2angle, quat2angleaxis, quat2dcm, vect
 
 ################################################################################

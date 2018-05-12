@@ -4,9 +4,14 @@ module ReferenceFrameRotations
 
 export DCM, EulerAngleAxis, EulerAngles, Quaternion
 
-import Base: sin, cos
+import Base: +, -, *, /, conj, copy, getindex, inv, imag, real, show
+import Base: zeros
 
-importall StaticArrays
+VERSION <  v"0.7.0-DEV" && import Base: eye, norm
+VERSION >= v"0.7.0-DEV" && import LinearAlgebra: eye, norm
+VERSION >= v"0.7.0-DEV" && using  LinearAlgebra
+
+using StaticArrays
 
 ################################################################################
 #                                    Types
