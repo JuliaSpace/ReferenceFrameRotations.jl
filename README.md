@@ -10,6 +10,7 @@ National Institute for Space Research (INPE)](http://www.inpe.br).
 ## Requirements
 
 * Julia >= v0.6
+* StaticArrays
 
 ## Status
 
@@ -40,7 +41,7 @@ The Euler angle and axis representation is defined by the following immutable
 structure:
 
 ```julia
-mutable struct EulerAngleAxis{T<:Real}
+struct EulerAngleAxis{T<:Real}
     a::T
     v::Vector{T}
 end
