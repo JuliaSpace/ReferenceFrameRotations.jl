@@ -68,8 +68,6 @@ end
 #                                   Includes
 ################################################################################
 
-include("exceptions.jl")
-
 include("compose_rotations.jl")
 include("DCM.jl")
 include("euler_angle_axis.jl")

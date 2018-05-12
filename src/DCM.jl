@@ -157,7 +157,7 @@ function dcm2angle(dcm::DCM, rot_seq::Symbol=:ZYX)
                     rot_seq)
 
     else
-        throw(RotationSequenceError)
+        throw(ArgumentError("The rotation sequence :$rot_seq is not valid."))
     end
 end
 

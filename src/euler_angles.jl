@@ -129,7 +129,7 @@ function angle2dcm(angle_r1::Number,
                           c1*s2    ,         s1*s2    ,    c2)'
         return dcm
     else
-        throw(RotationSequenceError)
+        throw(ArgumentError("The rotation sequence :$rot_seq is not valid."))
     end
 end
 
@@ -305,7 +305,7 @@ function angle2quat(angle_r1::Number,
                           c1*s2*c3 + s1*s2*s3,
                           c1*c2*s3 + s1*c2*c3)
     else
-        throw(RotationSequenceError)
+        throw(ArgumentError("The rotation sequence :$rot_seq is not valid."))
     end
 end
 
