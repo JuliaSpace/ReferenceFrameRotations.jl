@@ -4,9 +4,6 @@ export compose_rotation
 #                              Compose Rotations
 ################################################################################
 
-#                          Direction Cosine Matrices
-# ==============================================================================
-
 """
 ### @inline function compose_rotation(R1, [, R2, R3, R4, R5, ...])
 
