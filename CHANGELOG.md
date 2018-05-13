@@ -30,7 +30,7 @@ Version 0.2.0
 - Changes:
     * The rotations sequences are now described by symbols instead of strings.
       Hence, `"ZYX"` was replaced by `:ZYX`, `"XYZ"` by `:XYZ`, `'x'` or `'X'`
-      by `:X` and so on.
+      by `:X`, and so on.
     * Due to the new type of DCMs, they now must be initialized using the type
       `DCM`. Hence, `dcm = [1 0 0; 0 -1 0; 0 0 -1]` must be replaced by
       `dcm = DCM([1 0 0; 0 -1 0; 0 0 -1])`.
@@ -40,7 +40,7 @@ Version 0.2.0
       quaternion is always positive.
 
 - Dropped functions:
-    * `<Function>!`: All functions that modifies a parameter (the ones that end
+    * `<Function>!`: All functions that modify a parameter (the ones that end
       with `!`) were dropped because now all the types are immutables.
 
 Version 0.1.0
