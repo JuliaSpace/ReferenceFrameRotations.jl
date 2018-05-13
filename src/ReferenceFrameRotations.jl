@@ -77,6 +77,7 @@ include("compose_rotations.jl")
 include("DCM.jl")
 include("euler_angle_axis.jl")
 include("euler_angles.jl")
+include("inv_rotations.jl")
 include("quaternion.jl")
 
 end # module

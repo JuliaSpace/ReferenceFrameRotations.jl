@@ -80,5 +80,5 @@ for k = 1:samples
     dcm3 = dcm2*dcm1
 
     # Check if they are orthonormal.
-    @test norm(dcm3'-inv(dcm1)*inv(dcm2)) < 1e-10
+    @test norm(inv_rotation(dcm3)-inv(dcm1)*inv(dcm2)) < 5e-10
 end

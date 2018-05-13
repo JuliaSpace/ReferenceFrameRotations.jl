@@ -19,7 +19,7 @@ for i = 1:samples
     v = [0;randn();randn()]
 
     # Rotate the reference using the quaternion.
-    v_r = vect(inv(q)*v*q)
+    v_r = vect(inv_rotation(q)*v*q)
 
     # Get the sine of the angle between the representations.
     sin_ang = (cross(v_r, v)/norm(v)^2)[1]
@@ -49,7 +49,7 @@ for i = 1:samples
     v = [randn();0;randn()]
 
     # Rotate the reference using the quaternion.
-    v_r = vect(inv(q)*v*q)
+    v_r = vect(inv_rotation(q)*v*q)
 
     # Get the sine of the angle between the representations.
     sin_ang = (cross(v_r, v)/norm(v)^2)[2]
@@ -80,7 +80,7 @@ for i = 1:samples
     v = [randn();randn();0]
 
     # Rotate the reference using the quaternion.
-    v_r = vect(inv(q)*v*q)
+    v_r = vect(inv_rotation(q)*v*q)
 
     # Get the sine of the angle between the representations.
     sin_ang = (cross(v_r, v)/norm(v)^2)[3]
@@ -173,3 +173,7 @@ qc = conj(q)
 @test qc.q1 == -6
 @test qc.q2 == -9
 @test qc.q3 == -12
+
+q = Quaternion(1.0,1.0,1.0,1.0)
+@test inv_rotation(q) != inv(q)
+@test (q*inv(q))[:] ≈ [1;0;0;0]
