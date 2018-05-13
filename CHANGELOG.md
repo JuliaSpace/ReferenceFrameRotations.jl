@@ -23,6 +23,9 @@ Version 0.2.0
     * `angle2rot` and `smallangle2rot` are two functions that can be used to
       create rotations descriptions from Euler angles based on the type of the
       arguments.
+    * `inv_rotation` is a new function that can be used to compute inverse
+      rotations. It can receive as input a Direction Cosine Matrix or a
+      Quaternion.
 
 - Changes:
     * The rotations sequences are now described by symbols instead of strings.
