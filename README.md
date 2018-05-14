@@ -1,7 +1,7 @@
 # ReferenceFrameRotations
 
-[![Build Status](https://travis-ci.org/ronisbr/ReferenceFrameRotations.jl.svg?branch=master)](https://travis-ci.org/ronisbr/ReferenceFrameRotations.jl)
-[![Coverage Status](https://coveralls.io/repos/github/ronisbr/ReferenceFrameRotations.jl/badge.svg?branch=master)](https://coveralls.io/github/ronisbr/ReferenceFrameRotations.jl?branch=master)
+[![Build Status](https://travis-ci.org/SatelliteToolbox/ReferenceFrameRotations.jl.svg?branch=master)](https://travis-ci.org/SatelliteToolbox/ReferenceFrameRotations.jl)
+[![Coverage Status](https://coveralls.io/repos/github/SatelliteToolbox/ReferenceFrameRotations.jl/badge.svg?branch=master)](https://coveralls.io/github/SatelliteToolbox/ReferenceFrameRotations.jl?branch=master)
 
 This module contains functions related to the representation of 3D rotations of
 reference frames. It is used on a daily basis on projects at the [Brazilian
