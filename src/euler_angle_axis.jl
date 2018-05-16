@@ -12,24 +12,34 @@ export angleaxis2quat
 # ==============================================================================
 
 """
-### function angleaxis2quat(a::Number, v::Vector)
+    function angleaxis2quat(a::Number, v::Vector)
 
 Convert the Euler angle `a` and Euler axis `v`, which must be a unit vector, to
 a quaternion.
 
-##### Args
+# Args
 
-* a: Euler angle [rad].
-* v: Unit vector that is aligned with the Euler axis.
+* `a`: Euler angle [rad].
+* `v`: Unit vector that is aligned with the Euler axis.
 
-##### Returns
+# Returns
 
 A quaternion that represents the same rotation of the Euler angle and axis.
 
-##### Remarks
+# Remarks
 
 It is expected that the vector `v` is unitary. However, no verification is
 performed inside the function. The user must handle this situation.
+
+# Example
+
+```julia-repl
+julia> v = [1;1;1]
+julia> v /= norm(v)
+julia> angleaxis2quat(pi/2,v)
+Quaternion{Float64}:
+  + 0.7071067811865476 + 0.408248290463863.i + 0.408248290463863.j + 0.408248290463863.k
+```
 
 """
 function angleaxis2quat(a::Number, v::Vector)
@@ -43,25 +53,35 @@ function angleaxis2quat(a::Number, v::Vector)
 end
 
 """
-### function angleaxis2quat(angleaxis::EulerAngleAxis{T}) where T<:Real
+    function angleaxis2quat(angleaxis::EulerAngleAxis{T}) where T<:Real
 
 Convert a Euler angle and Euler axis `angleaxis` (see `EulerAngleAxis`) to a
 quaternion.
 
-##### Args
+# Args
 
-* angleaxis: Structure of type `EulerAngleAxis` with the Euler angle [rad] and
+* `angleaxis`: Structure of type `EulerAngleAxis` with the Euler angle [rad] and
              a unit vector that is aligned with the Euler axis.
 
-##### Returns
+# Returns
 
 A quaternion that represents the same rotation of the Euler angle and axis.
 
-##### Remarks
+# Remarks
 
 It is expected that the vector `angleaxis.v` is unitary. However, no
 verification is performed inside the function. The user must handle this
 situation.
+
+# Example
+
+```julia-repl
+julia> v = [1;1;1]
+julia> v /= norm(v)
+julia> angleaxis2quat(EulerAngleAxis(pi/2,v))
+Quaternion{Float64}:
+  + 0.7071067811865476 + 0.408248290463863.i + 0.408248290463863.j + 0.408248290463863.k
+```
 
 """
 function angleaxis2quat(angleaxis::EulerAngleAxis{T}) where T<:Real

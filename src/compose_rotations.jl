@@ -5,7 +5,7 @@ export compose_rotation
 ################################################################################
 
 """
-### @inline function compose_rotation(R1, [, R2, R3, R4, R5, ...])
+    @inline function compose_rotation(R1, [, R2, R3, R4, R5, ...])
 
 Compute a composed rotation using the rotations `R1`, `R2`, `R3`, `R4`, ..., in
 the following order:
@@ -24,14 +24,32 @@ quaternion).
 
 The output will have the same type as the inputs (DCM or quaternion).
 
-##### Args
+# Args
 
-* R1: First rotation (DCM or quaternion).
-* R2, R3, R4, R5, ...: (OPTIONAL) Other rotations (DCMs or quaternions).
+* `R1`: First rotation (DCM or quaternion).
+* `R2, R3, R4, R5, ...`: (OPTIONAL) Other rotations (DCMs or quaternions).
 
-##### Returns
+# Returns
 
 The composed rotation.
+
+# Example
+
+```julia-repl
+julia> D1 = angle2dcm(+pi/3,+pi/4,+pi/5,:ZYX)
+julia> D2 = angle2dcm(-pi/5,-pi/4,-pi/3,:XYZ)
+julia> compose_rotation(D1,D2)
+3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
+ 1.0          0.0          5.55112e-17
+ 0.0          1.0          5.55112e-17
+ 5.55112e-17  5.55112e-17  1.0
+
+julia> q1 = angle2quat(+pi/3,+pi/4,+pi/5,:ZYX)
+julia> q2 = angle2quat(-pi/5,-pi/4,-pi/3,:XYZ)
+julia> compose_rotation(q1,q2)
+Quaternion{Float64}:
+  + 1.0 + 0.0.i + 2.0816681711721685e-17.j + 5.551115123125783e-17.k
+```
 
 """
 @inline compose_rotation(D::DCM) = D

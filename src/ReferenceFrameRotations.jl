@@ -24,7 +24,7 @@ The Direction Cosine Matrice is a `SMatrix{3,3}`, which is a 3x3 static matrix.
 DCM{T} = SMatrix{3,3,T}
 
 """
-### struct EulerAngles{T<:Real}
+    struct EulerAngles{T<:Real}
 
 The definition of Euler Angles, which is composed of three angles `a1`, `a2`,
 and `a3` together with a rotation sequence `rot_seq`. The latter is provided by
@@ -40,12 +40,12 @@ struct EulerAngles{T<:Real}
 end
 
 """
-### struct EulerAngleAxis{T<:Real}
+    struct EulerAngleAxis{T<:Real}
 
 The definition of Euler Angle and Axis to represent a 3D rotation.
 
-* `a` is the Euler angle [rad].
-* `v` is a unitary vector aligned with the Euler axis.
+* `a`: The Euler angle [rad].
+* `v`: The unitary vector aligned with the Euler axis.
 
 """
 struct EulerAngleAxis{T<:Real}

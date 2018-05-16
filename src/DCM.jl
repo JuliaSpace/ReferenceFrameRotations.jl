@@ -10,15 +10,25 @@ export ddcm, dcm2angle, dcm2quat
 ################################################################################
 
 """
-### function create_rotation_matrix(angle::Number, axis::Symbol = :X) where T<:Real
+    function create_rotation_matrix(angle::Number, axis::Symbol = :X) where T<:Real
 
 Compute a rotation matrix that rotates a coordinate frame about the axis `axis`
 by the angle `angle`.
 
-##### Args
+# Args
 
-* angle: Angle.
-* axis: Axis, must be 'x', 'X', 'y', 'Y', 'z', or 'Z'.
+* `angle`: Angle.
+* `axis`: Axis, must be 'x', 'X', 'y', 'Y', 'z', or 'Z'.
+
+# Example
+
+```julia-repl
+julia> create_rotation_matrix(pi/2, :X)
+3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
+ 1.0   0.0          0.0
+ 0.0   6.12323e-17  1.0
+ 0.0  -1.0          6.12323e-17
+```
 
 """
 function create_rotation_matrix(angle::Number, axis::Symbol = :X)
@@ -53,7 +63,7 @@ end
 # ==============================================================================
 
 """
-### function dcm2angle(dcm::DCM, rot_seq::Symbol=:ZYX)
+    function dcm2angle(dcm::DCM, rot_seq::Symbol=:ZYX)
 
 Convert the DCM `dcm` to Euler Angles given a rotation sequence `rot_seq`.
 
@@ -61,14 +71,22 @@ The rotation sequence is defined by a `:Symbol`. The possible values are:
 `:XYX`, `XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`,
 `:ZYX`, and `:ZYZ`.
 
-##### Args
+# Args
 
-* DCM: Direction Cosine Matrix.
-* rot_seq: (OPTIONAL) Rotation sequence (**Default** = `:ZYX`).
+* `DCM`: Direction Cosine Matrix.
+* `rot_seq`: (OPTIONAL) Rotation sequence (**Default** = `:ZYX`).
 
-##### Returns
+# Returns
 
 The Euler angles (see `EulerAngles`).
+
+# Example
+
+```julia-repl
+julia> D = DCM([1. 0. 0.; 0. 0. -1; 0. -1 0.])
+julia> dcm2angle(D,:XYZ)
+ReferenceFrameRotations.EulerAngles{Float64}(1.5707963267948966, 0.0, -0.0, :XYZ)
+```
 
 """
 function dcm2angle(dcm::DCM, rot_seq::Symbol=:ZYX)
@@ -165,19 +183,19 @@ end
 # ==============================================================================
 
 """
-### function dcm2quat(dcm::DCM{T}) where T<:Real
+    function dcm2quat(dcm::DCM{T}) where T<:Real
 
-Convert the DCM `dcm` the a quaternion.
+Convert the DCM `dcm` to a quaternion.
 
-##### Args
+# Args
 
-* dcm: Direction Cosine Matrix that will be converted.
+* `dcm`: Direction Cosine Matrix that will be converted.
 
-##### Returns
+# Returns
 
 The quaternion that represents the same rotation of the DCM `dcm`.
 
-##### Remarks
+# Remarks
 
 By convention, the real part of the quaternion will always be positive.
 Moreover, the function does not check if `dcm` is a valid direction cosine
@@ -187,10 +205,14 @@ This algorithm was obtained from:
 
     http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/
 
-##### Example
+# Example
 
-    dcm = angle2dcm(pi/2,0.0,0.0,"XYZ")
-    q   = dcm2quat(dcm)
+```julia-repl
+julia> dcm = angle2dcm(pi/2,0.0,0.0,:XYZ)
+julia> q   = dcm2quat(dcm)
+Quaternion{Float64}:
+  + 0.7071067811865476 + 0.7071067811865475.i + 0.0.j + 0.0.k
+```
 
 """
 function dcm2quat(dcm::DCM{T}) where T<:Real
@@ -252,22 +274,33 @@ end
 ################################################################################
 
 """
-### function ddcm(Dba::DCM, wba_b::AbstractArray)
+    function ddcm(Dba::DCM, wba_b::AbstractArray)
 
 Compute the time-derivative of the DCM `dcm` that rotates a reference frame `a`
 into alignment to the reference frame `b` in which the angular velocity of `b`
 with respect to `a`, and represented in `b`, is `wba_b`.
 
-##### Args
+# Args
 
-* Dba: DCM that rotates the reference frame `a` into alignment with the
-       reference frame `b`.
-* wba_b: Angular velocity of the reference frame `a` with respect to the
-         reference frame `b` represented in the reference frame `b`.
+* `Dba`: DCM that rotates the reference frame `a` into alignment with the
+         reference frame `b`.
+* `wba_b`: Angular velocity of the reference frame `a` with respect to the
+           reference frame `b` represented in the reference frame `b`.
 
-##### Returns
+# Returns
 
 The time-derivative of the DCM `Dba` (3x3 matrix of type `SMatrix{3,3}`).
+
+# Example
+
+```julia-repl
+julia> D = DCM(eye(3))
+julia> ddcm(D,[1;0;0])
+3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
+ 0.0   0.0  0.0
+ 0.0   0.0  1.0
+ 0.0  -1.0  0.0
+```
 
 """
 function ddcm(Dba::DCM, wba_b::AbstractArray)
