@@ -356,7 +356,7 @@ The copy of the quaternion.
 end
 
 """
-    function eye(::Type{Quaternion{T}}) where T<:Real
+    @inline function eye(::Type{Quaternion{T}}) where T<:Real
 
 Create the identity quaternion (`1 + 0.i + 0.j + 0.k`) of type `T`.
 
@@ -382,16 +382,16 @@ Quaternion{Float64}:
 ```
 
 """
-function eye(::Type{Quaternion{T}}) where T<:Real
+@inline function eye(::Type{Quaternion{T}}) where T<:Real
     Quaternion{T}(one(T),zero(T),zero(T),zero(T))
 end
 
-function eye(::Type{Quaternion})
+@inline function eye(::Type{Quaternion})
     Quaternion{Float64}(1.0, 0.0, 0.0, 0.0)
 end
 
 """
-    function eye(q::Quaternion{T}) where T<:Real
+    @inline function eye(q::Quaternion{T}) where T<:Real
 
 Create the identity quaternion (`1 + 0.i + 0.j + 0.k`) with the same type of
 another quaternion `q`.
@@ -414,7 +414,7 @@ Quaternion{Float32}:
 ```
 
 """
-function eye(q::Quaternion{T}) where T<:Real
+@inline function eye(q::Quaternion{T}) where T<:Real
     eye(Quaternion{T})
 end
 
@@ -517,7 +517,7 @@ The following vector: `[q1; q2; q3]`.
 end
 
 """
-    function zeros(::Type{Quaternion{T}}) where T<:Real
+    @inline function zeros(::Type{Quaternion{T}}) where T<:Real
 
 Create the null quaternion (`0 + 0.i + 0.j + 0.k`) of type `T`.
 
@@ -543,16 +543,16 @@ Quaternion{Float64}:
 ```
 
 """
-function zeros(::Type{Quaternion{T}}) where T<:Real
+@inline function zeros(::Type{Quaternion{T}}) where T<:Real
     Quaternion{T}(zero(T),zero(T),zero(T),zero(T))
 end
 
-function zeros(::Type{Quaternion})
+@inline function zeros(::Type{Quaternion})
     Quaternion{Float64}(0.0,0.0,0.0,0.0)
 end
 
 """
-    function zeros(q::Quaternion{T}) where T<:Real
+    @inline function zeros(q::Quaternion{T}) where T<:Real
 
 Create the null quaternion (`0 + 0.i + 0.j + 0.k`) with the same type of another
 quaternion `q`.
@@ -575,7 +575,7 @@ Quaternion{Float32}:
 ```
 
 """
-function zeros(q::Quaternion{T}) where T<:Real
+@inline function zeros(q::Quaternion{T}) where T<:Real
     zeros(Quaternion{T})
 end
 
