@@ -154,6 +154,7 @@ julia> angle2dcm(EulerAngles(pi/2, pi/3, pi/4, :ZYX))
   3.06162e-17  0.5       -0.866025
  -0.707107     0.612372   0.353553
   0.707107     0.612372   0.353553
+```
 
 """
 function angle2dcm(eulerang::EulerAngles)
@@ -236,7 +237,7 @@ julia> angle2quat(pi/2, pi/3, pi/4, :ZYX)
 Quaternion{Float64}:
   + 0.7010573846499779 - 0.09229595564125714.i + 0.5609855267969309.j + 0.43045933457687935.k
 ```
-
+---
 """
 function angle2quat(angle_r1::Number,
                     angle_r2::Number,
@@ -560,8 +561,10 @@ The rotation description according to the type `T`.
 # Example
 
 ```julia-repl
-julia> dcm = smallangle2rot(+0.01, -0.01, +0.01)
-julia> q   = smallangle2rot(Quaternion,+0.01, -0.01, +0.01)
+julia> dcm = smallangle2rot(+0.01, -0.01, +0.01);
+
+julia> q   = smallangle2rot(Quaternion,+0.01, -0.01, +0.01);
+
 julia> dcm = smallangle2rot(+0.01, -0.01, +0.01)
 3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
   1.0    0.01  0.01

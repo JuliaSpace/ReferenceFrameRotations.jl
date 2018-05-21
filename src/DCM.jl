@@ -22,7 +22,7 @@ by the angle `angle`.
 
 # Example
 
-```julia-repl
+```jldocstest
 julia> create_rotation_matrix(pi/2, :X)
 3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
  1.0   0.0          0.0
@@ -83,7 +83,8 @@ The Euler angles (see `EulerAngles`).
 # Example
 
 ```julia-repl
-julia> D = DCM([1. 0. 0.; 0. 0. -1; 0. -1 0.])
+julia> D = DCM([1. 0. 0.; 0. 0. -1; 0. -1 0.]);
+
 julia> dcm2angle(D,:XYZ)
 ReferenceFrameRotations.EulerAngles{Float64}(1.5707963267948966, 0.0, -0.0, :XYZ)
 ```
@@ -208,7 +209,8 @@ This algorithm was obtained from:
 # Example
 
 ```julia-repl
-julia> dcm = angle2dcm(pi/2,0.0,0.0,:XYZ)
+julia> dcm = angle2dcm(pi/2,0.0,0.0,:XYZ);
+
 julia> q   = dcm2quat(dcm)
 Quaternion{Float64}:
   + 0.7071067811865476 + 0.7071067811865475.i + 0.0.j + 0.0.k
@@ -294,7 +296,8 @@ The time-derivative of the DCM `Dba` (3x3 matrix of type `SMatrix{3,3}`).
 # Example
 
 ```julia-repl
-julia> D = DCM(eye(3))
+julia> D = DCM(eye(3));
+
 julia> ddcm(D,[1;0;0])
 3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
  0.0   0.0  0.0

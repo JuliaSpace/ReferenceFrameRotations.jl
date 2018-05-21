@@ -34,13 +34,15 @@ performed inside the function. The user must handle this situation.
 # Example
 
 ```julia-repl
-julia> v = [1;1;1]
-julia> v /= norm(v)
+julia> v = [1;1;1];
+
+julia> v /= norm(v);
+
 julia> angleaxis2quat(pi/2,v)
 Quaternion{Float64}:
   + 0.7071067811865476 + 0.408248290463863.i + 0.408248290463863.j + 0.408248290463863.k
 ```
-
+---
 """
 function angleaxis2quat(a::Number, v::Vector)
     # Check the arguments.
@@ -76,8 +78,10 @@ situation.
 # Example
 
 ```julia-repl
-julia> v = [1;1;1]
-julia> v /= norm(v)
+julia> v = [1;1;1];
+
+julia> v /= norm(v);
+
 julia> angleaxis2quat(EulerAngleAxis(pi/2,v))
 Quaternion{Float64}:
   + 0.7071067811865476 + 0.408248290463863.i + 0.408248290463863.j + 0.408248290463863.k

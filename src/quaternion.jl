@@ -407,7 +407,8 @@ The identity quaternion of type `T`.
 # Example
 
 ```julia-repl
-julia> q1 = Quaternion{Float32}(cosd(45/2),sind(45/2),0.,0.)
+julia> q1 = Quaternion{Float32}(cosd(45/2),sind(45/2),0.,0.);
+
 julia> q2 = eye(q1)
 Quaternion{Float32}:
   + 1.0 + 0.0.i + 0.0.j + 0.0.k
@@ -568,7 +569,8 @@ The null quaternion of type `T`.
 # Example
 
 ```julia-repl
-julia> q1 = Quaternion{Float32}(cosd(45/2),sind(45/2),0,0)
+julia> q1 = Quaternion{Float32}(cosd(45/2),sind(45/2),0,0);
+
 julia> zeros(q1)
 Quaternion{Float32}:
   + 0.0 + 0.0.i + 0.0.j + 0.0.k
@@ -637,7 +639,8 @@ The Direction Cosine Matrix.
 # Example
 
 ```julia-repl
-julia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0)
+julia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0);
+
 julia> quat2dcm(q)
 3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
  1.0   0.0       0.0
@@ -683,7 +686,8 @@ not represent a 3D rotation. The user must handle such situations.
 # Example
 
 ```julia-repl
-julia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0)
+julia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0);
+
 julia> quat2angleaxis(q)
 ReferenceFrameRotations.EulerAngleAxis{Float64}(0.7853981633974484, [1.0, 0.0, 0.0])
 ```
@@ -721,7 +725,8 @@ The Euler angles (see `EulerAngles`).
 # Example
 
 ```julia-repl
-julia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0)
+julia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0);
+
 julia> quat2angle(q,:XYZ)
 ReferenceFrameRotations.EulerAngles{Float64}(0.7853981633974484, 0.0, -0.0, :XYZ)
 ```
@@ -764,7 +769,8 @@ The quaternion with the time-derivative of `qba`.
 # Example
 
 ```julia-repl
-julia> q = eye(Quaternion)
+julia> q = eye(Quaternion);
+
 julia> dquat(q,[1;0;0])
 Quaternion{Float64}:
   + 0.0 + 0.5.i + 0.0.j + 0.0.k

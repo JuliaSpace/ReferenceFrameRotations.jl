@@ -36,16 +36,20 @@ The composed rotation.
 # Example
 
 ```julia-repl
-julia> D1 = angle2dcm(+pi/3,+pi/4,+pi/5,:ZYX)
-julia> D2 = angle2dcm(-pi/5,-pi/4,-pi/3,:XYZ)
+julia> D1 = angle2dcm(+pi/3,+pi/4,+pi/5,:ZYX);
+
+julia> D2 = angle2dcm(-pi/5,-pi/4,-pi/3,:XYZ);
+
 julia> compose_rotation(D1,D2)
 3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
  1.0          0.0          5.55112e-17
  0.0          1.0          5.55112e-17
  5.55112e-17  5.55112e-17  1.0
 
-julia> q1 = angle2quat(+pi/3,+pi/4,+pi/5,:ZYX)
-julia> q2 = angle2quat(-pi/5,-pi/4,-pi/3,:XYZ)
+julia> q1 = angle2quat(+pi/3,+pi/4,+pi/5,:ZYX);
+
+julia> q2 = angle2quat(-pi/5,-pi/4,-pi/3,:XYZ);
+
 julia> compose_rotation(q1,q2)
 Quaternion{Float64}:
   + 1.0 + 0.0.i + 2.0816681711721685e-17.j + 5.551115123125783e-17.k

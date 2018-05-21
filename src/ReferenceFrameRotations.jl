@@ -29,7 +29,10 @@ DCM{T} = SMatrix{3,3,T}
 The definition of Euler Angles, which is composed of three angles `a1`, `a2`,
 and `a3` together with a rotation sequence `rot_seq`. The latter is provided by
 a symbol with three characters, each one indicating the rotation axis of the
-corresponding angle (for example, `:ZYX`).
+corresponding angle (for example, `:ZYX`). The valid values for `rot_seq` are:
+
+* `:XYX`, `:XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`,
+  `:ZXZ`, `:ZYX`, and `ZYZ`.
 
 """
 struct EulerAngles{T<:Real}
