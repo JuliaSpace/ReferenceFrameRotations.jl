@@ -82,3 +82,18 @@ for k = 1:samples
     # Check if they are orthonormal.
     @test norm(inv_rotation(dcm3)-inv(dcm1)*inv(dcm2)) < 5e-10
 end
+
+# Test exceptions.
+@test_throws Exception create_rotation_matrix(0, :x)
+@test_throws Exception create_rotation_matrix(0, :y)
+@test_throws Exception create_rotation_matrix(0, :z)
+@test_throws Exception create_rotation_matrix(0, :a)
+@test_throws ArgumentError dcm2angle(DCM(eye(3)),:xyz)
+@test_throws ArgumentError dcm2angle(DCM(eye(3)),:zyx)
+@test_throws ArgumentError dcm2angle(DCM(eye(3)),:xyx)
+@test_throws ArgumentError dcm2angle(DCM(eye(3)),:abc)
+@test_throws ArgumentError ddcm(DCM(eye(3)), [1])
+@test_throws ArgumentError ddcm(DCM(eye(3)), [1;2])
+@test_throws ArgumentError ddcm(DCM(eye(3)), [1;2;3;4])
+@test_throws ArgumentError ddcm(DCM(eye(3)), [1;2;3;4;5])
+

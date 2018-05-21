@@ -30,3 +30,6 @@ for k = 1:samples
     # The vector representation must be the same after the rotation.
     @test norm(r-r_rot) < 1e-10
 end
+
+# Test the exceptions.
+@test_throws ArgumentError angleaxis2quat(0, [1;2;3;4])

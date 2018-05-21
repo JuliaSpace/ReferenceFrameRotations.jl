@@ -177,3 +177,15 @@ qc = conj(q)
 q = Quaternion(1.0,1.0,1.0,1.0)
 @test inv_rotation(q) != inv(q)
 @test (q*inv(q))[:] ≈ [1;0;0;0]
+
+# Test exceptions
+# ===============
+
+@test_throws ArgumentError Quaternion([1])
+@test_throws ArgumentError Quaternion([1;2])
+@test_throws ArgumentError Quaternion([1;2;3;4;5])
+@test_throws ArgumentError Quaternion([1;2;3;4;5;6])
+@test_throws ArgumentError dquat(eye(Quaternion), [1])
+@test_throws ArgumentError dquat(eye(Quaternion), [1;2])
+@test_throws ArgumentError dquat(eye(Quaternion), [1;2;3;4])
+@test_throws ArgumentError dquat(eye(Quaternion), [1;2;3;4;5])
