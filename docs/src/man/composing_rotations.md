@@ -18,7 +18,7 @@ compose_rotation(R1,R2,R3,R4...)
 in which `R1`, `R2`, `R3`, ..., must be simultaneously DCMs or Quaternions. This
 method returns the following rotation:
 
-![](./assets/Fig_Composing_Rotations.png)
+![](../assets/Fig_Composing_Rotations.png)
 
 ```jldoctest
 julia> D1 = angle2dcm(0.5,0.5,0.5,:XYZ)

@@ -25,7 +25,7 @@ that defines the axes. The valid values for `rot_seq` are:
 * `:XYX`, `:XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`,
   `:ZXZ`, `:ZYX`, and `ZYZ`.
 
-!!!note
+!!! note
 
     In the current version, there is no support for operations using Euler
     Angles.

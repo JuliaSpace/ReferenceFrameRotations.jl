@@ -8,14 +8,15 @@ makedocs(
     authors = "Ronan Arraes Jardim Chagas",
     pages = [
         "Home" => "index.md",
-        "Euler Angle and Axis" => "euler_angle_axis.md",
-        "Euler Angles" => "euler_angles.md",
-        "Quaternions" => "quaternions.md",
-        "Conversions" => "conversions.md",
-        "Kinematics" => "kinematics.md",
-        "Composing rotations" => "composing_rotations.md",
-        "Library" => "lib.md",
+        "Euler Angle and Axis" => "man/euler_angle_axis.md",
+        "Euler Angles" => "man/euler_angles.md",
+        "Quaternions" => "man/quaternions.md",
+        "Conversions" => "man/conversions.md",
+        "Kinematics" => "man/kinematics.md",
+        "Composing rotations" => "man/composing_rotations.md",
+        "Library" => "lib/library.md",
     ],
+    html_prettyurls = !("local" in ARGS),
 )
 
 deploydocs(
