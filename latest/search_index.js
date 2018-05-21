@@ -1,7 +1,7 @@
 var documenterSearchIndex = {"docs": [
 
 {
-    "location": "index.html#",
+    "location": "#",
     "page": "Home",
     "title": "Home",
     "category": "page",
@@ -9,7 +9,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "index.html#ReferenceFrameRotations.jl-1",
+    "location": "#ReferenceFrameRotations.jl-1",
     "page": "Home",
     "title": "ReferenceFrameRotations.jl",
     "category": "section",
@@ -17,7 +17,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "index.html#Requirements-1",
+    "location": "#Requirements-1",
     "page": "Home",
     "title": "Requirements",
     "category": "section",
@@ -25,7 +25,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "index.html#Installation-1",
+    "location": "#Installation-1",
     "page": "Home",
     "title": "Installation",
     "category": "section",
@@ -33,7 +33,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "index.html#Status-1",
+    "location": "#Status-1",
     "page": "Home",
     "title": "Status",
     "category": "section",
@@ -41,7 +41,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "index.html#Roadmap-1",
+    "location": "#Roadmap-1",
     "page": "Home",
     "title": "Roadmap",
     "category": "section",
@@ -49,7 +49,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "index.html#Manual-outline-1",
+    "location": "#Manual-outline-1",
     "page": "Home",
     "title": "Manual outline",
     "category": "section",
@@ -57,7 +57,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "index.html#Library-documentation-1",
+    "location": "#Library-documentation-1",
     "page": "Home",
     "title": "Library documentation",
     "category": "section",
@@ -65,7 +65,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "euler_angle_axis.html#",
+    "location": "man/euler_angle_axis/#",
     "page": "Euler Angle and Axis",
     "title": "Euler Angle and Axis",
     "category": "page",
@@ -73,7 +73,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "euler_angle_axis.html#Euler-Angle-and-Axis-1",
+    "location": "man/euler_angle_axis/#Euler-Angle-and-Axis-1",
     "page": "Euler Angle and Axis",
     "title": "Euler Angle and Axis",
     "category": "section",
@@ -81,7 +81,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "euler_angles.html#",
+    "location": "man/euler_angles/#",
     "page": "Euler Angles",
     "title": "Euler Angles",
     "category": "page",
@@ -89,15 +89,15 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "euler_angles.html#Euler-Angles-1",
+    "location": "man/euler_angles/#Euler-Angles-1",
     "page": "Euler Angles",
     "title": "Euler Angles",
     "category": "section",
-    "text": "CurrentModule = ReferenceFrameRotations\nDocTestSetup = quote\n    using ReferenceFrameRotations\nendThe Euler Angles are defined by the following immutable structure:struct EulerAngles{T<:Real}\n    a1::T\n    a2::T\n    a3::T\n    rot_seq::Symbol\nendin which a1, a2, and a3 define the angles and the rot_seq is a symbol that defines the axes. The valid values for rot_seq are::XYX, :XYZ, :XZX, :XZY, :YXY, :YXZ, :YZX, :YZY, :ZXY, :ZXZ, :ZYX, and ZYZ.!!!noteIn the current version, there is no support for operations using Euler\nAngles."
+    "text": "CurrentModule = ReferenceFrameRotations\nDocTestSetup = quote\n    using ReferenceFrameRotations\nendThe Euler Angles are defined by the following immutable structure:struct EulerAngles{T<:Real}\n    a1::T\n    a2::T\n    a3::T\n    rot_seq::Symbol\nendin which a1, a2, and a3 define the angles and the rot_seq is a symbol that defines the axes. The valid values for rot_seq are::XYX, :XYZ, :XZX, :XZY, :YXY, :YXZ, :YZX, :YZY, :ZXY, :ZXZ, :ZYX, and ZYZ.note: Note\nIn the current version, there is no support for operations using Euler Angles."
 },
 
 {
-    "location": "quaternions.html#",
+    "location": "man/quaternions/#",
     "page": "Quaternions",
     "title": "Quaternions",
     "category": "page",
@@ -105,7 +105,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "quaternions.html#Quaternion-1",
+    "location": "man/quaternions/#Quaternion-1",
     "page": "Quaternions",
     "title": "Quaternion",
     "category": "section",
@@ -113,7 +113,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "quaternions.html#Initialization-1",
+    "location": "man/quaternions/#Initialization-1",
     "page": "Quaternions",
     "title": "Initialization",
     "category": "section",
@@ -121,7 +121,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "quaternions.html#Operations-1",
+    "location": "man/quaternions/#Operations-1",
     "page": "Quaternions",
     "title": "Operations",
     "category": "section",
@@ -129,7 +129,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "quaternions.html#Converting-reference-frames-using-quaternions-1",
+    "location": "man/quaternions/#Converting-reference-frames-using-quaternions-1",
     "page": "Quaternions",
     "title": "Converting reference frames using quaternions",
     "category": "section",
@@ -137,7 +137,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "conversions.html#",
+    "location": "man/conversions/#",
     "page": "Conversions",
     "title": "Conversions",
     "category": "page",
@@ -145,7 +145,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "conversions.html#Conversions-1",
+    "location": "man/conversions/#Conversions-1",
     "page": "Conversions",
     "title": "Conversions",
     "category": "section",
@@ -153,7 +153,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "conversions.html#DCMs-to-Euler-Angles-1",
+    "location": "man/conversions/#DCMs-to-Euler-Angles-1",
     "page": "Conversions",
     "title": "DCMs to Euler Angles",
     "category": "section",
@@ -161,7 +161,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "conversions.html#DCMs-to-Quaternions-1",
+    "location": "man/conversions/#DCMs-to-Quaternions-1",
     "page": "Conversions",
     "title": "DCMs to Quaternions",
     "category": "section",
@@ -169,7 +169,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "conversions.html#Euler-Angle-and-Axis-to-Quaternions-1",
+    "location": "man/conversions/#Euler-Angle-and-Axis-to-Quaternions-1",
     "page": "Conversions",
     "title": "Euler Angle and Axis to Quaternions",
     "category": "section",
@@ -177,7 +177,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "conversions.html#Euler-Angles-to-Direction-Cosine-Matrices-1",
+    "location": "man/conversions/#Euler-Angles-to-Direction-Cosine-Matrices-1",
     "page": "Conversions",
     "title": "Euler Angles to Direction Cosine Matrices",
     "category": "section",
@@ -185,7 +185,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "conversions.html#Euler-Angles-to-Quaternions-1",
+    "location": "man/conversions/#Euler-Angles-to-Quaternions-1",
     "page": "Conversions",
     "title": "Euler Angles to Quaternions",
     "category": "section",
@@ -193,7 +193,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "conversions.html#Small-Euler-Angles-to-Direction-Cosine-Matrices-1",
+    "location": "man/conversions/#Small-Euler-Angles-to-Direction-Cosine-Matrices-1",
     "page": "Conversions",
     "title": "Small Euler Angles to Direction Cosine Matrices",
     "category": "section",
@@ -201,7 +201,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "conversions.html#Small-Euler-Angles-to-Quaternions-1",
+    "location": "man/conversions/#Small-Euler-Angles-to-Quaternions-1",
     "page": "Conversions",
     "title": "Small Euler Angles to Quaternions",
     "category": "section",
@@ -209,7 +209,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "conversions.html#Quaternions-to-Direction-Cosine-Matrices-1",
+    "location": "man/conversions/#Quaternions-to-Direction-Cosine-Matrices-1",
     "page": "Conversions",
     "title": "Quaternions to Direction Cosine Matrices",
     "category": "section",
@@ -217,7 +217,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "conversions.html#Quaternions-to-Euler-Angle-and-Axis-1",
+    "location": "man/conversions/#Quaternions-to-Euler-Angle-and-Axis-1",
     "page": "Conversions",
     "title": "Quaternions to Euler Angle and Axis",
     "category": "section",
@@ -225,7 +225,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "conversions.html#Quaternions-to-Euler-Angles-1",
+    "location": "man/conversions/#Quaternions-to-Euler-Angles-1",
     "page": "Conversions",
     "title": "Quaternions to Euler Angles",
     "category": "section",
@@ -233,7 +233,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "kinematics.html#",
+    "location": "man/kinematics/#",
     "page": "Kinematics",
     "title": "Kinematics",
     "category": "page",
@@ -241,7 +241,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "kinematics.html#Kinematics-1",
+    "location": "man/kinematics/#Kinematics-1",
     "page": "Kinematics",
     "title": "Kinematics",
     "category": "section",
@@ -249,7 +249,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "kinematics.html#Direction-Cosine-Matrices-1",
+    "location": "man/kinematics/#Direction-Cosine-Matrices-1",
     "page": "Kinematics",
     "title": "Direction Cosine Matrices",
     "category": "section",
@@ -257,7 +257,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "kinematics.html#Quaternions-1",
+    "location": "man/kinematics/#Quaternions-1",
     "page": "Kinematics",
     "title": "Quaternions",
     "category": "section",
@@ -265,7 +265,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "composing_rotations.html#",
+    "location": "man/composing_rotations/#",
     "page": "Composing rotations",
     "title": "Composing rotations",
     "category": "page",
@@ -273,7 +273,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "composing_rotations.html#Composing-rotations-1",
+    "location": "man/composing_rotations/#Composing-rotations-1",
     "page": "Composing rotations",
     "title": "Composing rotations",
     "category": "section",
@@ -281,7 +281,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#",
+    "location": "lib/library/#",
     "page": "Library",
     "title": "Library",
     "category": "page",
@@ -289,7 +289,63 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#ReferenceFrameRotations.angle2dcm",
+    "location": "lib/library/#ReferenceFrameRotations.DCM",
+    "page": "Library",
+    "title": "ReferenceFrameRotations.DCM",
+    "category": "type",
+    "text": "The Direction Cosine Matrice is a SMatrix{3,3}, which is a 3x3 static matrix.\n\n\n\n"
+},
+
+{
+    "location": "lib/library/#ReferenceFrameRotations.EulerAngleAxis",
+    "page": "Library",
+    "title": "ReferenceFrameRotations.EulerAngleAxis",
+    "category": "type",
+    "text": "struct EulerAngleAxis{T<:Real}\n\nThe definition of Euler Angle and Axis to represent a 3D rotation.\n\na: The Euler angle [rad].\nv: The unitary vector aligned with the Euler axis.\n\n\n\n"
+},
+
+{
+    "location": "lib/library/#ReferenceFrameRotations.EulerAngles",
+    "page": "Library",
+    "title": "ReferenceFrameRotations.EulerAngles",
+    "category": "type",
+    "text": "struct EulerAngles{T<:Real}\n\nThe definition of Euler Angles, which is composed of three angles a1, a2, and a3 together with a rotation sequence rot_seq. The latter is provided by a symbol with three characters, each one indicating the rotation axis of the corresponding angle (for example, :ZYX). The valid values for rot_seq are:\n\n:XYX, :XYZ, :XZX, :XZY, :YXY, :YXZ, :YZX, :YZY, :ZXY, :ZXZ, :ZYX, and ZYZ.\n\n\n\n"
+},
+
+{
+    "location": "lib/library/#ReferenceFrameRotations.Quaternion",
+    "page": "Library",
+    "title": "ReferenceFrameRotations.Quaternion",
+    "category": "type",
+    "text": "struct Quaternion{T<:Real}\n\nThe definition of the quaternion. It has four values of the same type. The quaternion representation is:\n\nq0 + q1.i + q2.j + q3.k\n\n\n\n"
+},
+
+{
+    "location": "lib/library/#ReferenceFrameRotations.Quaternion-NTuple{4,Number}",
+    "page": "Library",
+    "title": "ReferenceFrameRotations.Quaternion",
+    "category": "method",
+    "text": "function Quaternion(q0::Number, q1::Number, q2::Number, q3::Number)\n\nCreate the following quaternion:\n\nq0 + q1.i + q2.j + q3.k\n\nArgs\n\nq0: Real part of the quaternion.\nq1: X component of the quaternion vectorial part.\nq2: Y component of the quaternion vectorial part.\nq3: Z component of the quaternion vectorial part.\n\nReturns\n\nThe new quaternion.\n\n\n\n"
+},
+
+{
+    "location": "lib/library/#ReferenceFrameRotations.Quaternion-Tuple{AbstractArray{T,1} where T}",
+    "page": "Library",
+    "title": "ReferenceFrameRotations.Quaternion",
+    "category": "method",
+    "text": "function Quaternion(v::Vector{T}) where T<:Real\n\nIf the vector v has 3 components, then create a quaternion in which the real part is 0 and the vectorial or imaginary part has the same components of the vector v. In other words:\n\nq = 0 + v[1].i + v[2].j + v[3].k\n\nOtherwise, if the vector v has 4 components, then create a quaternion in which the elements match those of the input vector:\n\nq = v[1] + v[2].i + v[3].j + v[4].k\n\nArgs\n\nv: Input vector. It must have three or four components.\n\nReturns\n\nIf v has three components, then it returns the quaternion in which the real part is 0 and the imaginary part is v. Otherwise, it returns the quaternion with real part v[1] and imaginary part v[2:4].\n\n\n\n"
+},
+
+{
+    "location": "lib/library/#ReferenceFrameRotations.Quaternion-Tuple{Number,AbstractArray{T,1} where T}",
+    "page": "Library",
+    "title": "ReferenceFrameRotations.Quaternion",
+    "category": "method",
+    "text": "function Quaternion(r::Number, v::AbstractVector)\n\nCreate a quaternion with real part r and vectorial or imaginary part v.\n\nArgs\n\nr: Real part.\nv: Vectorial or imaginary part.\n\nReturns\n\nThe quaternion r + v[1].i + v[2].j + v[3].k.\n\n\n\n"
+},
+
+{
+    "location": "lib/library/#ReferenceFrameRotations.angle2dcm",
     "page": "Library",
     "title": "ReferenceFrameRotations.angle2dcm",
     "category": "function",
@@ -297,7 +353,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#ReferenceFrameRotations.angle2dcm-Tuple{ReferenceFrameRotations.EulerAngles}",
+    "location": "lib/library/#ReferenceFrameRotations.angle2dcm-Tuple{ReferenceFrameRotations.EulerAngles}",
     "page": "Library",
     "title": "ReferenceFrameRotations.angle2dcm",
     "category": "method",
@@ -305,7 +361,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#ReferenceFrameRotations.angle2quat",
+    "location": "lib/library/#ReferenceFrameRotations.angle2quat",
     "page": "Library",
     "title": "ReferenceFrameRotations.angle2quat",
     "category": "function",
@@ -313,7 +369,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#ReferenceFrameRotations.angle2quat-Tuple{ReferenceFrameRotations.EulerAngles}",
+    "location": "lib/library/#ReferenceFrameRotations.angle2quat-Tuple{ReferenceFrameRotations.EulerAngles}",
     "page": "Library",
     "title": "ReferenceFrameRotations.angle2quat",
     "category": "method",
@@ -321,7 +377,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#ReferenceFrameRotations.angle2rot-Tuple{Number,Number,Number,Symbol}",
+    "location": "lib/library/#ReferenceFrameRotations.angle2rot-Tuple{Number,Number,Number,Symbol}",
     "page": "Library",
     "title": "ReferenceFrameRotations.angle2rot",
     "category": "method",
@@ -329,7 +385,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#ReferenceFrameRotations.angle2rot-Tuple{ReferenceFrameRotations.EulerAngles}",
+    "location": "lib/library/#ReferenceFrameRotations.angle2rot-Tuple{ReferenceFrameRotations.EulerAngles}",
     "page": "Library",
     "title": "ReferenceFrameRotations.angle2rot",
     "category": "method",
@@ -337,7 +393,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#ReferenceFrameRotations.angleaxis2quat-Tuple{Number,Array{T,1} where T}",
+    "location": "lib/library/#ReferenceFrameRotations.angleaxis2quat-Tuple{Number,Array{T,1} where T}",
     "page": "Library",
     "title": "ReferenceFrameRotations.angleaxis2quat",
     "category": "method",
@@ -345,7 +401,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#ReferenceFrameRotations.angleaxis2quat-Union{Tuple{ReferenceFrameRotations.EulerAngleAxis{T}}, Tuple{T}} where T<:Real",
+    "location": "lib/library/#ReferenceFrameRotations.angleaxis2quat-Union{Tuple{ReferenceFrameRotations.EulerAngleAxis{T}}, Tuple{T}} where T<:Real",
     "page": "Library",
     "title": "ReferenceFrameRotations.angleaxis2quat",
     "category": "method",
@@ -353,7 +409,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#ReferenceFrameRotations.compose_rotation-Tuple{StaticArrays.SArray{Tuple{3,3},T,2,L} where L where T}",
+    "location": "lib/library/#ReferenceFrameRotations.compose_rotation-Tuple{StaticArrays.SArray{Tuple{3,3},T,2,L} where L where T}",
     "page": "Library",
     "title": "ReferenceFrameRotations.compose_rotation",
     "category": "method",
@@ -361,7 +417,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#ReferenceFrameRotations.create_rotation_matrix",
+    "location": "lib/library/#ReferenceFrameRotations.create_rotation_matrix",
     "page": "Library",
     "title": "ReferenceFrameRotations.create_rotation_matrix",
     "category": "function",
@@ -369,7 +425,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#ReferenceFrameRotations.dcm2angle",
+    "location": "lib/library/#ReferenceFrameRotations.dcm2angle",
     "page": "Library",
     "title": "ReferenceFrameRotations.dcm2angle",
     "category": "function",
@@ -377,7 +433,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#ReferenceFrameRotations.dcm2quat-Union{Tuple{StaticArrays.SArray{Tuple{3,3},T,2,L} where L}, Tuple{T}} where T<:Real",
+    "location": "lib/library/#ReferenceFrameRotations.dcm2quat-Union{Tuple{StaticArrays.SArray{Tuple{3,3},T,2,L} where L}, Tuple{T}} where T<:Real",
     "page": "Library",
     "title": "ReferenceFrameRotations.dcm2quat",
     "category": "method",
@@ -385,7 +441,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#ReferenceFrameRotations.ddcm-Tuple{StaticArrays.SArray{Tuple{3,3},T,2,L} where L where T,AbstractArray}",
+    "location": "lib/library/#ReferenceFrameRotations.ddcm-Tuple{StaticArrays.SArray{Tuple{3,3},T,2,L} where L where T,AbstractArray}",
     "page": "Library",
     "title": "ReferenceFrameRotations.ddcm",
     "category": "method",
@@ -393,7 +449,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#ReferenceFrameRotations.dquat-Union{Tuple{ReferenceFrameRotations.Quaternion{T1},AbstractArray{T2,1}}, Tuple{T1}, Tuple{T2}} where T1<:Real where T2<:Real",
+    "location": "lib/library/#ReferenceFrameRotations.dquat-Union{Tuple{ReferenceFrameRotations.Quaternion{T1},AbstractArray{T2,1}}, Tuple{T1}, Tuple{T2}} where T1<:Real where T2<:Real",
     "page": "Library",
     "title": "ReferenceFrameRotations.dquat",
     "category": "method",
@@ -401,7 +457,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#ReferenceFrameRotations.inv_rotation-Tuple{StaticArrays.SArray{Tuple{3,3},T,2,L} where L where T}",
+    "location": "lib/library/#ReferenceFrameRotations.inv_rotation-Tuple{StaticArrays.SArray{Tuple{3,3},T,2,L} where L where T}",
     "page": "Library",
     "title": "ReferenceFrameRotations.inv_rotation",
     "category": "method",
@@ -409,7 +465,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#ReferenceFrameRotations.quat2angle",
+    "location": "lib/library/#ReferenceFrameRotations.quat2angle",
     "page": "Library",
     "title": "ReferenceFrameRotations.quat2angle",
     "category": "function",
@@ -417,7 +473,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#ReferenceFrameRotations.quat2angleaxis-Tuple{ReferenceFrameRotations.Quaternion}",
+    "location": "lib/library/#ReferenceFrameRotations.quat2angleaxis-Tuple{ReferenceFrameRotations.Quaternion}",
     "page": "Library",
     "title": "ReferenceFrameRotations.quat2angleaxis",
     "category": "method",
@@ -425,7 +481,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#ReferenceFrameRotations.quat2dcm-Tuple{ReferenceFrameRotations.Quaternion}",
+    "location": "lib/library/#ReferenceFrameRotations.quat2dcm-Tuple{ReferenceFrameRotations.Quaternion}",
     "page": "Library",
     "title": "ReferenceFrameRotations.quat2dcm",
     "category": "method",
@@ -433,7 +489,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#ReferenceFrameRotations.smallangle2dcm-Tuple{Number,Number,Number}",
+    "location": "lib/library/#ReferenceFrameRotations.smallangle2dcm-Tuple{Number,Number,Number}",
     "page": "Library",
     "title": "ReferenceFrameRotations.smallangle2dcm",
     "category": "method",
@@ -441,7 +497,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#ReferenceFrameRotations.smallangle2quat-Tuple{Number,Number,Number}",
+    "location": "lib/library/#ReferenceFrameRotations.smallangle2quat-Tuple{Number,Number,Number}",
     "page": "Library",
     "title": "ReferenceFrameRotations.smallangle2quat",
     "category": "method",
@@ -449,7 +505,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#ReferenceFrameRotations.smallangle2rot-Tuple{Number,Number,Number}",
+    "location": "lib/library/#ReferenceFrameRotations.smallangle2rot-Tuple{Number,Number,Number}",
     "page": "Library",
     "title": "ReferenceFrameRotations.smallangle2rot",
     "category": "method",
@@ -457,7 +513,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#ReferenceFrameRotations.vect-Tuple{ReferenceFrameRotations.Quaternion}",
+    "location": "lib/library/#ReferenceFrameRotations.vect-Tuple{ReferenceFrameRotations.Quaternion}",
     "page": "Library",
     "title": "ReferenceFrameRotations.vect",
     "category": "method",
@@ -465,7 +521,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#Base.:*-Tuple{AbstractArray{T,1} where T,ReferenceFrameRotations.Quaternion}",
+    "location": "lib/library/#Base.:*-Tuple{AbstractArray{T,1} where T,ReferenceFrameRotations.Quaternion}",
     "page": "Library",
     "title": "Base.:*",
     "category": "method",
@@ -473,7 +529,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#Base.:*-Tuple{Number,ReferenceFrameRotations.Quaternion}",
+    "location": "lib/library/#Base.:*-Tuple{Number,ReferenceFrameRotations.Quaternion}",
     "page": "Library",
     "title": "Base.:*",
     "category": "method",
@@ -481,7 +537,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#Base.:*-Tuple{ReferenceFrameRotations.Quaternion,AbstractArray{T,1} where T}",
+    "location": "lib/library/#Base.:*-Tuple{ReferenceFrameRotations.Quaternion,AbstractArray{T,1} where T}",
     "page": "Library",
     "title": "Base.:*",
     "category": "method",
@@ -489,7 +545,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#Base.:*-Tuple{ReferenceFrameRotations.Quaternion,Number}",
+    "location": "lib/library/#Base.:*-Tuple{ReferenceFrameRotations.Quaternion,Number}",
     "page": "Library",
     "title": "Base.:*",
     "category": "method",
@@ -497,7 +553,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#Base.:*-Tuple{ReferenceFrameRotations.Quaternion,ReferenceFrameRotations.Quaternion}",
+    "location": "lib/library/#Base.:*-Tuple{ReferenceFrameRotations.Quaternion,ReferenceFrameRotations.Quaternion}",
     "page": "Library",
     "title": "Base.:*",
     "category": "method",
@@ -505,7 +561,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#Base.:+-Tuple{ReferenceFrameRotations.Quaternion,ReferenceFrameRotations.Quaternion}",
+    "location": "lib/library/#Base.:+-Tuple{ReferenceFrameRotations.Quaternion,ReferenceFrameRotations.Quaternion}",
     "page": "Library",
     "title": "Base.:+",
     "category": "method",
@@ -513,7 +569,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#Base.:--Tuple{ReferenceFrameRotations.Quaternion,ReferenceFrameRotations.Quaternion}",
+    "location": "lib/library/#Base.:--Tuple{ReferenceFrameRotations.Quaternion,ReferenceFrameRotations.Quaternion}",
     "page": "Library",
     "title": "Base.:-",
     "category": "method",
@@ -521,7 +577,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#Base.:/-Tuple{Number,ReferenceFrameRotations.Quaternion}",
+    "location": "lib/library/#Base.:/-Tuple{Number,ReferenceFrameRotations.Quaternion}",
     "page": "Library",
     "title": "Base.:/",
     "category": "method",
@@ -529,7 +585,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#Base.:/-Union{Tuple{ReferenceFrameRotations.Quaternion{T1},T2}, Tuple{T1}, Tuple{T2}} where T1<:Real where T2<:Real",
+    "location": "lib/library/#Base.:/-Union{Tuple{ReferenceFrameRotations.Quaternion{T1},T2}, Tuple{T1}, Tuple{T2}} where T1<:Real where T2<:Real",
     "page": "Library",
     "title": "Base.:/",
     "category": "method",
@@ -537,7 +593,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#Base.LinAlg.norm-Tuple{ReferenceFrameRotations.Quaternion}",
+    "location": "lib/library/#Base.LinAlg.norm-Tuple{ReferenceFrameRotations.Quaternion}",
     "page": "Library",
     "title": "Base.LinAlg.norm",
     "category": "method",
@@ -545,7 +601,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#Base.conj-Tuple{ReferenceFrameRotations.Quaternion}",
+    "location": "lib/library/#Base.conj-Tuple{ReferenceFrameRotations.Quaternion}",
     "page": "Library",
     "title": "Base.conj",
     "category": "method",
@@ -553,7 +609,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#Base.copy-Union{Tuple{ReferenceFrameRotations.Quaternion{T}}, Tuple{T}} where T<:Real",
+    "location": "lib/library/#Base.copy-Union{Tuple{ReferenceFrameRotations.Quaternion{T}}, Tuple{T}} where T<:Real",
     "page": "Library",
     "title": "Base.copy",
     "category": "method",
@@ -561,7 +617,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#Base.eye-Union{Tuple{ReferenceFrameRotations.Quaternion{T}}, Tuple{T}} where T<:Real",
+    "location": "lib/library/#Base.eye-Union{Tuple{ReferenceFrameRotations.Quaternion{T}}, Tuple{T}} where T<:Real",
     "page": "Library",
     "title": "Base.eye",
     "category": "method",
@@ -569,7 +625,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#Base.eye-Union{Tuple{T}, Tuple{Type{ReferenceFrameRotations.Quaternion{T}}}} where T<:Real",
+    "location": "lib/library/#Base.eye-Union{Tuple{T}, Tuple{Type{ReferenceFrameRotations.Quaternion{T}}}} where T<:Real",
     "page": "Library",
     "title": "Base.eye",
     "category": "method",
@@ -577,7 +633,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#Base.getindex-Union{Tuple{ReferenceFrameRotations.Quaternion{T},Colon}, Tuple{T}} where T<:Real",
+    "location": "lib/library/#Base.getindex-Union{Tuple{ReferenceFrameRotations.Quaternion{T},Colon}, Tuple{T}} where T<:Real",
     "page": "Library",
     "title": "Base.getindex",
     "category": "method",
@@ -585,7 +641,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#Base.imag-Tuple{ReferenceFrameRotations.Quaternion}",
+    "location": "lib/library/#Base.imag-Tuple{ReferenceFrameRotations.Quaternion}",
     "page": "Library",
     "title": "Base.imag",
     "category": "method",
@@ -593,7 +649,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#Base.inv-Tuple{ReferenceFrameRotations.Quaternion}",
+    "location": "lib/library/#Base.inv-Tuple{ReferenceFrameRotations.Quaternion}",
     "page": "Library",
     "title": "Base.inv",
     "category": "method",
@@ -601,7 +657,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#Base.real-Tuple{ReferenceFrameRotations.Quaternion}",
+    "location": "lib/library/#Base.real-Tuple{ReferenceFrameRotations.Quaternion}",
     "page": "Library",
     "title": "Base.real",
     "category": "method",
@@ -609,7 +665,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#Base.show-Union{Tuple{IO,ReferenceFrameRotations.Quaternion{T}}, Tuple{T}} where T<:Real",
+    "location": "lib/library/#Base.show-Union{Tuple{IO,ReferenceFrameRotations.Quaternion{T}}, Tuple{T}} where T<:Real",
     "page": "Library",
     "title": "Base.show",
     "category": "method",
@@ -617,7 +673,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#Base.zeros-Union{Tuple{ReferenceFrameRotations.Quaternion{T}}, Tuple{T}} where T<:Real",
+    "location": "lib/library/#Base.zeros-Union{Tuple{ReferenceFrameRotations.Quaternion{T}}, Tuple{T}} where T<:Real",
     "page": "Library",
     "title": "Base.zeros",
     "category": "method",
@@ -625,7 +681,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#Base.zeros-Union{Tuple{T}, Tuple{Type{ReferenceFrameRotations.Quaternion{T}}}} where T<:Real",
+    "location": "lib/library/#Base.zeros-Union{Tuple{T}, Tuple{Type{ReferenceFrameRotations.Quaternion{T}}}} where T<:Real",
     "page": "Library",
     "title": "Base.zeros",
     "category": "method",
@@ -633,11 +689,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib.html#Library-1",
+    "location": "lib/library/#Library-1",
     "page": "Library",
     "title": "Library",
     "category": "section",
-    "text": "Documentation for ReferenceFrameRotations.jl.Modules = [ReferenceFrameRotations]\nOrder   = [:types, :function]"
+    "text": "Documentation for ReferenceFrameRotations.jl.Modules = [ReferenceFrameRotations]"
 },
 
 ]}
