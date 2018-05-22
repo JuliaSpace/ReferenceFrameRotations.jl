@@ -53,7 +53,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "Manual outline",
     "category": "section",
-    "text": "Pages = [\n    \"euler_angle_axis.md\",\n    \"euler_angles.md\",\n    \"quaternions.md\",\n    \"conversions.md\",\n    \"kinematics.md\",\n    \"composing_rotations.md\",\n]\nDepth = 2"
+    "text": "Pages = [\n    \"man/euler_angle_axis.md\",\n    \"man/euler_angles.md\",\n    \"man/quaternions.md\",\n    \"man/conversions.md\",\n    \"man/kinematics.md\",\n    \"man/composing_rotations.md\",\n    \"man/inv_rotations.md\",\n]\nDepth = 2"
 },
 
 {
@@ -61,7 +61,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "Library documentation",
     "category": "section",
-    "text": "Pages = [\"lib.md\"]"
+    "text": "Pages = [\"lib/library.md\"]"
 },
 
 {
@@ -278,6 +278,22 @@ var documenterSearchIndex = {"docs": [
     "title": "Composing rotations",
     "category": "section",
     "text": "CurrentModule = ReferenceFrameRotations\nDocTestSetup = quote\n    using ReferenceFrameRotations\nendMultiple rotations represented by direction cosine matrices or quaternions can be composed using the function:compose_rotation(R1,R2,R3,R4...)in which R1, R2, R3, ..., must be simultaneously DCMs or Quaternions. This method returns the following rotation:(Image: )julia> D1 = angle2dcm(0.5,0.5,0.5,:XYZ)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  0.770151   0.622447  -0.139381\n -0.420735   0.659956   0.622447\n  0.479426  -0.420735   0.770151\n\njulia> D2 = angle2dcm(-0.5,-0.5,-0.5,:ZYX)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  0.770151  -0.420735   0.479426\n  0.622447   0.659956  -0.420735\n -0.139381   0.622447   0.770151\n\njulia> compose_rotation(D1,D2)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n 1.0          2.77556e-17  0.0\n 2.77556e-17  1.0          5.55112e-17\n 0.0          5.55112e-17  1.0\n\njulia> q1 = angle2quat(0.5,0.5,0.5,:XYZ);\n\njulia> q2 = angle2quat(-0.5,-0.5,-0.5,:ZYX);\n\njulia> compose_rotation(q1,q2)\nQuaternion{Float64}:\n  + 0.9999999999999998 + 0.0.i + 0.0.j + 0.0.k"
+},
+
+{
+    "location": "man/inv_rotations/#",
+    "page": "Inverting rotations",
+    "title": "Inverting rotations",
+    "category": "page",
+    "text": ""
+},
+
+{
+    "location": "man/inv_rotations/#Inverting-rotations-1",
+    "page": "Inverting rotations",
+    "title": "Inverting rotations",
+    "category": "section",
+    "text": "CurrentModule = ReferenceFrameRotations\nDocTestSetup = quote\n    using ReferenceFrameRotations\nendA rotation represented by direction cosine matrix or quaternion can be inverted using the function:inv_rotation(R)in which R must be a DCM or a Quaternion.note: Note\nIf R is a DCM, then the transpose matrix will be returned. Hence, the user must ensure that the input matrix is ortho-normalized. Otherwise, the result will not be the inverse matrix of the input.If R is a Quaternion, then the conjugate quaternion will be returned. Hence, the user must ensure that the input quaternion is normalized (have unit norm). Otherwise, the result will not be the inverse quaternion of the input.These behaviors were selected to alleviate the computational burden.julia> D1 = angle2dcm(0.5,0.5,0.5,:XYZ);\n\njulia> D2 = inv_rotation(D1)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  0.770151  -0.420735   0.479426\n  0.622447   0.659956  -0.420735\n -0.139381   0.622447   0.770151\n\njulia> D2*D1\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n 1.0          2.77556e-17  0.0\n 2.77556e-17  1.0          5.55112e-17\n 0.0          5.55112e-17  1.0\n\njulia> q1 = angle2quat(0.5,0.5,0.5,:XYZ);\n\njulia> q2 = inv_rotation(q1)\nQuaternion{Float64}:\n  + 0.89446325406638 - 0.29156656802867026.i - 0.17295479161025828.j - 0.29156656802867026.k\n\njulia> q2*q1\nQuaternion{Float64}:\n  + 0.9999999999999998 + 0.0.i - 1.3877787807814457e-17.j + 0.0.k"
 },
 
 {
