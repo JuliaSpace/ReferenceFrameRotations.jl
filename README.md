@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/SatelliteToolbox/ReferenceFrameRotations.jl.svg?branch=master)](https://travis-ci.org/SatelliteToolbox/ReferenceFrameRotations.jl)
 [![Coverage Status](https://coveralls.io/repos/github/SatelliteToolbox/ReferenceFrameRotations.jl/badge.svg?branch=master)](https://coveralls.io/github/SatelliteToolbox/ReferenceFrameRotations.jl?branch=master)
+[![](https://img.shields.io/badge/docs-stable-blue.svg)][docs-stable-url]
 [![](https://img.shields.io/badge/docs-latest-blue.svg)][docs-latest-url]
 
 This module contains functions related to the representation of 3D rotations of
@@ -24,7 +25,8 @@ julia> Pkg.add("ReferenceFrameRotations")
 
 ## Usage
 
-See the [package documentation][docs-latest-url].
+See the [package documentation][docs-stable-url].
 
 [docs-latest-url]: https://satellitetoolbox.github.io/ReferenceFrameRotations.jl/latest
+[docs-stable-url]: https://satellitetoolbox.github.io/ReferenceFrameRotations.jl/stable
 
