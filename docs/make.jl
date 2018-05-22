@@ -14,6 +14,7 @@ makedocs(
         "Conversions" => "man/conversions.md",
         "Kinematics" => "man/kinematics.md",
         "Composing rotations" => "man/composing_rotations.md",
+        "Inverting rotations" => "man/inv_rotations.md",
         "Library" => "lib/library.md",
     ],
     html_prettyurls = !("local" in ARGS),

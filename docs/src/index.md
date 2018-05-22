@@ -62,12 +62,13 @@ already available), Rodrigues parameters, etc.
 
 ```@contents
 Pages = [
-    "euler_angle_axis.md",
-    "euler_angles.md",
-    "quaternions.md",
-    "conversions.md",
-    "kinematics.md",
-    "composing_rotations.md",
+    "man/euler_angle_axis.md",
+    "man/euler_angles.md",
+    "man/quaternions.md",
+    "man/conversions.md",
+    "man/kinematics.md",
+    "man/composing_rotations.md",
+    "man/inv_rotations.md",
 ]
 Depth = 2
 ```
@@ -75,5 +76,5 @@ Depth = 2
 ## Library documentation
 
 ```@index
-Pages = ["lib.md"]
+Pages = ["lib/library.md"]
 ```
