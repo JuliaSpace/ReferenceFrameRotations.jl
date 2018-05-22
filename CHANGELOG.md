@@ -1,6 +1,18 @@
 ReferenceFrameRotations.jl Changelog
 ====================================
 
+Version 0.2.1
+-------------
+
+- Performance improvements:
+    * `eye` and `zeros` functions are `@inline` now.
+
+- Tests:
+    * Add new tests to increase coverage.
+
+- Documentation:
+    * Initial version of the package documentation.
+
 Version 0.2.0
 -------------
 
