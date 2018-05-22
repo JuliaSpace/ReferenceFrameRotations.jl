@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Kinematics · Reference Frame Rotations</title><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link href="../../assets/documenter.css" rel="stylesheet" type="text/css"/></head><body><nav class="toc"><a href="../../index.html"><img class="logo" src="../../assets/logo.png" alt="Reference Frame Rotations logo"/></a><h1>Reference Frame Rotations</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" id="search-form" action="../../search/"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li><a class="toctext" href="../../">Home</a></li><li><a class="toctext" href="../euler_angle_axis/">Euler Angle and Axis</a></li><li><a class="toctext" href="../euler_angles/">Euler Angles</a></li><li><a class="toctext" href="../quaternions/">Quaternions</a></li><li><a class="toctext" href="../conversions/">Conversions</a></li><li class="current"><a class="toctext" href>Kinematics</a><ul class="internal"><li><a class="toctext" href="#Direction-Cosine-Matrices-1">Direction Cosine Matrices</a></li><li><a class="toctext" href="#Quaternions-1">Quaternions</a></li></ul></li><li><a class="toctext" href="../composing_rotations/">Composing rotations</a></li><li><a class="toctext" href="../inv_rotations/">Inverting rotations</a></li><li><a class="toctext" href="../../lib/library/">Library</a></li></ul></nav><article id="docs"><header><nav><ul><li><a href>Kinematics</a></li></ul><a class="edit-page" href="https://github.com/SatelliteToolbox/ReferenceFrameRotations.jl/blob/master/docs/src/man/kinematics.md"><span class="fa"></span> Edit on GitHub</a></nav><hr/><div id="topbar"><span>Kinematics</span><a class="fa fa-bars" href="#"></a></div></header><h1><a class="nav-anchor" id="Kinematics-1" href="#Kinematics-1">Kinematics</a></h1><p>Currently, only the kinematics of Direction Cosine Matrices and Quaternions are implemented.</p><h2><a class="nav-anchor" id="Direction-Cosine-Matrices-1" href="#Direction-Cosine-Matrices-1">Direction Cosine Matrices</a></h2><p>Let <strong>A</strong> and <strong>B</strong> be two reference frames in which the angular velocity of <strong>B</strong> with respect to <strong>A</strong>, and represented in <strong>B</strong>, is given by</p><div>\[\boldsymbol{\omega}_{ba,b} = \left[\begin{array}{c}
+    \omega_{ba,b,x} \\
+    \omega_{ba,b,y} \\
+    \omega_{ba,b,z}
+\end{array}\right]~.\]</div><p>If <span>$\mathbf{D}_{b}^{a}$</span> is the DCM that rotates the reference frame <strong>A</strong> into alignment with the reference frame <strong>B</strong>, then its time-derivative is</p><div>\[\dot{\mathbf{D}}_{b}^{a} = -\left[\begin{array}{ccc}
+           0         &amp; -\omega_{ba,b,z} &amp; +\omega_{ba,b,y} \\
+    +\omega_{ba,b,z} &amp;        0         &amp; -\omega_{ba,b,x} \\
+    -\omega_{ba,b,y} &amp; +\omega_{ba,b,x} &amp;        0
+\end{array}\right] \cdot \mathbf{D}_{b}^{a}~.\]</div><p>In this package, the time-derivative of this DCM can be computed using the function:</p><pre><code class="language-julia">function ddcm(Dba, wba_b)</code></pre><pre><code class="language-julia-repl">julia&gt; wba_b = [0.01;0;0];
+
+julia&gt; Dba = angle2dcm(0.5,0,0,:XYZ)
+3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
+  1.0   0.0       0.0
+ -0.0   0.877583  0.479426
+  0.0  -0.479426  0.877583
+
+julia&gt; ddcm(Dba,wba_b)
+3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
+ -0.0   0.0          0.0
+  0.0  -0.00479426   0.00877583
+  0.0  -0.00877583  -0.00479426</code></pre><h2><a class="nav-anchor" id="Quaternions-1" href="#Quaternions-1">Quaternions</a></h2><p>Let <strong>A</strong> and <strong>B</strong> be two reference frames in which the angular velocity of <strong>B</strong> with respect to <strong>A</strong>, and represented in <strong>B</strong>, is given by</p><div>\[\boldsymbol{\omega}_{ba,b} = \left[\begin{array}{c}
+    \omega_{ba,b,x} \\
+    \omega_{ba,b,y} \\
+    \omega_{ba,b,z}
+\end{array}\right]~.\]</div><p>If <span>$\mathbf{q}_{ba}$</span> is the quaternion that rotates the reference frame <strong>A</strong> into alignment with the reference frame <strong>B</strong>, then its time-derivative is</p><div>\[\dot{\mathbf{q}}_{ba} = \frac{1}{2} \cdot \left[\begin{array}{cccc}
+           0         &amp;  -\omega_{ba,b,x} &amp;  -\omega_{ba,b,y} &amp; -\omega_{ba,b,z} \\
+    +\omega_{ba,b,x} &amp;         0         &amp;  +\omega_{ba,b,z} &amp; -\omega_{ba,b,y} \\
+    +\omega_{ba,b,y} &amp;  -\omega_{ba,b,z} &amp;         0         &amp; +\omega_{ba,b,x} \\
+    +\omega_{ba,b,z} &amp;  +\omega_{ba,b,y} &amp;  -\omega_{ba,b,x} &amp;        0       
+\end{array}\right] \cdot \mathbf{q}_{ba}~.\]</div><p>In this package, the time-derivative of this quaternion can be computed using the function:</p><pre><code class="language-julia">function dquat(qba, wba_b)</code></pre><pre><code class="language-julia-repl">julia&gt; wba_b = [0.01;0;0];
+
+julia&gt; qba = angle2quat(0.5,0,0,:XYZ);
+
+julia&gt; dquat(qba,wba_b)
+Quaternion{Float64}:
+  - 0.0012370197962726147 + 0.004844562108553224.i + 0.0.j + 0.0.k</code></pre><footer><hr/><a class="previous" href="../conversions/"><span class="direction">Previous</span><span class="title">Conversions</span></a><a class="next" href="../composing_rotations/"><span class="direction">Next</span><span class="title">Composing rotations</span></a></footer></article></body></html>
