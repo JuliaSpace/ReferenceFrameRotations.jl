@@ -1,8 +1,8 @@
 # ReferenceFrameRotations
 
-[![Build Status](https://travis-ci.org/SatelliteToolbox/ReferenceFrameRotations.jl.svg?branch=master)](https://travis-ci.org/SatelliteToolbox/ReferenceFrameRotations.jl)
+[![Build Status](https://travis-ci.org/JuliaSpace/ReferenceFrameRotations.jl.svg?branch=master)](https://travis-ci.org/JuliaSpace/ReferenceFrameRotations.jl)
 [![Build status](https://ci.appveyor.com/api/projects/status/m56xqo4qcn0yoiuk/branch/master?svg=true)](https://ci.appveyor.com/project/ronisbr/referenceframerotations-jl/branch/master)
-[![Coverage Status](https://coveralls.io/repos/github/SatelliteToolbox/ReferenceFrameRotations.jl/badge.svg?branch=master)](https://coveralls.io/github/SatelliteToolbox/ReferenceFrameRotations.jl?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/JuliaSpace/ReferenceFrameRotations.jl/badge.svg?branch=master)](https://coveralls.io/github/JuliaSpace/ReferenceFrameRotations.jl?branch=master)
 [![](https://img.shields.io/badge/docs-stable-blue.svg)][docs-stable-url]
 [![](https://img.shields.io/badge/docs-latest-blue.svg)][docs-latest-url]
 
@@ -28,6 +28,6 @@ julia> Pkg.add("ReferenceFrameRotations")
 
 See the [package documentation][docs-stable-url].
 
-[docs-latest-url]: https://satellitetoolbox.github.io/ReferenceFrameRotations.jl/latest
-[docs-stable-url]: https://satellitetoolbox.github.io/ReferenceFrameRotations.jl/stable
+[docs-latest-url]: https://juliaspace.github.io/ReferenceFrameRotations.jl/latest
+[docs-stable-url]: https://juliaspace.github.io/ReferenceFrameRotations.jl/stable
 

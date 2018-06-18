@@ -21,7 +21,7 @@ makedocs(
 )
 
 deploydocs(
-    repo = "github.com/SatelliteToolbox/ReferenceFrameRotations.jl.git",
+    repo = "github.com/JuliaSpace/ReferenceFrameRotations.jl.git",
     julia = "0.6",
     target = "build",
     deps = nothing,
