@@ -1,6 +1,15 @@
 ReferenceFrameRotations.jl Changelog
 ====================================
 
+Version 0.3.0
+-------------
+
+- Full support for `Julia 0.7` and `Julia 1.0`.
+    * The support for `Julia <= 0.6` is dropped in this version. Hence,
+      ReferenceFrameRotations.jl **will not** work with those versions anymore.
+      If it is necessary to use `Julia <= 0.6`, then you should need to stick
+      with `ReferenceFrameRotations.jl <= 0.2.1`.
+
 Version 0.2.1
 -------------
 
