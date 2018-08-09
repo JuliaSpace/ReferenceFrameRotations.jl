@@ -1,15 +1,11 @@
-VERSION >= v"0.4.0-dev+6521" && __precompile__()
-
-module ReferenceFrameRotations
+nothingmodule ReferenceFrameRotations
 
 export DCM, EulerAngleAxis, EulerAngles, Quaternion
 
 import Base: +, -, *, /, conj, copy, getindex, inv, imag, real, show
 import Base: zeros
-
-VERSION <  v"0.7.0-DEV" && import Base: eye, norm
-VERSION >= v"0.7.0-DEV" && import LinearAlgebra: eye, norm
-VERSION >= v"0.7.0-DEV" && using  LinearAlgebra
+import LinearAlgebra: eye, norm
+using  LinearAlgebra
 
 using StaticArrays
 
