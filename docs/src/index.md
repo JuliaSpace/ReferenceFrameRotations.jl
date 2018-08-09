@@ -14,8 +14,8 @@ Space Research (INPE)](http://www.inpe.br).
 
 ## Requirements
 
-* Julia >= 0.6
-* StaticArrays
+* Julia >= 0.7
+* StaticArrays >= 0.8.3
 
 ## Installation
 

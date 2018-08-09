@@ -147,36 +147,38 @@ end
 # Operations that were not tested yet.
 # ====================================
 
-q = Quaternion(1.,0,0.f0,0)
-@test typeof(q) == Quaternion{Float64}
+let
+    q = Quaternion(1.,0,0.f0,0)
+    @test typeof(q) == Quaternion{Float64}
 
-q = Quaternion(SVector{3}(1.,2.,3.))
-@test q.q0 == 0
-@test q.q1 == 1
-@test q.q2 == 2
-@test q.q3 == 3
+    q = Quaternion(SVector{3}(1.,2.,3.))
+    @test q.q0 == 0
+    @test q.q1 == 1
+    @test q.q2 == 2
+    @test q.q3 == 3
 
-q = Quaternion(SVector{4}(1.,2.,3.,4.))
-@test q.q0 == 1
-@test q.q1 == 2
-@test q.q2 == 3
-@test q.q3 == 4
+    q = Quaternion(SVector{4}(1.,2.,3.,4.))
+    @test q.q0 == 1
+    @test q.q1 == 2
+    @test q.q2 == 3
+    @test q.q3 == 4
 
-q = 3*q
-@test q.q0 == 3
-@test q.q1 == 6
-@test q.q2 == 9
-@test q.q3 == 12
+    q = 3*q
+    @test q.q0 == 3
+    @test q.q1 == 6
+    @test q.q2 == 9
+    @test q.q3 == 12
 
-qc = conj(q)
-@test qc.q0 == +3
-@test qc.q1 == -6
-@test qc.q2 == -9
-@test qc.q3 == -12
+    qc = conj(q)
+    @test qc.q0 == +3
+    @test qc.q1 == -6
+    @test qc.q2 == -9
+    @test qc.q3 == -12
 
-q = Quaternion(1.0,1.0,1.0,1.0)
-@test inv_rotation(q) != inv(q)
-@test (q*inv(q))[:] ≈ [1;0;0;0]
+    q = Quaternion(1.0,1.0,1.0,1.0)
+    @test inv_rotation(q) != inv(q)
+    @test (q*inv(q))[:] ≈ [1;0;0;0]
+end
 
 # Test exceptions
 # ===============

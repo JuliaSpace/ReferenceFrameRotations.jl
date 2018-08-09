@@ -84,16 +84,18 @@ for k = 1:samples
 end
 
 # Test exceptions.
+I3 = DCM(Matrix{Float64}(I, 3, 3))
+
 @test_throws Exception create_rotation_matrix(0, :x)
 @test_throws Exception create_rotation_matrix(0, :y)
 @test_throws Exception create_rotation_matrix(0, :z)
 @test_throws Exception create_rotation_matrix(0, :a)
-@test_throws ArgumentError dcm2angle(DCM(eye(3)),:xyz)
-@test_throws ArgumentError dcm2angle(DCM(eye(3)),:zyx)
-@test_throws ArgumentError dcm2angle(DCM(eye(3)),:xyx)
-@test_throws ArgumentError dcm2angle(DCM(eye(3)),:abc)
-@test_throws ArgumentError ddcm(DCM(eye(3)), [1])
-@test_throws ArgumentError ddcm(DCM(eye(3)), [1;2])
-@test_throws ArgumentError ddcm(DCM(eye(3)), [1;2;3;4])
-@test_throws ArgumentError ddcm(DCM(eye(3)), [1;2;3;4;5])
+@test_throws ArgumentError dcm2angle(I3,:xyz)
+@test_throws ArgumentError dcm2angle(I3,:zyx)
+@test_throws ArgumentError dcm2angle(I3,:xyx)
+@test_throws ArgumentError dcm2angle(I3,:abc)
+@test_throws ArgumentError ddcm(I3, [1])
+@test_throws ArgumentError ddcm(I3, [1;2])
+@test_throws ArgumentError ddcm(I3, [1;2;3;4])
+@test_throws ArgumentError ddcm(I3, [1;2;3;4;5])
 

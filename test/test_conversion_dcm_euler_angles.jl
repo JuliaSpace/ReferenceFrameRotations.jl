@@ -42,8 +42,8 @@ for k = 1:samples
     #
     # TODO: 2018-06-21: Some tests were failing with the tolerance `5e-7` in
     # nightly builds in Windows. Those failures were not seen in Linux or macOS.
-    @test norm(error1) < 6e-7
-    @test norm(error2) < 6e-7
+    @test norm(error1) < 7e-7
+    @test norm(error2) < 7e-7
     @test error1 ≈ error2
 end
 

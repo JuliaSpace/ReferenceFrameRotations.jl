@@ -1,26 +1,24 @@
-VERSION >= v"0.7.0-DEV.2036" && using Test
-VERSION <  v"0.7.0-DEV.2036" && using Base.Test
-VERSION >= v"0.7.0-DEV"      && using LinearAlgebra
-
+using Test
 using ReferenceFrameRotations
+using LinearAlgebra
 using StaticArrays
 
 # Available rotations.
-rot_seq_array = [:XYX,
-                 :XYZ,
-                 :XZX,
-                 :XZY,
-                 :YXY,
-                 :YXZ,
-                 :YZX,
-                 :YZY,
-                 :ZXY,
-                 :ZXZ,
-                 :ZYX,
-                 :ZYZ]
+const rot_seq_array = [:XYX,
+                       :XYZ,
+                       :XZX,
+                       :XZY,
+                       :YXY,
+                       :YXZ,
+                       :YZX,
+                       :YZY,
+                       :ZXY,
+                       :ZXZ,
+                       :ZYX,
+                       :ZYZ]
 
 # Number of samples.
-samples = 1000
+const samples = 1000
 
 @time @testset "Direction Cosine Matrices" begin
     include("./test_dcm.jl")

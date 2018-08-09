@@ -1,2 +1,2 @@
-julia 0.6
-StaticArrays
+julia 0.7
+StaticArrays 0.8.3

@@ -93,86 +93,86 @@ ReferenceFrameRotations.EulerAngles{Float64}(1.5707963267948966, 0.0, -0.0, :XYZ
 function dcm2angle(dcm::DCM, rot_seq::Symbol=:ZYX)
     if rot_seq == :ZYX
 
-        EulerAngles(atan2(+dcm[1,2],+dcm[1,1]),
-                     asin(-dcm[1,3]),
-                    atan2(+dcm[2,3],+dcm[3,3]),
+        EulerAngles(atan(+dcm[1,2],+dcm[1,1]),
+                    asin(-dcm[1,3]),
+                    atan(+dcm[2,3],+dcm[3,3]),
                     rot_seq)
 
     elseif rot_seq == :XYX
 
-        EulerAngles(atan2(+dcm[1,2],-dcm[1,3]),
-                     acos(+dcm[1,1]),
-                    atan2(+dcm[2,1],+dcm[3,1]),
+        EulerAngles(atan(+dcm[1,2],-dcm[1,3]),
+                    acos(+dcm[1,1]),
+                    atan(+dcm[2,1],+dcm[3,1]),
                     rot_seq)
 
     elseif rot_seq == :XYZ
 
-        EulerAngles(atan2(-dcm[3,2],+dcm[3,3]),
-                     asin(+dcm[3,1]),
-                    atan2(-dcm[2,1],+dcm[1,1]),
+        EulerAngles(atan(-dcm[3,2],+dcm[3,3]),
+                    asin(+dcm[3,1]),
+                    atan(-dcm[2,1],+dcm[1,1]),
                     rot_seq)
 
     elseif rot_seq == :XZX
 
-        EulerAngles(atan2(+dcm[1,3],+dcm[1,2]),
-                     acos(+dcm[1,1]),
-                    atan2(+dcm[3,1],-dcm[2,1]),
+        EulerAngles(atan(+dcm[1,3],+dcm[1,2]),
+                    acos(+dcm[1,1]),
+                    atan(+dcm[3,1],-dcm[2,1]),
                     rot_seq)
 
     elseif rot_seq == :XZY
 
-        EulerAngles(atan2(+dcm[2,3],+dcm[2,2]),
-                     asin(-dcm[2,1]),
-                    atan2(+dcm[3,1],+dcm[1,1]),
+        EulerAngles(atan(+dcm[2,3],+dcm[2,2]),
+                    asin(-dcm[2,1]),
+                    atan(+dcm[3,1],+dcm[1,1]),
                     rot_seq)
 
     elseif rot_seq == :YXY
 
-        EulerAngles(atan2(+dcm[2,1],+dcm[2,3]),
-                     acos(+dcm[2,2]),
-                    atan2(+dcm[1,2],-dcm[3,2]),
+        EulerAngles(atan(+dcm[2,1],+dcm[2,3]),
+                    acos(+dcm[2,2]),
+                    atan(+dcm[1,2],-dcm[3,2]),
                     rot_seq)
 
     elseif rot_seq == :YXZ
 
-        EulerAngles(atan2(+dcm[3,1],+dcm[3,3]),
-                     asin(-dcm[3,2]),
-                    atan2(+dcm[1,2],+dcm[2,2]),
+        EulerAngles(atan(+dcm[3,1],+dcm[3,3]),
+                    asin(-dcm[3,2]),
+                    atan(+dcm[1,2],+dcm[2,2]),
                     rot_seq)
 
     elseif rot_seq == :YZX
 
-        EulerAngles(atan2(-dcm[1,3],+dcm[1,1]),
-                     asin(+dcm[1,2]),
-                    atan2(-dcm[3,2],+dcm[2,2]),
+        EulerAngles(atan(-dcm[1,3],+dcm[1,1]),
+                    asin(+dcm[1,2]),
+                    atan(-dcm[3,2],+dcm[2,2]),
                     rot_seq)
 
     elseif rot_seq == :YZY
 
-        EulerAngles(atan2(+dcm[2,3],-dcm[2,1]),
-                     acos(+dcm[2,2]),
-                    atan2(+dcm[3,2],+dcm[1,2]),
+        EulerAngles(atan(+dcm[2,3],-dcm[2,1]),
+                    acos(+dcm[2,2]),
+                    atan(+dcm[3,2],+dcm[1,2]),
                     rot_seq)
 
     elseif rot_seq == :ZXY
 
-        EulerAngles(atan2(-dcm[2,1],+dcm[2,2]),
-                     asin(+dcm[2,3]),
-                    atan2(-dcm[1,3],+dcm[3,3]),
+        EulerAngles(atan(-dcm[2,1],+dcm[2,2]),
+                    asin(+dcm[2,3]),
+                    atan(-dcm[1,3],+dcm[3,3]),
                     rot_seq)
 
     elseif rot_seq == :ZXZ
 
-        EulerAngles(atan2(+dcm[3,1],-dcm[3,2]),
-                     acos(+dcm[3,3]),
-                    atan2(+dcm[1,3],+dcm[2,3]),
+        EulerAngles(atan(+dcm[3,1],-dcm[3,2]),
+                    acos(+dcm[3,3]),
+                    atan(+dcm[1,3],+dcm[2,3]),
                     rot_seq)
 
     elseif rot_seq == :ZYZ
 
-        EulerAngles(atan2(+dcm[3,2],+dcm[3,1]),
-                     acos(+dcm[3,3]),
-                    atan2(+dcm[2,3],-dcm[1,3]),
+        EulerAngles(atan(+dcm[3,2],+dcm[3,1]),
+                    acos(+dcm[3,3]),
+                    atan(+dcm[2,3],-dcm[1,3]),
                     rot_seq)
 
     else
@@ -218,9 +218,9 @@ Quaternion{Float64}:
 
 """
 function dcm2quat(dcm::DCM{T}) where T<:Real
-    if  trace(dcm) > 0
+    if  tr(dcm) > 0
         # f = 4*q0
-        f = sqrt(trace(dcm)+1)*2
+        f = sqrt(tr(dcm)+1)*2
 
         return Quaternion{T}(f/4,
                              (dcm[2,3]-dcm[3,2])/f,

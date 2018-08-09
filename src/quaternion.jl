@@ -694,7 +694,7 @@ ReferenceFrameRotations.EulerAngleAxis{Float64}(0.7853981633974484, [1.0, 0.0, 0
 
 """
 function quat2angleaxis(q::Quaternion)
-    a = atan2( norm(vect(q)), q.q0 )*2
+    a = atan( norm(vect(q)), q.q0 )*2
     v = vect(q)/sin(a/2)
 
     # TODO: Change this when the functions of Euler Angle and Axis are defined.
