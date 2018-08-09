@@ -2,7 +2,7 @@
 #                                 Quaternions
 ################################################################################
 
-export dquat, quat2angle, quat2angleaxis, quat2dcm, vect
+export dquat, eye, quat2angle, quat2angleaxis, quat2dcm, vect
 
 ################################################################################
 #                                 Initializers
