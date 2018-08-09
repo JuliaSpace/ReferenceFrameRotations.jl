@@ -361,6 +361,22 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "lib/library/#LinearAlgebra.eye-Union{Tuple{Quaternion{T}}, Tuple{T}} where T<:Real",
+    "page": "Library",
+    "title": "LinearAlgebra.eye",
+    "category": "method",
+    "text": "@inline function eye(q::Quaternion{T}) where T<:Real\n\nCreate the identity quaternion (1 + 0.i + 0.j + 0.k) with the same type of another quaternion q.\n\nArgs\n\nq: A quaternion of type T.\n\nReturns\n\nThe identity quaternion of type T.\n\nExample\n\njulia> q1 = Quaternion{Float32}(cosd(45/2),sind(45/2),0.,0.);\n\njulia> q2 = eye(q1)\nQuaternion{Float32}:\n  + 1.0 + 0.0.i + 0.0.j + 0.0.k\n\n\n\n\n\n"
+},
+
+{
+    "location": "lib/library/#LinearAlgebra.eye-Union{Tuple{Type{Quaternion{T}}}, Tuple{T}} where T<:Real",
+    "page": "Library",
+    "title": "LinearAlgebra.eye",
+    "category": "method",
+    "text": "@inline function eye(::Type{Quaternion{T}}) where T<:Real\n\nCreate the identity quaternion (1 + 0.i + 0.j + 0.k) of type T.\n\nArgs\n\nQuaternion{T}, where T is the desired type. If T is omitted, then it falls back to Float64.\n\nReturns\n\nThe identity quaternion of type T.\n\nExample\n\njulia> eye(Quaternion{Float32})\nQuaternion{Float32}:\n  + 1.0 + 0.0.i + 0.0.j + 0.0.k\n\njulia> eye(Quaternion{Float64})\nQuaternion{Float64}:\n  + 1.0 + 0.0.i + 0.0.j + 0.0.k\n\n\n\n\n\n"
+},
+
+{
     "location": "lib/library/#ReferenceFrameRotations.angle2dcm",
     "page": "Library",
     "title": "ReferenceFrameRotations.angle2dcm",
@@ -678,22 +694,6 @@ var documenterSearchIndex = {"docs": [
     "title": "Base.zeros",
     "category": "method",
     "text": "@inline function zeros(::Type{Quaternion{T}}) where T<:Real\n\nCreate the null quaternion (0 + 0.i + 0.j + 0.k) of type T.\n\nArgs\n\nQuaternion{T}, where T is the desired type. If T is omitted, then it falls back to Float64.\n\nReturns\n\nThe null quaternion of type T.\n\nExample\n\njulia> zeros(Quaternion{Float32})\nQuaternion{Float32}:\n  + 0.0 + 0.0.i + 0.0.j + 0.0.k\n\njulia> zeros(Quaternion)\nQuaternion{Float64}:\n  + 0.0 + 0.0.i + 0.0.j + 0.0.k\n\n\n\n\n\n"
-},
-
-{
-    "location": "lib/library/#LinearAlgebra.eye-Union{Tuple{Quaternion{T}}, Tuple{T}} where T<:Real",
-    "page": "Library",
-    "title": "LinearAlgebra.eye",
-    "category": "method",
-    "text": "@inline function eye(q::Quaternion{T}) where T<:Real\n\nCreate the identity quaternion (1 + 0.i + 0.j + 0.k) with the same type of another quaternion q.\n\nArgs\n\nq: A quaternion of type T.\n\nReturns\n\nThe identity quaternion of type T.\n\nExample\n\njulia> q1 = Quaternion{Float32}(cosd(45/2),sind(45/2),0.,0.);\n\njulia> q2 = eye(q1)\nQuaternion{Float32}:\n  + 1.0 + 0.0.i + 0.0.j + 0.0.k\n\n\n\n\n\n"
-},
-
-{
-    "location": "lib/library/#LinearAlgebra.eye-Union{Tuple{Type{Quaternion{T}}}, Tuple{T}} where T<:Real",
-    "page": "Library",
-    "title": "LinearAlgebra.eye",
-    "category": "method",
-    "text": "@inline function eye(::Type{Quaternion{T}}) where T<:Real\n\nCreate the identity quaternion (1 + 0.i + 0.j + 0.k) of type T.\n\nArgs\n\nQuaternion{T}, where T is the desired type. If T is omitted, then it falls back to Float64.\n\nReturns\n\nThe identity quaternion of type T.\n\nExample\n\njulia> eye(Quaternion{Float32})\nQuaternion{Float32}:\n  + 1.0 + 0.0.i + 0.0.j + 0.0.k\n\njulia> eye(Quaternion{Float64})\nQuaternion{Float64}:\n  + 1.0 + 0.0.i + 0.0.j + 0.0.k\n\n\n\n\n\n"
 },
 
 {
