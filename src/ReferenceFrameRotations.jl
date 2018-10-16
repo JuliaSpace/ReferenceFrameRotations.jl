@@ -4,7 +4,7 @@ export DCM, EulerAngleAxis, EulerAngles, Quaternion
 
 import Base: +, -, *, /, conj, copy, getindex, inv, imag, real, show
 import Base: zeros
-import LinearAlgebra: eye, norm
+import LinearAlgebra: norm
 
 using LinearAlgebra
 using StaticArrays
