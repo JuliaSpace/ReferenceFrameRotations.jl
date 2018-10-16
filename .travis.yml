@@ -3,12 +3,10 @@ os:
     - linux
     - osx
 julia:
-    - 0.7
     - 1.0
     - nightly
 matrix:
     allow_failures:
-        - julia: 1.0
         - julia: nightly
 after_success:
     # Push coverage results to Coveralls.
