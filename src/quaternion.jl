@@ -497,7 +497,7 @@ end
 ################################################################################
 
 """
-    function dquat(qba::Quaternion{T1}, wba_b::AbstractVector)
+    function dquat(qba::Quaternion, wba_b::AbstractVector)
 
 Compute the time-derivative of the quaternion `qba` that rotates a reference
 frame `a` into alignment to the reference frame `b` in which the angular
@@ -514,8 +514,7 @@ Quaternion{Float64}:
 ```
 
 """
-function dquat(qba::Quaternion{T1},
-               wba_b::AbstractVector{T2}) where {T1,T2}
+function dquat(qba::Quaternion, wba_b::AbstractVector)
     # Auxiliary variable.
     w = wba_b
 
