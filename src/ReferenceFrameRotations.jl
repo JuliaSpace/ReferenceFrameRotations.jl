@@ -23,7 +23,7 @@ The Direction Cosine Matrice is a `SMatrix{3,3}`, which is a 3x3 static matrix.
 DCM{T} = SMatrix{3,3,T}
 
 """
-    struct EulerAngles{T<:Real}
+    struct EulerAngles{T}
 
 The definition of Euler Angles, which is composed of three angles `a1`, `a2`,
 and `a3` together with a rotation sequence `rot_seq`. The latter is provided by
@@ -34,7 +34,7 @@ corresponding angle (for example, `:ZYX`). The valid values for `rot_seq` are:
   `:ZXZ`, `:ZYX`, and `ZYZ`.
 
 """
-struct EulerAngles{T<:Real}
+struct EulerAngles{T}
     a1::T
     a2::T
     a3::T
@@ -42,7 +42,7 @@ struct EulerAngles{T<:Real}
 end
 
 """
-    struct EulerAngleAxis{T<:Real}
+    struct EulerAngleAxis{T}
 
 The definition of Euler Angle and Axis to represent a 3D rotation.
 
@@ -50,13 +50,13 @@ The definition of Euler Angle and Axis to represent a 3D rotation.
 * `v`: The unitary vector aligned with the Euler axis.
 
 """
-struct EulerAngleAxis{T<:Real}
+struct EulerAngleAxis{T}
     a::T
     v::Vector{T}
 end
 
 """
-### struct Quaternion{T<:Real}
+### struct Quaternion{T}
 
 The definition of the quaternion. It has four values of the same type. The
 quaternion representation is:
@@ -64,7 +64,7 @@ quaternion representation is:
     q0 + q1.i + q2.j + q3.k
 
 """
-struct Quaternion{T<:Real}
+struct Quaternion{T}
     q0::T
     q1::T
     q2::T

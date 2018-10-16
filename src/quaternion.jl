@@ -9,7 +9,7 @@ export dquat, eye, quat2angle, quat2angleaxis, quat2dcm, vect
 ################################################################################
 
 """
-    function Quaternion(q0::Number, q1::Number, q2::Number, q3::Number)
+    function Quaternion(q0::T0, q1::T1, q2::T2, q3::T3) where {T0,T1,T2,T3}
 
 Create the following quaternion:
 
@@ -27,9 +27,9 @@ Create the following quaternion:
 The new quaternion.
 
 """
-function Quaternion(q0::Number, q1::Number, q2::Number, q3::Number)
-    (q0p, q1p, q2p, q3p) = promote(q0,q1,q2,q3)
-    Quaternion(q0p,q1p,q2p,q3p)
+function Quaternion(q0::T0, q1::T1, q2::T2, q3::T3) where {T0,T1,T2,T3}
+    T = promote_type(T0,T1,T2,T3)
+    Quaternion{T}(q0,q1,q2,q3)
 end
 
 """
