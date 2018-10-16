@@ -142,12 +142,10 @@ julia> angle2dcm(EulerAngles(pi/2, pi/3, pi/4, :ZYX))
 ```
 
 """
-function angle2dcm(eulerang::EulerAngles)
-    angle2dcm(eulerang.a1,
-              eulerang.a2,
-              eulerang.a3,
-              eulerang.rot_seq)
-end
+angle2dcm(eulerang::EulerAngles) = angle2dcm(eulerang.a1,
+                                             eulerang.a2,
+                                             eulerang.a3,
+                                             eulerang.rot_seq)
 
 """
     function smallangle2dcm(θx::Number, θy::Number, θz::Number)
@@ -170,11 +168,9 @@ julia> smallangle2dcm(+0.01, -0.01, +0.01)
 ```
 
 """
-function smallangle2dcm(θx::Number, θy::Number, θz::Number)
-    DCM(  1, +θz, -θy,
-        -θz,   1, +θx,
-        +θy, -θx,   1)'
-end
+smallangle2dcm(θx::Number, θy::Number, θz::Number) = DCM(  1, +θz, -θy,
+                                                         -θz,   1, +θx,
+                                                         +θy, -θx,   1)'
 
 # Quaternion
 # ==============================================================================
@@ -350,12 +346,10 @@ Quaternion{Float64}:
 ```
 
 """
-function angle2quat(eulerang::EulerAngles)
-    angle2quat(eulerang.a1,
-               eulerang.a2,
-               eulerang.a3,
-               eulerang.rot_seq)
-end
+angle2quat(eulerang::EulerAngles) = angle2quat(eulerang.a1,
+                                               eulerang.a2,
+                                               eulerang.a3,
+                                               eulerang.rot_seq)
 
 """
     function smallangle2quat(θx::Number, θy::Number, θz::Number)

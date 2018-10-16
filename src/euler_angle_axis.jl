@@ -46,7 +46,7 @@ function angleaxis2quat(a::Number, v::Vector)
 end
 
 """
-    function angleaxis2quat(angleaxis::EulerAngleAxis{T}) where T<:Real
+    function angleaxis2quat(angleaxis::EulerAngleAxis)
 
 Convert a Euler angle and Euler axis `angleaxis` (see `EulerAngleAxis`) to a
 quaternion.
@@ -70,7 +70,5 @@ Quaternion{Float64}:
 ```
 
 """
-function angleaxis2quat(angleaxis::EulerAngleAxis{T}) where T<:Real
-    # Create a quaternion using the provided Euler angle and axis.
-    angleaxis2quat(angleaxis.a, angleaxis.v)
-end
+angleaxis2quat(angleaxis::EulerAngleAxis) = angleaxis2quat(angleaxis.a,
+                                                           angleaxis.v)
