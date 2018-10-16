@@ -5,7 +5,7 @@ The Euler angle and axis representation is defined by the following immutable
 structure:
 
 ```julia
-struct EulerAngleAxis{T<:Real}
+struct EulerAngleAxis{T}
     a::T
     v::Vector{T}
 end
