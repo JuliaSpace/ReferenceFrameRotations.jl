@@ -33,7 +33,7 @@ function Quaternion(q0::Number, q1::Number, q2::Number, q3::Number)
 end
 
 """
-    function Quaternion(v::Vector{T}) where T<:Real
+    function Quaternion(v::AbstractVector)
 
 If the vector `v` has 3 components, then create a quaternion in which the real
 part is `0` and the vectorial or imaginary part has the same components of the
@@ -141,7 +141,7 @@ end
 # ==============================================================================
 
 """
-    @inline function *(λ::Number, q::Quaternion{T2})
+    @inline function *(λ::Number, q::Quaternion)
 
 Multiply the quaternion `q` by the scalar `λ`.
 
@@ -273,7 +273,7 @@ The quaternion `λ/q`.
 end
 
 """
-    @inline function /(q::Quaternion{T1}, λ::T1) where T1<:Real where T2<:Real
+    @inline function /(q::Quaternion{T1}, λ::T1) where {T1, T2}
 
 Compute the division `q/λ`.
 
@@ -287,7 +287,7 @@ Compute the division `q/λ`.
 The quaternion `q/λ`.
 
 """
-@inline function /(q::Quaternion{T1}, λ::T2) where T1<:Real where T2<:Real
+@inline function /(q::Quaternion{T1}, λ::T2) where {T1, T2}
     q*(1/λ)
 end
 
@@ -295,7 +295,7 @@ end
 # ==============================================================================
 
 """
-    @inline function getindex(q::Quaternion{T}, ::Colon) where T<:Real
+    @inline function getindex(q::Quaternion, ::Colon)
 
 Transform the quaternion into a 4x1 vector of type `T`.
 
@@ -308,7 +308,7 @@ Transform the quaternion into a 4x1 vector of type `T`.
 A 4x1 vector of type `T` with the elements of the quaternion.
 
 """
-@inline function getindex(q::Quaternion{T}, ::Colon) where T<:Real
+@inline function getindex(q::Quaternion, ::Colon)
     [q.q0;q.q1;q.q2;q.q3]
 end
 
@@ -317,7 +317,7 @@ end
 ################################################################################
 
 """
-    @inline function conj(q::Quaternion{T}) where T<:Real
+    @inline function conj(q::Quaternion)
 
 Compute the complex conjugate of the quaternion `q`, which is:
 
@@ -338,7 +338,7 @@ The complex conjugate of the quaternion `q`.
 end
 
 """
-    @inline function copy(q::Quaternion{T}) where T<:Real
+    @inline function copy(q::Quaternion{T}) where T
 
 Create a copy of the quaternion `q`.
 
@@ -351,7 +351,7 @@ Create a copy of the quaternion `q`.
 The copy of the quaternion.
 
 """
-@inline function copy(q::Quaternion{T}) where T<:Real
+@inline function copy(q::Quaternion{T}) where T
     Quaternion{T}(q.q0, q.q1, q.q2, q.q3)
 end
 
@@ -420,7 +420,7 @@ Quaternion{Float32}:
 end
 
 """
-    @inline function imag(q::Quaternion{T}) where T<:Real
+    @inline function imag(q::Quaternion)
 
 Return the vectorial or imaginary part of the quaternion represented by a 3x1
 vector.
@@ -499,7 +499,7 @@ The scalar `q0`.
 end
 
 """
-    @inline function vect(q::Quaternion{T}) where T<:Real
+    @inline function vect(q::Quaternion)
 
 Return the vectorial or imaginary part of the quaternion represented by a 3x1
 vector.
@@ -518,7 +518,7 @@ The following vector: `[q1; q2; q3]`.
 end
 
 """
-    @inline function zeros(::Type{Quaternion{T}}) where T<:Real
+    @inline function zeros(::Type{Quaternion{T}}) where T
 
 Create the null quaternion (`0 + 0.i + 0.j + 0.k`) of type `T`.
 
@@ -544,7 +544,7 @@ Quaternion{Float64}:
 ```
 
 """
-@inline function zeros(::Type{Quaternion{T}}) where T<:Real
+@inline function zeros(::Type{Quaternion{T}}) where T
     Quaternion{T}(zero(T),zero(T),zero(T),zero(T))
 end
 
@@ -553,7 +553,7 @@ end
 end
 
 """
-    @inline function zeros(q::Quaternion{T}) where T<:Real
+    @inline function zeros(q::Quaternion{T}) where T
 
 Create the null quaternion (`0 + 0.i + 0.j + 0.k`) with the same type of another
 quaternion `q`.
@@ -577,7 +577,7 @@ Quaternion{Float32}:
 ```
 
 """
-@inline function zeros(q::Quaternion{T}) where T<:Real
+@inline function zeros(q::Quaternion{T}) where T
     zeros(Quaternion{T})
 end
 
@@ -586,7 +586,7 @@ end
 ################################################################################
 
 """
-    function show(io::IO, q::Quaternion{T}) where T<:Real
+    function show(io::IO, q::Quaternion{T}) where T
 
 Print the quaternion `q` to the stream `io`.
 
@@ -596,7 +596,7 @@ Print the quaternion `q` to the stream `io`.
 * `q`: The quaternion that will be printed.
 
 """
-function show(io::IO, q::Quaternion{T}) where T<:Real
+function show(io::IO, q::Quaternion{T}) where T
     println(io, "Quaternion{$(T)}:")
 
     # Get the absolute values.
@@ -778,7 +778,7 @@ Quaternion{Float64}:
 
 """
 function dquat(qba::Quaternion{T1},
-               wba_b::AbstractVector{T2}) where T1<:Real where T2<:Real
+               wba_b::AbstractVector{T2}) where {T1,T2}
     # Auxiliary variable.
     w = wba_b
 
