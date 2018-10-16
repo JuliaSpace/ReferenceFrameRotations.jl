@@ -184,7 +184,7 @@ end
 # ==============================================================================
 
 """
-    function dcm2quat(dcm::DCM{T}) where T
+    function dcm2quat(dcm::DCM)
 
 Convert the DCM `dcm` to a quaternion.
 
@@ -217,18 +217,19 @@ Quaternion{Float64}:
 ```
 
 """
-function dcm2quat(dcm::DCM{T}) where T
+function dcm2quat(dcm::DCM)
     if  tr(dcm) > 0
         # f = 4*q0
-        f = sqrt(tr(dcm)+1)*2
+        f = 2sqrt(tr(dcm)+1)
 
-        return Quaternion{T}(f/4,
-                             (dcm[2,3]-dcm[3,2])/f,
-                             (dcm[3,1]-dcm[1,3])/f,
-                             (dcm[1,2]-dcm[2,1])/f)
+        return Quaternion(f/4,
+                          (dcm[2,3]-dcm[3,2])/f,
+                          (dcm[3,1]-dcm[1,3])/f,
+                          (dcm[1,2]-dcm[2,1])/f)
+
     elseif (dcm[1,1] > dcm[2,2]) && (dcm[1,1] > dcm[3,3])
         # f = 4*q1
-        f = sqrt(1 + dcm[1,1] - dcm[2,2] - dcm[3,3])*2
+        f = 2sqrt(1 + dcm[1,1] - dcm[2,2] - dcm[3,3])
 
         # Real part.
         q0 = (dcm[2,3]-dcm[3,2])/f
@@ -236,13 +237,14 @@ function dcm2quat(dcm::DCM{T}) where T
         # Make sure that the real part is always positive.
         s = (q0 > 0) ? +1 : -1
 
-        return Quaternion{T}(s*q0,
-                             s*f/4,
-                             s*(dcm[1,2]+dcm[2,1])/f,
-                             s*(dcm[3,1]+dcm[1,3])/f)
+        return Quaternion(s*q0,
+                          s*f/4,
+                          s*(dcm[1,2]+dcm[2,1])/f,
+                          s*(dcm[3,1]+dcm[1,3])/f)
+
     elseif (dcm[2,2] > dcm[3,3])
         # f = 4*q2
-        f = sqrt(1 + dcm[2,2] - dcm[1,1] - dcm[3,3])*2
+        f = 2sqrt(1 + dcm[2,2] - dcm[1,1] - dcm[3,3])
 
         # Real part.
         q0 = (dcm[3,1]-dcm[1,3])/f
@@ -250,13 +252,14 @@ function dcm2quat(dcm::DCM{T}) where T
         # Make sure that the real part is always posiive.
         s = (q0 > 0) ? +1 : -1
 
-        return Quaternion{T}(s*q0,
-                             s*(dcm[1,2]+dcm[2,1])/f,
-                             s*f/4,
-                             s*(dcm[3,2]+dcm[2,3])/f)
+        return Quaternion(s*q0,
+                          s*(dcm[1,2]+dcm[2,1])/f,
+                          s*f/4,
+                          s*(dcm[3,2]+dcm[2,3])/f)
+
     else
         # f = 4*q3
-        f = sqrt(1 + dcm[3,3] - dcm[1,1] - dcm[2,2])*2
+        f = 2sqrt(1 + dcm[3,3] - dcm[1,1] - dcm[2,2])
 
         # Real part.
         q0 = (dcm[1,2]-dcm[2,1])/f
@@ -264,10 +267,10 @@ function dcm2quat(dcm::DCM{T}) where T
         # Make sure that the real part is always posiive.
         s = (q0 > 0) ? +1 : -1
 
-        return Quaternion{T}(s*q0,
-                             s*(dcm[1,3]+dcm[3,1])/f,
-                             s*(dcm[2,3]+dcm[3,2])/f,
-                             s*f/4)
+        return Quaternion(s*q0,
+                          s*(dcm[1,3]+dcm[3,1])/f,
+                          s*(dcm[2,3]+dcm[3,2])/f,
+                          s*f/4)
     end
 end
 
