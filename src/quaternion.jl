@@ -89,6 +89,35 @@ function Quaternion(r::Number, v::AbstractVector)
     Quaternion(r, v[1], v[2], v[3])
 end
 
+"""
+    function Quaternion(u::UniformScaling{T}) where T
+    function Quaternion{T}(u::UniformScaling) where T
+
+Create the quaternion `u.λ + 0.i + 0.j + 0.k`.
+
+"""
+function Quaternion(u::UniformScaling{T}) where T
+    Quaternion{T}(T(u.λ), T(0), T(0), T(0))
+end
+
+function Quaternion{T}(u::UniformScaling) where T
+    Quaternion{T}(T(u.λ), T(0), T(0), T(0))
+end
+
+"""
+    function Quaternion(::UniformScaling,::Quaternion{T}) where T
+
+Create an identity quaternion of type `T`.
+
+# Returns
+
+The quaternion `1 + 0.i + 0.j + 0.k` of type `T`.
+
+"""
+function Quaternion(::UniformScaling,::Quaternion{T}) where T
+    Quaternion{T}(I)
+end
+
 ################################################################################
 #                                  Operations
 ################################################################################
@@ -312,6 +341,27 @@ A 4x1 vector of type `T` with the elements of the quaternion.
     [q.q0;q.q1;q.q2;q.q3]
 end
 
+# Operation: UniformScaling
+# ==============================================================================
+
+@inline +(u::UniformScaling, q::Quaternion) =
+    Quaternion(u.λ + q.q0, q.q1, q.q2, q.q3)
+
+@inline +(q::Quaternion, u::UniformScaling) = u+q
+
+@inline -(u::UniformScaling, q::Quaternion) =
+    Quaternion{T}(u.λ - q.q0, -q.q1, -q.q2, -q.q3)
+
+@inline -(q::Quaternion, u::UniformScaling) = (-u)+q
+
+@inline *(u::UniformScaling, q::Quaternion) =
+    Quaternion(u.λ * q.q0, q.q1, q.q2, q.q3)
+
+@inline *(q::Quaternion, u::UniformScaling) = u*q
+
+@inline /(q::Quaternion, u::UniformScaling) =
+    Quaternion(q.q0 / u.λ, q.q1, q.q2, q.q3)
+
 ################################################################################
 #                                  Functions
 ################################################################################
@@ -353,70 +403,6 @@ The copy of the quaternion.
 """
 @inline function copy(q::Quaternion{T}) where T
     Quaternion{T}(q.q0, q.q1, q.q2, q.q3)
-end
-
-"""
-    @inline function eye(::Type{Quaternion{T}}) where T<:Real
-
-Create the identity quaternion (`1 + 0.i + 0.j + 0.k`) of type `T`.
-
-# Args
-
-* `Quaternion{T}`, where `T` is the desired type. If `T` is omitted, then it
-  falls back to `Float64`.
-
-# Returns
-
-The identity quaternion of type `T`.
-
-# Example
-
-```julia-repl
-julia> eye(Quaternion{Float32})
-Quaternion{Float32}:
-  + 1.0 + 0.0.i + 0.0.j + 0.0.k
-
-julia> eye(Quaternion{Float64})
-Quaternion{Float64}:
-  + 1.0 + 0.0.i + 0.0.j + 0.0.k
-```
-
-"""
-@inline function eye(::Type{Quaternion{T}}) where T<:Real
-    Quaternion{T}(one(T),zero(T),zero(T),zero(T))
-end
-
-@inline function eye(::Type{Quaternion})
-    Quaternion{Float64}(1.0, 0.0, 0.0, 0.0)
-end
-
-"""
-    @inline function eye(q::Quaternion{T}) where T<:Real
-
-Create the identity quaternion (`1 + 0.i + 0.j + 0.k`) with the same type of
-another quaternion `q`.
-
-# Args
-
-* `q`: A quaternion of type `T`.
-
-# Returns
-
-The identity quaternion of type `T`.
-
-# Example
-
-```julia-repl
-julia> q1 = Quaternion{Float32}(cosd(45/2),sind(45/2),0.,0.);
-
-julia> q2 = eye(q1)
-Quaternion{Float32}:
-  + 1.0 + 0.0.i + 0.0.j + 0.0.k
-```
-
-"""
-@inline function eye(q::Quaternion{T}) where T<:Real
-    eye(Quaternion{T})
 end
 
 """

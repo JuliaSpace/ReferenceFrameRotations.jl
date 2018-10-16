@@ -72,6 +72,14 @@ struct Quaternion{T}
 end
 
 ################################################################################
+#                                 Deprecations
+################################################################################
+
+@deprecate eye(::Type{Quaternion{T}}) where T Quaternion{T}(I)
+@deprecate eye(::Type{Quaternion}) where T Quaternion{Float64}(I)
+@deprecate eye(q::Quaternion{T}) where T Quaternion(I,q)
+
+################################################################################
 #                                   Includes
 ################################################################################
 

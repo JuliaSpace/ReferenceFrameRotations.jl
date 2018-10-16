@@ -109,9 +109,9 @@ for i = 1:samples
     q = q/norm(q)
 
     # Creata an identity quaternion using many methods.
-    q_eye_1 = eye(Quaternion)
-    q_eye_2 = eye(Quaternion{Float32})
-    q_eye_3 = eye(q)
+    q_eye_1 = Quaternion{Float64}(I)
+    q_eye_2 = Quaternion(1.f0I)
+    q_eye_3 = Quaternion(I,q)
 
     # Check if the types are correct.
     @test eltype(q_eye_1.q0) != eltype(q.q0)
