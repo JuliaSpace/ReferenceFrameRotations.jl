@@ -15,16 +15,12 @@ Create the following quaternion:
 
     q0 + q1.i + q2.j + q3.k
 
-# Args
+in which:
 
-* `q0`: Real part of the quaternion.
-* `q1`: X component of the quaternion vectorial part.
-* `q2`: Y component of the quaternion vectorial part.
-* `q3`: Z component of the quaternion vectorial part.
-
-# Returns
-
-The new quaternion.
+* `q0` is the real part of the quaternion.
+* `q1` is the X component of the quaternion vectorial part.
+* `q2` is the Y component of the quaternion vectorial part.
+* `q3` is the Z component of the quaternion vectorial part.
 
 """
 function Quaternion(q0::T0, q1::T1, q2::T2, q3::T3) where {T0,T1,T2,T3}
@@ -46,16 +42,6 @@ the elements match those of the input vector:
 
     q = v[1] + v[2].i + v[3].j + v[4].k
 
-# Args
-
-* `v`: Input vector. It must have three or four components.
-
-# Returns
-
-If `v` has three components, then it returns the quaternion in which the real
-part is `0` and the imaginary part is `v`. Otherwise, it returns the quaternion
-with real part `v[1]` and imaginary part `v[2:4]`.
-
 """
 function Quaternion(v::AbstractVector)
     # The vector must have 3 or 4 components.
@@ -73,16 +59,9 @@ end
 """
     function Quaternion(r::Number, v::AbstractVector)
 
-Create a quaternion with real part `r` and vectorial or imaginary part `v`.
+Create a quaternion with real part `r` and vectorial or imaginary part `v`:
 
-# Args
-
-* `r`: Real part.
-* `v`: Vectorial or imaginary part.
-
-# Returns
-
-The quaternion `r + v[1].i + v[2].j + v[3].k`.
+    r + v[1].i + v[2].j + v[3].k
 
 """
 function Quaternion(r::Number, v::AbstractVector)
@@ -107,11 +86,9 @@ end
 """
     function Quaternion(::UniformScaling,::Quaternion{T}) where T
 
-Create an identity quaternion of type `T`.
+Create an identity quaternion of type `T`:
 
-# Returns
-
-The quaternion `1 + 0.i + 0.j + 0.k` of type `T`.
+    T(1) + T(0).i + T(0).j + T(0).k
 
 """
 function Quaternion(::UniformScaling,::Quaternion{T}) where T
@@ -128,21 +105,25 @@ end
 """
     @inline function +(qa::Quaternion, qb::Quaternion)
 
-Sum the quaternion `qa` with the quaternion `qb`.
-
-# Args
-
-* `qa`: First operand of the sum.
-* `qb`: Second operand of the sum.
-
-# Returns
-
-The quaternion `qa + qb`.
+Compute `qa + qb`.
 
 """
 @inline function +(qa::Quaternion, qb::Quaternion)
     Quaternion(qa.q0 + qb.q0, qa.q1 + qb.q1, qa.q2 + qb.q2, qa.q3 + qb.q3)
 end
+
+"""
+    @inline function +(u::UniformScaling, q::Quaternion)
+    @inline function +(q::Quaternion, u::UniformScaling)
+
+Compute `qu + q` or `q + qu`, in which `qu` is the scaled identity quaternion
+`qu = u.λ * I`.
+
+"""
+@inline +(u::UniformScaling, q::Quaternion) =
+    Quaternion(u.λ + q.q0, q.q1, q.q2, q.q3)
+
+@inline +(q::Quaternion, u::UniformScaling) = u+q
 
 # Operation: -
 # ==============================================================================
@@ -150,59 +131,40 @@ end
 """
     @inline function -(qa::Quaternion, qb::Quaternion)
 
-Subtract quaternion `qb` from quaternion `qa`.
-
-# Args
-
-* `qa`: First operand of the subtraction.
-* `qb`: Second operand of the subtraction.
-
-# Returns
-
-The quaternion `qa - qb`.
+Compute `qa - qb`.
 
 """
 @inline function -(qa::Quaternion, qb::Quaternion)
     Quaternion(qa.q0 - qb.q0, qa.q1 - qb.q1, qa.q2 - qb.q2, qa.q3 - qb.q3)
 end
 
+"""
+    @inline function -(u::UniformScaling, q::Quaternion)
+    @inline function -(q::Quaternion, u::UniformScaling)
+
+Compute `qu - q` or `q - qu`, in which `qu` is the scaled identity quaternion
+`qu = u.λ * I`.
+
+"""
+@inline -(u::UniformScaling, q::Quaternion) =
+    Quaternion{T}(u.λ - q.q0, -q.q1, -q.q2, -q.q3)
+
+@inline -(q::Quaternion, u::UniformScaling) = (-u)+q
+
 # Operation: *
 # ==============================================================================
 
 """
     @inline function *(λ::Number, q::Quaternion)
+    @inline function *(q::Quaternion, λ::Number)
 
-Multiply the quaternion `q` by the scalar `λ`.
-
-# Args
-
-* `λ`: Scalar.
-* `q`: Quaternion.
-
-# Returns
-
-The quaternion `λ*q`.
+Compute `λ*q` or `q*λ`, in which `λ` is a scalar.
 
 """
 @inline function *(λ::Number, q::Quaternion)
     Quaternion(λ*q.q0, λ*q.q1, λ*q.q2, λ*q.q3)
 end
 
-"""
-    @inline function *(q::Quaternion, λ::Number)
-
-Multiply the quaternion `q` by the scalar `λ`.
-
-# Args
-
-* `q`: Quaternion.
-* `λ`: Scalar.
-
-# Returns
-
-The quaternion `q*λ`.
-
-"""
 @inline function *(q::Quaternion, λ::Number)
     Quaternion(λ*q.q0, λ*q.q1, λ*q.q2, λ*q.q3)
 end
@@ -210,16 +172,7 @@ end
 """
     @inline function *(q1::Quaternion, q2::Quaternion)
 
-Compute the multiplication `q1*q2`.
-
-# Args
-
-* `q1`: First operand of the multiplication.
-* `q2`: Second operand of the multiplication.
-
-# Returns
-
-The quaternion `q1*q2`.
+Compute the quaternion multiplication `q1*q2` (Hamilton product).
 
 """
 @inline function *(q1::Quaternion, q2::Quaternion)
@@ -231,19 +184,10 @@ end
 
 """
     @inline function *(v::AbstractVector, q::Quaternion)
+    @inline function *(q::Quaternion, v::AbstractVector)
 
-Compute the multiplication `v*q` in which `v` is a quaternion with real part
-`0` and vectorial/imaginary part `v`.
-
-# Args
-
-* `v`: Imaginary part of the quaternion that is the first operand of the
-     multiplication.
-* `q`: Second operand of the multiplication.
-
-# Returns
-
-The quaternion `v*q`.
+Compute the multiplication `qv*q` or `q*qv` in which `qv` is a quaternion with
+real part `0` and vectorial/imaginary part `v` (Hamilton product).
 
 """
 @inline function *(v::AbstractVector, q::Quaternion)
@@ -253,23 +197,6 @@ The quaternion `v*q`.
                +v[1]*q.q2 - v[2]*q.q1 + v[3]*q.q0)
 end
 
-"""
-    @inline function *(q::Quaternion, v::AbstractVector)
-
-Compute the multiplication `q*v` in which `v` is a quaternion with real part
-`0` and vectorial/imaginary part `v`.
-
-# Args
-
-* `q`: First operand of the multiplication.
-* `v`: Imaginary part of the quaternion that is the second operand of the
-     multiplication.
-
-# Returns
-
-The quaternion `q*v`.
-
-"""
 @inline function *(q::Quaternion, v::AbstractVector)
     Quaternion(           - q.q1*v[1] - q.q2*v[2] - q.q3*v[3],
                q.q0*v[1]              + q.q2*v[3] - q.q3*v[2],
@@ -277,22 +204,25 @@ The quaternion `q*v`.
                q.q0*v[3] + q.q1*v[2] - q.q2*v[1]             )
 end
 
+"""
+    @inline function *(u::UniformScaling, q::Quaternion)
+    @inline function *(q::Quaternion, u::UniformScaling)
+
+Compute `qu*q` or `q*qu` (Hamilton product), in which `qu` is the scaled
+identity quaternion `qu = u.λ * I`.
+
+"""
+@inline *(u::UniformScaling, q::Quaternion) = Quaternion(u)*q
+@inline *(q::Quaternion, u::UniformScaling) = q*Quaternion(u)
+
 # Operation: /
 # ==============================================================================
 
 """
     @inline function /(λ::Number, q::Quaternion)
+    @inline function /(q::Quaternion{T1}, λ::T1) where {T1, T2}
 
-Compute the division `λ/q`.
-
-# Args
-
-* `λ`: First operand of the division (scalar).
-* `q`: Second operand of the division (quaternion).
-
-# Returns
-
-The quaternion `λ/q`.
+Compute the division `λ/q` or `q/λ`, in which `λ` is a scalar.
 
 """
 @inline function /(λ::Number, q::Quaternion)
@@ -301,24 +231,20 @@ The quaternion `λ/q`.
     Quaternion(λ*q.q0/norm_q, -λ*q.q1/norm_q, -λ*q.q2/norm_q, -λ*q.q3/norm_q)
 end
 
-"""
-    @inline function /(q::Quaternion{T1}, λ::T1) where {T1, T2}
-
-Compute the division `q/λ`.
-
-# Args
-
-* `q`: First operand of the division (quaternion).
-* `λ`: Second operand of the division (scalar).
-
-# Returns
-
-The quaternion `q/λ`.
-
-"""
 @inline function /(q::Quaternion{T1}, λ::T2) where {T1, T2}
     q*(1/λ)
 end
+
+"""
+    @inline function /(u::UniformScaling, q::Quaternion)
+    @inline function /(q::Quaternion, u::UniformScaling)
+
+Compute `qu/q` or `q/qu` (Hamilton product), in which `qu` is the scaled
+identity quaternion `qu = u.λ * I`.
+
+"""
+@inline /(u::UniformScaling, q::Quaternion) = Quaternion(u)/q
+@inline /(q::Quaternion, u::UniformScaling) = q/Quaternion(u)
 
 # Operation: [:]
 # ==============================================================================
@@ -328,39 +254,10 @@ end
 
 Transform the quaternion into a 4x1 vector of type `T`.
 
-# Args
-
-* `q`: Quaternion.
-
-# Returns
-
-A 4x1 vector of type `T` with the elements of the quaternion.
-
 """
 @inline function getindex(q::Quaternion, ::Colon)
     [q.q0;q.q1;q.q2;q.q3]
 end
-
-# Operation: UniformScaling
-# ==============================================================================
-
-@inline +(u::UniformScaling, q::Quaternion) =
-    Quaternion(u.λ + q.q0, q.q1, q.q2, q.q3)
-
-@inline +(q::Quaternion, u::UniformScaling) = u+q
-
-@inline -(u::UniformScaling, q::Quaternion) =
-    Quaternion{T}(u.λ - q.q0, -q.q1, -q.q2, -q.q3)
-
-@inline -(q::Quaternion, u::UniformScaling) = (-u)+q
-
-@inline *(u::UniformScaling, q::Quaternion) =
-    Quaternion(u.λ * q.q0, q.q1, q.q2, q.q3)
-
-@inline *(q::Quaternion, u::UniformScaling) = u*q
-
-@inline /(q::Quaternion, u::UniformScaling) =
-    Quaternion(q.q0 / u.λ, q.q1, q.q2, q.q3)
 
 ################################################################################
 #                                  Functions
@@ -369,17 +266,9 @@ end
 """
     @inline function conj(q::Quaternion)
 
-Compute the complex conjugate of the quaternion `q`, which is:
+Compute the complex conjugate of the quaternion `q`:
 
     q0 - q1.i - q2.j - q3.k
-
-# Args
-
-* `q`: Quaternion.
-
-# Returns
-
-The complex conjugate of the quaternion `q`.
 
 """
 @inline function conj(q::Quaternion)
@@ -392,14 +281,6 @@ end
 
 Create a copy of the quaternion `q`.
 
-# Args
-
-* `q`: Quaternion that will be copied.
-
-# Returns
-
-The copy of the quaternion.
-
 """
 @inline function copy(q::Quaternion{T}) where T
     Quaternion{T}(q.q0, q.q1, q.q2, q.q3)
@@ -408,16 +289,8 @@ end
 """
     @inline function imag(q::Quaternion)
 
-Return the vectorial or imaginary part of the quaternion represented by a 3x1
-vector.
-
-# Args
-
-* `q`: Quaterion.
-
-# Returns
-
-The following vector: `[q1; q2; q3]`.
+Return the vectorial or imaginary part of the quaternion `q` represented by a
+3 × 1 vector of type `SVector{3}`.
 
 """
 @inline function imag(q::Quaternion)
@@ -433,14 +306,6 @@ Compute the inverse of the quaternion `q`:
     -------
     norm(q)
 
-# Args
-
-* `q`: Quaternion.
-
-# Returns
-
-Inverse of the quaternion `q`.
-
 """
 @inline function inv(q::Quaternion)
     # Compute the inverse of the quaternion.
@@ -451,15 +316,9 @@ end
 """
     @inline function norm(q::Quaternion)
 
-Compute the Euclidean norm of the quaternion `q`.
+Compute the Euclidean norm of the quaternion `q`:
 
-# Args
-
-* `q`: Quaternion.
-
-# Returns
-
-The Euclidean norm of `q`.
+    sqrt(q0² + q1² + q2² + q3²)
 
 """
 @inline function norm(q::Quaternion)
@@ -469,15 +328,7 @@ end
 """
     @inline function real(q::Quaternion)
 
-Return the real part of the quaternion `q`.
-
-# Args
-
-* `q`: Quaternion.
-
-# Returns
-
-The scalar `q0`.
+Return the real part of the quaternion `q`: `q0`.
 
 """
 @inline function real(q::Quaternion)
@@ -487,16 +338,8 @@ end
 """
     @inline function vect(q::Quaternion)
 
-Return the vectorial or imaginary part of the quaternion represented by a 3x1
-vector.
-
-# Args
-
-* `q`: Quaterion.
-
-# Returns
-
-The following vector: `[q1; q2; q3]`.
+Return the vectorial or imaginary part of the quaternion `q` represented by a
+3 × 1 vector of type `SVector{3}`.
 
 """
 @inline function vect(q::Quaternion)
@@ -506,16 +349,11 @@ end
 """
     @inline function zeros(::Type{Quaternion{T}}) where T
 
-Create the null quaternion (`0 + 0.i + 0.j + 0.k`) of type `T`.
+Create the null quaternion of type `T`:
 
-# Args
+    T(0) + T(0).i + T(0).j + T(0).k
 
-* `Quaternion{T}`, where `T` is the desired type. If `T` is omitted, then it
-  falls back to `Float64`.
-
-# Returns
-
-The null quaternion of type `T`.
+If the type `T` is omitted, then it defaults to `Float64`.
 
 # Example
 
@@ -541,16 +379,9 @@ end
 """
     @inline function zeros(q::Quaternion{T}) where T
 
-Create the null quaternion (`0 + 0.i + 0.j + 0.k`) with the same type of another
-quaternion `q`.
+Create the null quaternion with the same type `T` of another quaternion `q`:
 
-# Args
-
-* `q`: A quaternion of type `T`.
-
-# Returns
-
-The null quaternion of type `T`.
+    T(0) + T(0).i + T(0).j + T(0).k
 
 # Example
 
@@ -575,11 +406,6 @@ end
     function show(io::IO, q::Quaternion{T}) where T
 
 Print the quaternion `q` to the stream `io`.
-
-# Args
-
-* `io`: Stream that will be used to print the quaternion.
-* `q`: The quaternion that will be printed.
 
 """
 function show(io::IO, q::Quaternion{T}) where T
@@ -612,15 +438,7 @@ end
 """
     function quat2dcm(q::Quaternion)
 
-Convert the quaternion `q` to a Direction Cosine Matrix.
-
-# Args
-
-* `q`: Quaternion.
-
-# Returns
-
-The Direction Cosine Matrix.
+Convert the quaternion `q` to a Direction Cosine Matrix (DCM).
 
 # Example
 
@@ -653,15 +471,8 @@ end
 """
     function quat2angleaxis(q::Quaternion)
 
-Convert the quaternion `q` to a Euler angle and axis representation.
-
-# Args
-
-* `q`: The quaternion that will be converted.
-
-# Returns
-
-The Euler angle and axis (see `EulerAngleAxis`).
+Convert the quaternion `q` to a Euler angle and axis representation (see
+`EulerAngleAxis`).
 
 # Remarks
 
@@ -693,20 +504,12 @@ end
 """
     function quat2angle(q::Quaternion, rot_seq::Symbol = :ZYX)
 
-Convert the quaternion `q` to Euler Angles given a rotation sequence `rot_seq`.
+Convert the quaternion `q` to Euler Angles (see `EulerAngles`) given a rotation
+sequence `rot_seq`.
 
 The rotation sequence is defined by a `:Symbol`. The possible values are:
 `:XYX`, `XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`,
-`:ZYX`, and `:ZYZ`.
-
-# Args
-
-* `q`: Quaternion.
-* `rot_seq`: (OPTIONAL) Rotation sequence (**Default** = `:ZYX`).
-
-# Returns
-
-The Euler angles (see `EulerAngles`).
+`:ZYX`, and `:ZYZ`. If no value is specified, then it defaults to `:ZYX`.
 
 # Example
 
@@ -740,17 +543,6 @@ end
 Compute the time-derivative of the quaternion `qba` that rotates a reference
 frame `a` into alignment to the reference frame `b` in which the angular
 velocity of `b` with respect to `a`, and represented in `b`, is `wba_b`.
-
-# Args
-
-* `qba`: Quaternion that rotates the reference frame `a` into alignment with the
-         reference frame `b`.
-* `wba_b`: Angular velocity of the reference frame `a` with respect to the
-           reference frame `b` represented in the reference frame `b`.
-
-# Returns
-
-The quaternion with the time-derivative of `qba`.
 
 # Example
 

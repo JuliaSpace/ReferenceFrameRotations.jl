@@ -15,23 +15,12 @@ export smallangle2dcm, smallangle2quat, smallangle2rot
 """
     function angle2dcm(angle_r1::Number, angle_r2::Number, angle_r3::Number, rot_seq::Symbol = :ZYX)
 
-Convert the Euler angles `angle_r1`, `angle_r2`, and `angle_r3` with the
+Convert the Euler angles `angle_r1`, `angle_r2`, and `angle_r3` [rad] with the
 rotation sequence `rot_seq` to a direction cosine matrix.
 
 The rotation sequence is defined by a `:Symbol`. The possible values are:
 `:XYX`, `XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`,
-`:ZYX`, and `:ZYZ`.
-
-# Args
-
-* `angle_r1`: Angle of the first rotation [rad].
-* `angle_r2`: Angle of the second rotation [rad].
-* `angle_r3`: Angle of the third rotation [rad].
-* `rot_seq`: (OPTIONAL) Rotation sequence (**Default** = `:ZYX`).
-
-# Returns
-
-The direction cosine matrix.
+`:ZYX`, and `:ZYZ`. If no value is specified, then it defaults to `:ZYX`.
 
 # Remarks
 
@@ -133,10 +122,6 @@ end
 Convert the Euler angles `eulerang` (see `EulerAngles`) to a direction cosine
 matrix.
 
-# Args
-
-* `eulerang`: Euler angles (see `EulerAngles`).
-
 # Returns
 
 The direction cosine matrix.
@@ -168,17 +153,7 @@ end
     function smallangle2dcm(θx::Number, θy::Number, θz::Number)
 
 Create a direction cosine matrix from three small rotations of angles `θx`,
-`θy`, and `θz` about the axes X, Y, and Z, respectively.
-
-# Args
-
-* `θx`: Angle of the rotation about the X-axis [rad].
-* `θy`: Angle of the rotation about the Y-axis [rad].
-* `θz`: Angle of the rotation about the Z-axis [rad].
-
-# Returns
-
-The direction cosine matrix.
+`θy`, and `θz` [rad] about the axes X, Y, and Z, respectively.
 
 # Remarks
 
@@ -207,23 +182,12 @@ end
 """
     function angle2quat(angle_r1::Number, angle_r2::Number, angle_r3::Number, rot_seq::AbstractString="ZYX")
 
-Convert the Euler angles `angle_r1`, `angle_r2`, and `angle_r3` with the
+Convert the Euler angles `angle_r1`, `angle_r2`, and `angle_r3` [rad] with the
 rotation sequence `rot_seq` to a quaternion.
 
 The rotation sequence is defined by a `:Symbol`. The possible values are:
 `:XYX`, `XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`,
-`:ZYX`, and `:ZYZ`.
-
-# Args
-
-* `angle_r1`: Angle of the first rotation [rad].
-* `angle_r2`: Angle of the second rotation [rad].
-* `angle_r3`: Angle of the third rotation [rad].
-* `rot_seq`: (OPTIONAL) Rotation sequence (**Default** = `:ZYX`).
-
-# Returns
-
-The quaternion.
+`:ZYX`, and `:ZYZ`. If no value is specified, then it defaults to `:ZYX`.
 
 # Remarks
 
@@ -237,7 +201,7 @@ julia> angle2quat(pi/2, pi/3, pi/4, :ZYX)
 Quaternion{Float64}:
   + 0.7010573846499779 - 0.09229595564125714.i + 0.5609855267969309.j + 0.43045933457687935.k
 ```
----
+
 """
 function angle2quat(angle_r1::Number,
                     angle_r2::Number,
@@ -372,14 +336,6 @@ end
 
 Convert the Euler angles `eulerang` (see `EulerAngles`) to a quaternion.
 
-# Args
-
-* `eulerang`: Euler angles (see `EulerAngles`).
-
-# Returns
-
-The quaternion.
-
 # Remarks
 
 This function assigns `q = q1 * q2 * q3` in which `qi` is the quaternion related
@@ -405,17 +361,7 @@ end
     function smallangle2quat(θx::Number, θy::Number, θz::Number)
 
 Create a quaternion from three small rotations of angles `θx`, `θy`, and `θz`
-about the axes X, Y, and Z, respectively.
-
-# Args
-
-* `θx`: Angle of the rotation about the X-axis [rad].
-* `θy`: Angle of the rotation about the Y-axis [rad].
-* `θz`: Angle of the rotation about the Z-axis [rad].
-
-# Returns
-
-The quaternion.
+[rad] about the axes X, Y, and Z, respectively.
 
 # Remarks
 
@@ -447,25 +393,14 @@ end
 """
     function angle2rot([T,] angle_r1::Number, angle_r2::Number, angle_r3::Number, rot_seq::Symbol = :ZYX)
 
-Convert the Euler angles `angle_r1`, `angle_r2`, and `angle_r3` with the
+Convert the Euler angles `angle_r1`, `angle_r2`, and `angle_r3` [rad] with the
 rotation sequence `rot_seq` to a rotation description of type `T`, which can be
-`DCM` or `Quaternion`.
+`DCM` or `Quaternion`. If the type `T` is not specified, then it defaults to
+`DCM`.
 
 The rotation sequence is defined by a `:Symbol`. The possible values are:
 `:XYX`, `XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`,
-`:ZYX`, and `:ZYZ`.
-
-# Args
-
-* `T`: (OPTIONAL) Type of the rotation description (**Default** = `DCM`).
-* `angle_r1`: Angle of the first rotation [rad].
-* `angle_r2`: Angle of the second rotation [rad].
-* `angle_r3`: Angle of the third rotation [rad].
-* `rot_seq`: (OPTIONAL) Rotation sequence (**Default** = `:ZYX`).
-
-# Returns
-
-The rotation description according to the type `T`.
+`:ZYX`, and `:ZYZ`. If no value is specified, then it defaults to `:ZYX`.
 
 # Example
 
@@ -503,16 +438,8 @@ Quaternion{Float64}:
     function angle2rot([T,] angle_r1::Number, angle_r2::Number, angle_r3::Number, rot_seq::Symbol = :ZYX)
 
 Convert the Euler angles `eulerang` (see `EulerAngles`) to a rotation
-description of type `T`, which can be `DCM` or `Quaternion`.
-
-# Args
-
-* `T`: (OPTIONAL) Type of the rotation description (**Default** = `DCM`).
-* `eulerang`: Euler angles (see `EulerAngles`).
-
-# Returns
-
-The rotation description according to the type `T`.
+description of type `T`, which can be `DCM` or `Quaternion`. If the type `T` is
+not specified, then it defaults to `DCM`.
 
 # Example
 
@@ -543,16 +470,10 @@ Quaternion{Float64}:
     function smallangle2rot([T,] θx::Number, θy::Number, θz::Number)
 
 Create a rotation description of type `T` from three small rotations of angles
-`θx`, `θy`, and `θz` about the axes X, Y, and Z, respectively.
+`θx`, `θy`, and `θz` [rad] about the axes X, Y, and Z, respectively.
 
-The type `T` of the rotation description can be `DCM` or `Quaternion`.
-
-# Args
-
-* `T`: (OPTIONAL) Type of the rotation description (**Default** = `DCM`).
-* `θx`: Angle of the rotation about the X-axis [rad].
-* `θy`: Angle of the rotation about the Y-axis [rad].
-* `θz`: Angle of the rotation about the Z-axis [rad].
+The type `T` of the rotation description can be `DCM` or `Quaternion`. If the
+type `T` is not specified, then if defaults to `DCM`.
 
 # Returns
 

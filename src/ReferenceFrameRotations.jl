@@ -17,7 +17,8 @@ export I
 ################################################################################
 
 """
-The Direction Cosine Matrice is a `SMatrix{3,3}`, which is a 3x3 static matrix.
+The Direction Cosine Matrix of type `T` is a `SMatrix{3,3,T}`, which is a 3x3
+static matrix of type `T`.
 
 """
 DCM{T} = SMatrix{3,3,T}
@@ -46,6 +47,8 @@ end
 
 The definition of Euler Angle and Axis to represent a 3D rotation.
 
+# Fields
+
 * `a`: The Euler angle [rad].
 * `v`: The unitary vector aligned with the Euler axis.
 
@@ -58,7 +61,7 @@ end
 """
 ### struct Quaternion{T}
 
-The definition of the quaternion. It has four values of the same type. The
+The definition of the quaternion. It has four values of type `T`. The
 quaternion representation is:
 
     q0 + q1.i + q2.j + q3.k

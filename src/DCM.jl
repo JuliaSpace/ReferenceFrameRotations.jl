@@ -13,12 +13,8 @@ export ddcm, dcm2angle, dcm2quat
     function create_rotation_matrix(angle::Number, axis::Symbol = :X)
 
 Compute a rotation matrix that rotates a coordinate frame about the axis `axis`
-by the angle `angle`.
-
-# Args
-
-* `angle`: Angle.
-* `axis`: Axis, must be 'x', 'X', 'y', 'Y', 'z', or 'Z'.
+by the angle `angle`. The `axis` must be one of the following symbols: `:X`,
+`:Y`, or `:Z`.
 
 # Example
 
@@ -65,20 +61,12 @@ end
 """
     function dcm2angle(dcm::DCM, rot_seq::Symbol=:ZYX)
 
-Convert the DCM `dcm` to Euler Angles given a rotation sequence `rot_seq`.
+Convert the DCM `dcm` to Euler Angles (see `EulerAngles`) given a rotation
+sequence `rot_seq`.
 
 The rotation sequence is defined by a `:Symbol`. The possible values are:
 `:XYX`, `XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`,
-`:ZYX`, and `:ZYZ`.
-
-# Args
-
-* `DCM`: Direction Cosine Matrix.
-* `rot_seq`: (OPTIONAL) Rotation sequence (**Default** = `:ZYX`).
-
-# Returns
-
-The Euler angles (see `EulerAngles`).
+`:ZYX`, and `:ZYZ`. If no value is specified, then it defaults to `:ZYX`.
 
 # Example
 
@@ -186,15 +174,8 @@ end
 """
     function dcm2quat(dcm::DCM)
 
-Convert the DCM `dcm` to a quaternion.
-
-# Args
-
-* `dcm`: Direction Cosine Matrix that will be converted.
-
-# Returns
-
-The quaternion that represents the same rotation of the DCM `dcm`.
+Convert the DCM `dcm` to a quaternion. The type of the quaternion will be
+automatically selected by the constructor `Quaternion` to avoid `InexactError`.
 
 # Remarks
 
@@ -249,7 +230,7 @@ function dcm2quat(dcm::DCM)
         # Real part.
         q0 = (dcm[3,1]-dcm[1,3])/f
 
-        # Make sure that the real part is always posiive.
+        # Make sure that the real part is always positive.
         s = (q0 > 0) ? +1 : -1
 
         return Quaternion(s*q0,
@@ -264,7 +245,7 @@ function dcm2quat(dcm::DCM)
         # Real part.
         q0 = (dcm[1,2]-dcm[2,1])/f
 
-        # Make sure that the real part is always posiive.
+        # Make sure that the real part is always positive.
         s = (q0 > 0) ? +1 : -1
 
         return Quaternion(s*q0,
@@ -284,13 +265,6 @@ end
 Compute the time-derivative of the DCM `dcm` that rotates a reference frame `a`
 into alignment to the reference frame `b` in which the angular velocity of `b`
 with respect to `a`, and represented in `b`, is `wba_b`.
-
-# Args
-
-* `Dba`: DCM that rotates the reference frame `a` into alignment with the
-         reference frame `b`.
-* `wba_b`: Angular velocity of the reference frame `a` with respect to the
-           reference frame `b` represented in the reference frame `b`.
 
 # Returns
 
