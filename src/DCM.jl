@@ -10,7 +10,7 @@ export ddcm, dcm2angle, dcm2quat
 ################################################################################
 
 """
-    function create_rotation_matrix(angle::Number, axis::Symbol = :X) where T<:Real
+    function create_rotation_matrix(angle::Number, axis::Symbol = :X)
 
 Compute a rotation matrix that rotates a coordinate frame about the axis `axis`
 by the angle `angle`.
@@ -184,7 +184,7 @@ end
 # ==============================================================================
 
 """
-    function dcm2quat(dcm::DCM{T}) where T<:Real
+    function dcm2quat(dcm::DCM{T}) where T
 
 Convert the DCM `dcm` to a quaternion.
 
@@ -217,7 +217,7 @@ Quaternion{Float64}:
 ```
 
 """
-function dcm2quat(dcm::DCM{T}) where T<:Real
+function dcm2quat(dcm::DCM{T}) where T
     if  tr(dcm) > 0
         # f = 4*q0
         f = sqrt(tr(dcm)+1)*2
