@@ -9,6 +9,9 @@ import LinearAlgebra: norm
 using LinearAlgebra
 using StaticArrays
 
+# Re-export `I` from LinearAlgebra.
+export I
+
 ################################################################################
 #                                    Types
 ################################################################################
