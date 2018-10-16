@@ -296,7 +296,7 @@ The time-derivative of the DCM `Dba` (3x3 matrix of type `SMatrix{3,3}`).
 # Example
 
 ```julia-repl
-julia> D = DCM(eye(3));
+julia> D = DCM(Matrix{Float64}(I,3,3));
 
 julia> ddcm(D,[1;0;0])
 3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
