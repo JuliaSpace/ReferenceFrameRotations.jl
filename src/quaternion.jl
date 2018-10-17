@@ -208,8 +208,8 @@ Compute the division `λ/q` or `q/λ`, in which `λ` is a scalar.
 """
 @inline function /(λ::Number, q::Quaternion)
     # Compute `λ*(1/q)`.
-    norm_q = q.q0*q.q0 + q.q1*q.q1 + q.q2*q.q2 + q.q3*q.q3
-    Quaternion(λ*q.q0/norm_q, -λ*q.q1/norm_q, -λ*q.q2/norm_q, -λ*q.q3/norm_q)
+    norm_q² = q.q0*q.q0 + q.q1*q.q1 + q.q2*q.q2 + q.q3*q.q3
+    Quaternion(λ*q.q0/norm_q², -λ*q.q1/norm_q², -λ*q.q2/norm_q², -λ*q.q3/norm_q²)
 end
 
 @inline /(q::Quaternion, λ::Number) = q*(1/λ)
@@ -274,13 +274,13 @@ Compute the inverse of the quaternion `q`:
 
     conj(q)
     -------
-    norm(q)
+      |q|²
 
 """
 @inline function inv(q::Quaternion)
     # Compute the inverse of the quaternion.
-    norm_q = q.q0*q.q0 + q.q1*q.q1 + q.q2*q.q2 + q.q3*q.q3
-    Quaternion(q.q0/norm_q, -q.q1/norm_q, -q.q2/norm_q, -q.q3/norm_q)
+    norm_q² = q.q0*q.q0 + q.q1*q.q1 + q.q2*q.q2 + q.q3*q.q3
+    Quaternion(q.q0/norm_q², -q.q1/norm_q², -q.q2/norm_q², -q.q3/norm_q²)
 end
 
 """
