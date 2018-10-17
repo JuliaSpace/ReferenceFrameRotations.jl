@@ -62,6 +62,7 @@ already available), Rodrigues parameters, etc.
 
 ```@contents
 Pages = [
+    "man/dcm.md",
     "man/euler_angle_axis.md",
     "man/euler_angles.md",
     "man/quaternions.md",

@@ -8,6 +8,7 @@ makedocs(
     authors = "Ronan Arraes Jardim Chagas",
     pages = [
         "Home" => "index.md",
+        "Direction Cosine Matrices" => "man/dcm.md",
         "Euler Angle and Axis" => "man/euler_angle_axis.md",
         "Euler Angles" => "man/euler_angles.md",
         "Quaternions" => "man/quaternions.md",
