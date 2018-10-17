@@ -53,7 +53,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "Manual outline",
     "category": "section",
-    "text": "Pages = [\n    \"man/euler_angle_axis.md\",\n    \"man/euler_angles.md\",\n    \"man/quaternions.md\",\n    \"man/conversions.md\",\n    \"man/kinematics.md\",\n    \"man/composing_rotations.md\",\n    \"man/inv_rotations.md\",\n]\nDepth = 2"
+    "text": "Pages = [\n    \"man/dcm.md\",\n    \"man/euler_angle_axis.md\",\n    \"man/euler_angles.md\",\n    \"man/quaternions.md\",\n    \"man/conversions.md\",\n    \"man/kinematics.md\",\n    \"man/composing_rotations.md\",\n    \"man/inv_rotations.md\",\n]\nDepth = 2"
 },
 
 {
@@ -62,6 +62,38 @@ var documenterSearchIndex = {"docs": [
     "title": "Library documentation",
     "category": "section",
     "text": "Pages = [\"lib/library.md\"]"
+},
+
+{
+    "location": "man/dcm/#",
+    "page": "Direction Cosine Matrices",
+    "title": "Direction Cosine Matrices",
+    "category": "page",
+    "text": ""
+},
+
+{
+    "location": "man/dcm/#Direction-Cosine-Matrices-1",
+    "page": "Direction Cosine Matrices",
+    "title": "Direction Cosine Matrices",
+    "category": "section",
+    "text": "CurrentModule = ReferenceFrameRotations\nDocTestSetup = quote\n    using ReferenceFrameRotations\nendDirection cosine matrices, or DCMs, are 3 times 3 matrices that represent a coordinate transformation between two orthonormal reference frames. Let those frames be right-handed, then it can be shown that this transformation is always a rotation. Thus, a DCM that rotates the reference frame a into alignment with the reference frame b is:mathbfD_ba = leftbeginmatrix\n    a_11  a_12  a_13 \n    a_21  a_22  a_23 \n    a_31  a_32  a_33\n    endmatrixrightIn ReferenceFrameRotations.jl, a DCM is a 3 times 3 static matrix:DCM{T} = SMatrix{3,3,T,9}which means that DCM is immutable."
+},
+
+{
+    "location": "man/dcm/#Initialization-1",
+    "page": "Direction Cosine Matrices",
+    "title": "Initialization",
+    "category": "section",
+    "text": "Usually, a DCM is initialized by converting a more \"visual\" rotation representation, such as the Euler angles (see Conversions). However, it can be initialized by the following methods:Identity DCM.julia> DCM(I)  # Create a Boolean DCM, this can be used to save space.\n3×3 StaticArrays.SArray{Tuple{3,3},Bool,2,9}:\n  true  false  false\n false   true  false\n false  false   true\n\njulia> DCM(1I)  # Create an Integer DCM.\n3×3 StaticArrays.SArray{Tuple{3,3},Int64,2,9}:\n 1  0  0\n 0  1  0\n 0  0  1\n\njulia> DCM(1.f0I) # Create a Float32 DCM.\n3×3 StaticArrays.SArray{Tuple{3,3},Float32,2,9}:\n 1.0  0.0  0.0\n 0.0  1.0  0.0\n 0.0  0.0  1.0\n\njulia> DCM(1.0I)  # Create a Float64 DCM.\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n 1.0  0.0  0.0\n 0.0  1.0  0.0\n 0.0  0.0  1.0User-defined DCM.julia> DCM([-1 0 0; 0 -1 0; 0 0 1])\n3×3 StaticArrays.SArray{Tuple{3,3},Int64,2,9}:\n -1   0  0\n  0  -1  0\n  0   0  1\n\njulia> DCM([-1.f0 0.f0 0.f0; 0.f0 -1.f0 0.f0; 0.f0 0.f0 1.f0])\n3×3 StaticArrays.SArray{Tuple{3,3},Float32,2,9}:\n -1.0   0.0  0.0\n  0.0  -1.0  0.0\n  0.0   0.0  1.0\n\njulia> DCM([-1.0 0.0 0.0; 0.0 -1.0 0.0; 0.0 0.0 1.0])\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n -1.0   0.0  0.0\n  0.0  -1.0  0.0\n  0.0   0.0  1.0note: Note\nThe type of the DCM will depend on the type of the input.warning: Warning\nThis initialization method will not verify if the input data is indeed a DCM."
+},
+
+{
+    "location": "man/dcm/#Operations-1",
+    "page": "Direction Cosine Matrices",
+    "title": "Operations",
+    "category": "section",
+    "text": "Since a DCM is an Static Matrix (SMatrix), then all the operations available for general matrices in Julia are also available for DCMs."
 },
 
 {
@@ -341,7 +373,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Library",
     "title": "ReferenceFrameRotations.DCM",
     "category": "type",
-    "text": "The Direction Cosine Matrix of type T is a SMatrix{3,3,T}, which is a 3x3 static matrix of type T.\n\n\n\n\n\n"
+    "text": "The Direction Cosine Matrix of type T is a SMatrix{3,3,T,9}, which is a 3x3 static matrix of type T.\n\n\n\n\n\n"
 },
 
 {
@@ -525,7 +557,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Library",
     "title": "ReferenceFrameRotations.dquat",
     "category": "method",
-    "text": "function dquat(qba::Quaternion, wba_b::AbstractVector)\n\nCompute the time-derivative of the quaternion qba that rotates a reference frame a into alignment to the reference frame b in which the angular velocity of b with respect to a, and represented in b, is wba_b.\n\nExample\n\njulia> q = eye(Quaternion);\n\njulia> dquat(q,[1;0;0])\nQuaternion{Float64}:\n  + 0.0 + 0.5.i + 0.0.j + 0.0.k\n\n\n\n\n\n"
+    "text": "function dquat(qba::Quaternion, wba_b::AbstractVector)\n\nCompute the time-derivative of the quaternion qba that rotates a reference frame a into alignment to the reference frame b in which the angular velocity of b with respect to a, and represented in b, is wba_b.\n\nExample\n\njulia> q = Quaternion(1.0I);\n\njulia> dquat(q,[1;0;0])\nQuaternion{Float64}:\n  + 0.0 + 0.5.i + 0.0.j + 0.0.k\n\n\n\n\n\n"
 },
 
 {
