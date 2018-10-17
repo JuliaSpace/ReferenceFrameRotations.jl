@@ -189,7 +189,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Conversions",
     "title": "Euler Angles to Quaternions",
     "category": "section",
-    "text": "Euler angles can be converted to quaternions using the following functions:function angle2quat(angle_r1, angle_r2, angle_r3, rot_seq=\"ZYX\")\nfunction angle2quat(eulerang)julia> q = angle2quat(pi/2, pi/4, pi/3, :ZYX)\nQuaternion{Float64}:\n  + 0.7010573846499779 + 0.09229595564125723.i + 0.5609855267969309.j + 0.43045933457687935.k\n\njulia> angles = EulerAngles(pi/2, pi/4, pi/3, :ZYX);\n\njulia> q    = angle2quat(angles)\nQuaternion{Float64}:\n  + 0.7010573846499779 + 0.09229595564125723.i + 0.5609855267969309.j + 0.43045933457687935.k"
+    "text": "Euler angles can be converted to quaternions using the following functions:function angle2quat(angle_r1, angle_r2, angle_r3, rot_seq=:ZYX)\nfunction angle2quat(eulerang)julia> q = angle2quat(pi/2, pi/4, pi/3, :ZYX)\nQuaternion{Float64}:\n  + 0.7010573846499779 + 0.09229595564125723.i + 0.5609855267969309.j + 0.43045933457687935.k\n\njulia> angles = EulerAngles(pi/2, pi/4, pi/3, :ZYX);\n\njulia> q    = angle2quat(angles)\nQuaternion{Float64}:\n  + 0.7010573846499779 + 0.09229595564125723.i + 0.5609855267969309.j + 0.43045933457687935.k"
 },
 
 {
@@ -229,7 +229,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Conversions",
     "title": "Quaternions to Euler Angles",
     "category": "section",
-    "text": "There is one method to convert quaternions to Euler Angles:function quat2angle(q, rot_seq=\"ZYX\")However, it first transforms the quaternion to DCM using quat2dcm and then transforms the DCM into the Euler Angles. Hence, the performance will be poor. The improvement of this conversion will be addressed in a future version of ReferenceFrameRotations.jl.julia> q = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);\n\njulia> quat2angle(q, :XYZ)\nEulerAngles{Float64}(0.7853981633974484, 0.0, -0.0, :XYZ)"
+    "text": "There is one method to convert quaternions to Euler Angles:function quat2angle(q, rot_seq=:ZYX)However, it first transforms the quaternion to DCM using quat2dcm and then transforms the DCM into the Euler Angles. Hence, the performance will be poor. The improvement of this conversion will be addressed in a future version of ReferenceFrameRotations.jl.julia> q = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);\n\njulia> quat2angle(q, :XYZ)\nEulerAngles{Float64}(0.7853981633974484, 0.0, -0.0, :XYZ)"
 },
 
 {
