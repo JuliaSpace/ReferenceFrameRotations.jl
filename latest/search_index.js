@@ -449,7 +449,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib/library/#ReferenceFrameRotations.compose_rotation-Tuple{StaticArrays.SArray{Tuple{3,3},T,2,L} where L where T}",
+    "location": "lib/library/#ReferenceFrameRotations.compose_rotation-Tuple{StaticArrays.SArray{Tuple{3,3},T,2,9} where T}",
     "page": "Library",
     "title": "ReferenceFrameRotations.compose_rotation",
     "category": "method",
@@ -473,7 +473,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib/library/#ReferenceFrameRotations.dcm2quat-Tuple{StaticArrays.SArray{Tuple{3,3},T,2,L} where L where T}",
+    "location": "lib/library/#ReferenceFrameRotations.dcm2quat-Tuple{StaticArrays.SArray{Tuple{3,3},T,2,9} where T}",
     "page": "Library",
     "title": "ReferenceFrameRotations.dcm2quat",
     "category": "method",
@@ -481,7 +481,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib/library/#ReferenceFrameRotations.ddcm-Tuple{StaticArrays.SArray{Tuple{3,3},T,2,L} where L where T,AbstractArray}",
+    "location": "lib/library/#ReferenceFrameRotations.ddcm-Tuple{StaticArrays.SArray{Tuple{3,3},T,2,9} where T,AbstractArray}",
     "page": "Library",
     "title": "ReferenceFrameRotations.ddcm",
     "category": "method",
@@ -497,7 +497,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib/library/#ReferenceFrameRotations.inv_rotation-Tuple{StaticArrays.SArray{Tuple{3,3},T,2,L} where L where T}",
+    "location": "lib/library/#ReferenceFrameRotations.inv_rotation-Tuple{StaticArrays.SArray{Tuple{3,3},T,2,9} where T}",
     "page": "Library",
     "title": "ReferenceFrameRotations.inv_rotation",
     "category": "method",
