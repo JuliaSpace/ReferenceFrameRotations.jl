@@ -21,7 +21,7 @@ The Direction Cosine Matrix of type `T` is a `SMatrix{3,3,T}`, which is a 3x3
 static matrix of type `T`.
 
 """
-DCM{T} = SMatrix{3,3,T}
+DCM{T} = SMatrix{3,3,T,9}
 
 """
     struct EulerAngles{T}
