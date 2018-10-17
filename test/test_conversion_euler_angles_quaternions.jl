@@ -19,10 +19,10 @@ for rot_seq in rot_seq_array
 
         # Rotate the vector using a quaternion.
         q1    = angle2rot(Quaternion,eulerang)
-        rv_q1 = vect(inv(q1)*v*q1)
+        rv_q1 = vect(q1\v*q1)
 
         q2    = angle2rot(Quaternion,θx,θy,θz,rot_seq)
-        rv_q2 = vect(inv(q2)*v*q2)
+        rv_q2 = vect(q2\v*q2)
 
         # Compare.
         @test norm(rv_q1-rv_dcm) < 1e-10

@@ -25,7 +25,7 @@ for k = 1:samples
 
     # Rotate a vector aligned with the Euler axis using the quaternion.
     r     = v*randn()
-    r_rot = vect(inv(q)*r*q)
+    r_rot = vect(q\r*q)
 
     # The vector representation must be the same after the rotation.
     @test norm(r-r_rot) < 1e-10

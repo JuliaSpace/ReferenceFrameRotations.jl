@@ -58,7 +58,7 @@ for i = 1:samples
     @test abs(sin(ang)-sin_ang) < 1e-10
 
     # Test the same algorithm using different functions.
-    v_r = imag((1/q)*(v*q))
+    v_r = imag(q\v*q)
 
     # Get the sine of the angle between the representations.
     sin_ang = (cross(v_r, v)/norm(v)^2)[2]
@@ -89,7 +89,7 @@ for i = 1:samples
     @test abs(sin(ang)-sin_ang) < 1e-10
 
     # Test the same algorithm using different functions.
-    v_r = imag((1/q)*(v*q))
+    v_r = imag(I/q*v*q)
 
     # Get the sine of the angle between the representations.
     sin_ang = (cross(v_r, v)/norm(v)^2)[3]
@@ -177,7 +177,8 @@ let
 
     q = Quaternion(1.0,1.0,1.0,1.0)
     @test inv_rotation(q) != inv(q)
-    @test (q*inv(q))[:] ≈ [1;0;0;0]
+    @test (q/q)[:] ≈ [1;0;0;0]
+    @test (q\q)[:] ≈ [1;0;0;0]
 end
 
 # Test exceptions

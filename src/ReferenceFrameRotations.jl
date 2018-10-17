@@ -2,7 +2,7 @@ module ReferenceFrameRotations
 
 export DCM, EulerAngleAxis, EulerAngles, Quaternion
 
-import Base: +, -, *, /, conj, copy, getindex, inv, imag, real, show
+import Base: +, -, *, /, \, conj, copy, getindex, inv, imag, real, show
 import Base: zeros
 import LinearAlgebra: norm
 

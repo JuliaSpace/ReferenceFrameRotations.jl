@@ -34,7 +34,7 @@ for k = 1:samples
     v = randn(3)
 
     # Compute the rotated vector using the quaternions.
-    v_rot_q = vect(inv(q1*q2)*v*(q1*q2))
+    v_rot_q = vect((q1*q2)\v*(q1*q2))
 
     # Compute the rotated vector using the DCMs.
     v_rot_dcm = dcm2*dcm1*v
