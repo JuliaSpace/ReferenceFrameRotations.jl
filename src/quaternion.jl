@@ -547,7 +547,7 @@ velocity of `b` with respect to `a`, and represented in `b`, is `wba_b`.
 # Example
 
 ```julia-repl
-julia> q = eye(Quaternion);
+julia> q = Quaternion(1.0I);
 
 julia> dquat(q,[1;0;0])
 Quaternion{Float64}:
