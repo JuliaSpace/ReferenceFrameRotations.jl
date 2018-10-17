@@ -125,7 +125,39 @@ var documenterSearchIndex = {"docs": [
     "page": "Quaternions",
     "title": "Operations",
     "category": "section",
-    "text": "The sum between quaternions and the multiplication between a quaternion and a scalar are defined as usual:julia> q1 = Quaternion(1.0,1.0,0.0,0.0);\n\njulia> q2 = Quaternion(1.0,2.0,3.0,4.0);\n\njulia> q1+q2\nQuaternion{Float64}:\n  + 2.0 + 3.0.i + 3.0.j + 4.0.kjulia> q1 = Quaternion(1.0,2.0,3.0,4.0);\n\njulia> q1*3\nQuaternion{Float64}:\n  + 3.0 + 6.0.i + 9.0.j + 12.0.k\n\njulia> 4*q1\nQuaternion{Float64}:\n  + 4.0 + 8.0.i + 12.0.j + 16.0.kThere are also the following functions available:julia> q = Quaternion(1.0,2.0,3.0,4.0);\n\njulia> conj(q)  # Returns the complex conjugate of the quaternion.\nQuaternion{Float64}:\n  + 1.0 - 2.0.i - 3.0.j - 4.0.k\n\njulia> copy(q)  # Creates a copy of the quaternion.\nQuaternion{Float64}:\n  + 1.0 + 2.0.i + 3.0.j + 4.0.k\n\njulia> inv(q)   # Computes the multiplicative inverse of the quaternion.\nQuaternion{Float64}:\n  + 0.03333333333333333 - 0.06666666666666667.i - 0.1.j - 0.13333333333333333.k\n\njulia> inv(q)*q\nQuaternion{Float64}:\n  + 1.0 + 0.0.i + 5.551115123125783e-17.j + 0.0.k\n\njulia> imag(q)  # Returns the vectorial / imaginary part of the quaternion.\n3-element StaticArrays.SArray{Tuple{3},Float64,1,3}:\n 2.0\n 3.0\n 4.0\n\njulia> norm(q)  # Computes the norm of the quaternion.\n5.477225575051661\n\njulia> real(q)  # Returns the real part of the quaternion.\n1.0\n\njulia> vect(q)  # Returns the vectorial / imaginary part of the quaternion.\n3-element StaticArrays.SArray{Tuple{3},Float64,1,3}:\n 2.0\n 3.0\n 4.0note: Note\nThe operation a/q is equal to a*inv(q) if a is a scalar.The multiplication between quaternions is also defined using the Hamilton product:beginaligned\nmathbfq_1 = r_1 + mathbfv_1 \nmathbfq_2 = r_2 + mathbfv_2 \nmathbfq_1 cdot mathbfq_2 = r_1 cdot r_2 - mathbfv_1 cdot mathbfv_2 + r_1 cdot mathbfv_2 + r_2 cdot mathbfv_1 + mathbfv_1 times mathbfv_2\nendalignedHence:julia> q1 = Quaternion(cosd(15), sind(15), 0.0, 0.0);\n\njulia> q2 = Quaternion(cosd(30), sind(30), 0.0, 0.0);\n\njulia> q1*q2\nQuaternion{Float64}:\n  + 0.7071067811865475 + 0.7071067811865475.i + 0.0.j + 0.0.kIf a quaternion mathbfq is multiplied by a vector mathbfv, then the vector is converted to a quaternion with real part 0, mathbfq_v = 0 + mathbfv, and the quaternion multiplication is performed as usual:beginaligned\nmathbfq   = r + mathbfw \nmathbfq_v = 0 + mathbfv \nmathbfq cdot mathbfv triangleq mathbfq cdot mathbfq_v = - mathbfw cdot mathbfv + r cdot mathbfv + mathbfw times mathbfv \nmathbfv cdot mathbfq triangleq mathbfq_v cdot mathbfq = - mathbfv cdot mathbfw + r cdot mathbfv + mathbfv times mathbfw\nendalignedHence:julia> q1 = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);\n\njulia> v  = [0;1;0];\n\njulia> v*q1\nQuaternion{Float64}:\n  + 0.0 + 0.0.i + 0.9238795325112867.j - 0.3826834323650898.k\n\njulia> q1*v\nQuaternion{Float64}:\n  + 0.0 + 0.0.i + 0.9238795325112867.j + 0.3826834323650898.k"
+    "text": ""
+},
+
+{
+    "location": "man/quaternions/#Sum,-subtraction,-and-scalar-multiplication-1",
+    "page": "Quaternions",
+    "title": "Sum, subtraction, and scalar multiplication",
+    "category": "section",
+    "text": "The sum between quaternions, the subtraction between quaternions, and the multiplication between a quaternion and a scalar are defined as usual:beginaligned\n  mathbfq_a + mathbfq_b = (q_a0 + q_b0) +\n                                 (q_a1 + q_b1) cdot mathbfi +\n                                 (q_a2 + q_b2) cdot mathbfj +\n                                 (q_a3 + q_b3) cdot mathbfk \n  mathbfq_a - mathbfq_b = (q_a0 - q_b0) +\n                                 (q_a1 - q_b1) cdot mathbfi +\n                                 (q_a2 - q_b2) cdot mathbfj +\n                                 (q_a3 - q_b3) cdot mathbfk \n  lambda cdot mathbfq = (lambda cdot q_0) +\n                              (lambda cdot q_1) cdot mathbfi +\n                              (lambda cdot q_2) cdot mathbfj +\n                              (lambda cdot q_3) cdot mathbfk\nendalignedjulia> q1 = Quaternion(1.0,1.0,0.0,0.0);\n\njulia> q2 = Quaternion(1.0,2.0,3.0,4.0);\n\njulia> q1+q2\nQuaternion{Float64}:\n  + 2.0 + 3.0.i + 3.0.j + 4.0.k\n\njulia> q1-q2\nQuaternion{Float64}:\n  + 0.0 - 1.0.i - 3.0.j - 4.0.k\n\njulia> q1 = Quaternion(1.0,2.0,3.0,4.0);\n\njulia> q1*3\nQuaternion{Float64}:\n  + 3.0 + 6.0.i + 9.0.j + 12.0.k\n\njulia> 4*q1\nQuaternion{Float64}:\n  + 4.0 + 8.0.i + 12.0.j + 16.0.k\n\njulia> 5q1\nQuaternion{Float64}:\n  + 5.0 + 10.0.i + 15.0.j + 20.0.k"
+},
+
+{
+    "location": "man/quaternions/#Multiplication-between-quaternions-1",
+    "page": "Quaternions",
+    "title": "Multiplication between quaternions",
+    "category": "section",
+    "text": "The multiplication between quaternions is defined using the Hamilton product:beginaligned\n  mathbfq_1 = r_1 + mathbfv_1 \n  mathbfq_2 = r_2 + mathbfv_2 \n  mathbfq_1 cdot mathbfq_2 = r_1 cdot r_2 -\n                                     mathbfv_1 cdot mathbfv_2 +\n                                     r_1 cdot mathbfv_2 +\n                                     r_2 cdot mathbfv_1 +\n                                     mathbfv_1 times mathbfv_2\nendalignedjulia> q1 = Quaternion(cosd(15), sind(15), 0.0, 0.0);\n\njulia> q2 = Quaternion(cosd(30), sind(30), 0.0, 0.0);\n\njulia> q1*q2\nQuaternion{Float64}:\n  + 0.7071067811865475 + 0.7071067811865475.i + 0.0.j + 0.0.kIf a quaternion mathbfq is multiplied by a vector mathbfv, then the vector is converted to a quaternion with real part 0, mathbfq_v = 0 + mathbfv, and the quaternion multiplication is performed as usual:beginaligned\nmathbfq   = r + mathbfw \nmathbfq_v = 0 + mathbfv \nmathbfq cdot mathbfv triangleq mathbfq cdot mathbfq_v = - mathbfw cdot mathbfv + r cdot mathbfv + mathbfw times mathbfv \nmathbfv cdot mathbfq triangleq mathbfq_v cdot mathbfq = - mathbfv cdot mathbfw + r cdot mathbfv + mathbfv times mathbfw\nendalignedjulia> q1 = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);\n\njulia> v  = [0;1;0];\n\njulia> v*q1\nQuaternion{Float64}:\n  + 0.0 + 0.0.i + 0.9238795325112867.j - 0.3826834323650898.k\n\njulia> q1*v\nQuaternion{Float64}:\n  + 0.0 + 0.0.i + 0.9238795325112867.j + 0.3826834323650898.k"
+},
+
+{
+    "location": "man/quaternions/#Division-between-quaternions-1",
+    "page": "Quaternions",
+    "title": "Division between quaternions",
+    "category": "section",
+    "text": "Given this definition of the product between two quaternions, we can define the multiplicative inverse of a quaternion by:mathbfq^-1 triangleq fracbarmathbfqmathbfq^2 =\n  fracq_0 - q_1 cdot mathbfi - q_2 cdot mathbfj - q_3 cdot mathbfk\n       q_0^2 + q_1^2 + q_2^2 + q_3^2Notice that, in this case, one gets:mathbfq cdot mathbfq^-1 = 1note: Note\nbarmathbfq, which is the quaternion conjugate, can be computed using conj(q).mathbfq, which is the quaternion norm, can be computed using norm(q).The quaternion inverse can be computed using inv(q).warning: Warning\nThe exponentiation operator is not defined for quaternions. Hence, q^(-1) or q^2 will throw an error.The right division (/) between two quaternions mathbfq_1 and mathbfq_2 is defined as the following Hamilton product:mathbfq_1mathbfq_2 = mathbfq_1 cdot mathbfq_2^-1The left division (\\) between two quaternions mathbfq_1 and mathbfq_2 is defined as the following Hamilton product:mathbfq_1backslashmathbfq_2 = mathbfq_1^-1 cdot mathbfq_2julia> q1 = Quaternion(cosd(45+22.5), sind(45+22.5), 0.0, 0.0);\n\njulia> q2 = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);\n\njulia> q1/q2\nQuaternion{Float64}:\n  + 0.7071067811865476 + 0.7071067811865475.i + 0.0.j + 0.0.k\n\njulia> q1\\q2\nQuaternion{Float64}:\n  + 0.7071067811865476 - 0.7071067811865475.i + 0.0.j + 0.0.k\n\njulia> q1\\q2*q1/q2\nQuaternion{Float64}:\n  + 1.0 + 5.551115123125783e-17.i + 0.0.j + 0.0.kIf a division operation (right-division or left-division) is performed between a vector mathbfv and a quaternion, then the vector mathbfv is converted to a quaternion real part 0, mathbfq_v = 0 + mathbfv, and the division operation is performed as defined earlier.beginaligned\n  mathbfvmathbfq          triangleq mathbfq_v      cdot mathbfq^-1   \n  mathbfvbackslashmathbfq triangleq mathbfq_v^-1 cdot mathbfq        \n  mathbfqmathbfv          triangleq mathbfq        cdot mathbfq_v^-1 \n  mathbfqbackslashmathbfv triangleq mathbfq^-1   cdot mathbfq_v\nendalignedjulia> q1 = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);\n\njulia> v  = [0;1;0];\n\njulia> q1\\v\nQuaternion{Float64}:\n  + 0.0 + 0.0.i + 0.9238795325112867.j - 0.3826834323650898.k\n\njulia> v\\q1\nQuaternion{Float64}:\n  + 0.0 + 0.0.i - 0.9238795325112867.j + 0.3826834323650898.k\n"
+},
+
+{
+    "location": "man/quaternions/#Other-operations-1",
+    "page": "Quaternions",
+    "title": "Other operations",
+    "category": "section",
+    "text": "There are also the following functions available:julia> q = Quaternion(1.0,2.0,3.0,4.0);\n\njulia> conj(q)  # Returns the complex conjugate of the quaternion.\nQuaternion{Float64}:\n  + 1.0 - 2.0.i - 3.0.j - 4.0.k\n\njulia> copy(q)  # Creates a copy of the quaternion.\nQuaternion{Float64}:\n  + 1.0 + 2.0.i + 3.0.j + 4.0.k\n\njulia> inv(q)   # Computes the multiplicative inverse of the quaternion.\nQuaternion{Float64}:\n  + 0.03333333333333333 - 0.06666666666666667.i - 0.1.j - 0.13333333333333333.k\n\njulia> inv(q)*q\nQuaternion{Float64}:\n  + 1.0 + 0.0.i + 5.551115123125783e-17.j + 0.0.k\n\njulia> imag(q)  # Returns the vectorial / imaginary part of the quaternion.\n3-element StaticArrays.SArray{Tuple{3},Float64,1,3}:\n 2.0\n 3.0\n 4.0\n\njulia> norm(q)  # Computes the norm of the quaternion.\n5.477225575051661\n\njulia> real(q)  # Returns the real part of the quaternion.\n1.0\n\njulia> vect(q)  # Returns the vectorial / imaginary part of the quaternion.\n3-element StaticArrays.SArray{Tuple{3},Float64,1,3}:\n 2.0\n 3.0\n 4.0note: Note\nThe operation a/q is equal to a*inv(q) if a is a scalar."
 },
 
 {
@@ -133,7 +165,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quaternions",
     "title": "Converting reference frames using quaternions",
     "category": "section",
-    "text": "Given the reference frames A and B, let mathbfw be a unitary vector in which a rotation about it of an angle theta aligns the reference frame A with the reference frame B (in this case, mathbfw is aligned with the Euler Axis and theta is the Euler angle). Construct the following quaternion:mathbfq_ba = cosleft(fractheta2right) + sinleft(fractheta2right) cdot mathbfwThen, a vector mathbfv represented in reference frame A (mathbfv_a) can be represented in reference frame B using:mathbfv_b = textttvectleft(mathbfq_ba^-1 cdot mathbfv_a cdot mathbfq_baright)Hence:julia> qBA = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);\n\njulia> vA  = [0;1;0];\n\njulia> vB  = vect(inv(qBA)*vA*qBA);\n\njulia> vB\n3-element StaticArrays.SArray{Tuple{3},Float64,1,3}:\n  0.0\n  0.707107\n -0.707107note: Note\nA SArray is returned instead of the usual Array. This is a static vector created by the package StaticArrays. Generally, you can treat this vector as any other one. The only downside is that you cannot modify individual components because it is immutable."
+    "text": "Given the reference frames A and B, let mathbfw be a unitary vector in which a rotation about it of an angle theta aligns the reference frame A with the reference frame B (in this case, mathbfw is aligned with the Euler Axis and theta is the Euler angle). Construct the following quaternion:mathbfq_ba = cosleft(fractheta2right) + sinleft(fractheta2right) cdot mathbfwThen, a vector mathbfv represented in reference frame A (mathbfv_a) can be represented in reference frame B using:mathbfv_b = textttvectleft(mathbfq_ba^-1 cdot mathbfv_a cdot mathbfq_baright)Hence:julia> qBA = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);\n\njulia> vA  = [0;1;0];\n\njulia> vB  = vect(qBA\\vA*qBA); # Equivalent to: vect(inv(qBA)*vA*qBA);\n\njulia> vB\n3-element StaticArrays.SArray{Tuple{3},Float64,1,3}:\n  0.0\n  0.707107\n -0.707107note: Note\nA SArray is returned instead of the usual Array. This is a static vector created by the package StaticArrays. Generally, you can treat this vector as any other one. The only downside is that you cannot modify individual components because it is immutable."
 },
 
 {
@@ -638,6 +670,38 @@ var documenterSearchIndex = {"docs": [
     "title": "Base.:/",
     "category": "method",
     "text": "@inline function /(λ::Number, q::Quaternion)\n@inline function /(q::Quaternion, λ::Number)\n\nCompute the division λ/q or q/λ, in which λ is a scalar.\n\n\n\n\n\n"
+},
+
+{
+    "location": "lib/library/#Base.:/-Tuple{Quaternion,Quaternion}",
+    "page": "Library",
+    "title": "Base.:/",
+    "category": "method",
+    "text": "@inline /(q1::Quaternion, q2::Quaternion) = q1*inv(q2)\n\nCompute q1*inv(q2) (Hamilton product).\n\n\n\n\n\n"
+},
+
+{
+    "location": "lib/library/#Base.:\\-Tuple{LinearAlgebra.UniformScaling,Quaternion}",
+    "page": "Library",
+    "title": "Base.:\\",
+    "category": "method",
+    "text": "@inline function \\(u::UniformScaling, q::Quaternion)\n@inline function \\(q::Quaternion, u::UniformScaling)\n\nCompute inv(qu)*q or inv(q)*qu (Hamilton product), in which qu is the scaled identity quaternion qu = u.λ * I.\n\n\n\n\n\n"
+},
+
+{
+    "location": "lib/library/#Base.:\\-Tuple{Quaternion,Array{T,1} where T}",
+    "page": "Library",
+    "title": "Base.:\\",
+    "category": "method",
+    "text": "@inline \\(q::Quaternion, v::Vector)\n@inline \\(v::Vector, q::Quaternion)\n\nCompute inv(q)*qv or inv(qv)*q in which qv is a quaternion with real part 0 and vectorial/imaginary part v (Hamilton product).\n\n\n\n\n\n"
+},
+
+{
+    "location": "lib/library/#Base.:\\-Tuple{Quaternion,Quaternion}",
+    "page": "Library",
+    "title": "Base.:\\",
+    "category": "method",
+    "text": "@inline \\(q1::Quaternion, q2::Quaternion) = inv(q1)*q2\n\nCompute inv(q1)*q2.\n\n\n\n\n\n"
 },
 
 {
