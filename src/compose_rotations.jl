@@ -24,15 +24,6 @@ quaternion).
 
 The output will have the same type as the inputs (DCM or quaternion).
 
-# Args
-
-* `R1`: First rotation (DCM or quaternion).
-* `R2, R3, R4, R5, ...`: (OPTIONAL) Other rotations (DCMs or quaternions).
-
-# Returns
-
-The composed rotation.
-
 # Example
 
 ```julia-repl

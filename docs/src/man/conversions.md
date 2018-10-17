@@ -4,6 +4,7 @@ Conversions
 ```@meta
 CurrentModule = ReferenceFrameRotations
 DocTestSetup = quote
+    using LinearAlgebra
     using ReferenceFrameRotations
 end
 ```
@@ -24,10 +25,10 @@ function dcm2angle(dcm, rot_seq=:ZYX)
 julia> dcm = DCM([1 0 0; 0 0 -1; 0 1 0]);
 
 julia> dcm2angle(dcm)
-ReferenceFrameRotations.EulerAngles{Float64}(0.0, 0.0, -1.5707963267948966, :ZYX)
+EulerAngles{Float64}(0.0, 0.0, -1.5707963267948966, :ZYX)
 
 julia> dcm2angle(dcm, :XYZ)
-ReferenceFrameRotations.EulerAngles{Float64}(-1.5707963267948966, 0.0, 0.0, :XYZ)
+EulerAngles{Float64}(-1.5707963267948966, 0.0, 0.0, :XYZ)
 ```
 
 ## DCMs to Quaternions
@@ -113,7 +114,7 @@ julia> dcm    = angle2dcm(angles)
 Euler angles can be converted to quaternions using the following functions:
 
 ```julia
-function angle2quat(angle_r1, angle_r2, angle_r3, rot_seq="ZYX")
+function angle2quat(angle_r1, angle_r2, angle_r3, rot_seq=:ZYX)
 function angle2quat(eulerang)
 ```
 
@@ -202,7 +203,7 @@ julia> a = 60.0*pi/180;
 julia> q = Quaternion(cos(a/2), v*sin(a/2));
 
 julia> quat2angleaxis(q)
-ReferenceFrameRotations.EulerAngleAxis{Float64}(1.0471975511965974, [0.57735, 0.57735, 0.57735])
+EulerAngleAxis{Float64}(1.0471975511965974, [0.57735, 0.57735, 0.57735])
 ```
 
 ### Quaternions to Euler Angles
@@ -210,7 +211,7 @@ ReferenceFrameRotations.EulerAngleAxis{Float64}(1.0471975511965974, [0.57735, 0.
 There is one method to convert quaternions to Euler Angles:
 
 ```julia
-function quat2angle(q, rot_seq="ZYX")
+function quat2angle(q, rot_seq=:ZYX)
 ```
 
 However, it first transforms the quaternion to DCM using `quat2dcm` and then
@@ -222,5 +223,5 @@ The improvement of this conversion will be addressed in a future version of
 julia> q = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);
 
 julia> quat2angle(q, :XYZ)
-ReferenceFrameRotations.EulerAngles{Float64}(0.7853981633974484, 0.0, -0.0, :XYZ)
+EulerAngles{Float64}(0.7853981633974484, 0.0, -0.0, :XYZ)
 ```

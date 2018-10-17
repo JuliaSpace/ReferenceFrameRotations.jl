@@ -11,7 +11,7 @@ end
 The Euler Angles are defined by the following immutable structure:
 
 ```julia
-struct EulerAngles{T<:Real}
+struct EulerAngles{T}
     a1::T
     a2::T
     a3::T

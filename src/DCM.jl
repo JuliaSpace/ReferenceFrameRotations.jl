@@ -10,15 +10,11 @@ export ddcm, dcm2angle, dcm2quat
 ################################################################################
 
 """
-    function create_rotation_matrix(angle::Number, axis::Symbol = :X) where T<:Real
+    function create_rotation_matrix(angle::Number, axis::Symbol = :X)
 
 Compute a rotation matrix that rotates a coordinate frame about the axis `axis`
-by the angle `angle`.
-
-# Args
-
-* `angle`: Angle.
-* `axis`: Axis, must be 'x', 'X', 'y', 'Y', 'z', or 'Z'.
+by the angle `angle`. The `axis` must be one of the following symbols: `:X`,
+`:Y`, or `:Z`.
 
 # Example
 
@@ -65,20 +61,12 @@ end
 """
     function dcm2angle(dcm::DCM, rot_seq::Symbol=:ZYX)
 
-Convert the DCM `dcm` to Euler Angles given a rotation sequence `rot_seq`.
+Convert the DCM `dcm` to Euler Angles (see `EulerAngles`) given a rotation
+sequence `rot_seq`.
 
 The rotation sequence is defined by a `:Symbol`. The possible values are:
 `:XYX`, `XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`,
-`:ZYX`, and `:ZYZ`.
-
-# Args
-
-* `DCM`: Direction Cosine Matrix.
-* `rot_seq`: (OPTIONAL) Rotation sequence (**Default** = `:ZYX`).
-
-# Returns
-
-The Euler angles (see `EulerAngles`).
+`:ZYX`, and `:ZYZ`. If no value is specified, then it defaults to `:ZYX`.
 
 # Example
 
@@ -184,17 +172,10 @@ end
 # ==============================================================================
 
 """
-    function dcm2quat(dcm::DCM{T}) where T<:Real
+    function dcm2quat(dcm::DCM)
 
-Convert the DCM `dcm` to a quaternion.
-
-# Args
-
-* `dcm`: Direction Cosine Matrix that will be converted.
-
-# Returns
-
-The quaternion that represents the same rotation of the DCM `dcm`.
+Convert the DCM `dcm` to a quaternion. The type of the quaternion will be
+automatically selected by the constructor `Quaternion` to avoid `InexactError`.
 
 # Remarks
 
@@ -217,18 +198,19 @@ Quaternion{Float64}:
 ```
 
 """
-function dcm2quat(dcm::DCM{T}) where T<:Real
+function dcm2quat(dcm::DCM)
     if  tr(dcm) > 0
         # f = 4*q0
-        f = sqrt(tr(dcm)+1)*2
+        f = 2sqrt(tr(dcm)+1)
 
-        return Quaternion{T}(f/4,
-                             (dcm[2,3]-dcm[3,2])/f,
-                             (dcm[3,1]-dcm[1,3])/f,
-                             (dcm[1,2]-dcm[2,1])/f)
+        return Quaternion(f/4,
+                          (dcm[2,3]-dcm[3,2])/f,
+                          (dcm[3,1]-dcm[1,3])/f,
+                          (dcm[1,2]-dcm[2,1])/f)
+
     elseif (dcm[1,1] > dcm[2,2]) && (dcm[1,1] > dcm[3,3])
         # f = 4*q1
-        f = sqrt(1 + dcm[1,1] - dcm[2,2] - dcm[3,3])*2
+        f = 2sqrt(1 + dcm[1,1] - dcm[2,2] - dcm[3,3])
 
         # Real part.
         q0 = (dcm[2,3]-dcm[3,2])/f
@@ -236,38 +218,40 @@ function dcm2quat(dcm::DCM{T}) where T<:Real
         # Make sure that the real part is always positive.
         s = (q0 > 0) ? +1 : -1
 
-        return Quaternion{T}(s*q0,
-                             s*f/4,
-                             s*(dcm[1,2]+dcm[2,1])/f,
-                             s*(dcm[3,1]+dcm[1,3])/f)
+        return Quaternion(s*q0,
+                          s*f/4,
+                          s*(dcm[1,2]+dcm[2,1])/f,
+                          s*(dcm[3,1]+dcm[1,3])/f)
+
     elseif (dcm[2,2] > dcm[3,3])
         # f = 4*q2
-        f = sqrt(1 + dcm[2,2] - dcm[1,1] - dcm[3,3])*2
+        f = 2sqrt(1 + dcm[2,2] - dcm[1,1] - dcm[3,3])
 
         # Real part.
         q0 = (dcm[3,1]-dcm[1,3])/f
 
-        # Make sure that the real part is always posiive.
+        # Make sure that the real part is always positive.
         s = (q0 > 0) ? +1 : -1
 
-        return Quaternion{T}(s*q0,
-                             s*(dcm[1,2]+dcm[2,1])/f,
-                             s*f/4,
-                             s*(dcm[3,2]+dcm[2,3])/f)
+        return Quaternion(s*q0,
+                          s*(dcm[1,2]+dcm[2,1])/f,
+                          s*f/4,
+                          s*(dcm[3,2]+dcm[2,3])/f)
+
     else
         # f = 4*q3
-        f = sqrt(1 + dcm[3,3] - dcm[1,1] - dcm[2,2])*2
+        f = 2sqrt(1 + dcm[3,3] - dcm[1,1] - dcm[2,2])
 
         # Real part.
         q0 = (dcm[1,2]-dcm[2,1])/f
 
-        # Make sure that the real part is always posiive.
+        # Make sure that the real part is always positive.
         s = (q0 > 0) ? +1 : -1
 
-        return Quaternion{T}(s*q0,
-                             s*(dcm[1,3]+dcm[3,1])/f,
-                             s*(dcm[2,3]+dcm[3,2])/f,
-                             s*f/4)
+        return Quaternion(s*q0,
+                          s*(dcm[1,3]+dcm[3,1])/f,
+                          s*(dcm[2,3]+dcm[3,2])/f,
+                          s*f/4)
     end
 end
 
@@ -282,13 +266,6 @@ Compute the time-derivative of the DCM `dcm` that rotates a reference frame `a`
 into alignment to the reference frame `b` in which the angular velocity of `b`
 with respect to `a`, and represented in `b`, is `wba_b`.
 
-# Args
-
-* `Dba`: DCM that rotates the reference frame `a` into alignment with the
-         reference frame `b`.
-* `wba_b`: Angular velocity of the reference frame `a` with respect to the
-           reference frame `b` represented in the reference frame `b`.
-
 # Returns
 
 The time-derivative of the DCM `Dba` (3x3 matrix of type `SMatrix{3,3}`).
@@ -296,7 +273,7 @@ The time-derivative of the DCM `Dba` (3x3 matrix of type `SMatrix{3,3}`).
 # Example
 
 ```julia-repl
-julia> D = DCM(eye(3));
+julia> D = DCM(Matrix{Float64}(I,3,3));
 
 julia> ddcm(D,[1;0;0])
 3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:

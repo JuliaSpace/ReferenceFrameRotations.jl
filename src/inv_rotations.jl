@@ -12,14 +12,6 @@ Quaternion.
 
 The output will have the same type as `R` (DCM or quaternion).
 
-# Args
-
-* `R`: Rotation that will be inversed.
-
-# Returns
-
-The inverse rotation.
-
 # Remarks
 
 If `R` is a DCM, than its transpose is computed instead of its inverse to reduce

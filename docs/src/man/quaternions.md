@@ -19,7 +19,7 @@ represented by
 using the following immutable structure:
 
 ```julia
-struct Quaternion{T<:Real}
+struct Quaternion{T}
     q0::T
     q1::T
     q2::T
@@ -71,20 +71,32 @@ Quaternion{Float64}:
   + 0.0 + 1.0.i + 0.0.j + 0.0.k
 ```
 
-5. Create an identity quaternion using the `eye` function:
+5. Create an identity quaternion:
 
 ```jldoctest
-julia> q = eye(Quaternion)  # Creates an identity quaternion of type `Float64`.
+julia> q = Quaternion{Float64}(I)  # Creates an identity quaternion of type `Float64`.
 Quaternion{Float64}:
   + 1.0 + 0.0.i + 0.0.j + 0.0.k
 
-julia> q = eye(Quaternion{Float32})  # Creates an identity quaternion of type `Float32`.
+julia> q = Quaternion(1.0I)  # Creates an identity quaternion of type `Float64`.
+Quaternion{Float64}:
+  + 1.0 + 0.0.i + 0.0.j + 0.0.k
+
+julia> q = Quaternion{Float32}(I)  # Creates an identity quaternion of type `Float32`.
 Quaternion{Float32}:
   + 1.0 + 0.0.i + 0.0.j + 0.0.k
 
-julia> a = eye(q)  # Creates an identity quaternion with the same type of `q`.
+julia> q = Quaternion(1.0f0I)  # Creates an identity quaternion of type `Float32`.
 Quaternion{Float32}:
   + 1.0 + 0.0.i + 0.0.j + 0.0.k
+
+julia> a = Quaternion(I,q)  # Creates an identity quaternion with the same type of `q`.
+Quaternion{Float32}:
+  + 1.0 + 0.0.i + 0.0.j + 0.0.k
+
+julia> q = Quaternion(I)
+Quaternion{Bool}:
+  + true + false.i + false.j + false.k
 ```
 
 6. Create a zero quaternion using the `zeros` function:

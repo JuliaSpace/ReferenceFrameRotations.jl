@@ -22,7 +22,7 @@ makedocs(
 
 deploydocs(
     repo = "github.com/JuliaSpace/ReferenceFrameRotations.jl.git",
-    julia = "0.7",
+    julia = "1.0",
     target = "build",
     deps = nothing,
     make = nothing,
