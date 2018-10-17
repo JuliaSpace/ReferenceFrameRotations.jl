@@ -16,5 +16,5 @@ after_success:
     # Push coverage results to Codecov.
     - julia -e 'import Pkg; cd(Pkg.dir("ReferenceFrameRotations")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())';
     # Compile and deploy the documentation.
-    - julia -e 'import Pkg; Pkg.add("Documenter")';
-    - julia -e 'import Pkg; cd(Pkg.dir("ReferenceFrameRotations")); include(joinpath("docs", "make.jl"))';
+    - julia -e 'ps=Pkg.PackageSpec(name="Documenter", version="0.19"); Pkg.add(ps); Pkg.pin(ps)'
+    - julia -e 'cd(Pkg.dir("ReferenceFrameRotations")); include(joinpath("docs", "make.jl"))'
