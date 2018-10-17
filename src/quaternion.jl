@@ -215,6 +215,14 @@ end
 @inline /(q::Quaternion, λ::Number) = q*(1/λ)
 
 """
+    @inline /(q1::Quaternion, q2::Quaternion) = q1*inv(q2)
+
+Compute `q1*inv(q2)` (Hamilton product).
+
+"""
+@inline /(q1::Quaternion, q2::Quaternion) = q1*inv(q2)
+
+"""
     @inline function /(u::UniformScaling, q::Quaternion)
     @inline function /(q::Quaternion, u::UniformScaling)
 
