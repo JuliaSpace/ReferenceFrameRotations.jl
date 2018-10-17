@@ -114,7 +114,7 @@ julia> dcm    = angle2dcm(angles)
 Euler angles can be converted to quaternions using the following functions:
 
 ```julia
-function angle2quat(angle_r1, angle_r2, angle_r3, rot_seq="ZYX")
+function angle2quat(angle_r1, angle_r2, angle_r3, rot_seq=:ZYX)
 function angle2quat(eulerang)
 ```
 
@@ -211,7 +211,7 @@ EulerAngleAxis{Float64}(1.0471975511965974, [0.57735, 0.57735, 0.57735])
 There is one method to convert quaternions to Euler Angles:
 
 ```julia
-function quat2angle(q, rot_seq="ZYX")
+function quat2angle(q, rot_seq=:ZYX)
 ```
 
 However, it first transforms the quaternion to DCM using `quat2dcm` and then
