@@ -1,6 +1,39 @@
 ReferenceFrameRotations.jl Changelog
 ====================================
 
+Version 0.4.0
+-------------
+
+- ![BREAKING][badge-breaking] The function `dcm2quat` forced the returned
+  Quaternion to be of the same type of DCM. However, since some floating-point
+  operations are required to convert between these two rotation representation,
+  then it could lead to `InexactError` exception. Old code that depends on the
+  quaternion type returned from `dcm2quat` may break.
+- ![BREAKING][badge-breaking] `DCM{T}` was defined as `SMatrix{3,3,T}`. However,
+  this can lead to type-unstable functions in some cases. Hence, the definition
+  was changed to `SMatrix{3,3,T,9}`. Code using `DCM{T}` will continue to work
+  without problems.
+- ![Deprecation][badge-deprecation] The function `eye` has been marked as
+  deprecated in favor of the initialization using the `UniformScalling` (`I`)
+  object.
+- ![Bugfix][badge-bugfix] The `norm` function was not being exported.
+- ![Feature][badge-feature] The left and right division operations between two
+  quaternions was defined. Hence, the operation `inv(q)*v*q` can be now written
+  in the more compact form `q\v*q`.
+- ![Enhancement][badge-enhancement] DCMs and Quaternions now fully support the
+  `UniformScalling` object for initialization and operations. Hence, an identity
+  DCM can be created using `DCM(I)` and an identity quaternion can be created
+  using `Quaternion(I)`.
+- ![Enhancement][badge-enhancement] The structures and operations no longer
+  restrict the type of the rotation representation to be real numbers. Hence, it
+  is now possible to perform, for example, the multiplication between two
+  integer quaternions.  The type of the result will be automatically inferred.
+- ![Info][badge-info] The package is not tested against Julia 0.7 anymore.
+  Although it is still supposed to work with Julia 0.7, it is **highly**
+  advisable to use Julia 1.0 or higher.
+- ![Info][badge-info] The documentation of the functions was modified to be less
+  verbose.
+
 Version 0.3.0
 -------------
 
@@ -71,3 +104,10 @@ Version 0.1.0
     * This version was based on the old package **Rotations.jl v0.4.0** that
       was renamed to **ReferenceFrameRotations** to be submitted to julia
       METADATA repo.
+
+[badge-breaking]: https://img.shields.io/badge/BREAKING-red.svg
+[badge-deprecation]: https://img.shields.io/badge/Deprecation-orange.svg
+[badge-feature]: https://img.shields.io/badge/Feature-green.svg
+[badge-enhancement]: https://img.shields.io/badge/Enhancement-blue.svg
+[badge-bugfix]: https://img.shields.io/badge/Bugfix-purple.svg
+[badge-info]: https://img.shields.io/badge/Info-gray.svg
