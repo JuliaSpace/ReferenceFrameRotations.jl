@@ -43,14 +43,9 @@ function angle2dcm(angle_r1::Number,
                    angle_r3::Number,
                    rot_seq::Symbol = :ZYX)
     # Compute the sines and cosines.
-    c1 = cos(angle_r1)
-    s1 = sin(angle_r1)
-
-    c2 = cos(angle_r2)
-    s2 = sin(angle_r2)
-
-    c3 = cos(angle_r3)
-    s3 = sin(angle_r3)
+    s1, c1 = sincos(angle_r1)
+    s2, c2 = sincos(angle_r2)
+    s3, c3 = sincos(angle_r3)
 
     if rot_seq == :ZYX
         return DCM(       c2*c1    ,        c2*s1    , -s2  ,
@@ -205,14 +200,9 @@ function angle2quat(angle_r1::Number,
                     rot_seq::Symbol = :ZYX)
 
     # Compute the sines and cosines of half angle.
-    c1 = cos(angle_r1/2)
-    s1 = sin(angle_r1/2)
-
-    c2 = cos(angle_r2/2)
-    s2 = sin(angle_r2/2)
-
-    c3 = cos(angle_r3/2)
-    s3 = sin(angle_r3/2)
+    s1, c1 = sincos(angle_r1/2)
+    s2, c2 = sincos(angle_r2/2)
+    s3, c3 = sincos(angle_r3/2)
 
     if rot_seq == :ZYX
         q0 = c1*c2*c3 + s1*s2*s3

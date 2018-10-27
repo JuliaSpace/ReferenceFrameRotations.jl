@@ -28,8 +28,7 @@ julia> create_rotation_matrix(pi/2, :X)
 
 """
 function create_rotation_matrix(angle::Number, axis::Symbol = :X)
-    cos_angle = cos(angle)
-    sin_angle = sin(angle)
+    sin_angle, cos_angle = sincos(angle)
 
     if axis == :X
         dcm = DCM(1,      0,          0,
