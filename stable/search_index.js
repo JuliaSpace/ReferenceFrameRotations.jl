@@ -109,7 +109,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Euler Angle and Axis",
     "title": "Euler Angle and Axis",
     "category": "section",
-    "text": "The Euler angle and axis representation is defined by the following immutable structure:struct EulerAngleAxis{T}\n    a::T\n    v::Vector{T}\nendin which a is the Euler Angle and v is a unitary vector aligned with the Euler axis.note: Note\nThe support of this representation is still incomplete. Only the conversion to and from quaternions are implemented. Furthermore, there is no support for operations using Euler angles and axes."
+    "text": "CurrentModule = ReferenceFrameRotations\nDocTestSetup = quote\n    using ReferenceFrameRotations\nendThe Euler angle and axis representation is defined by the following immutable structure:struct EulerAngleAxis{T}\n    a::T\n    v::SVector{3,T}\nendin which a is the Euler Angle and v is a unitary vector aligned with the Euler axis.The constructor for this structure is:function EulerAngleAxis(a::T1, v::AbstractVector{T2}) where {T1,T2}in which a EulerAngleAxis with angle a [rad] and vector v will be created. Notice that the type of the returned structure will be selected according to the input types T1 and T2. Furthermore, the vector v will not be normalized.julia> EulerAngleAxis(1,[1,1,1])\nEulerAngleAxis{Int64}(1, [1, 1, 1])\n\njulia> EulerAngleAxis(1.f0,[1,1,1])\nEulerAngleAxis{Float32}(1.0f0, Float32[1.0, 1.0, 1.0])\n\njulia> EulerAngleAxis(1,[1,1,1.f0])\nEulerAngleAxis{Float32}(1.0f0, Float32[1.0, 1.0, 1.0])\n\njulia> EulerAngleAxis(1.0,[1,1,1])\nEulerAngleAxis{Float64}(1.0, [1.0, 1.0, 1.0])note: Note\nThe support of this representation is still incomplete. Only the conversion to and from quaternions are implemented. Furthermore, there is no support for operations using Euler angles and axes."
 },
 
 {
@@ -381,7 +381,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Library",
     "title": "ReferenceFrameRotations.EulerAngleAxis",
     "category": "type",
-    "text": "struct EulerAngleAxis{T}\n\nThe definition of Euler Angle and Axis to represent a 3D rotation.\n\nFields\n\na: The Euler angle [rad].\nv: The unitary vector aligned with the Euler axis.\n\n\n\n\n\n"
+    "text": "struct EulerAngleAxis{T}\n\nThe definition of Euler Angle and Axis to represent a 3D rotation.\n\nFields\n\na: The Euler angle [rad].\nv: The unitary vector aligned with the Euler axis.\n\nConstructor\n\nfunction EulerAngleAxis(a::T1, v::AbstractVector{T2}) where {T1,T2}\n\nCreate an Euler Angle and Axis representation structure with angle a [rad] and vector v. Notice that the vector v will not be normalized. The type of the returned structure will be selected according to the input types.\n\n\n\n\n\n"
 },
 
 {
@@ -505,11 +505,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib/library/#ReferenceFrameRotations.angleaxis2quat-Tuple{Number,Array{T,1} where T}",
+    "location": "lib/library/#ReferenceFrameRotations.angleaxis2quat-Tuple{Number,AbstractArray{T,1} where T}",
     "page": "Library",
     "title": "ReferenceFrameRotations.angleaxis2quat",
     "category": "method",
-    "text": "function angleaxis2quat(a::Number, v::Vector)\n\nConvert the Euler angle a [rad] and Euler axis v, which must be a unit vector, to a quaternion.\n\nRemarks\n\nIt is expected that the vector v is unitary. However, no verification is performed inside the function. The user must handle this situation.\n\nExample\n\njulia> v = [1;1;1];\n\njulia> v /= norm(v);\n\njulia> angleaxis2quat(pi/2,v)\nQuaternion{Float64}:\n  + 0.7071067811865476 + 0.408248290463863.i + 0.408248290463863.j + 0.408248290463863.k\n\n\n\n\n\n"
+    "text": "function angleaxis2quat(a::Number, v::AbstractVector)\n\nConvert the Euler angle a [rad] and Euler axis v, which must be a unit vector, to a quaternion.\n\nRemarks\n\nIt is expected that the vector v is unitary. However, no verification is performed inside the function. The user must handle this situation.\n\nExample\n\njulia> v = [1;1;1];\n\njulia> v /= norm(v);\n\njulia> angleaxis2quat(pi/2,v)\nQuaternion{Float64}:\n  + 0.7071067811865476 + 0.408248290463863.i + 0.408248290463863.j + 0.408248290463863.k\n\n\n\n\n\n"
 },
 
 {
@@ -573,15 +573,15 @@ var documenterSearchIndex = {"docs": [
     "page": "Library",
     "title": "ReferenceFrameRotations.quat2angle",
     "category": "function",
-    "text": "function quat2angle(q::Quaternion, rot_seq::Symbol = :ZYX)\n\nConvert the quaternion q to Euler Angles (see EulerAngles) given a rotation sequence rot_seq.\n\nThe rotation sequence is defined by a :Symbol. The possible values are: :XYX, XYZ, :XZX, :XZY, :YXY, :YXZ, :YZX, :YZY, :ZXY, :ZXZ, :ZYX, and :ZYZ. If no value is specified, then it defaults to :ZYX.\n\nExample\n\njulia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0);\n\njulia> quat2angle(q,:XYZ)\nReferenceFrameRotations.EulerAngles{Float64}(0.7853981633974484, 0.0, -0.0, :XYZ)\n\n\n\n\n\n"
+    "text": "function quat2angle(q::Quaternion, rot_seq::Symbol = :ZYX)\n\nConvert the quaternion q to Euler Angles (see EulerAngles) given a rotation sequence rot_seq.\n\nThe rotation sequence is defined by a :Symbol. The possible values are: :XYX, XYZ, :XZX, :XZY, :YXY, :YXZ, :YZX, :YZY, :ZXY, :ZXZ, :ZYX, and :ZYZ. If no value is specified, then it defaults to :ZYX.\n\nExample\n\njulia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0);\n\njulia> quat2angle(q,:XYZ)\nEulerAngles{Float64}(0.7853981633974484, 0.0, -0.0, :XYZ)\n\n\n\n\n\n"
 },
 
 {
-    "location": "lib/library/#ReferenceFrameRotations.quat2angleaxis-Tuple{Quaternion}",
+    "location": "lib/library/#ReferenceFrameRotations.quat2angleaxis-Union{Tuple{Quaternion{T}}, Tuple{T}} where T",
     "page": "Library",
     "title": "ReferenceFrameRotations.quat2angleaxis",
     "category": "method",
-    "text": "function quat2angleaxis(q::Quaternion)\n\nConvert the quaternion q to a Euler angle and axis representation (see EulerAngleAxis).\n\nRemarks\n\nThis function will not fail if the quaternion norm is not 1. However, the meaning of the results will not be defined, because the input quaternion does not represent a 3D rotation. The user must handle such situations.\n\nExample\n\njulia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0);\n\njulia> quat2angleaxis(q)\nReferenceFrameRotations.EulerAngleAxis{Float64}(0.7853981633974484, [1.0, 0.0, 0.0])\n\n\n\n\n\n"
+    "text": "function quat2angleaxis(q::Quaternion{T}) where T\n\nConvert the quaternion q to a Euler angle and axis representation (see EulerAngleAxis).\n\nRemarks\n\nThis function will not fail if the quaternion norm is not 1. However, the meaning of the results will not be defined, because the input quaternion does not represent a 3D rotation. The user must handle such situations.\n\nExample\n\njulia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0);\n\njulia> quat2angleaxis(q)\nEulerAngleAxis{Float64}(0.7853981633974484, [1.0, 0.0, 0.0])\n\n\n\n\n\n"
 },
 
 {
@@ -721,11 +721,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib/library/#Base.:\\-Tuple{Quaternion,Array{T,1} where T}",
+    "location": "lib/library/#Base.:\\-Tuple{Quaternion,AbstractArray{T,1} where T}",
     "page": "Library",
     "title": "Base.:\\",
     "category": "method",
-    "text": "@inline \\(q::Quaternion, v::Vector)\n@inline \\(v::Vector, q::Quaternion)\n\nCompute inv(q)*qv or inv(qv)*q in which qv is a quaternion with real part 0 and vectorial/imaginary part v (Hamilton product).\n\n\n\n\n\n"
+    "text": "@inline \\(q::Quaternion, v::AbstractVector)\n@inline \\(v::AbstractVector, q::Quaternion)\n\nCompute inv(q)*qv or inv(qv)*q in which qv is a quaternion with real part 0 and vectorial/imaginary part v (Hamilton product).\n\n\n\n\n\n"
 },
 
 {
