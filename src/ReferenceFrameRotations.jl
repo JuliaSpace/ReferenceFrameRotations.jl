@@ -52,10 +52,34 @@ The definition of Euler Angle and Axis to represent a 3D rotation.
 * `a`: The Euler angle [rad].
 * `v`: The unitary vector aligned with the Euler axis.
 
+# Constructor
+
+    function EulerAngleAxis(a::T1, v::AbstractVector{T2}) where {T1,T2}
+
+Create an Euler Angle and Axis representation structure with angle `a` [rad] and
+vector `v`. Notice that the vector `v` will be normalized. The type of the
+returned structure will be selected according to the input types and the
+normalization operation.
+
 """
 struct EulerAngleAxis{T}
     a::T
-    v::Vector{T}
+    v::SVector{3,T}
+
+    function EulerAngleAxis(a::T1,v::SVector{3,T1}) where T1<:Number
+        norm_v = norm(v)
+        (norm_v == 0) && error("The vector `v` must not have norm 0.")
+
+        v_norm = v/norm_v
+        T = promote_type(T1, eltype(v_norm))
+        new{T}(a,v_norm)
+    end
+end
+
+function EulerAngleAxis(a::T1, v::AbstractVector{T2}) where {T1,T2}
+    (length(v) != 3) && error("The vector `v` must have 3 dimensions.")
+    T = promote_type(T1,T2)
+    EulerAngleAxis(T(a), SVector{3,T}(v))
 end
 
 """

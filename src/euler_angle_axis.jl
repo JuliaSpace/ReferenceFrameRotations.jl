@@ -12,7 +12,7 @@ export angleaxis2quat
 # ==============================================================================
 
 """
-    function angleaxis2quat(a::Number, v::Vector)
+    function angleaxis2quat(a::Number, v::AbstractVector)
 
 Convert the Euler angle `a` [rad] and Euler axis `v`, which must be a unit
 vector, to a quaternion.
@@ -35,7 +35,7 @@ Quaternion{Float64}:
 ```
 
 """
-function angleaxis2quat(a::Number, v::Vector)
+function angleaxis2quat(a::Number, v::AbstractVector)
     # Check the arguments.
     if length(v) > 3
         throw(ArgumentError("The provided vector for the Euler axis must have 3 elements."))

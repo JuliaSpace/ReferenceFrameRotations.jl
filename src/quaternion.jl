@@ -495,7 +495,7 @@ function quat2angleaxis(q::Quaternion)
     v = vect(q)/sin(a/2)
 
     # TODO: Change this when the functions of Euler Angle and Axis are defined.
-    EulerAngleAxis(a, Vector(v))
+    EulerAngleAxis(a, v)
 end
 
 # Euler Angles
