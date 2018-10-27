@@ -1,6 +1,19 @@
 ReferenceFrameRotations.jl Changelog
 ====================================
 
+Version 0.4.1
+-------------
+
+- ![Enhancement][badge-enhancement] The operation `\` between Quaternions and
+  Vector now supports every `AbstractVector`.
+- ![Enhancement][badge-enhancement] The `EulerAngleAxis` now stores the vector
+  `v` using `SVector` instead of `Vector`. Notice that the constructors were
+  adapted to accept all `AbstractVector`. Hence, it is not expected any
+  breakage in old code.
+- ![Bugfix][badge-bugfix] The conversion between `Quaternion` and
+  `EulerAngleAxis` now checks if the Euler angle is 0. In this case, the Euler
+  vector `[1;0;0]` is used. Previously, a vector with `NaN` was returned.
+
 Version 0.4.0
 -------------
 
