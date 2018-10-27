@@ -469,7 +469,7 @@ end
 # ==============================================================================
 
 """
-    function quat2angleaxis(q::Quaternion)
+    function quat2angleaxis(q::Quaternion{T}) where T
 
 Convert the quaternion `q` to a Euler angle and axis representation (see
 `EulerAngleAxis`).
@@ -490,9 +490,11 @@ ReferenceFrameRotations.EulerAngleAxis{Float64}(0.7853981633974484, [1.0, 0.0, 0
 ```
 
 """
-function quat2angleaxis(q::Quaternion)
+function quat2angleaxis(q::Quaternion{T}) where T
     a = atan( norm(vect(q)), q.q0 )*2
-    v = vect(q)/sin(a/2)
+
+    # If `a` is 0, then select [1;0;0] as the Euler axis.
+    v = (a == 0) ? SVector{3,T}(1,0,0) : vect(q)/sin(a/2)
 
     # TODO: Change this when the functions of Euler Angle and Axis are defined.
     EulerAngleAxis(a, v)
