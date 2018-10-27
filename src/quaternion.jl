@@ -486,7 +486,7 @@ not represent a 3D rotation. The user must handle such situations.
 julia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0);
 
 julia> quat2angleaxis(q)
-ReferenceFrameRotations.EulerAngleAxis{Float64}(0.7853981633974484, [1.0, 0.0, 0.0])
+EulerAngleAxis{Float64}(0.7853981633974484, [1.0, 0.0, 0.0])
 ```
 
 """
@@ -519,7 +519,7 @@ The rotation sequence is defined by a `:Symbol`. The possible values are:
 julia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0);
 
 julia> quat2angle(q,:XYZ)
-ReferenceFrameRotations.EulerAngles{Float64}(0.7853981633974484, 0.0, -0.0, :XYZ)
+EulerAngles{Float64}(0.7853981633974484, 0.0, -0.0, :XYZ)
 ```
 
 """
