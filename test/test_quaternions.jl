@@ -142,12 +142,77 @@ for i = 1:samples
     # Check if the value of the quaternion is correct.
     @test norm(q_zeros_3) == 0.0
 
+    # Create quaternion from vectors
+    # ------------------------------
+
+    # Vector
+    let
+        v = rand(3)
+        q = Quaternion(v)
+
+        @test q.q0 == 0
+        @test q.q1 == v[1]
+        @test q.q2 == v[2]
+        @test q.q3 == v[3]
+
+        v = rand(4)
+        q = Quaternion(v)
+
+        @test q.q0 == v[1]
+        @test q.q1 == v[2]
+        @test q.q2 == v[3]
+        @test q.q3 == v[4]
+    end
+
+    # SVector
+    let
+        v = @SVector rand(3)
+        q = Quaternion(v)
+
+        @test q.q0 == 0
+        @test q.q1 == v[1]
+        @test q.q2 == v[2]
+        @test q.q3 == v[3]
+
+        v = @SVector rand(4)
+        q = Quaternion(v)
+
+        @test q.q0 == v[1]
+        @test q.q1 == v[2]
+        @test q.q2 == v[3]
+        @test q.q3 == v[4]
+    end
+
+    # MVector
+    let
+        v = @MVector rand(3)
+        q = Quaternion(v)
+
+        @test q.q0 == 0
+        @test q.q1 == v[1]
+        @test q.q2 == v[2]
+        @test q.q3 == v[3]
+
+        v = @MVector rand(4)
+        q = Quaternion(v)
+
+        @test q.q0 == v[1]
+        @test q.q1 == v[2]
+        @test q.q2 == v[3]
+        @test q.q3 == v[4]
+    end
 end
 
 # Operations that were not tested yet.
 # ====================================
 
 let
+    q = Quaternion(1,1,1,1)
+    @test typeof(q) == Quaternion{Int}
+
+    q = Quaternion(1,1,1,1.f0)
+    @test typeof(q) == Quaternion{Float32}
+
     q = Quaternion(1.,0,0.f0,0)
     @test typeof(q) == Quaternion{Float64}
 
