@@ -245,15 +245,15 @@ Compute `inv(q1)*q2`.
 @inline \(q1::Quaternion, q2::Quaternion) = inv(q1)*q2
 
 """
-    @inline \\(q::Quaternion, v::Vector)
-    @inline \\(v::Vector, q::Quaternion)
+    @inline \\(q::Quaternion, v::AbstractVector)
+    @inline \\(v::AbstractVector, q::Quaternion)
 
 Compute `inv(q)*qv` or `inv(qv)*q` in which `qv` is a quaternion with real part
 `0` and vectorial/imaginary part `v` (Hamilton product).
 
 """
-@inline \(q::Quaternion,  v::Vector) = inv(q)*v
-@inline \(v::Vector, q::Quaternion)  = inv(Quaternion(v))*q
+@inline \(q::Quaternion,     v::AbstractVector) = inv(q)*v
+@inline \(v::AbstractVector, q::Quaternion)     = inv(Quaternion(v))*q
 
 """
     @inline function \\(u::UniformScaling, q::Quaternion)
