@@ -37,9 +37,7 @@ Quaternion{Float64}:
 """
 function angleaxis2quat(a::Number, v::AbstractVector)
     # Check the arguments.
-    if length(v) > 3
-        throw(ArgumentError("The provided vector for the Euler axis must have 3 elements."))
-    end
+    (length(v) > 3) && throw(ArgumentError("The provided vector for the Euler axis must have 3 elements."))
 
     # Create the quaternion.
     Quaternion( cos(a/2), sin(a/2)*v )

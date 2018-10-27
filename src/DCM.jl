@@ -31,20 +31,17 @@ function create_rotation_matrix(angle::Number, axis::Symbol = :X)
     sin_angle, cos_angle = sincos(angle)
 
     if axis == :X
-        dcm = DCM(1,      0,          0,
-                  0, +cos_angle, +sin_angle,
-                  0, -sin_angle, +cos_angle)'
-        return dcm
+        return DCM(1,      0,          0,
+                   0, +cos_angle, +sin_angle,
+                   0, -sin_angle, +cos_angle)'
     elseif axis == :Y
-        dcm = DCM(+cos_angle, 0, -sin_angle,
-                       0,     1,      0,
-                  +sin_angle, 0, +cos_angle)'
-        return dcm
+        return DCM(+cos_angle, 0, -sin_angle,
+                        0,     1,      0,
+                   +sin_angle, 0, +cos_angle)'
     elseif axis == :Z
-        dcm = DCM(+cos_angle, +sin_angle, 0,
-                  -sin_angle, +cos_angle, 0,
-                       0,          0,     1)'
-        return dcm
+        return DCM(+cos_angle, +sin_angle, 0,
+                   -sin_angle, +cos_angle, 0,
+                        0,          0,     1)'
     else
         error("axis must be :X, :Y, or :Z");
     end
@@ -80,87 +77,87 @@ ReferenceFrameRotations.EulerAngles{Float64}(1.5707963267948966, 0.0, -0.0, :XYZ
 function dcm2angle(dcm::DCM, rot_seq::Symbol=:ZYX)
     if rot_seq == :ZYX
 
-        EulerAngles(atan(+dcm[1,2],+dcm[1,1]),
-                    asin(-dcm[1,3]),
-                    atan(+dcm[2,3],+dcm[3,3]),
-                    rot_seq)
+        return EulerAngles(atan(+dcm[1,2],+dcm[1,1]),
+                           asin(-dcm[1,3]),
+                           atan(+dcm[2,3],+dcm[3,3]),
+                           rot_seq)
 
     elseif rot_seq == :XYX
 
-        EulerAngles(atan(+dcm[1,2],-dcm[1,3]),
-                    acos(+dcm[1,1]),
-                    atan(+dcm[2,1],+dcm[3,1]),
-                    rot_seq)
+        return EulerAngles(atan(+dcm[1,2],-dcm[1,3]),
+                           acos(+dcm[1,1]),
+                           atan(+dcm[2,1],+dcm[3,1]),
+                           rot_seq)
 
     elseif rot_seq == :XYZ
 
-        EulerAngles(atan(-dcm[3,2],+dcm[3,3]),
-                    asin(+dcm[3,1]),
-                    atan(-dcm[2,1],+dcm[1,1]),
-                    rot_seq)
+        return EulerAngles(atan(-dcm[3,2],+dcm[3,3]),
+                           asin(+dcm[3,1]),
+                           atan(-dcm[2,1],+dcm[1,1]),
+                           rot_seq)
 
     elseif rot_seq == :XZX
 
-        EulerAngles(atan(+dcm[1,3],+dcm[1,2]),
-                    acos(+dcm[1,1]),
-                    atan(+dcm[3,1],-dcm[2,1]),
-                    rot_seq)
+        return EulerAngles(atan(+dcm[1,3],+dcm[1,2]),
+                           acos(+dcm[1,1]),
+                           atan(+dcm[3,1],-dcm[2,1]),
+                           rot_seq)
 
     elseif rot_seq == :XZY
 
-        EulerAngles(atan(+dcm[2,3],+dcm[2,2]),
-                    asin(-dcm[2,1]),
-                    atan(+dcm[3,1],+dcm[1,1]),
-                    rot_seq)
+        return EulerAngles(atan(+dcm[2,3],+dcm[2,2]),
+                           asin(-dcm[2,1]),
+                           atan(+dcm[3,1],+dcm[1,1]),
+                           rot_seq)
 
     elseif rot_seq == :YXY
 
-        EulerAngles(atan(+dcm[2,1],+dcm[2,3]),
-                    acos(+dcm[2,2]),
-                    atan(+dcm[1,2],-dcm[3,2]),
-                    rot_seq)
+        return EulerAngles(atan(+dcm[2,1],+dcm[2,3]),
+                           acos(+dcm[2,2]),
+                           atan(+dcm[1,2],-dcm[3,2]),
+                           rot_seq)
 
     elseif rot_seq == :YXZ
 
-        EulerAngles(atan(+dcm[3,1],+dcm[3,3]),
-                    asin(-dcm[3,2]),
-                    atan(+dcm[1,2],+dcm[2,2]),
-                    rot_seq)
+        return EulerAngles(atan(+dcm[3,1],+dcm[3,3]),
+                           asin(-dcm[3,2]),
+                           atan(+dcm[1,2],+dcm[2,2]),
+                           rot_seq)
 
     elseif rot_seq == :YZX
 
-        EulerAngles(atan(-dcm[1,3],+dcm[1,1]),
-                    asin(+dcm[1,2]),
-                    atan(-dcm[3,2],+dcm[2,2]),
-                    rot_seq)
+        return EulerAngles(atan(-dcm[1,3],+dcm[1,1]),
+                           asin(+dcm[1,2]),
+                           atan(-dcm[3,2],+dcm[2,2]),
+                           rot_seq)
 
     elseif rot_seq == :YZY
 
-        EulerAngles(atan(+dcm[2,3],-dcm[2,1]),
-                    acos(+dcm[2,2]),
-                    atan(+dcm[3,2],+dcm[1,2]),
-                    rot_seq)
+        return EulerAngles(atan(+dcm[2,3],-dcm[2,1]),
+                           acos(+dcm[2,2]),
+                           atan(+dcm[3,2],+dcm[1,2]),
+                           rot_seq)
 
     elseif rot_seq == :ZXY
 
-        EulerAngles(atan(-dcm[2,1],+dcm[2,2]),
-                    asin(+dcm[2,3]),
-                    atan(-dcm[1,3],+dcm[3,3]),
-                    rot_seq)
+        return EulerAngles(atan(-dcm[2,1],+dcm[2,2]),
+                           asin(+dcm[2,3]),
+                           atan(-dcm[1,3],+dcm[3,3]),
+                           rot_seq)
 
     elseif rot_seq == :ZXZ
 
-        EulerAngles(atan(+dcm[3,1],-dcm[3,2]),
-                    acos(+dcm[3,3]),
-                    atan(+dcm[1,3],+dcm[2,3]),
-                    rot_seq)
+        return EulerAngles(atan(+dcm[3,1],-dcm[3,2]),
+                           acos(+dcm[3,3]),
+                           atan(+dcm[1,3],+dcm[2,3]),
+                           rot_seq)
 
     elseif rot_seq == :ZYZ
 
-        EulerAngles(atan(+dcm[3,2],+dcm[3,1]),
-                    acos(+dcm[3,3]),
-                    atan(+dcm[2,3],-dcm[1,3]),
-                    rot_seq)
+        return EulerAngles(atan(+dcm[3,2],+dcm[3,1]),
+                           acos(+dcm[3,3]),
+                           atan(+dcm[2,3],-dcm[1,3]),
+                           rot_seq)
 
     else
         throw(ArgumentError("The rotation sequence :$rot_seq is not valid."))
@@ -287,9 +284,7 @@ function ddcm(Dba::DCM, wba_b::AbstractArray)
     w = wba_b
 
     # Check the dimensions.
-    if length(wba_b) != 3
-        throw(ArgumentError("The angular velocity vector must have three components."))
-    end
+    (length(wba_b) != 3) && throw(ArgumentError("The angular velocity vector must have three components."))
 
     wx = SMatrix{3,3}(  0  , -w[3], +w[2],
                       +w[3],   0  , -w[1],

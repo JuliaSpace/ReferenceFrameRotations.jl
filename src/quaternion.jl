@@ -50,9 +50,9 @@ function Quaternion(v::AbstractVector)
     end
 
     if length(v) == 3
-        Quaternion(0, v[1], v[2], v[3])
+        return Quaternion(0, v[1], v[2], v[3])
     else
-        Quaternion(v[1], v[2], v[3], v[4])
+        return Quaternion(v[1], v[2], v[3], v[4])
     end
 end
 

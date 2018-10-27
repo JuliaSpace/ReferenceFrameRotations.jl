@@ -13,10 +13,10 @@ export smallangle2dcm, smallangle2quat, smallangle2rot
 # ==============================================================================
 
 """
-    function angle2dcm(angle_r1::Number, angle_r2::Number, angle_r3::Number, rot_seq::Symbol = :ZYX)
+    function angle2dcm(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
 
-Convert the Euler angles `angle_r1`, `angle_r2`, and `angle_r3` [rad] with the
-rotation sequence `rot_seq` to a direction cosine matrix.
+Convert the Euler angles `θ₁`, `θ₂`, and `θ₃` [rad] with the rotation sequence
+`rot_seq` to a direction cosine matrix.
 
 The rotation sequence is defined by a `:Symbol`. The possible values are:
 `:XYX`, `XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`,
@@ -38,74 +38,72 @@ dcm = angle2dcm(pi/2, pi/3, pi/4, :ZYX)
 ```
 
 """
-function angle2dcm(angle_r1::Number,
-                   angle_r2::Number,
-                   angle_r3::Number,
-                   rot_seq::Symbol = :ZYX)
+function angle2dcm(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
+
     # Compute the sines and cosines.
-    s1, c1 = sincos(angle_r1)
-    s2, c2 = sincos(angle_r2)
-    s3, c3 = sincos(angle_r3)
+    s₁, c₁ = sincos(θ₁)
+    s₂, c₂ = sincos(θ₂)
+    s₃, c₃ = sincos(θ₃)
 
     if rot_seq == :ZYX
-        return DCM(       c2*c1    ,        c2*s1    , -s2  ,
-                   s3*s2*c1 - c3*s1, s3*s2*s1 + c3*c1, s3*c2,
-                   c3*s2*c1 + s3*s1, c3*s2*s1 - s3*c1, c3*c2)'
+        return DCM(       c₂*c₁    ,        c₂*s₁    , -s₂  ,
+                   s₃*s₂*c₁ - c₃*s₁, s₃*s₂*s₁ + c₃*c₁, s₃*c₂,
+                   c₃*s₂*c₁ + s₃*s₁, c₃*s₂*s₁ - s₃*c₁, c₃*c₂)'
 
     elseif rot_seq == :XYX
-        return DCM( c2  ,         s1*s2    ,       -c1*s2    ,
-                   s2*s3, -s1*c2*s3 + c1*c3, c1*c2*s3 + s1*c3,
-                   s2*c3, -s1*c3*c2 - c1*s3, c1*c3*c2 - s1*s3)'
+        return DCM( c₂  ,         s₁*s₂    ,       -c₁*s₂    ,
+                   s₂*s₃, -s₁*c₂*s₃ + c₁*c₃, c₁*c₂*s₃ + s₁*c₃,
+                   s₂*c₃, -s₁*c₃*c₂ - c₁*s₃, c₁*c₃*c₂ - s₁*s₃)'
 
     elseif rot_seq == :XYZ
-        return DCM( c2*c3,  s1*s2*c3 + c1*s3, -c1*s2*c3 + s1*s3,
-                   -c2*s3, -s1*s2*s3 + c1*c3,  c1*s2*s3 + s1*c3,
-                      s2 ,        -s1*c2    ,       c1*c2)'
+        return DCM( c₂*c₃,  s₁*s₂*c₃ + c₁*s₃, -c₁*s₂*c₃ + s₁*s₃,
+                   -c₂*s₃, -s₁*s₂*s₃ + c₁*c₃,  c₁*s₂*s₃ + s₁*c₃,
+                      s₂ ,        -s₁*c₂    ,       c₁*c₂)'
 
     elseif rot_seq == :XZX
-        return DCM(   c2 ,         c1*s2    ,         s1*s2    ,
-                   -s2*c3,  c1*c3*c2 - s1*s3,  s1*c3*c2 + c1*s3,
-                    s2*s3, -c1*c2*s3 - s1*c3, -s1*c2*s3 + c1*c3)'
+        return DCM(   c₂ ,         c₁*s₂    ,         s₁*s₂    ,
+                   -s₂*c₃,  c₁*c₃*c₂ - s₁*s₃,  s₁*c₃*c₂ + c₁*s₃,
+                    s₂*s₃, -c₁*c₂*s₃ - s₁*c₃, -s₁*c₂*s₃ + c₁*c₃)'
 
     elseif rot_seq == :XZY
-        return DCM(c3*c2, c1*c3*s2 + s1*s3, s1*c3*s2 - c1*s3,
-                    -s2 ,        c1*c2    ,        s1*c2    ,
-                   s3*c2, c1*s2*s3 - s1*c3, s1*s2*s3 + c1*c3)'
+        return DCM(c₃*c₂, c₁*c₃*s₂ + s₁*s₃, s₁*c₃*s₂ - c₁*s₃,
+                    -s₂ ,        c₁*c₂    ,        s₁*c₂    ,
+                   s₃*c₂, c₁*s₂*s₃ - s₁*c₃, s₁*s₂*s₃ + c₁*c₃)'
 
     elseif rot_seq == :YXY
-        return DCM(-s1*c2*s3 + c1*c3, s2*s3 , -c1*c2*s3 - s1*c3,
-                          s1*s2    ,   c2  ,         c1*s2    ,
-                   s1*c3*c2 + c1*s3, -s2*c3,  c1*c3*c2 - s1*s3)'
+        return DCM(-s₁*c₂*s₃ + c₁*c₃, s₂*s₃ , -c₁*c₂*s₃ - s₁*c₃,
+                          s₁*s₂    ,   c₂  ,         c₁*s₂    ,
+                   s₁*c₃*c₂ + c₁*s₃, -s₂*c₃,  c₁*c₃*c₂ - s₁*s₃)'
 
     elseif rot_seq == :YXZ
-        return DCM( c1*c3 + s2*s1*s3, c2*s3, -s1*c3 + s2*c1*s3,
-                   -c1*s3 + s2*s1*c3, c2*c3,  s1*s3 + s2*c1*c3,
-                        s1*c2       ,  -s2 ,      c2*c1       )'
+        return DCM( c₁*c₃ + s₂*s₁*s₃, c₂*s₃, -s₁*c₃ + s₂*c₁*s₃,
+                   -c₁*s₃ + s₂*s₁*c₃, c₂*c₃,  s₁*s₃ + s₂*c₁*c₃,
+                        s₁*c₂       ,  -s₂ ,      c₂*c₁       )'
 
     elseif rot_seq == :YZX
-        return DCM(        c1*c2    ,    s2 ,        -s1*c2    ,
-                   -c3*c1*s2 + s3*s1,  c2*c3,  c3*s1*s2 + s3*c1,
-                    s3*c1*s2 + c3*s1, -s3*c2, -s3*s1*s2 + c3*c1)'
+        return DCM(        c₁*c₂    ,    s₂ ,        -s₁*c₂    ,
+                   -c₃*c₁*s₂ + s₃*s₁,  c₂*c₃,  c₃*s₁*s₂ + s₃*c₁,
+                    s₃*c₁*s₂ + c₃*s₁, -s₃*c₂, -s₃*s₁*s₂ + c₃*c₁)'
 
     elseif rot_seq == :YZY
-        return DCM(c1*c3*c2 - s1*s3, s2*c3, -s1*c3*c2 - c1*s3,
-                         -c1*s2    ,   c2 ,         s1*s2    ,
-                   c1*c2*s3 + s1*c3, s2*s3, -s1*c2*s3 + c1*c3)'
+        return DCM(c₁*c₃*c₂ - s₁*s₃, s₂*c₃, -s₁*c₃*c₂ - c₁*s₃,
+                         -c₁*s₂    ,   c₂ ,         s₁*s₂    ,
+                   c₁*c₂*s₃ + s₁*c₃, s₂*s₃, -s₁*c₂*s₃ + c₁*c₃)'
 
     elseif rot_seq == :ZXY
-        return DCM(c3*c1 - s2*s3*s1, c3*s1 + s2*s3*c1, -s3*c2,
-                      -c2*s1       ,     c2*c1       ,    s2 ,
-                   s3*c1 + s2*c3*s1, s3*s1 - s2*c3*c1,  c2*c3)'
+        return DCM(c₃*c₁ - s₂*s₃*s₁, c₃*s₁ + s₂*s₃*c₁, -s₃*c₂,
+                      -c₂*s₁       ,     c₂*c₁       ,    s₂ ,
+                   s₃*c₁ + s₂*c₃*s₁, s₃*s₁ - s₂*c₃*c₁,  c₂*c₃)'
 
     elseif rot_seq == :ZXZ
-        return DCM(-s1*c2*s3 + c1*c3, c1*c2*s3 + s1*c3, s2*s3,
-                   -s1*c3*c2 - c1*s3, c1*c3*c2 - s1*s3, s2*c3,
-                           s1*s2    ,       -c1*s2    ,  c2)'
+        return DCM(-s₁*c₂*s₃ + c₁*c₃, c₁*c₂*s₃ + s₁*c₃, s₂*s₃,
+                   -s₁*c₃*c₂ - c₁*s₃, c₁*c₃*c₂ - s₁*s₃, s₂*c₃,
+                           s₁*s₂    ,       -c₁*s₂    ,  c₂)'
 
     elseif rot_seq == :ZYZ
-        return DCM( c1*c3*c2 - s1*s3,  s1*c3*c2 + c1*s3, -s2*c3,
-                   -c1*c2*s3 - s1*c3, -s1*c2*s3 + c1*c3,  s2*s3,
-                           c1*s2    ,         s1*s2    ,    c2)'
+        return DCM( c₁*c₃*c₂ - s₁*s₃,  s₁*c₃*c₂ + c₁*s₃, -s₂*c₃,
+                   -c₁*c₂*s₃ - s₁*c₃, -s₁*c₂*s₃ + c₁*c₃,  s₂*s₃,
+                           c₁*s₂    ,         s₁*s₂    ,    c₂)'
     else
         throw(ArgumentError("The rotation sequence :$rot_seq is not valid."))
     end
@@ -137,10 +135,8 @@ julia> angle2dcm(EulerAngles(pi/2, pi/3, pi/4, :ZYX))
 ```
 
 """
-angle2dcm(eulerang::EulerAngles) = angle2dcm(eulerang.a1,
-                                             eulerang.a2,
-                                             eulerang.a3,
-                                             eulerang.rot_seq)
+angle2dcm(eulerang::EulerAngles) = angle2dcm(eulerang.a1, eulerang.a2,
+                                             eulerang.a3, eulerang.rot_seq)
 
 """
     function smallangle2dcm(θx::Number, θy::Number, θz::Number)
@@ -171,10 +167,10 @@ smallangle2dcm(θx::Number, θy::Number, θz::Number) = DCM(  1, +θz, -θy,
 # ==============================================================================
 
 """
-    function angle2quat(angle_r1::Number, angle_r2::Number, angle_r3::Number, rot_seq::AbstractString="ZYX")
+    function angle2quat(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
 
-Convert the Euler angles `angle_r1`, `angle_r2`, and `angle_r3` [rad] with the
-rotation sequence `rot_seq` to a quaternion.
+Convert the Euler angles `θ₁`, `θ₂`, and `θ₃` [rad] with the rotation sequence
+`rot_seq` to a quaternion.
 
 The rotation sequence is defined by a `:Symbol`. The possible values are:
 `:XYX`, `XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`,
@@ -194,124 +190,121 @@ Quaternion{Float64}:
 ```
 
 """
-function angle2quat(angle_r1::Number,
-                    angle_r2::Number,
-                    angle_r3::Number,
-                    rot_seq::Symbol = :ZYX)
+function angle2quat(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
 
     # Compute the sines and cosines of half angle.
-    s1, c1 = sincos(angle_r1/2)
-    s2, c2 = sincos(angle_r2/2)
-    s3, c3 = sincos(angle_r3/2)
+    s₁, c₁ = sincos(θ₁/2)
+    s₂, c₂ = sincos(θ₂/2)
+    s₃, c₃ = sincos(θ₃/2)
 
     if rot_seq == :ZYX
-        q0 = c1*c2*c3 + s1*s2*s3
+        q0 = c₁*c₂*c₃ + s₁*s₂*s₃
 
         s = (q0 < 0) ? -1 : +1
 
         return Quaternion(s*q0,
-                          s*(c1*c2*s3 - s1*s2*c3),
-                          s*(c1*s2*c3 + s1*c2*s3),
-                          s*(s1*c2*c3 - c1*s2*s3))
+                          s*(c₁*c₂*s₃ - s₁*s₂*c₃),
+                          s*(c₁*s₂*c₃ + s₁*c₂*s₃),
+                          s*(s₁*c₂*c₃ - c₁*s₂*s₃))
     elseif rot_seq == :XYX
-        q0 = c1*c2*c3 - s1*c2*s3
+        q0 = c₁*c₂*c₃ - s₁*c₂*s₃
 
         s = (q0 < 0) ? -1 : +1
 
         return Quaternion(s*q0,
-                          s*(c1*c2*s3 + s1*c2*c3),
-                          s*(c1*s2*c3 + s1*s2*s3),
-                          s*(s1*s2*c3 - c1*s2*s3))
+                          s*(c₁*c₂*s₃ + s₁*c₂*c₃),
+                          s*(c₁*s₂*c₃ + s₁*s₂*s₃),
+                          s*(s₁*s₂*c₃ - c₁*s₂*s₃))
     elseif rot_seq == :XYZ
-        q0 = c1*c2*c3 - s1*s2*s3
+        q0 = c₁*c₂*c₃ - s₁*s₂*s₃
 
         s = (q0 < 0) ? -1 : +1
 
         return Quaternion(s*q0,
-                          s*(s1*c2*c3 + c1*s2*s3),
-                          s*(c1*s2*c3 - s1*c2*s3),
-                          s*(c1*c2*s3 + s1*s2*c3))
+                          s*(s₁*c₂*c₃ + c₁*s₂*s₃),
+                          s*(c₁*s₂*c₃ - s₁*c₂*s₃),
+                          s*(c₁*c₂*s₃ + s₁*s₂*c₃))
     elseif rot_seq == :XZX
-        q0 = c1*c2*c3 - s1*c2*s3
+        q0 = c₁*c₂*c₃ - s₁*c₂*s₃
 
         s = (q0 < 0) ? -1 : +1
 
         return Quaternion(s*q0,
-                          s*(c1*c2*s3 + s1*c2*c3),
-                          s*(c1*s2*s3 - s1*s2*c3),
-                          s*(c1*s2*c3 + s1*s2*s3))
+                          s*(c₁*c₂*s₃ + s₁*c₂*c₃),
+                          s*(c₁*s₂*s₃ - s₁*s₂*c₃),
+                          s*(c₁*s₂*c₃ + s₁*s₂*s₃))
     elseif rot_seq == :XZY
-        q0 = c1*c2*c3 + s1*s2*s3
+        q0 = c₁*c₂*c₃ + s₁*s₂*s₃
 
         s = (q0 < 0) ? -1 : +1
 
         return Quaternion(s*q0,
-                          s*(s1*c2*c3 - c1*s2*s3),
-                          s*(c1*c2*s3 - s1*s2*c3),
-                          s*(c1*s2*c3 + s1*c2*s3))
+                          s*(s₁*c₂*c₃ - c₁*s₂*s₃),
+                          s*(c₁*c₂*s₃ - s₁*s₂*c₃),
+                          s*(c₁*s₂*c₃ + s₁*c₂*s₃))
     elseif rot_seq == :YXY
-        q0 = c1*c2*c3 - s1*c2*s3
+        q0 = c₁*c₂*c₃ - s₁*c₂*s₃
 
         s = (q0 < 0) ? -1 : +1
 
         return Quaternion(s*q0,
-                          s*(c1*s2*c3 + s1*s2*s3),
-                          s*(c1*c2*s3 + s1*c2*c3),
-                          s*(c1*s2*s3 - s1*s2*c3))
+                          s*(c₁*s₂*c₃ + s₁*s₂*s₃),
+                          s*(c₁*c₂*s₃ + s₁*c₂*c₃),
+                          s*(c₁*s₂*s₃ - s₁*s₂*c₃))
     elseif rot_seq == :YXZ
-        q0 = c1*c2*c3 + s1*s2*s3
+        q0 = c₁*c₂*c₃ + s₁*s₂*s₃
 
         s = (q0 < 0) ? -1 : +1
 
         return Quaternion(s*q0,
-                          s*(c1*s2*c3 + s1*c2*s3),
-                          s*(s1*c2*c3 - c1*s2*s3),
-                          s*(c1*c2*s3 - s1*s2*c3))
+                          s*(c₁*s₂*c₃ + s₁*c₂*s₃),
+                          s*(s₁*c₂*c₃ - c₁*s₂*s₃),
+                          s*(c₁*c₂*s₃ - s₁*s₂*c₃))
     elseif rot_seq == :YZX
-        q0 = c1*c2*c3 - s1*s2*s3
+        q0 = c₁*c₂*c₃ - s₁*s₂*s₃
 
         s = (q0 < 0) ? -1 : +1
 
         return Quaternion(s*q0,
-                          s*(c1*c2*s3 + s1*s2*c3),
-                          s*(s1*c2*c3 + c1*s2*s3),
-                          s*(c1*s2*c3 - s1*c2*s3))
+                          s*(c₁*c₂*s₃ + s₁*s₂*c₃),
+                          s*(s₁*c₂*c₃ + c₁*s₂*s₃),
+                          s*(c₁*s₂*c₃ - s₁*c₂*s₃))
     elseif rot_seq == :YZY
-        q0 = c1*c2*c3 - s1*c2*s3
+        q0 = c₁*c₂*c₃ - s₁*c₂*s₃
 
         s = (q0 < 0) ? -1 : +1
 
         return Quaternion(s*q0,
-                          s*(s1*s2*c3 - c1*s2*s3),
-                          s*(c1*c2*s3 + s1*c2*c3),
-                          s*(c1*s2*c3 + s1*s2*s3))
+                          s*(s₁*s₂*c₃ - c₁*s₂*s₃),
+                          s*(c₁*c₂*s₃ + s₁*c₂*c₃),
+                          s*(c₁*s₂*c₃ + s₁*s₂*s₃))
     elseif rot_seq == :ZXY
-        q0 = c1*c2*c3 - s1*s2*s3
+        q0 = c₁*c₂*c₃ - s₁*s₂*s₃
 
         s = (q0 < 0) ? -1 : +1
 
         return Quaternion(s*q0,
-                          s*(c1*s2*c3 - s1*c2*s3),
-                          s*(c1*c2*s3 + s1*s2*c3),
-                          s*(s1*c2*c3 + c1*s2*s3))
+                          s*(c₁*s₂*c₃ - s₁*c₂*s₃),
+                          s*(c₁*c₂*s₃ + s₁*s₂*c₃),
+                          s*(s₁*c₂*c₃ + c₁*s₂*s₃))
     elseif rot_seq == :ZXZ
-        q0 = c1*c2*c3 - s1*c2*s3
+        q0 = c₁*c₂*c₃ - s₁*c₂*s₃
 
         s = (q0 < 0) ? -1 : +1
 
         return Quaternion(s*q0,
-                          s*(c1*s2*c3 + s1*s2*s3),
-                          s*(s1*s2*c3 - c1*s2*s3),
-                          s*(c1*c2*s3 + s1*c2*c3))
+                          s*(c₁*s₂*c₃ + s₁*s₂*s₃),
+                          s*(s₁*s₂*c₃ - c₁*s₂*s₃),
+                          s*(c₁*c₂*s₃ + s₁*c₂*c₃))
     elseif rot_seq == :ZYZ
-        q0 = c1*c2*c3 - s1*c2*s3
+        q0 = c₁*c₂*c₃ - s₁*c₂*s₃
 
         s = (q0 < 0) ? -1 : +1
 
         return Quaternion(s*q0,
-                          s*(c1*s2*s3 - s1*s2*c3),
-                          s*(c1*s2*c3 + s1*s2*s3),
-                          s*(c1*c2*s3 + s1*c2*c3))
+                          s*(c₁*s₂*s₃ - s₁*s₂*c₃),
+                          s*(c₁*s₂*c₃ + s₁*s₂*s₃),
+                          s*(c₁*c₂*s₃ + s₁*c₂*c₃))
     else
         throw(ArgumentError("The rotation sequence :$rot_seq is not valid."))
     end
@@ -336,10 +329,8 @@ Quaternion{Float64}:
 ```
 
 """
-angle2quat(eulerang::EulerAngles) = angle2quat(eulerang.a1,
-                                               eulerang.a2,
-                                               eulerang.a3,
-                                               eulerang.rot_seq)
+angle2quat(eulerang::EulerAngles) = angle2quat(eulerang.a1, eulerang.a2,
+                                               eulerang.a3, eulerang.rot_seq)
 
 """
     function smallangle2quat(θx::Number, θy::Number, θz::Number)
