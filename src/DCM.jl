@@ -82,7 +82,7 @@ ReferenceFrameRotations.EulerAngles{Float64}(1.5707963267948966, 0.0, -0.0, :XYZ
 ```
 
 """
-function dcm_to_angle(dcm::DCM, rot_seq::Symbol=:ZYX)
+function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol=:ZYX) where T<:Number
     if rot_seq == :ZYX
 
         return EulerAngles(_mod_atan(+dcm[1,2],+dcm[1,1]),
@@ -92,10 +92,18 @@ function dcm_to_angle(dcm::DCM, rot_seq::Symbol=:ZYX)
 
     elseif rot_seq == :XYX
 
-        return EulerAngles(_mod_atan(+dcm[1,2],-dcm[1,3]),
-                           acos(+dcm[1,1]),
-                           _mod_atan(+dcm[2,1],+dcm[3,1]),
-                           rot_seq)
+        # Check for singularities.
+        if !( abs(dcm[1,1]) >= 1-eps() )
+            return EulerAngles(_mod_atan(+dcm[1,2],-dcm[1,3]),
+                               acos(+dcm[1,1]),
+                               _mod_atan(+dcm[2,1],+dcm[3,1]),
+                               rot_seq)
+        else
+            return EulerAngles(_mod_atan(+dcm[2,3],+dcm[2,2]),
+                               T(0),
+                               T(0),
+                               rot_seq)
+        end
 
     elseif rot_seq == :XYZ
 
@@ -106,10 +114,18 @@ function dcm_to_angle(dcm::DCM, rot_seq::Symbol=:ZYX)
 
     elseif rot_seq == :XZX
 
-        return EulerAngles(_mod_atan(+dcm[1,3],+dcm[1,2]),
-                           acos(+dcm[1,1]),
-                           _mod_atan(+dcm[3,1],-dcm[2,1]),
-                           rot_seq)
+        # Check for singularities.
+        if !( abs(dcm[1,1]) >= 1-eps() )
+            return EulerAngles(_mod_atan(+dcm[1,3],+dcm[1,2]),
+                               acos(+dcm[1,1]),
+                               _mod_atan(+dcm[3,1],-dcm[2,1]),
+                               rot_seq)
+        else
+            return EulerAngles(_mod_atan(-dcm[3,2],+dcm[3,3]),
+                               T(0),
+                               T(0),
+                               rot_seq)
+        end
 
     elseif rot_seq == :XZY
 
@@ -120,10 +136,18 @@ function dcm_to_angle(dcm::DCM, rot_seq::Symbol=:ZYX)
 
     elseif rot_seq == :YXY
 
-        return EulerAngles(_mod_atan(+dcm[2,1],+dcm[2,3]),
-                           acos(+dcm[2,2]),
-                           _mod_atan(+dcm[1,2],-dcm[3,2]),
-                           rot_seq)
+        # Check for singularities.
+        if !( abs(dcm[2,2]) >= 1-eps() )
+            return EulerAngles(_mod_atan(+dcm[2,1],+dcm[2,3]),
+                               acos(+dcm[2,2]),
+                               _mod_atan(+dcm[1,2],-dcm[3,2]),
+                               rot_seq)
+        else
+            return EulerAngles(_mod_atan(-dcm[1,3],+dcm[1,1]),
+                               T(0),
+                               T(0),
+                               rot_seq)
+        end
 
     elseif rot_seq == :YXZ
 
@@ -141,10 +165,18 @@ function dcm_to_angle(dcm::DCM, rot_seq::Symbol=:ZYX)
 
     elseif rot_seq == :YZY
 
-        return EulerAngles(_mod_atan(+dcm[2,3],-dcm[2,1]),
-                           acos(+dcm[2,2]),
-                           _mod_atan(+dcm[3,2],+dcm[1,2]),
-                           rot_seq)
+        # Check for singularities.
+        if !( abs(dcm[2,2]) >= 1-eps() )
+            return EulerAngles(_mod_atan(+dcm[2,3],-dcm[2,1]),
+                               acos(+dcm[2,2]),
+                               _mod_atan(+dcm[3,2],+dcm[1,2]),
+                               rot_seq)
+        else
+            return EulerAngles(_mod_atan(dcm[3,1], dcm[3,3]),
+                               T(0),
+                               T(0),
+                               rot_seq)
+        end
 
     elseif rot_seq == :ZXY
 
@@ -155,17 +187,33 @@ function dcm_to_angle(dcm::DCM, rot_seq::Symbol=:ZYX)
 
     elseif rot_seq == :ZXZ
 
-        return EulerAngles(_mod_atan(+dcm[3,1],-dcm[3,2]),
-                           acos(+dcm[3,3]),
-                           _mod_atan(+dcm[1,3],+dcm[2,3]),
-                           rot_seq)
+        # Check for singularities.
+        if !( abs(dcm[3,3]) >= 1-eps() )
+            return EulerAngles(_mod_atan(+dcm[3,1],-dcm[3,2]),
+                               acos(+dcm[3,3]),
+                               _mod_atan(+dcm[1,3],+dcm[2,3]),
+                               rot_seq)
+        else
+            return EulerAngles(_mod_atan(dcm[1,2], dcm[1,1]),
+                               T(0),
+                               T(0),
+                               rot_seq)
+        end
 
     elseif rot_seq == :ZYZ
 
-        return EulerAngles(_mod_atan(+dcm[3,2],+dcm[3,1]),
-                           acos(+dcm[3,3]),
-                           _mod_atan(+dcm[2,3],-dcm[1,3]),
-                           rot_seq)
+        # Check for singularities.
+        if !( abs(dcm[3,3]) >= 1-eps() )
+            return EulerAngles(_mod_atan(+dcm[3,2],+dcm[3,1]),
+                               acos(+dcm[3,3]),
+                               _mod_atan(+dcm[2,3],-dcm[1,3]),
+                               rot_seq)
+        else
+            return EulerAngles(_mod_atan(-dcm[2,1], dcm[2,2]),
+                               T(0),
+                               T(0),
+                               rot_seq)
+        end
 
     else
         throw(ArgumentError("The rotation sequence :$rot_seq is not valid."))

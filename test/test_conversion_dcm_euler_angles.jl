@@ -22,6 +22,27 @@ for k = 1:samples
         @test norm(error2) < 1e-10
         @test error1 ≈ error2
     end
+
+    # Check situations with singularities.
+    α  = -pi + 2*pi*rand()
+
+    D  = create_rotation_matrix(α, :X)
+    Θ₁ = dcm_to_angle(D, :XYX)
+    Θ₂ = dcm_to_angle(D, :XZX)
+    @test Θ₁.a1 ≈ α
+    @test Θ₂.a1 ≈ α
+
+    D  = create_rotation_matrix(α, :Y)
+    Θ₁ = dcm_to_angle(D, :YXY)
+    Θ₂ = dcm_to_angle(D, :YZY)
+    @test Θ₁.a1 ≈ α
+    @test Θ₂.a1 ≈ α
+
+    D  = create_rotation_matrix(α, :Z)
+    Θ₁ = dcm_to_angle(D, :ZXZ)
+    Θ₂ = dcm_to_angle(D, :ZYZ)
+    @test Θ₁.a1 ≈ α
+    @test Θ₂.a1 ≈ α
 end
 
 for k = 1:samples

@@ -41,6 +41,27 @@ for rot_seq in rot_seq_array
         @test q3.q2 ≈ q1.q2 atol=1e-10
         @test q3.q3 ≈ q1.q3 atol=1e-10
     end
+
+    # Check situations with singularities.
+    α  = -pi + 2*pi*rand()
+
+    q  = angle_to_quat(α, 0, 0, :XYZ)
+    Θ₁ = quat_to_angle(q, :XYX)
+    Θ₂ = quat_to_angle(q, :XZX)
+    @test Θ₁.a1 ≈ α
+    @test Θ₂.a1 ≈ α
+
+    q  = angle_to_quat(0, α, 0, :XYZ)
+    Θ₁ = quat_to_angle(q, :YXY)
+    Θ₂ = quat_to_angle(q, :YZY)
+    @test Θ₁.a1 ≈ α
+    @test Θ₂.a1 ≈ α
+
+    q  = angle_to_quat(0, 0, α, :XYZ)
+    Θ₁ = quat_to_angle(q, :ZXZ)
+    Θ₂ = quat_to_angle(q, :ZYZ)
+    @test Θ₁.a1 ≈ α
+    @test Θ₂.a1 ≈ α
 end
 
 for k = 1:samples
