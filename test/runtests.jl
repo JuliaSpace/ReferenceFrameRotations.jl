@@ -25,6 +25,11 @@ const samples = 1000
 end
 println("")
 
+@time @testset "Euler Angles" begin
+    include("./test_euler_angles.jl")
+end
+println("")
+
 @time @testset "Euler Angle and Axis" begin
     include("./test_euler_angle_axis.jl")
 end

@@ -6,6 +6,58 @@ export angle_to_dcm,      angle_to_quat,      angle_to_rot
 export smallangle_to_dcm, smallangle_to_quat, smallangle_to_rot
 
 ################################################################################
+#                                  Operations
+################################################################################
+
+"""
+    function *(Θ₂::EulerAngles, Θ₁::EulerAngles)
+
+Compute the composed rotation of `Θ₁ -> Θ₂`. Notice that the rotation will be
+represented by Euler angles (see `EulerAngles`) with the same rotation sequence
+as `Θ₂`.
+
+"""
+@inline function *(Θ₂::EulerAngles, Θ₁::EulerAngles)
+    # Convert to quaternions, compute the composition, and convert back to Euler
+    # angles.
+    q₁ = angle_to_quat(Θ₁)
+    q₂ = angle_to_quat(Θ₂)
+
+    quat_to_angle(q₁*q₂, Θ₂.rot_seq)
+end
+
+"""
+    function inv(Θ::EulerAngles)
+
+Return the Euler angles that represent the inverse rotation of `Θ`. Notice that
+the rotation sequence of the result will be the inverse of the input. Hence, if
+the input rotation sequence is, for example, `:XYZ`, then the result will be
+represented using `:ZYX`.
+
+"""
+function inv(Θ::EulerAngles)
+    # Check what will be the inverse rotation.
+    if Θ.rot_seq == :XYZ
+        inv_rot_seq = :ZYX
+    elseif Θ.rot_seq == :XZY
+        inv_rot_seq = :YZX
+    elseif Θ.rot_seq == :YXZ
+        inv_rot_seq = :ZXY
+    elseif Θ.rot_seq == :YZX
+        inv_rot_seq = :XZY
+    elseif Θ.rot_seq == :ZXY
+        inv_rot_seq = :YXZ
+    elseif Θ.rot_seq == :ZYX
+        inv_rot_seq = :XYZ
+    else
+        inv_rot_seq = Θ.rot_seq
+    end
+
+    # Return the Euler angle that represented the inverse rotation.
+    EulerAngles(-Θ.a3, -Θ.a2, -Θ.a1, inv_rot_seq)
+end
+
+################################################################################
 #                                 Conversions
 ################################################################################
 
