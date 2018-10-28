@@ -54,6 +54,14 @@ end
 # Euler Angles
 # ==============================================================================
 
+# This modified function computes exactly what `atan(y,x)` computes except that
+# it will neglect signed zeros. Hence:
+#
+#   _mod_atan(0.0, -0.0) = _mod_atan(-0.0, 0.0) = 0.0
+#
+# The signed zero can lead to problems when converting from DCM to Euler angles.
+_mod_atan(y::T,x::T) where T<:Number = atan(y + T(0), x + T(0))
+
 """
     function dcm_to_angle(dcm::DCM, rot_seq::Symbol=:ZYX)
 
@@ -77,86 +85,86 @@ ReferenceFrameRotations.EulerAngles{Float64}(1.5707963267948966, 0.0, -0.0, :XYZ
 function dcm_to_angle(dcm::DCM, rot_seq::Symbol=:ZYX)
     if rot_seq == :ZYX
 
-        return EulerAngles(atan(+dcm[1,2],+dcm[1,1]),
+        return EulerAngles(_mod_atan(+dcm[1,2],+dcm[1,1]),
                            asin(-dcm[1,3]),
-                           atan(+dcm[2,3],+dcm[3,3]),
+                           _mod_atan(+dcm[2,3],+dcm[3,3]),
                            rot_seq)
 
     elseif rot_seq == :XYX
 
-        return EulerAngles(atan(+dcm[1,2],-dcm[1,3]),
+        return EulerAngles(_mod_atan(+dcm[1,2],-dcm[1,3]),
                            acos(+dcm[1,1]),
-                           atan(+dcm[2,1],+dcm[3,1]),
+                           _mod_atan(+dcm[2,1],+dcm[3,1]),
                            rot_seq)
 
     elseif rot_seq == :XYZ
 
-        return EulerAngles(atan(-dcm[3,2],+dcm[3,3]),
+        return EulerAngles(_mod_atan(-dcm[3,2],+dcm[3,3]),
                            asin(+dcm[3,1]),
-                           atan(-dcm[2,1],+dcm[1,1]),
+                           _mod_atan(-dcm[2,1],+dcm[1,1]),
                            rot_seq)
 
     elseif rot_seq == :XZX
 
-        return EulerAngles(atan(+dcm[1,3],+dcm[1,2]),
+        return EulerAngles(_mod_atan(+dcm[1,3],+dcm[1,2]),
                            acos(+dcm[1,1]),
-                           atan(+dcm[3,1],-dcm[2,1]),
+                           _mod_atan(+dcm[3,1],-dcm[2,1]),
                            rot_seq)
 
     elseif rot_seq == :XZY
 
-        return EulerAngles(atan(+dcm[2,3],+dcm[2,2]),
+        return EulerAngles(_mod_atan(+dcm[2,3],+dcm[2,2]),
                            asin(-dcm[2,1]),
-                           atan(+dcm[3,1],+dcm[1,1]),
+                           _mod_atan(+dcm[3,1],+dcm[1,1]),
                            rot_seq)
 
     elseif rot_seq == :YXY
 
-        return EulerAngles(atan(+dcm[2,1],+dcm[2,3]),
+        return EulerAngles(_mod_atan(+dcm[2,1],+dcm[2,3]),
                            acos(+dcm[2,2]),
-                           atan(+dcm[1,2],-dcm[3,2]),
+                           _mod_atan(+dcm[1,2],-dcm[3,2]),
                            rot_seq)
 
     elseif rot_seq == :YXZ
 
-        return EulerAngles(atan(+dcm[3,1],+dcm[3,3]),
+        return EulerAngles(_mod_atan(+dcm[3,1],+dcm[3,3]),
                            asin(-dcm[3,2]),
-                           atan(+dcm[1,2],+dcm[2,2]),
+                           _mod_atan(+dcm[1,2],+dcm[2,2]),
                            rot_seq)
 
     elseif rot_seq == :YZX
 
-        return EulerAngles(atan(-dcm[1,3],+dcm[1,1]),
+        return EulerAngles(_mod_atan(-dcm[1,3],+dcm[1,1]),
                            asin(+dcm[1,2]),
-                           atan(-dcm[3,2],+dcm[2,2]),
+                           _mod_atan(-dcm[3,2],+dcm[2,2]),
                            rot_seq)
 
     elseif rot_seq == :YZY
 
-        return EulerAngles(atan(+dcm[2,3],-dcm[2,1]),
+        return EulerAngles(_mod_atan(+dcm[2,3],-dcm[2,1]),
                            acos(+dcm[2,2]),
-                           atan(+dcm[3,2],+dcm[1,2]),
+                           _mod_atan(+dcm[3,2],+dcm[1,2]),
                            rot_seq)
 
     elseif rot_seq == :ZXY
 
-        return EulerAngles(atan(-dcm[2,1],+dcm[2,2]),
+        return EulerAngles(_mod_atan(-dcm[2,1],+dcm[2,2]),
                            asin(+dcm[2,3]),
-                           atan(-dcm[1,3],+dcm[3,3]),
+                           _mod_atan(-dcm[1,3],+dcm[3,3]),
                            rot_seq)
 
     elseif rot_seq == :ZXZ
 
-        return EulerAngles(atan(+dcm[3,1],-dcm[3,2]),
+        return EulerAngles(_mod_atan(+dcm[3,1],-dcm[3,2]),
                            acos(+dcm[3,3]),
-                           atan(+dcm[1,3],+dcm[2,3]),
+                           _mod_atan(+dcm[1,3],+dcm[2,3]),
                            rot_seq)
 
     elseif rot_seq == :ZYZ
 
-        return EulerAngles(atan(+dcm[3,2],+dcm[3,1]),
+        return EulerAngles(_mod_atan(+dcm[3,2],+dcm[3,1]),
                            acos(+dcm[3,3]),
-                           atan(+dcm[2,3],-dcm[1,3]),
+                           _mod_atan(+dcm[2,3],-dcm[1,3]),
                            rot_seq)
 
     else
