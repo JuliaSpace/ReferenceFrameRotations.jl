@@ -223,5 +223,5 @@ The improvement of this conversion will be addressed in a future version of
 julia> q = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);
 
 julia> quat_to_angle(q, :XYZ)
-EulerAngles{Float64}(0.7853981633974484, 0.0, -0.0, :XYZ)
+EulerAngles{Float64}(0.7853981633974484, 0.0, 0.0, :XYZ)
 ```
