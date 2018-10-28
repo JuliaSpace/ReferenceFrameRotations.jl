@@ -13,7 +13,7 @@ for i = 1:samples
     ang = -pi + 2pi*rand()
 
     # Create a quaternion that rotates about X axis.
-    q = angle2quat(ang, 0.0, 0.0, :XYZ)
+    q = angle_to_quat(ang, 0.0, 0.0, :XYZ)
 
     # Create a vector that does not have X component.
     v = [0;randn();randn()]
@@ -43,7 +43,7 @@ for i = 1:samples
     ang = -pi + 2pi*rand()
 
     # Create a quaternion that rotates about Y axis.
-    q = angle2quat(ang, 0.0, 0.0, :YXZ)
+    q = angle_to_quat(ang, 0.0, 0.0, :YXZ)
 
     # Create a vector that does not have Y component.
     v = [randn();0;randn()]
@@ -74,7 +74,7 @@ for i = 1:samples
     ang = -pi + 2pi*rand()
 
     # Create a quaternion that rotates about Z axis.
-    q = angle2quat(ang, 0.0, 0.0, :ZXY)
+    q = angle_to_quat(ang, 0.0, 0.0, :ZXY)
 
     # Create a vector that does not have Z component.
     v = [randn();randn();0]

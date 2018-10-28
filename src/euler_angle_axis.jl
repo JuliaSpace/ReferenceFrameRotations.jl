@@ -2,7 +2,7 @@
 #                             Euler Angle and Axis
 ################################################################################
 
-export angleaxis2quat
+export angleaxis_to_quat
 
 ################################################################################
 #                                 Conversions
@@ -12,7 +12,7 @@ export angleaxis2quat
 # ==============================================================================
 
 """
-    function angleaxis2quat(a::Number, v::AbstractVector)
+    function angleaxis_to_quat(a::Number, v::AbstractVector)
 
 Convert the Euler angle `a` [rad] and Euler axis `v`, which must be a unit
 vector, to a quaternion.
@@ -29,13 +29,13 @@ julia> v = [1;1;1];
 
 julia> v /= norm(v);
 
-julia> angleaxis2quat(pi/2,v)
+julia> angleaxis_to_quat(pi/2,v)
 Quaternion{Float64}:
   + 0.7071067811865476 + 0.408248290463863.i + 0.408248290463863.j + 0.408248290463863.k
 ```
 
 """
-function angleaxis2quat(a::Number, v::AbstractVector)
+function angleaxis_to_quat(a::Number, v::AbstractVector)
     # Check the arguments.
     (length(v) > 3) && throw(ArgumentError("The provided vector for the Euler axis must have 3 elements."))
 
@@ -44,7 +44,7 @@ function angleaxis2quat(a::Number, v::AbstractVector)
 end
 
 """
-    function angleaxis2quat(angleaxis::EulerAngleAxis)
+    function angleaxis_to_quat(angleaxis::EulerAngleAxis)
 
 Convert a Euler angle and Euler axis `angleaxis` (see `EulerAngleAxis`) to a
 quaternion.
@@ -62,11 +62,11 @@ julia> v = [1;1;1];
 
 julia> v /= norm(v);
 
-julia> angleaxis2quat(EulerAngleAxis(pi/2,v))
+julia> angleaxis_to_quat(EulerAngleAxis(pi/2,v))
 Quaternion{Float64}:
   + 0.7071067811865476 + 0.408248290463863.i + 0.408248290463863.j + 0.408248290463863.k
 ```
 
 """
-angleaxis2quat(angleaxis::EulerAngleAxis) = angleaxis2quat(angleaxis.a,
-                                                           angleaxis.v)
+angleaxis_to_quat(angleaxis::EulerAngleAxis) = angleaxis_to_quat(angleaxis.a,
+                                                                 angleaxis.v)

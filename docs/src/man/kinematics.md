@@ -46,7 +46,7 @@ function ddcm(Dba, wba_b)
 ```jldoctest
 julia> wba_b = [0.01;0;0];
 
-julia> Dba = angle2dcm(0.5,0,0,:XYZ)
+julia> Dba = angle_to_dcm(0.5,0,0,:XYZ)
 3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
   1.0   0.0       0.0
  -0.0   0.877583  0.479426
@@ -94,7 +94,7 @@ function dquat(qba, wba_b)
 ```jldoctest
 julia> wba_b = [0.01;0;0];
 
-julia> qba = angle2quat(0.5,0,0,:XYZ);
+julia> qba = angle_to_quat(0.5,0,0,:XYZ);
 
 julia> dquat(qba,wba_b)
 Quaternion{Float64}:

@@ -14,10 +14,10 @@ for k = 1:samples
     angleaxis = EulerAngleAxis(a,v)
 
     # Convert to quaternion.
-    q = angleaxis2quat(angleaxis)
+    q = angleaxis_to_quat(angleaxis)
 
     # Convert back to Euler Angle and Axis.
-    angleaxis_conv = quat2angleaxis(q)
+    angleaxis_conv = quat_to_angleaxis(q)
 
     # Compare.
     @test  abs(angleaxis_conv.a - a) < 1e-10
@@ -32,4 +32,4 @@ for k = 1:samples
 end
 
 # Test the exceptions.
-@test_throws ArgumentError angleaxis2quat(0, [1;2;3;4])
+@test_throws ArgumentError angleaxis_to_quat(0, [1;2;3;4])

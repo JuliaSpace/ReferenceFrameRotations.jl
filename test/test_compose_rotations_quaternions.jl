@@ -5,45 +5,45 @@
 
 for i = 1:samples
     # Sample 8 quaternions.
-    q1 = angle2quat(EulerAngles(-pi + 2*pi*rand(),
-                                -pi + 2*pi*rand(),
-                                -pi + 2*pi*rand(),
-                                rand(rot_seq_array)))
+    q1 = angle_to_quat(EulerAngles(-pi + 2*pi*rand(),
+                                   -pi + 2*pi*rand(),
+                                   -pi + 2*pi*rand(),
+                                   rand(rot_seq_array)))
 
-    q2 = angle2quat(EulerAngles(-pi + 2*pi*rand(),
-                                -pi + 2*pi*rand(),
-                                -pi + 2*pi*rand(),
-                                rand(rot_seq_array)))
+    q2 = angle_to_quat(EulerAngles(-pi + 2*pi*rand(),
+                                   -pi + 2*pi*rand(),
+                                   -pi + 2*pi*rand(),
+                                   rand(rot_seq_array)))
 
-    q3 = angle2quat(EulerAngles(-pi + 2*pi*rand(),
-                                -pi + 2*pi*rand(),
-                                -pi + 2*pi*rand(),
-                                rand(rot_seq_array)))
+    q3 = angle_to_quat(EulerAngles(-pi + 2*pi*rand(),
+                                   -pi + 2*pi*rand(),
+                                   -pi + 2*pi*rand(),
+                                   rand(rot_seq_array)))
 
-    q4 = angle2quat(EulerAngles(-pi + 2*pi*rand(),
-                                -pi + 2*pi*rand(),
-                                -pi + 2*pi*rand(),
-                                rand(rot_seq_array)))
+    q4 = angle_to_quat(EulerAngles(-pi + 2*pi*rand(),
+                                   -pi + 2*pi*rand(),
+                                   -pi + 2*pi*rand(),
+                                   rand(rot_seq_array)))
 
-    q5 = angle2quat(EulerAngles(-pi + 2*pi*rand(),
-                                -pi + 2*pi*rand(),
-                                -pi + 2*pi*rand(),
-                                rand(rot_seq_array)))
+    q5 = angle_to_quat(EulerAngles(-pi + 2*pi*rand(),
+                                   -pi + 2*pi*rand(),
+                                   -pi + 2*pi*rand(),
+                                   rand(rot_seq_array)))
 
-    q6 = angle2quat(EulerAngles(-pi + 2*pi*rand(),
-                                -pi + 2*pi*rand(),
-                                -pi + 2*pi*rand(),
-                                rand(rot_seq_array)))
+    q6 = angle_to_quat(EulerAngles(-pi + 2*pi*rand(),
+                                   -pi + 2*pi*rand(),
+                                   -pi + 2*pi*rand(),
+                                   rand(rot_seq_array)))
 
-    q7 = angle2quat(EulerAngles(-pi + 2*pi*rand(),
-                                -pi + 2*pi*rand(),
-                                -pi + 2*pi*rand(),
-                                rand(rot_seq_array)))
+    q7 = angle_to_quat(EulerAngles(-pi + 2*pi*rand(),
+                                   -pi + 2*pi*rand(),
+                                   -pi + 2*pi*rand(),
+                                   rand(rot_seq_array)))
 
-    q8 = angle2quat(EulerAngles(-pi + 2*pi*rand(),
-                                -pi + 2*pi*rand(),
-                                -pi + 2*pi*rand(),
-                                rand(rot_seq_array)))
+    q8 = angle_to_quat(EulerAngles(-pi + 2*pi*rand(),
+                                   -pi + 2*pi*rand(),
+                                   -pi + 2*pi*rand(),
+                                   rand(rot_seq_array)))
 
     # Test the function `compose_rotation`.
     @test                   (q1*q2)[:] ≈ compose_rotation(q1,q2)[:]                   atol=1e-14

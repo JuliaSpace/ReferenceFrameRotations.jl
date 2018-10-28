@@ -3,7 +3,7 @@
 ################################################################################
 
 export create_rotation_matrix
-export ddcm, dcm2angle, dcm2quat
+export ddcm, dcm_to_angle, dcm_to_quat
 
 ################################################################################
 #                                  Functions
@@ -55,7 +55,7 @@ end
 # ==============================================================================
 
 """
-    function dcm2angle(dcm::DCM, rot_seq::Symbol=:ZYX)
+    function dcm_to_angle(dcm::DCM, rot_seq::Symbol=:ZYX)
 
 Convert the DCM `dcm` to Euler Angles (see `EulerAngles`) given a rotation
 sequence `rot_seq`.
@@ -69,12 +69,12 @@ The rotation sequence is defined by a `:Symbol`. The possible values are:
 ```julia-repl
 julia> D = DCM([1. 0. 0.; 0. 0. -1; 0. -1 0.]);
 
-julia> dcm2angle(D,:XYZ)
+julia> dcm_to_angle(D,:XYZ)
 ReferenceFrameRotations.EulerAngles{Float64}(1.5707963267948966, 0.0, -0.0, :XYZ)
 ```
 
 """
-function dcm2angle(dcm::DCM, rot_seq::Symbol=:ZYX)
+function dcm_to_angle(dcm::DCM, rot_seq::Symbol=:ZYX)
     if rot_seq == :ZYX
 
         return EulerAngles(atan(+dcm[1,2],+dcm[1,1]),
@@ -168,7 +168,7 @@ end
 # ==============================================================================
 
 """
-    function dcm2quat(dcm::DCM)
+    function dcm_to_quat(dcm::DCM)
 
 Convert the DCM `dcm` to a quaternion. The type of the quaternion will be
 automatically selected by the constructor `Quaternion` to avoid `InexactError`.
@@ -186,15 +186,15 @@ This algorithm was obtained from:
 # Example
 
 ```julia-repl
-julia> dcm = angle2dcm(pi/2,0.0,0.0,:XYZ);
+julia> dcm = angle_to_dcm(pi/2,0.0,0.0,:XYZ);
 
-julia> q   = dcm2quat(dcm)
+julia> q   = dcm_to_quat(dcm)
 Quaternion{Float64}:
   + 0.7071067811865476 + 0.7071067811865475.i + 0.0.j + 0.0.k
 ```
 
 """
-function dcm2quat(dcm::DCM)
+function dcm_to_quat(dcm::DCM)
     if  tr(dcm) > 0
         # f = 4*q0
         f = 2sqrt(tr(dcm)+1)

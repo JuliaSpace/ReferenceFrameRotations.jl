@@ -2,8 +2,8 @@
 #                                 Euler Angles
 ################################################################################
 
-export angle2dcm,      angle2quat,      angle2rot
-export smallangle2dcm, smallangle2quat, smallangle2rot
+export angle_to_dcm,      angle_to_quat,      angle_to_rot
+export smallangle_to_dcm, smallangle_to_quat, smallangle_to_rot
 
 ################################################################################
 #                                 Conversions
@@ -13,7 +13,7 @@ export smallangle2dcm, smallangle2quat, smallangle2rot
 # ==============================================================================
 
 """
-    function angle2dcm(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
+    function angle_to_dcm(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
 
 Convert the Euler angles `θ₁`, `θ₂`, and `θ₃` [rad] with the rotation sequence
 `rot_seq` to a direction cosine matrix.
@@ -30,7 +30,7 @@ the *i*-th rotation, `i Є [1,2,3]`.
 # Example
 
 ```julia-repl
-dcm = angle2dcm(pi/2, pi/3, pi/4, :ZYX)
+dcm = angle_to_dcm(pi/2, pi/3, pi/4, :ZYX)
 3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
   3.06162e-17  0.5       -0.866025
  -0.707107     0.612372   0.353553
@@ -38,7 +38,7 @@ dcm = angle2dcm(pi/2, pi/3, pi/4, :ZYX)
 ```
 
 """
-function angle2dcm(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
+function angle_to_dcm(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
 
     # Compute the sines and cosines.
     s₁, c₁ = sincos(θ₁)
@@ -110,10 +110,9 @@ function angle2dcm(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol 
 end
 
 """
-    function angle2dcm(eulerang::EulerAngles)
+    function angle_to_dcm(Θ::EulerAngles)
 
-Convert the Euler angles `eulerang` (see `EulerAngles`) to a direction cosine
-matrix.
+Convert the Euler angles `Θ` (see `EulerAngles`) to a direction cosine matrix.
 
 # Returns
 
@@ -127,7 +126,7 @@ the *i*-th rotation, `i Є [1,2,3]`.
 # Example
 
 ```julia-repl
-julia> angle2dcm(EulerAngles(pi/2, pi/3, pi/4, :ZYX))
+julia> angle_to_dcm(EulerAngles(pi/2, pi/3, pi/4, :ZYX))
 3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
   3.06162e-17  0.5       -0.866025
  -0.707107     0.612372   0.353553
@@ -135,11 +134,10 @@ julia> angle2dcm(EulerAngles(pi/2, pi/3, pi/4, :ZYX))
 ```
 
 """
-angle2dcm(eulerang::EulerAngles) = angle2dcm(eulerang.a1, eulerang.a2,
-                                             eulerang.a3, eulerang.rot_seq)
+angle_to_dcm(Θ::EulerAngles) = angle_to_dcm(Θ.a1, Θ.a2, Θ.a3, Θ.rot_seq)
 
 """
-    function smallangle2dcm(θx::Number, θy::Number, θz::Number)
+    function smallangle_to_dcm(θx::Number, θy::Number, θz::Number)
 
 Create a direction cosine matrix from three small rotations of angles `θx`,
 `θy`, and `θz` [rad] about the axes X, Y, and Z, respectively.
@@ -151,7 +149,7 @@ No process of ortho-normalization is performed with the computed DCM.
 # Example
 
 ```julia-repl
-julia> smallangle2dcm(+0.01, -0.01, +0.01)
+julia> smallangle_to_dcm(+0.01, -0.01, +0.01)
 3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
   1.0    0.01  0.01
  -0.01   1.0   0.01
@@ -159,15 +157,15 @@ julia> smallangle2dcm(+0.01, -0.01, +0.01)
 ```
 
 """
-smallangle2dcm(θx::Number, θy::Number, θz::Number) = DCM(  1, +θz, -θy,
-                                                         -θz,   1, +θx,
-                                                         +θy, -θx,   1)'
+smallangle_to_dcm(θx::Number, θy::Number, θz::Number) = DCM(  1, +θz, -θy,
+                                                            -θz,   1, +θx,
+                                                            +θy, -θx,   1)'
 
 # Quaternion
 # ==============================================================================
 
 """
-    function angle2quat(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
+    function angle_to_quat(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
 
 Convert the Euler angles `θ₁`, `θ₂`, and `θ₃` [rad] with the rotation sequence
 `rot_seq` to a quaternion.
@@ -184,13 +182,13 @@ with the *i*-th rotation, `i Є [1,2,3]`.
 # Example
 
 ```julia-repl
-julia> angle2quat(pi/2, pi/3, pi/4, :ZYX)
+julia> angle_to_quat(pi/2, pi/3, pi/4, :ZYX)
 Quaternion{Float64}:
   + 0.7010573846499779 - 0.09229595564125714.i + 0.5609855267969309.j + 0.43045933457687935.k
 ```
 
 """
-function angle2quat(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
+function angle_to_quat(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
 
     # Compute the sines and cosines of half angle.
     s₁, c₁ = sincos(θ₁/2)
@@ -311,7 +309,7 @@ function angle2quat(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol
 end
 
 """
-    function angle2quat(eulerang::EulerAngles)
+    function angle_to_quat(eulerang::EulerAngles)
 
 Convert the Euler angles `eulerang` (see `EulerAngles`) to a quaternion.
 
@@ -323,17 +321,16 @@ with the *i*-th rotation, `i Є [1,2,3]`.
 # Example
 
 ```julia-repl
-julia> angle2quat(pi/2, pi/3, pi/4, :ZYX)
+julia> angle_to_quat(pi/2, pi/3, pi/4, :ZYX)
 Quaternion{Float64}:
   + 0.7010573846499779 - 0.09229595564125714.i + 0.5609855267969309.j + 0.43045933457687935.k
 ```
 
 """
-angle2quat(eulerang::EulerAngles) = angle2quat(eulerang.a1, eulerang.a2,
-                                               eulerang.a3, eulerang.rot_seq)
+angle_to_quat(Θ::EulerAngles) = angle_to_quat(Θ.a1, Θ.a2, Θ.a3, Θ.rot_seq)
 
 """
-    function smallangle2quat(θx::Number, θy::Number, θz::Number)
+    function smallangle_to_quat(θx::Number, θy::Number, θz::Number)
 
 Create a quaternion from three small rotations of angles `θx`, `θy`, and `θz`
 [rad] about the axes X, Y, and Z, respectively.
@@ -345,13 +342,13 @@ The quaternion is normalized.
 # Example
 
 ```julia-repl
-julia> smallangle2quat(+0.01, -0.01, +0.01)
+julia> smallangle_to_quat(+0.01, -0.01, +0.01)
 Quaternion{Float64}:
   + 0.9999625021092433 + 0.004999812510546217.i - 0.004999812510546217.j + 0.004999812510546217.k
 ```
 
 """
-function smallangle2quat(θx::Number, θy::Number, θz::Number)
+function smallangle_to_quat(θx::Number, θy::Number, θz::Number)
     q0     = 1
     q1     = θx/2
     q2     = θy/2
@@ -366,12 +363,11 @@ end
 ################################################################################
 
 """
-    function angle2rot([T,] angle_r1::Number, angle_r2::Number, angle_r3::Number, rot_seq::Symbol = :ZYX)
+    @inline angle_to_rot([T,] θx::Number, θy::Number, θz::Number, rot_seq::Symbol)
 
-Convert the Euler angles `angle_r1`, `angle_r2`, and `angle_r3` [rad] with the
-rotation sequence `rot_seq` to a rotation description of type `T`, which can be
-`DCM` or `Quaternion`. If the type `T` is not specified, then it defaults to
-`DCM`.
+Convert the Euler angles `Θx`, `Θy`, and `Θz` [rad] with the rotation sequence
+`rot_seq` to a rotation description of type `T`, which can be `DCM` or
+`Quaternion`. If the type `T` is not specified, then it defaults to `DCM`.
 
 The rotation sequence is defined by a `:Symbol`. The possible values are:
 `:XYX`, `XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`,
@@ -380,69 +376,62 @@ The rotation sequence is defined by a `:Symbol`. The possible values are:
 # Example
 
 ```julia-repl
-julia> dcm = angle2rot(pi/2, pi/3, pi/4, :ZYX)
+julia> dcm = angle_to_rot(pi/2, pi/3, pi/4, :ZYX)
 3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
   3.06162e-17  0.5       -0.866025
  -0.707107     0.612372   0.353553
   0.707107     0.612372   0.353553
 
-julia> q   = angle2rot(Quaternion,pi/2, pi/3, pi/4, :ZYX)
+julia> q   = angle_to_rot(Quaternion,pi/2, pi/3, pi/4, :ZYX)
 Quaternion{Float64}:
   + 0.7010573846499779 - 0.09229595564125714.i + 0.5609855267969309.j + 0.43045933457687935.k
 ```
 
 """
-@inline angle2rot(θx::Number, θy::Number, θz::Number, rot_seq::Symbol) =
-    angle2dcm(θx, θy, θz, rot_seq)
+@inline angle_to_rot(θx::Number, θy::Number, θz::Number, rot_seq::Symbol) =
+    angle_to_dcm(θx, θy, θz, rot_seq)
 
-@inline angle2rot(::Type{DCM},
-                  θx::Number,
-                  θy::Number,
-                  θz::Number,
-                  rot_seq::Symbol) =
-    angle2dcm(θx, θy, θz, rot_seq)
+@inline angle_to_rot(::Type{DCM},
+                     θx::Number, θy::Number, θz::Number, rot_seq::Symbol) =
+    angle_to_dcm(θx, θy, θz, rot_seq)
 
-@inline angle2rot(::Type{Quaternion},
-                  θx::Number,
-                  θy::Number,
-                  θz::Number,
-                  rot_seq::Symbol) =
-    angle2quat(θx, θy, θz, rot_seq)
+@inline angle_to_rot(::Type{Quaternion},
+                     θx::Number, θy::Number, θz::Number, rot_seq::Symbol) =
+    angle_to_quat(θx, θy, θz, rot_seq)
 
 """
-    function angle2rot([T,] angle_r1::Number, angle_r2::Number, angle_r3::Number, rot_seq::Symbol = :ZYX)
+    @inline angle_to_rot([T,] Θ::EulerAngles)
 
-Convert the Euler angles `eulerang` (see `EulerAngles`) to a rotation
-description of type `T`, which can be `DCM` or `Quaternion`. If the type `T` is
-not specified, then it defaults to `DCM`.
+Convert the Euler angles `Θ` (see `EulerAngles`) to a rotation description of
+type `T`, which can be `DCM` or `Quaternion`. If the type `T` is not specified,
+then it defaults to `DCM`.
 
 # Example
 
 ```julia-repl
-julia> dcm = angle2rot(EulerAngles(pi/2, pi/3, pi/4, :ZYX))
+julia> dcm = angle_to_rot(EulerAngles(pi/2, pi/3, pi/4, :ZYX))
 3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
   3.06162e-17  0.5       -0.866025
  -0.707107     0.612372   0.353553
   0.707107     0.612372   0.353553
 
-julia> q   = angle2rot(Quaternion,EulerAngles(pi/2, pi/3, pi/4, :ZYX))
+julia> q   = angle_to_rot(Quaternion,EulerAngles(pi/2, pi/3, pi/4, :ZYX))
 Quaternion{Float64}:
   + 0.7010573846499779 - 0.09229595564125714.i + 0.5609855267969309.j +
   0.43045933457687935.k
 ```
 
 """
-@inline angle2rot(eulerang::EulerAngles) =
-    angle2dcm(eulerang.a1, eulerang.a2, eulerang.a3, eulerang.rot_seq)
+@inline angle_to_rot(Θ::EulerAngles) = angle_to_dcm(Θ.a1, Θ.a2, Θ.a3, Θ.rot_seq)
 
-@inline angle2rot(::Type{DCM}, eulerang::EulerAngles) =
-    angle2dcm(eulerang.a1, eulerang.a2, eulerang.a3, eulerang.rot_seq)
+@inline angle_to_rot(::Type{DCM}, Θ::EulerAngles) =
+    angle_to_dcm(Θ.a1, Θ.a2, Θ.a3, Θ.rot_seq)
 
-@inline angle2rot(::Type{Quaternion}, eulerang::EulerAngles) =
-    angle2quat(eulerang.a1, eulerang.a2, eulerang.a3, eulerang.rot_seq)
+@inline angle_to_rot(::Type{Quaternion}, Θ::EulerAngles) =
+    angle_to_quat(Θ.a1, Θ.a2, Θ.a3, Θ.rot_seq)
 
 """
-    function smallangle2rot([T,] θx::Number, θy::Number, θz::Number)
+    function smallangle_to_rot([T,] θx::Number, θy::Number, θz::Number)
 
 Create a rotation description of type `T` from three small rotations of angles
 `θx`, `θy`, and `θz` [rad] about the axes X, Y, and Z, respectively.
@@ -457,27 +446,27 @@ The rotation description according to the type `T`.
 # Example
 
 ```julia-repl
-julia> dcm = smallangle2rot(+0.01, -0.01, +0.01);
+julia> dcm = smallangle_to_rot(+0.01, -0.01, +0.01);
 
-julia> q   = smallangle2rot(Quaternion,+0.01, -0.01, +0.01);
+julia> q   = smallangle_to_rot(Quaternion,+0.01, -0.01, +0.01);
 
-julia> dcm = smallangle2rot(+0.01, -0.01, +0.01)
+julia> dcm = smallangle_to_rot(+0.01, -0.01, +0.01)
 3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
   1.0    0.01  0.01
  -0.01   1.0   0.01
  -0.01  -0.01  1.0
 
-julia> q   = smallangle2rot(Quaternion,+0.01, -0.01, +0.01)
+julia> q   = smallangle_to_rot(Quaternion,+0.01, -0.01, +0.01)
 Quaternion{Float64}:
   + 0.9999625021092433 + 0.004999812510546217.i - 0.004999812510546217.j + 0.004999812510546217.k
 ```
 
 """
-@inline smallangle2rot(θx::Number, θy::Number, θz::Number) =
-    smallangle2dcm(θx, θy, θz)
+@inline smallangle_to_rot(θx::Number, θy::Number, θz::Number) =
+    smallangle_to_dcm(θx, θy, θz)
 
-@inline smallangle2rot(::Type{DCM}, θx::Number, θy::Number, θz::Number) =
-    smallangle2dcm(θx, θy, θz)
+@inline smallangle_to_rot(::Type{DCM}, θx::Number, θy::Number, θz::Number) =
+    smallangle_to_dcm(θx, θy, θz)
 
-@inline smallangle2rot(::Type{Quaternion}, θx::Number, θy::Number, θz::Number) =
-    smallangle2quat(θx, θy, θz)
+@inline smallangle_to_rot(::Type{Quaternion}, θx::Number, θy::Number, θz::Number) =
+    smallangle_to_quat(θx, θy, θz)

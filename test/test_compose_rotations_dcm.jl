@@ -4,45 +4,45 @@
 
 for i = 1:samples
     # Sample 8 DCMs.
-    D1 = angle2dcm(EulerAngles(-pi + 2*pi*rand(),
-                               -pi + 2*pi*rand(),
-                               -pi + 2*pi*rand(),
-                               rand(rot_seq_array)))
+    D1 = angle_to_dcm(EulerAngles(-pi + 2*pi*rand(),
+                                  -pi + 2*pi*rand(),
+                                  -pi + 2*pi*rand(),
+                                  rand(rot_seq_array)))
 
-    D2 = angle2dcm(EulerAngles(-pi + 2*pi*rand(),
-                               -pi + 2*pi*rand(),
-                               -pi + 2*pi*rand(),
-                               rand(rot_seq_array)))
+    D2 = angle_to_dcm(EulerAngles(-pi + 2*pi*rand(),
+                                  -pi + 2*pi*rand(),
+                                  -pi + 2*pi*rand(),
+                                  rand(rot_seq_array)))
 
-    D3 = angle2dcm(EulerAngles(-pi + 2*pi*rand(),
-                               -pi + 2*pi*rand(),
-                               -pi + 2*pi*rand(),
-                               rand(rot_seq_array)))
+    D3 = angle_to_dcm(EulerAngles(-pi + 2*pi*rand(),
+                                  -pi + 2*pi*rand(),
+                                  -pi + 2*pi*rand(),
+                                  rand(rot_seq_array)))
 
-    D4 = angle2dcm(EulerAngles(-pi + 2*pi*rand(),
-                               -pi + 2*pi*rand(),
-                               -pi + 2*pi*rand(),
-                               rand(rot_seq_array)))
+    D4 = angle_to_dcm(EulerAngles(-pi + 2*pi*rand(),
+                                  -pi + 2*pi*rand(),
+                                  -pi + 2*pi*rand(),
+                                  rand(rot_seq_array)))
 
-    D5 = angle2dcm(EulerAngles(-pi + 2*pi*rand(),
-                               -pi + 2*pi*rand(),
-                               -pi + 2*pi*rand(),
-                               rand(rot_seq_array)))
+    D5 = angle_to_dcm(EulerAngles(-pi + 2*pi*rand(),
+                                  -pi + 2*pi*rand(),
+                                  -pi + 2*pi*rand(),
+                                  rand(rot_seq_array)))
 
-    D6 = angle2dcm(EulerAngles(-pi + 2*pi*rand(),
-                               -pi + 2*pi*rand(),
-                               -pi + 2*pi*rand(),
-                               rand(rot_seq_array)))
+    D6 = angle_to_dcm(EulerAngles(-pi + 2*pi*rand(),
+                                  -pi + 2*pi*rand(),
+                                  -pi + 2*pi*rand(),
+                                  rand(rot_seq_array)))
 
-    D7 = angle2dcm(EulerAngles(-pi + 2*pi*rand(),
-                               -pi + 2*pi*rand(),
-                               -pi + 2*pi*rand(),
-                               rand(rot_seq_array)))
+    D7 = angle_to_dcm(EulerAngles(-pi + 2*pi*rand(),
+                                  -pi + 2*pi*rand(),
+                                  -pi + 2*pi*rand(),
+                                  rand(rot_seq_array)))
 
-    D8 = angle2dcm(EulerAngles(-pi + 2*pi*rand(),
-                               -pi + 2*pi*rand(),
-                               -pi + 2*pi*rand(),
-                               rand(rot_seq_array)))
+    D8 = angle_to_dcm(EulerAngles(-pi + 2*pi*rand(),
+                                  -pi + 2*pi*rand(),
+                                  -pi + 2*pi*rand(),
+                                  rand(rot_seq_array)))
 
     # Test the function `compose_rotation`.
     @test                   D2*D1 ≈ compose_rotation(D1,D2)                   atol=1e-14

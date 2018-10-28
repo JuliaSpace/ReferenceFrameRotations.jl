@@ -6,7 +6,7 @@ for i = 1:samples
     # Create a random DCM.
     q      = Quaternion(randn(), randn(), randn(), randn())
     q      = q/norm(q)
-    Dba0   = quat2dcm(q)
+    Dba0   = quat_to_dcm(q)
 
     # Create a random velocity vector.
     wba_a = randn(3)

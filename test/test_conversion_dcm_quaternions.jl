@@ -14,17 +14,17 @@ for k = 1:samples
     (q1.q0 < 0) && (q1 *= -1)
 
     # Create a random DCM using Euler Angles.
-    dcm2 = angle2dcm(randn(), randn(), randn(), rot_seq_array[rand(1:9)])
+    dcm2 = angle_to_dcm(randn(), randn(), randn(), rot_seq_array[rand(1:9)])
 
     # Convert the quaternion in DCM and the DCM in quaternion.
-    q2   = dcm2quat(dcm2)
-    dcm1 = quat2dcm(q1)
+    q2   = dcm_to_quat(dcm2)
+    dcm1 = quat_to_dcm(q1)
 
     # Do the inverse conversion and compare.
-    error_dcm = dcm2 - quat2dcm(q2)
+    error_dcm = dcm2 - quat_to_dcm(q2)
     @test norm(error_dcm) < 1e-10
 
-    error_q = q1 - dcm2quat(dcm1)
+    error_q = q1 - dcm_to_quat(dcm1)
     @test norm(error_q) < 1e-10
 
     # Multiplication test

@@ -8,20 +8,20 @@ for rot_seq in rot_seq_array
         v = randn(3)
 
         # Sample three angles form a uniform distribution [-pi,pi].
-        θx       = -pi + 2*pi*rand()
-        θy       = -pi + 2*pi*rand()
-        θz       = -pi + 2*pi*rand()
-        eulerang = EulerAngles(θx, θy, θz, rot_seq)
+        θx = -pi + 2*pi*rand()
+        θy = -pi + 2*pi*rand()
+        θz = -pi + 2*pi*rand()
+        Θ  = EulerAngles(θx, θy, θz, rot_seq)
 
         # Rotate the vector using a DCM (which was already tested).
-        D      = angle2rot(eulerang)
+        D      = angle_to_rot(Θ)
         rv_dcm = D*v
 
         # Rotate the vector using a quaternion.
-        q1    = angle2rot(Quaternion,eulerang)
+        q1    = angle_to_rot(Quaternion,Θ)
         rv_q1 = vect(q1\v*q1)
 
-        q2    = angle2rot(Quaternion,θx,θy,θz,rot_seq)
+        q2    = angle_to_rot(Quaternion,θx,θy,θz,rot_seq)
         rv_q2 = vect(q2\v*q2)
 
         # Compare.
@@ -30,11 +30,11 @@ for rot_seq in rot_seq_array
         @test rv_q1 ≈ rv_q2
 
         # Compute the Euler angles using the Quaternion.
-        eulerang_quat = quat2angle(q1, eulerang.rot_seq)
+        Θ_quat = quat_to_angle(q1, Θ.rot_seq)
 
         # Create the quaternion using those Euler angles and compare to the
         # original.
-        q3 = angle2rot(Quaternion,eulerang_quat)
+        q3 = angle_to_rot(Quaternion,Θ_quat)
 
         @test q3.q0 ≈ q1.q0 atol=1e-10
         @test q3.q1 ≈ q1.q1 atol=1e-10
@@ -45,18 +45,16 @@ end
 
 for k = 1:samples
     # Sample three angles form a uniform distribution [-0.0001,0.0001].
-    eulerang = EulerAngles(-0.0001 + 0.0002*rand(),
-                           -0.0001 + 0.0002*rand(),
-                           -0.0001 + 0.0002*rand(),
-                           :XYZ)
+    Θ = EulerAngles(-0.0001 + 0.0002*rand(),
+                    -0.0001 + 0.0002*rand(),
+                    -0.0001 + 0.0002*rand(),
+                    :XYZ)
 
     # Get the error between the exact rotation and the small angle
     # approximation.
-    error = angle2rot(Quaternion,eulerang) -
-            smallangle2rot(Quaternion,eulerang.a1, eulerang.a2, eulerang.a3)
+    error = angle_to_rot(Quaternion,Θ) -
+            smallangle_to_rot(Quaternion,Θ.a1, Θ.a2, Θ.a3)
 
     # If everything is fine, the norm of the matrix error should be small.
     @test norm(error) < 1e-7
 end
-
-

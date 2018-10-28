@@ -2,7 +2,7 @@
 #                                 Quaternions
 ################################################################################
 
-export dquat, eye, norm, quat2angle, quat2angleaxis, quat2dcm, vect
+export dquat, eye, norm, quat_to_angle, quat_to_angleaxis, quat_to_dcm, vect
 
 ################################################################################
 #                                 Initializers
@@ -436,7 +436,7 @@ end
 # ==============================================================================
 
 """
-    function quat2dcm(q::Quaternion)
+    function quat_to_dcm(q::Quaternion)
 
 Convert the quaternion `q` to a Direction Cosine Matrix (DCM).
 
@@ -445,7 +445,7 @@ Convert the quaternion `q` to a Direction Cosine Matrix (DCM).
 ```julia-repl
 julia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0);
 
-julia> quat2dcm(q)
+julia> quat_to_dcm(q)
 3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
  1.0   0.0       0.0
  0.0   0.707107  0.707107
@@ -453,7 +453,7 @@ julia> quat2dcm(q)
 ```
 
 """
-function quat2dcm(q::Quaternion)
+function quat_to_dcm(q::Quaternion)
     # Auxiliary variables.
     q0 = q.q0
     q1 = q.q1
@@ -469,7 +469,7 @@ end
 # ==============================================================================
 
 """
-    function quat2angleaxis(q::Quaternion{T}) where T
+    function quat_to_angleaxis(q::Quaternion{T}) where T
 
 Convert the quaternion `q` to a Euler angle and axis representation (see
 `EulerAngleAxis`).
@@ -485,12 +485,12 @@ not represent a 3D rotation. The user must handle such situations.
 ```julia-repl
 julia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0);
 
-julia> quat2angleaxis(q)
+julia> quat_to_angleaxis(q)
 EulerAngleAxis{Float64}(0.7853981633974484, [1.0, 0.0, 0.0])
 ```
 
 """
-function quat2angleaxis(q::Quaternion{T}) where T
+function quat_to_angleaxis(q::Quaternion{T}) where T
     a = atan( norm(vect(q)), q.q0 )*2
 
     # If `a` is 0, then select [1;0;0] as the Euler axis.
@@ -504,7 +504,7 @@ end
 # ==============================================================================
 
 """
-    function quat2angle(q::Quaternion, rot_seq::Symbol = :ZYX)
+    function quat_to_angle(q::Quaternion, rot_seq::Symbol = :ZYX)
 
 Convert the quaternion `q` to Euler Angles (see `EulerAngles`) given a rotation
 sequence `rot_seq`.
@@ -518,21 +518,21 @@ The rotation sequence is defined by a `:Symbol`. The possible values are:
 ```julia-repl
 julia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0);
 
-julia> quat2angle(q,:XYZ)
+julia> quat_to_angle(q,:XYZ)
 EulerAngles{Float64}(0.7853981633974484, 0.0, -0.0, :XYZ)
 ```
 
 """
-function quat2angle(q::Quaternion, rot_seq::Symbol=:ZYX)
-    # TODO: This function calls uses `angle2dcm` to convert the quaternion to a
-    # Direction Cosine Matrix. It **must** be rewritten to avoid this
+function quat_to_angle(q::Quaternion, rot_seq::Symbol=:ZYX)
+    # TODO: This function calls uses `angle_to_dcm` to convert the quaternion to
+    # a Direction Cosine Matrix. It **must** be rewritten to avoid this
     # intermediate step to increase the performance.
 
     # Convert the quaternion to DCM.
-    dcm = quat2dcm(q)
+    dcm = quat_to_dcm(q)
 
     # Convert the DCM to the Euler Angles.
-    dcm2angle(dcm, rot_seq)
+    dcm_to_angle(dcm, rot_seq)
 end
 
 ################################################################################

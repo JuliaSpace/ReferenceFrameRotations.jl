@@ -109,4 +109,6 @@ include("euler_angles.jl")
 include("inv_rotations.jl")
 include("quaternion.jl")
 
+include("deprecations.jl")
+
 end # module

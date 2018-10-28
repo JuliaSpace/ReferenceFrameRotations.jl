@@ -32,7 +32,7 @@ in which `R` must be a DCM or a Quaternion.
 
 
 ```jldoctest
-julia> D1 = angle2dcm(0.5,0.5,0.5,:XYZ);
+julia> D1 = angle_to_dcm(0.5,0.5,0.5,:XYZ);
 
 julia> D2 = inv_rotation(D1)
 3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
@@ -46,7 +46,7 @@ julia> D2*D1
  2.77556e-17  1.0          5.55112e-17
  0.0          5.55112e-17  1.0
 
-julia> q1 = angle2quat(0.5,0.5,0.5,:XYZ);
+julia> q1 = angle_to_quat(0.5,0.5,0.5,:XYZ);
 
 julia> q2 = inv_rotation(q1)
 Quaternion{Float64}:

@@ -21,13 +21,13 @@ method returns the following rotation:
 ![](../assets/Fig_Composing_Rotations.png)
 
 ```jldoctest
-julia> D1 = angle2dcm(0.5,0.5,0.5,:XYZ)
+julia> D1 = angle_to_dcm(0.5,0.5,0.5,:XYZ)
 3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
   0.770151   0.622447  -0.139381
  -0.420735   0.659956   0.622447
   0.479426  -0.420735   0.770151
 
-julia> D2 = angle2dcm(-0.5,-0.5,-0.5,:ZYX)
+julia> D2 = angle_to_dcm(-0.5,-0.5,-0.5,:ZYX)
 3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
   0.770151  -0.420735   0.479426
   0.622447   0.659956  -0.420735
@@ -39,9 +39,9 @@ julia> compose_rotation(D1,D2)
  2.77556e-17  1.0          5.55112e-17
  0.0          5.55112e-17  1.0
 
-julia> q1 = angle2quat(0.5,0.5,0.5,:XYZ);
+julia> q1 = angle_to_quat(0.5,0.5,0.5,:XYZ);
 
-julia> q2 = angle2quat(-0.5,-0.5,-0.5,:ZYX);
+julia> q2 = angle_to_quat(-0.5,-0.5,-0.5,:ZYX);
 
 julia> compose_rotation(q1,q2)
 Quaternion{Float64}:
