@@ -125,7 +125,31 @@ var documenterSearchIndex = {"docs": [
     "page": "Euler Angles",
     "title": "Euler Angles",
     "category": "section",
-    "text": "CurrentModule = ReferenceFrameRotations\nDocTestSetup = quote\n    using ReferenceFrameRotations\nendThe Euler Angles are defined by the following immutable structure:struct EulerAngles{T}\n    a1::T\n    a2::T\n    a3::T\n    rot_seq::Symbol\nendin which a1, a2, and a3 define the angles and the rot_seq is a symbol that defines the axes. The valid values for rot_seq are::XYX, :XYZ, :XZX, :XZY, :YXY, :YXZ, :YZX, :YZY, :ZXY, :ZXZ, :ZYX, and ZYZ.note: Note\nIn the current version, there is no support for operations using Euler Angles."
+    "text": "CurrentModule = ReferenceFrameRotations\nDocTestSetup = quote\n    using ReferenceFrameRotations\nendThe Euler Angles are defined by the following immutable structure:struct EulerAngles{T}\n    a1::T\n    a2::T\n    a3::T\n    rot_seq::Symbol\nendin which a1, a2, and a3 define the angles and the rot_seq is a symbol that defines the axes. The valid values for rot_seq are::XYX, :XYZ, :XZX, :XZY, :YXY, :YXZ, :YZX, :YZY, :ZXY, :ZXZ, :ZYX, and ZYZ."
+},
+
+{
+    "location": "man/euler_angles/#Operations-1",
+    "page": "Euler Angles",
+    "title": "Operations",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "man/euler_angles/#Multiplication-1",
+    "page": "Euler Angles",
+    "title": "Multiplication",
+    "category": "section",
+    "text": "The multiplication of two Euler angles is defined here as the composition of the rotations. Let Theta_1 and Theta_2 be two sequences of Euler angles (instances of the structure EulerAngles). Thus, the operation:Theta_21 = Theta_2 cdot Theta_1will return a new set of Euler angles Theta_21 that represents the composed rotation of Theta_1 followed by Theta_2. Notice that Theta_21 will be represented using the same rotation sequence as Theta_2.julia> a1 = EulerAngles(1,0,0,:ZYX);\n\njulia> a2 = EulerAngles(0,-1,0,:YZY);\n\njulia> a2*a1\nEulerAngles{Float64}(0.0, 0.0, 0.0, :YZY)\n\njulia> a1 = EulerAngles(1,1,1,:YZY);\n\njulia> a2 = EulerAngles(0,0,-1,:YZY);\n\njulia> a2*a1\nEulerAngles{Float64}(1.0, 0.9999999999999998, 1.3193836087867184e-16, :YZY)\n\njulia> a1 = EulerAngles(1.3,2.2,1.4,:XYZ);\n\njulia> a2 = EulerAngles(-1.4,-2.2,-1.3,:ZYX);\n\njulia> a2*a1\nEulerAngles{Float64}(-8.326672684688677e-17, 3.3306690738754696e-16, -1.1102230246251568e-16, :ZYX)"
+},
+
+{
+    "location": "man/euler_angles/#Inversion-1",
+    "page": "Euler Angles",
+    "title": "Inversion",
+    "category": "section",
+    "text": "The inv function applied to Euler angles will return the inverse rotation. If the Euler angles Theta represent a rotation through the axes a_1, a_2, and a_3 by angles alpha_1, alpha_2, and alpha_3, then Theta^-1 is a rotation through the axes a_3, a_2, and a_1 by angles -alpha_3, -alpha_2, and -alpha_1.julia> a = EulerAngles(1,2,3,:ZYX);\n\njulia> inv(a)\nEulerAngles{Int64}(-3, -2, -1, :XYZ)\n\njulia> a = EulerAngles(1.2,3.3,4.6,:XYX);\n\njulia> a*inv(a)\nEulerAngles{Float64}(-1.925929944387236e-34, 0.0, 0.0, :XYX)warning: Warning\nAll the operations related to Euler angles first convert them to DCM or Quaternions, and then the result is converted back to Euler angles. Hence, the performance will not be good."
 },
 
 {
@@ -221,7 +245,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Conversions",
     "title": "DCMs to Euler Angles",
     "category": "section",
-    "text": "A Direction Cosine Matrix (DCM) can be converted to Euler Angles using the following function:function dcm2angle(dcm, rot_seq=:ZYX)julia> dcm = DCM([1 0 0; 0 0 -1; 0 1 0]);\n\njulia> dcm2angle(dcm)\nEulerAngles{Float64}(0.0, 0.0, -1.5707963267948966, :ZYX)\n\njulia> dcm2angle(dcm, :XYZ)\nEulerAngles{Float64}(-1.5707963267948966, 0.0, 0.0, :XYZ)"
+    "text": "A Direction Cosine Matrix (DCM) can be converted to Euler Angles using the following function:function dcm_to_angle(dcm::DCM, rot_seq=:ZYX)julia> dcm = DCM([1 0 0; 0 0 -1; 0 1 0]);\n\njulia> dcm_to_angle(dcm)\nEulerAngles{Float64}(0.0, 0.0, -1.5707963267948966, :ZYX)\n\njulia> dcm_to_angle(dcm, :XYZ)\nEulerAngles{Float64}(-1.5707963267948966, 0.0, 0.0, :XYZ)"
 },
 
 {
@@ -229,7 +253,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Conversions",
     "title": "DCMs to Quaternions",
     "category": "section",
-    "text": "A DCM can be converted to quaternion using the following method:function dcm2quat(dcm)julia> dcm = DCM([1.0 0.0 0.0; 0.0 0.0 -1.0; 0.0 1.0 0.0]);\n\njulia> q   = dcm2quat(dcm)\nQuaternion{Float64}:\n  + 0.7071067811865476 - 0.7071067811865475.i + 0.0.j + 0.0.kwarning: Warning\nAvoid using DCMs with Int numbers like:dcm = DCM([1 0 0; 0 0 -1; 0 1 0])because it can lead to InexactError() when converting to Quaternions. This bug will be addressed in a future version of ReferenceFrameRotations.jl."
+    "text": "A DCM can be converted to quaternion using the following method:function dcm_to_quat(dcm::DCM)julia> dcm = DCM([1.0 0.0 0.0; 0.0 0.0 -1.0; 0.0 1.0 0.0]);\n\njulia> q   = dcm_to_quat(dcm)\nQuaternion{Float64}:\n  + 0.7071067811865476 - 0.7071067811865475.i + 0.0.j + 0.0.kwarning: Warning\nAvoid using DCMs with Int numbers like:dcm = DCM([1 0 0; 0 0 -1; 0 1 0])because it can lead to InexactError() when converting to Quaternions. This bug will be addressed in a future version of ReferenceFrameRotations.jl."
 },
 
 {
@@ -237,7 +261,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Conversions",
     "title": "Euler Angle and Axis to Quaternions",
     "category": "section",
-    "text": "A Euler angle and axis representation can be converted to quaternion using these two methods:function angleaxis2quat(a, v)\nfunction angleaxis2quat(angleaxis)julia> a = 60.0*pi/180;\n\njulia> v = [sqrt(3)/3;sqrt(3)/3;sqrt(3)/3];\n\njulia> angleaxis2quat(a,v)\nQuaternion{Float64}:\n  + 0.8660254037844387 + 0.2886751345948128.i + 0.2886751345948128.j + 0.2886751345948128.k\n\njulia> angleaxis = EulerAngleAxis(a,v);\n\njulia> angleaxis2quat(angleaxis)\nQuaternion{Float64}:\n  + 0.8660254037844387 + 0.2886751345948128.i + 0.2886751345948128.j + 0.2886751345948128.k"
+    "text": "A Euler angle and axis representation can be converted to quaternion using these two methods:function angleaxis_to_quat(a::Number, v::AbstractVector)\nfunction angleaxis_to_quat(angleaxis::EulerAngleAxis)julia> a = 60.0*pi/180;\n\njulia> v = [sqrt(3)/3;sqrt(3)/3;sqrt(3)/3];\n\njulia> angleaxis_to_quat(a,v)\nQuaternion{Float64}:\n  + 0.8660254037844387 + 0.2886751345948128.i + 0.2886751345948128.j + 0.2886751345948128.k\n\njulia> angleaxis = EulerAngleAxis(a,v);\n\njulia> angleaxis_to_quat(angleaxis)\nQuaternion{Float64}:\n  + 0.8660254037844387 + 0.2886751345948128.i + 0.2886751345948128.j + 0.2886751345948128.k"
 },
 
 {
@@ -245,7 +269,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Conversions",
     "title": "Euler Angles to Direction Cosine Matrices",
     "category": "section",
-    "text": "Euler angles can be converted to DCMs using the following functions:function angle2dcm(angle_r1, angle_r2, angle_r3, rot_seq=:ZYX)\nfunction angle2dcm(eulerang)julia> dcm = angle2dcm(pi/2, pi/4, pi/3, :ZYX)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  4.32978e-17  0.707107  -0.707107\n -0.5          0.612372   0.612372\n  0.866025     0.353553   0.353553\n\njulia> angles = EulerAngles(pi/2, pi/4, pi/3, :ZYX);\n\njulia> dcm    = angle2dcm(angles)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  4.32978e-17  0.707107  -0.707107\n -0.5          0.612372   0.612372\n  0.866025     0.353553   0.353553"
+    "text": "Euler angles can be converted to DCMs using the following functions:function angle_to_dcm(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)\nfunction angle_to_dcm(Θ::EulerAngles)julia> dcm = angle_to_dcm(pi/2, pi/4, pi/3, :ZYX)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  4.32978e-17  0.707107  -0.707107\n -0.5          0.612372   0.612372\n  0.866025     0.353553   0.353553\n\njulia> angles = EulerAngles(pi/2, pi/4, pi/3, :ZYX);\n\njulia> dcm    = angle_to_dcm(angles)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  4.32978e-17  0.707107  -0.707107\n -0.5          0.612372   0.612372\n  0.866025     0.353553   0.353553"
 },
 
 {
@@ -253,7 +277,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Conversions",
     "title": "Euler Angles to Quaternions",
     "category": "section",
-    "text": "Euler angles can be converted to quaternions using the following functions:function angle2quat(angle_r1, angle_r2, angle_r3, rot_seq=:ZYX)\nfunction angle2quat(eulerang)julia> q = angle2quat(pi/2, pi/4, pi/3, :ZYX)\nQuaternion{Float64}:\n  + 0.7010573846499779 + 0.09229595564125723.i + 0.5609855267969309.j + 0.43045933457687935.k\n\njulia> angles = EulerAngles(pi/2, pi/4, pi/3, :ZYX);\n\njulia> q    = angle2quat(angles)\nQuaternion{Float64}:\n  + 0.7010573846499779 + 0.09229595564125723.i + 0.5609855267969309.j + 0.43045933457687935.k"
+    "text": "Euler angles can be converted to quaternions using the following functions:function angle_to_quat(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)\nfunction angle_to_quat(Θ::EulerAngles)julia> q = angle_to_quat(pi/2, pi/4, pi/3, :ZYX)\nQuaternion{Float64}:\n  + 0.7010573846499779 + 0.09229595564125723.i + 0.5609855267969309.j + 0.43045933457687935.k\n\njulia> angles = EulerAngles(pi/2, pi/4, pi/3, :ZYX);\n\njulia> q    = angle_to_quat(angles)\nQuaternion{Float64}:\n  + 0.7010573846499779 + 0.09229595564125723.i + 0.5609855267969309.j + 0.43045933457687935.k"
 },
 
 {
@@ -261,7 +285,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Conversions",
     "title": "Small Euler Angles to Direction Cosine Matrices",
     "category": "section",
-    "text": "Small Euler angles can be converted to DCMs using the following function:function smallangle2dcm(θx, θy, θz)julia> dcm = smallangle2dcm(0.001, -0.002, +0.003)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  1.0     0.003  0.002\n -0.003   1.0    0.001\n -0.002  -0.001  1.0warning: Warning\nThe computed DCM is not ortho-normalized."
+    "text": "Small Euler angles can be converted to DCMs using the following function:function smallangle_to_dcm(θx::Number, θy::Number, θz::Number)julia> dcm = smallangle_to_dcm(0.001, -0.002, +0.003)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  1.0     0.003  0.002\n -0.003   1.0    0.001\n -0.002  -0.001  1.0warning: Warning\nThe computed DCM is not ortho-normalized."
 },
 
 {
@@ -269,7 +293,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Conversions",
     "title": "Small Euler Angles to Quaternions",
     "category": "section",
-    "text": "Small Euler angles can be converted to quaternions using the following function:function smallangle2quat(θx, θy, θz)julia> q = smallangle2quat(0.001, -0.002, +0.003)\nQuaternion{Float64}:\n  + 0.9999982500045936 + 0.0004999991250022968.i - 0.0009999982500045936.j + 0.0014999973750068907.knote: Note\nThe computed quaternion is normalized."
+    "text": "Small Euler angles can be converted to quaternions using the following function:function smallangle_to_quat(θx::Number, θy::Number, θz::Number)julia> q = smallangle_to_quat(0.001, -0.002, +0.003)\nQuaternion{Float64}:\n  + 0.9999982500045936 + 0.0004999991250022968.i - 0.0009999982500045936.j + 0.0014999973750068907.knote: Note\nThe computed quaternion is normalized."
 },
 
 {
@@ -277,7 +301,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Conversions",
     "title": "Quaternions to Direction Cosine Matrices",
     "category": "section",
-    "text": "A quaternion can be converted to DCM using the following method:function quat2dcm(q)julia> q   = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);\n\njulia> dcm = quat2dcm(q)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n 1.0   0.0       0.0\n 0.0   0.707107  0.707107\n 0.0  -0.707107  0.707107"
+    "text": "A quaternion can be converted to DCM using the following method:function quat_to_dcm(q::Quaternion)julia> q   = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);\n\njulia> dcm = quat_to_dcm(q)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n 1.0   0.0       0.0\n 0.0   0.707107  0.707107\n 0.0  -0.707107  0.707107"
 },
 
 {
@@ -285,7 +309,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Conversions",
     "title": "Quaternions to Euler Angle and Axis",
     "category": "section",
-    "text": "A quaternion can be converted to Euler Angle and Axis representation using the following function:function quat2angleaxis(q)julia> v = [sqrt(3)/3;sqrt(3)/3;sqrt(3)/3];\n\njulia> a = 60.0*pi/180;\n\njulia> q = Quaternion(cos(a/2), v*sin(a/2));\n\njulia> quat2angleaxis(q)\nEulerAngleAxis{Float64}(1.0471975511965974, [0.57735, 0.57735, 0.57735])"
+    "text": "A quaternion can be converted to Euler Angle and Axis representation using the following function:function quat_to_angleaxis(q::Quaternion)julia> v = [sqrt(3)/3;sqrt(3)/3;sqrt(3)/3];\n\njulia> a = 60.0*pi/180;\n\njulia> q = Quaternion(cos(a/2), v*sin(a/2));\n\njulia> quat_to_angleaxis(q)\nEulerAngleAxis{Float64}(1.0471975511965974, [0.57735, 0.57735, 0.57735])"
 },
 
 {
@@ -293,7 +317,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Conversions",
     "title": "Quaternions to Euler Angles",
     "category": "section",
-    "text": "There is one method to convert quaternions to Euler Angles:function quat2angle(q, rot_seq=:ZYX)However, it first transforms the quaternion to DCM using quat2dcm and then transforms the DCM into the Euler Angles. Hence, the performance will be poor. The improvement of this conversion will be addressed in a future version of ReferenceFrameRotations.jl.julia> q = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);\n\njulia> quat2angle(q, :XYZ)\nEulerAngles{Float64}(0.7853981633974484, 0.0, -0.0, :XYZ)"
+    "text": "There is one method to convert quaternions to Euler Angles:function quat_to_angle(q::Quaternion, rot_seq=:ZYX)However, it first transforms the quaternion to DCM using quat_to_dcm and then transforms the DCM into the Euler Angles. Hence, the performance will be poor. The improvement of this conversion will be addressed in a future version of ReferenceFrameRotations.jl.julia> q = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);\n\njulia> quat_to_angle(q, :XYZ)\nEulerAngles{Float64}(0.7853981633974484, 0.0, 0.0, :XYZ)"
 },
 
 {
@@ -317,7 +341,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Kinematics",
     "title": "Direction Cosine Matrices",
     "category": "section",
-    "text": "Let A and B be two reference frames in which the angular velocity of B with respect to A, and represented in B, is given byboldsymbolomega_bab = leftbeginarrayc\n    omega_babx \n    omega_baby \n    omega_babz\nendarrayrightIf mathbfD_b^a is the DCM that rotates the reference frame A into alignment with the reference frame B, then its time-derivative isdotmathbfD_b^a = -leftbeginarrayccc\n           0          -omega_babz  +omega_baby \n    +omega_babz         0          -omega_babx \n    -omega_baby  +omega_babx         0\nendarrayright cdot mathbfD_b^aIn this package, the time-derivative of this DCM can be computed using the function:function ddcm(Dba, wba_b)julia> wba_b = [0.01;0;0];\n\njulia> Dba = angle2dcm(0.5,0,0,:XYZ)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  1.0   0.0       0.0\n -0.0   0.877583  0.479426\n  0.0  -0.479426  0.877583\n\njulia> ddcm(Dba,wba_b)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n -0.0   0.0          0.0\n  0.0  -0.00479426   0.00877583\n  0.0  -0.00877583  -0.00479426"
+    "text": "Let A and B be two reference frames in which the angular velocity of B with respect to A, and represented in B, is given byboldsymbolomega_bab = leftbeginarrayc\n    omega_babx \n    omega_baby \n    omega_babz\nendarrayrightIf mathbfD_b^a is the DCM that rotates the reference frame A into alignment with the reference frame B, then its time-derivative isdotmathbfD_b^a = -leftbeginarrayccc\n           0          -omega_babz  +omega_baby \n    +omega_babz         0          -omega_babx \n    -omega_baby  +omega_babx         0\nendarrayright cdot mathbfD_b^aIn this package, the time-derivative of this DCM can be computed using the function:function ddcm(Dba, wba_b)julia> wba_b = [0.01;0;0];\n\njulia> Dba = angle_to_dcm(0.5,0,0,:XYZ)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  1.0   0.0       0.0\n -0.0   0.877583  0.479426\n  0.0  -0.479426  0.877583\n\njulia> ddcm(Dba,wba_b)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n -0.0   0.0          0.0\n  0.0  -0.00479426   0.00877583\n  0.0  -0.00877583  -0.00479426"
 },
 
 {
@@ -325,7 +349,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Kinematics",
     "title": "Quaternions",
     "category": "section",
-    "text": "Let A and B be two reference frames in which the angular velocity of B with respect to A, and represented in B, is given byboldsymbolomega_bab = leftbeginarrayc\n    omega_babx \n    omega_baby \n    omega_babz\nendarrayrightIf mathbfq_ba is the quaternion that rotates the reference frame A into alignment with the reference frame B, then its time-derivative isdotmathbfq_ba = frac12 cdot leftbeginarraycccc\n           0           -omega_babx   -omega_baby  -omega_babz \n    +omega_babx          0           +omega_babz  -omega_baby \n    +omega_baby   -omega_babz          0          +omega_babx \n    +omega_babz   +omega_baby   -omega_babx         0       \nendarrayright cdot mathbfq_baIn this package, the time-derivative of this quaternion can be computed using the function:function dquat(qba, wba_b)julia> wba_b = [0.01;0;0];\n\njulia> qba = angle2quat(0.5,0,0,:XYZ);\n\njulia> dquat(qba,wba_b)\nQuaternion{Float64}:\n  - 0.0012370197962726147 + 0.004844562108553224.i + 0.0.j + 0.0.k"
+    "text": "Let A and B be two reference frames in which the angular velocity of B with respect to A, and represented in B, is given byboldsymbolomega_bab = leftbeginarrayc\n    omega_babx \n    omega_baby \n    omega_babz\nendarrayrightIf mathbfq_ba is the quaternion that rotates the reference frame A into alignment with the reference frame B, then its time-derivative isdotmathbfq_ba = frac12 cdot leftbeginarraycccc\n           0           -omega_babx   -omega_baby  -omega_babz \n    +omega_babx          0           +omega_babz  -omega_baby \n    +omega_baby   -omega_babz          0          +omega_babx \n    +omega_babz   +omega_baby   -omega_babx         0       \nendarrayright cdot mathbfq_baIn this package, the time-derivative of this quaternion can be computed using the function:function dquat(qba, wba_b)julia> wba_b = [0.01;0;0];\n\njulia> qba = angle_to_quat(0.5,0,0,:XYZ);\n\njulia> dquat(qba,wba_b)\nQuaternion{Float64}:\n  - 0.0012370197962726147 + 0.004844562108553224.i + 0.0.j + 0.0.k"
 },
 
 {
@@ -341,7 +365,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Composing rotations",
     "title": "Composing rotations",
     "category": "section",
-    "text": "CurrentModule = ReferenceFrameRotations\nDocTestSetup = quote\n    using ReferenceFrameRotations\nendMultiple rotations represented by direction cosine matrices or quaternions can be composed using the function:compose_rotation(R1,R2,R3,R4...)in which R1, R2, R3, ..., must be simultaneously DCMs or Quaternions. This method returns the following rotation:(Image: )julia> D1 = angle2dcm(0.5,0.5,0.5,:XYZ)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  0.770151   0.622447  -0.139381\n -0.420735   0.659956   0.622447\n  0.479426  -0.420735   0.770151\n\njulia> D2 = angle2dcm(-0.5,-0.5,-0.5,:ZYX)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  0.770151  -0.420735   0.479426\n  0.622447   0.659956  -0.420735\n -0.139381   0.622447   0.770151\n\njulia> compose_rotation(D1,D2)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n 1.0          2.77556e-17  0.0\n 2.77556e-17  1.0          5.55112e-17\n 0.0          5.55112e-17  1.0\n\njulia> q1 = angle2quat(0.5,0.5,0.5,:XYZ);\n\njulia> q2 = angle2quat(-0.5,-0.5,-0.5,:ZYX);\n\njulia> compose_rotation(q1,q2)\nQuaternion{Float64}:\n  + 0.9999999999999998 + 0.0.i + 0.0.j + 0.0.k"
+    "text": "CurrentModule = ReferenceFrameRotations\nDocTestSetup = quote\n    using ReferenceFrameRotations\nendMultiple rotations represented by direction cosine matrices or quaternions can be composed using the function:compose_rotation(R1,R2,R3,R4...)in which R1, R2, R3, ..., must be simultaneously DCMs or Quaternions. This method returns the following rotation:(Image: )julia> D1 = angle_to_dcm(0.5,0.5,0.5,:XYZ)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  0.770151   0.622447  -0.139381\n -0.420735   0.659956   0.622447\n  0.479426  -0.420735   0.770151\n\njulia> D2 = angle_to_dcm(-0.5,-0.5,-0.5,:ZYX)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  0.770151  -0.420735   0.479426\n  0.622447   0.659956  -0.420735\n -0.139381   0.622447   0.770151\n\njulia> compose_rotation(D1,D2)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n 1.0          2.77556e-17  0.0\n 2.77556e-17  1.0          5.55112e-17\n 0.0          5.55112e-17  1.0\n\njulia> q1 = angle_to_quat(0.5,0.5,0.5,:XYZ);\n\njulia> q2 = angle_to_quat(-0.5,-0.5,-0.5,:ZYX);\n\njulia> compose_rotation(q1,q2)\nQuaternion{Float64}:\n  + 0.9999999999999998 + 0.0.i + 0.0.j + 0.0.k"
 },
 
 {
@@ -357,7 +381,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Inverting rotations",
     "title": "Inverting rotations",
     "category": "section",
-    "text": "CurrentModule = ReferenceFrameRotations\nDocTestSetup = quote\n    using ReferenceFrameRotations\nendA rotation represented by direction cosine matrix or quaternion can be inverted using the function:inv_rotation(R)in which R must be a DCM or a Quaternion.note: Note\nIf R is a DCM, then the transpose matrix will be returned. Hence, the user must ensure that the input matrix is ortho-normalized. Otherwise, the result will not be the inverse matrix of the input.If R is a Quaternion, then the conjugate quaternion will be returned. Hence, the user must ensure that the input quaternion is normalized (have unit norm). Otherwise, the result will not be the inverse quaternion of the input.These behaviors were selected to alleviate the computational burden.julia> D1 = angle2dcm(0.5,0.5,0.5,:XYZ);\n\njulia> D2 = inv_rotation(D1)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  0.770151  -0.420735   0.479426\n  0.622447   0.659956  -0.420735\n -0.139381   0.622447   0.770151\n\njulia> D2*D1\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n 1.0          2.77556e-17  0.0\n 2.77556e-17  1.0          5.55112e-17\n 0.0          5.55112e-17  1.0\n\njulia> q1 = angle2quat(0.5,0.5,0.5,:XYZ);\n\njulia> q2 = inv_rotation(q1)\nQuaternion{Float64}:\n  + 0.89446325406638 - 0.29156656802867026.i - 0.17295479161025828.j - 0.29156656802867026.k\n\njulia> q2*q1\nQuaternion{Float64}:\n  + 0.9999999999999998 + 0.0.i - 1.3877787807814457e-17.j + 0.0.k"
+    "text": "CurrentModule = ReferenceFrameRotations\nDocTestSetup = quote\n    using ReferenceFrameRotations\nendA rotation represented by direction cosine matrix or quaternion can be inverted using the function:inv_rotation(R)in which R must be a DCM or a Quaternion.note: Note\nIf R is a DCM, then the transpose matrix will be returned. Hence, the user must ensure that the input matrix is ortho-normalized. Otherwise, the result will not be the inverse matrix of the input.If R is a Quaternion, then the conjugate quaternion will be returned. Hence, the user must ensure that the input quaternion is normalized (have unit norm). Otherwise, the result will not be the inverse quaternion of the input.These behaviors were selected to alleviate the computational burden.julia> D1 = angle_to_dcm(0.5,0.5,0.5,:XYZ);\n\njulia> D2 = inv_rotation(D1)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  0.770151  -0.420735   0.479426\n  0.622447   0.659956  -0.420735\n -0.139381   0.622447   0.770151\n\njulia> D2*D1\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n 1.0          2.77556e-17  0.0\n 2.77556e-17  1.0          5.55112e-17\n 0.0          5.55112e-17  1.0\n\njulia> q1 = angle_to_quat(0.5,0.5,0.5,:XYZ);\n\njulia> q2 = inv_rotation(q1)\nQuaternion{Float64}:\n  + 0.89446325406638 - 0.29156656802867026.i - 0.17295479161025828.j - 0.29156656802867026.k\n\njulia> q2*q1\nQuaternion{Float64}:\n  + 0.9999999999999998 + 0.0.i - 1.3877787807814457e-17.j + 0.0.k"
 },
 
 {
@@ -449,67 +473,67 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib/library/#ReferenceFrameRotations.angle2dcm",
+    "location": "lib/library/#ReferenceFrameRotations.angle_to_dcm",
     "page": "Library",
-    "title": "ReferenceFrameRotations.angle2dcm",
+    "title": "ReferenceFrameRotations.angle_to_dcm",
     "category": "function",
-    "text": "function angle2dcm(angle_r1::Number, angle_r2::Number, angle_r3::Number, rot_seq::Symbol = :ZYX)\n\nConvert the Euler angles angle_r1, angle_r2, and angle_r3 [rad] with the rotation sequence rot_seq to a direction cosine matrix.\n\nThe rotation sequence is defined by a :Symbol. The possible values are: :XYX, XYZ, :XZX, :XZY, :YXY, :YXZ, :YZX, :YZY, :ZXY, :ZXZ, :ZYX, and :ZYZ. If no value is specified, then it defaults to :ZYX.\n\nRemarks\n\nThis function assigns dcm = A3 * A2 * A1 in which Ai is the DCM related with the i-th rotation, i Є [1,2,3].\n\nExample\n\ndcm = angle2dcm(pi/2, pi/3, pi/4, :ZYX)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  3.06162e-17  0.5       -0.866025\n -0.707107     0.612372   0.353553\n  0.707107     0.612372   0.353553\n\n\n\n\n\n"
+    "text": "function angle_to_dcm(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)\n\nConvert the Euler angles θ₁, θ₂, and θ₃ [rad] with the rotation sequence rot_seq to a direction cosine matrix.\n\nThe rotation sequence is defined by a :Symbol. The possible values are: :XYX, XYZ, :XZX, :XZY, :YXY, :YXZ, :YZX, :YZY, :ZXY, :ZXZ, :ZYX, and :ZYZ. If no value is specified, then it defaults to :ZYX.\n\nRemarks\n\nThis function assigns dcm = A3 * A2 * A1 in which Ai is the DCM related with the i-th rotation, i Є [1,2,3].\n\nExample\n\ndcm = angle_to_dcm(pi/2, pi/3, pi/4, :ZYX)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  3.06162e-17  0.5       -0.866025\n -0.707107     0.612372   0.353553\n  0.707107     0.612372   0.353553\n\n\n\n\n\n"
 },
 
 {
-    "location": "lib/library/#ReferenceFrameRotations.angle2dcm-Tuple{EulerAngles}",
+    "location": "lib/library/#ReferenceFrameRotations.angle_to_dcm-Tuple{EulerAngles}",
     "page": "Library",
-    "title": "ReferenceFrameRotations.angle2dcm",
+    "title": "ReferenceFrameRotations.angle_to_dcm",
     "category": "method",
-    "text": "function angle2dcm(eulerang::EulerAngles)\n\nConvert the Euler angles eulerang (see EulerAngles) to a direction cosine matrix.\n\nReturns\n\nThe direction cosine matrix.\n\nRemarks\n\nThis function assigns dcm = A3 * A2 * A1 in which Ai is the DCM related with the i-th rotation, i Є [1,2,3].\n\nExample\n\njulia> angle2dcm(EulerAngles(pi/2, pi/3, pi/4, :ZYX))\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  3.06162e-17  0.5       -0.866025\n -0.707107     0.612372   0.353553\n  0.707107     0.612372   0.353553\n\n\n\n\n\n"
+    "text": "function angle_to_dcm(Θ::EulerAngles)\n\nConvert the Euler angles Θ (see EulerAngles) to a direction cosine matrix.\n\nReturns\n\nThe direction cosine matrix.\n\nRemarks\n\nThis function assigns dcm = A3 * A2 * A1 in which Ai is the DCM related with the i-th rotation, i Є [1,2,3].\n\nExample\n\njulia> angle_to_dcm(EulerAngles(pi/2, pi/3, pi/4, :ZYX))\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  3.06162e-17  0.5       -0.866025\n -0.707107     0.612372   0.353553\n  0.707107     0.612372   0.353553\n\n\n\n\n\n"
 },
 
 {
-    "location": "lib/library/#ReferenceFrameRotations.angle2quat",
+    "location": "lib/library/#ReferenceFrameRotations.angle_to_quat",
     "page": "Library",
-    "title": "ReferenceFrameRotations.angle2quat",
+    "title": "ReferenceFrameRotations.angle_to_quat",
     "category": "function",
-    "text": "function angle2quat(angle_r1::Number, angle_r2::Number, angle_r3::Number, rot_seq::AbstractString=\"ZYX\")\n\nConvert the Euler angles angle_r1, angle_r2, and angle_r3 [rad] with the rotation sequence rot_seq to a quaternion.\n\nThe rotation sequence is defined by a :Symbol. The possible values are: :XYX, XYZ, :XZX, :XZY, :YXY, :YXZ, :YZX, :YZY, :ZXY, :ZXZ, :ZYX, and :ZYZ. If no value is specified, then it defaults to :ZYX.\n\nRemarks\n\nThis function assigns q = q1 * q2 * q3 in which qi is the quaternion related with the i-th rotation, i Є [1,2,3].\n\nExample\n\njulia> angle2quat(pi/2, pi/3, pi/4, :ZYX)\nQuaternion{Float64}:\n  + 0.7010573846499779 - 0.09229595564125714.i + 0.5609855267969309.j + 0.43045933457687935.k\n\n\n\n\n\n"
+    "text": "function angle_to_quat(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)\n\nConvert the Euler angles θ₁, θ₂, and θ₃ [rad] with the rotation sequence rot_seq to a quaternion.\n\nThe rotation sequence is defined by a :Symbol. The possible values are: :XYX, XYZ, :XZX, :XZY, :YXY, :YXZ, :YZX, :YZY, :ZXY, :ZXZ, :ZYX, and :ZYZ. If no value is specified, then it defaults to :ZYX.\n\nRemarks\n\nThis function assigns q = q1 * q2 * q3 in which qi is the quaternion related with the i-th rotation, i Є [1,2,3].\n\nExample\n\njulia> angle_to_quat(pi/2, pi/3, pi/4, :ZYX)\nQuaternion{Float64}:\n  + 0.7010573846499779 - 0.09229595564125714.i + 0.5609855267969309.j + 0.43045933457687935.k\n\n\n\n\n\n"
 },
 
 {
-    "location": "lib/library/#ReferenceFrameRotations.angle2quat-Tuple{EulerAngles}",
+    "location": "lib/library/#ReferenceFrameRotations.angle_to_quat-Tuple{EulerAngles}",
     "page": "Library",
-    "title": "ReferenceFrameRotations.angle2quat",
+    "title": "ReferenceFrameRotations.angle_to_quat",
     "category": "method",
-    "text": "function angle2quat(eulerang::EulerAngles)\n\nConvert the Euler angles eulerang (see EulerAngles) to a quaternion.\n\nRemarks\n\nThis function assigns q = q1 * q2 * q3 in which qi is the quaternion related with the i-th rotation, i Є [1,2,3].\n\nExample\n\njulia> angle2quat(pi/2, pi/3, pi/4, :ZYX)\nQuaternion{Float64}:\n  + 0.7010573846499779 - 0.09229595564125714.i + 0.5609855267969309.j + 0.43045933457687935.k\n\n\n\n\n\n"
+    "text": "function angle_to_quat(eulerang::EulerAngles)\n\nConvert the Euler angles eulerang (see EulerAngles) to a quaternion.\n\nRemarks\n\nThis function assigns q = q1 * q2 * q3 in which qi is the quaternion related with the i-th rotation, i Є [1,2,3].\n\nExample\n\njulia> angle_to_quat(pi/2, pi/3, pi/4, :ZYX)\nQuaternion{Float64}:\n  + 0.7010573846499779 - 0.09229595564125714.i + 0.5609855267969309.j + 0.43045933457687935.k\n\n\n\n\n\n"
 },
 
 {
-    "location": "lib/library/#ReferenceFrameRotations.angle2rot-Tuple{EulerAngles}",
+    "location": "lib/library/#ReferenceFrameRotations.angle_to_rot-Tuple{EulerAngles}",
     "page": "Library",
-    "title": "ReferenceFrameRotations.angle2rot",
+    "title": "ReferenceFrameRotations.angle_to_rot",
     "category": "method",
-    "text": "function angle2rot([T,] angle_r1::Number, angle_r2::Number, angle_r3::Number, rot_seq::Symbol = :ZYX)\n\nConvert the Euler angles eulerang (see EulerAngles) to a rotation description of type T, which can be DCM or Quaternion. If the type T is not specified, then it defaults to DCM.\n\nExample\n\njulia> dcm = angle2rot(EulerAngles(pi/2, pi/3, pi/4, :ZYX))\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  3.06162e-17  0.5       -0.866025\n -0.707107     0.612372   0.353553\n  0.707107     0.612372   0.353553\n\njulia> q   = angle2rot(Quaternion,EulerAngles(pi/2, pi/3, pi/4, :ZYX))\nQuaternion{Float64}:\n  + 0.7010573846499779 - 0.09229595564125714.i + 0.5609855267969309.j +\n  0.43045933457687935.k\n\n\n\n\n\n"
+    "text": "@inline angle_to_rot([T,] Θ::EulerAngles)\n\nConvert the Euler angles Θ (see EulerAngles) to a rotation description of type T, which can be DCM or Quaternion. If the type T is not specified, then it defaults to DCM.\n\nExample\n\njulia> dcm = angle_to_rot(EulerAngles(pi/2, pi/3, pi/4, :ZYX))\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  3.06162e-17  0.5       -0.866025\n -0.707107     0.612372   0.353553\n  0.707107     0.612372   0.353553\n\njulia> q   = angle_to_rot(Quaternion,EulerAngles(pi/2, pi/3, pi/4, :ZYX))\nQuaternion{Float64}:\n  + 0.7010573846499779 - 0.09229595564125714.i + 0.5609855267969309.j +\n  0.43045933457687935.k\n\n\n\n\n\n"
 },
 
 {
-    "location": "lib/library/#ReferenceFrameRotations.angle2rot-Tuple{Number,Number,Number,Symbol}",
+    "location": "lib/library/#ReferenceFrameRotations.angle_to_rot-Tuple{Number,Number,Number,Symbol}",
     "page": "Library",
-    "title": "ReferenceFrameRotations.angle2rot",
+    "title": "ReferenceFrameRotations.angle_to_rot",
     "category": "method",
-    "text": "function angle2rot([T,] angle_r1::Number, angle_r2::Number, angle_r3::Number, rot_seq::Symbol = :ZYX)\n\nConvert the Euler angles angle_r1, angle_r2, and angle_r3 [rad] with the rotation sequence rot_seq to a rotation description of type T, which can be DCM or Quaternion. If the type T is not specified, then it defaults to DCM.\n\nThe rotation sequence is defined by a :Symbol. The possible values are: :XYX, XYZ, :XZX, :XZY, :YXY, :YXZ, :YZX, :YZY, :ZXY, :ZXZ, :ZYX, and :ZYZ. If no value is specified, then it defaults to :ZYX.\n\nExample\n\njulia> dcm = angle2rot(pi/2, pi/3, pi/4, :ZYX)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  3.06162e-17  0.5       -0.866025\n -0.707107     0.612372   0.353553\n  0.707107     0.612372   0.353553\n\njulia> q   = angle2rot(Quaternion,pi/2, pi/3, pi/4, :ZYX)\nQuaternion{Float64}:\n  + 0.7010573846499779 - 0.09229595564125714.i + 0.5609855267969309.j + 0.43045933457687935.k\n\n\n\n\n\n"
+    "text": "@inline angle_to_rot([T,] θx::Number, θy::Number, θz::Number, rot_seq::Symbol)\n\nConvert the Euler angles Θx, Θy, and Θz [rad] with the rotation sequence rot_seq to a rotation description of type T, which can be DCM or Quaternion. If the type T is not specified, then it defaults to DCM.\n\nThe rotation sequence is defined by a :Symbol. The possible values are: :XYX, XYZ, :XZX, :XZY, :YXY, :YXZ, :YZX, :YZY, :ZXY, :ZXZ, :ZYX, and :ZYZ. If no value is specified, then it defaults to :ZYX.\n\nExample\n\njulia> dcm = angle_to_rot(pi/2, pi/3, pi/4, :ZYX)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  3.06162e-17  0.5       -0.866025\n -0.707107     0.612372   0.353553\n  0.707107     0.612372   0.353553\n\njulia> q   = angle_to_rot(Quaternion,pi/2, pi/3, pi/4, :ZYX)\nQuaternion{Float64}:\n  + 0.7010573846499779 - 0.09229595564125714.i + 0.5609855267969309.j + 0.43045933457687935.k\n\n\n\n\n\n"
 },
 
 {
-    "location": "lib/library/#ReferenceFrameRotations.angleaxis2quat-Tuple{EulerAngleAxis}",
+    "location": "lib/library/#ReferenceFrameRotations.angleaxis_to_quat-Tuple{EulerAngleAxis}",
     "page": "Library",
-    "title": "ReferenceFrameRotations.angleaxis2quat",
+    "title": "ReferenceFrameRotations.angleaxis_to_quat",
     "category": "method",
-    "text": "function angleaxis2quat(angleaxis::EulerAngleAxis)\n\nConvert a Euler angle and Euler axis angleaxis (see EulerAngleAxis) to a quaternion.\n\nRemarks\n\nIt is expected that the vector angleaxis.v is unitary. However, no verification is performed inside the function. The user must handle this situation.\n\nExample\n\njulia> v = [1;1;1];\n\njulia> v /= norm(v);\n\njulia> angleaxis2quat(EulerAngleAxis(pi/2,v))\nQuaternion{Float64}:\n  + 0.7071067811865476 + 0.408248290463863.i + 0.408248290463863.j + 0.408248290463863.k\n\n\n\n\n\n"
+    "text": "function angleaxis_to_quat(angleaxis::EulerAngleAxis)\n\nConvert a Euler angle and Euler axis angleaxis (see EulerAngleAxis) to a quaternion.\n\nRemarks\n\nIt is expected that the vector angleaxis.v is unitary. However, no verification is performed inside the function. The user must handle this situation.\n\nExample\n\njulia> v = [1;1;1];\n\njulia> v /= norm(v);\n\njulia> angleaxis_to_quat(EulerAngleAxis(pi/2,v))\nQuaternion{Float64}:\n  + 0.7071067811865476 + 0.408248290463863.i + 0.408248290463863.j + 0.408248290463863.k\n\n\n\n\n\n"
 },
 
 {
-    "location": "lib/library/#ReferenceFrameRotations.angleaxis2quat-Tuple{Number,AbstractArray{T,1} where T}",
+    "location": "lib/library/#ReferenceFrameRotations.angleaxis_to_quat-Tuple{Number,AbstractArray{T,1} where T}",
     "page": "Library",
-    "title": "ReferenceFrameRotations.angleaxis2quat",
+    "title": "ReferenceFrameRotations.angleaxis_to_quat",
     "category": "method",
-    "text": "function angleaxis2quat(a::Number, v::AbstractVector)\n\nConvert the Euler angle a [rad] and Euler axis v, which must be a unit vector, to a quaternion.\n\nRemarks\n\nIt is expected that the vector v is unitary. However, no verification is performed inside the function. The user must handle this situation.\n\nExample\n\njulia> v = [1;1;1];\n\njulia> v /= norm(v);\n\njulia> angleaxis2quat(pi/2,v)\nQuaternion{Float64}:\n  + 0.7071067811865476 + 0.408248290463863.i + 0.408248290463863.j + 0.408248290463863.k\n\n\n\n\n\n"
+    "text": "function angleaxis_to_quat(a::Number, v::AbstractVector)\n\nConvert the Euler angle a [rad] and Euler axis v, which must be a unit vector, to a quaternion.\n\nRemarks\n\nIt is expected that the vector v is unitary. However, no verification is performed inside the function. The user must handle this situation.\n\nExample\n\njulia> v = [1;1;1];\n\njulia> v /= norm(v);\n\njulia> angleaxis_to_quat(pi/2,v)\nQuaternion{Float64}:\n  + 0.7071067811865476 + 0.408248290463863.i + 0.408248290463863.j + 0.408248290463863.k\n\n\n\n\n\n"
 },
 
 {
@@ -517,7 +541,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Library",
     "title": "ReferenceFrameRotations.compose_rotation",
     "category": "method",
-    "text": "@inline function compose_rotation(R1, [, R2, R3, R4, R5, ...])\n\nCompute a composed rotation using the rotations R1, R2, R3, R4, ..., in the following order:\n\n First rotation\n |\n |\nR1 => R2 => R3 => R4 => ...\n       |\n       |\n       Second rotation\n\nThe rotations can be described by Direction Cosine Matrices or Quaternions. Notice, however, that all rotations must be of the same type (DCM or quaternion).\n\nThe output will have the same type as the inputs (DCM or quaternion).\n\nExample\n\njulia> D1 = angle2dcm(+pi/3,+pi/4,+pi/5,:ZYX);\n\njulia> D2 = angle2dcm(-pi/5,-pi/4,-pi/3,:XYZ);\n\njulia> compose_rotation(D1,D2)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n 1.0          0.0          5.55112e-17\n 0.0          1.0          5.55112e-17\n 5.55112e-17  5.55112e-17  1.0\n\njulia> q1 = angle2quat(+pi/3,+pi/4,+pi/5,:ZYX);\n\njulia> q2 = angle2quat(-pi/5,-pi/4,-pi/3,:XYZ);\n\njulia> compose_rotation(q1,q2)\nQuaternion{Float64}:\n  + 1.0 + 0.0.i + 2.0816681711721685e-17.j + 5.551115123125783e-17.k\n\n\n\n\n\n"
+    "text": "@inline function compose_rotation(R1, [, R2, R3, R4, R5, ...])\n\nCompute a composed rotation using the rotations R1, R2, R3, R4, ..., in the following order:\n\n First rotation\n |\n |\nR1 => R2 => R3 => R4 => ...\n       |\n       |\n       Second rotation\n\nThe rotations can be described by Direction Cosine Matrices or Quaternions. Notice, however, that all rotations must be of the same type (DCM or quaternion).\n\nThe output will have the same type as the inputs (DCM or quaternion).\n\nExample\n\njulia> D1 = angle_to_dcm(+pi/3,+pi/4,+pi/5,:ZYX);\n\njulia> D2 = angle_to_dcm(-pi/5,-pi/4,-pi/3,:XYZ);\n\njulia> compose_rotation(D1,D2)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n 1.0          0.0          5.55112e-17\n 0.0          1.0          5.55112e-17\n 5.55112e-17  5.55112e-17  1.0\n\njulia> q1 = angle_to_quat(+pi/3,+pi/4,+pi/5,:ZYX);\n\njulia> q2 = angle_to_quat(-pi/5,-pi/4,-pi/3,:XYZ);\n\njulia> compose_rotation(q1,q2)\nQuaternion{Float64}:\n  + 1.0 + 0.0.i + 2.0816681711721685e-17.j + 5.551115123125783e-17.k\n\n\n\n\n\n"
 },
 
 {
@@ -529,19 +553,19 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib/library/#ReferenceFrameRotations.dcm2angle",
+    "location": "lib/library/#ReferenceFrameRotations.dcm_to_angle-Union{Tuple{SArray{Tuple{3,3},T,2,9}}, Tuple{T}, Tuple{SArray{Tuple{3,3},T,2,9},Symbol}} where T<:Number",
     "page": "Library",
-    "title": "ReferenceFrameRotations.dcm2angle",
-    "category": "function",
-    "text": "function dcm2angle(dcm::DCM, rot_seq::Symbol=:ZYX)\n\nConvert the DCM dcm to Euler Angles (see EulerAngles) given a rotation sequence rot_seq.\n\nThe rotation sequence is defined by a :Symbol. The possible values are: :XYX, XYZ, :XZX, :XZY, :YXY, :YXZ, :YZX, :YZY, :ZXY, :ZXZ, :ZYX, and :ZYZ. If no value is specified, then it defaults to :ZYX.\n\nExample\n\njulia> D = DCM([1. 0. 0.; 0. 0. -1; 0. -1 0.]);\n\njulia> dcm2angle(D,:XYZ)\nReferenceFrameRotations.EulerAngles{Float64}(1.5707963267948966, 0.0, -0.0, :XYZ)\n\n\n\n\n\n"
+    "title": "ReferenceFrameRotations.dcm_to_angle",
+    "category": "method",
+    "text": "function dcm_to_angle(dcm::DCM, rot_seq::Symbol=:ZYX)\n\nConvert the DCM dcm to Euler Angles (see EulerAngles) given a rotation sequence rot_seq.\n\nThe rotation sequence is defined by a :Symbol. The possible values are: :XYX, XYZ, :XZX, :XZY, :YXY, :YXZ, :YZX, :YZY, :ZXY, :ZXZ, :ZYX, and :ZYZ. If no value is specified, then it defaults to :ZYX.\n\nExample\n\njulia> D = DCM([1. 0. 0.; 0. 0. -1; 0. -1 0.]);\n\njulia> dcm_to_angle(D,:XYZ)\nReferenceFrameRotations.EulerAngles{Float64}(1.5707963267948966, 0.0, -0.0, :XYZ)\n\n\n\n\n\n"
 },
 
 {
-    "location": "lib/library/#ReferenceFrameRotations.dcm2quat-Tuple{StaticArrays.SArray{Tuple{3,3},T,2,9} where T}",
+    "location": "lib/library/#ReferenceFrameRotations.dcm_to_quat-Tuple{StaticArrays.SArray{Tuple{3,3},T,2,9} where T}",
     "page": "Library",
-    "title": "ReferenceFrameRotations.dcm2quat",
+    "title": "ReferenceFrameRotations.dcm_to_quat",
     "category": "method",
-    "text": "function dcm2quat(dcm::DCM)\n\nConvert the DCM dcm to a quaternion. The type of the quaternion will be automatically selected by the constructor Quaternion to avoid InexactError.\n\nRemarks\n\nBy convention, the real part of the quaternion will always be positive. Moreover, the function does not check if dcm is a valid direction cosine matrix. This must be handle by the user.\n\nThis algorithm was obtained from:\n\nhttp://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/\n\nExample\n\njulia> dcm = angle2dcm(pi/2,0.0,0.0,:XYZ);\n\njulia> q   = dcm2quat(dcm)\nQuaternion{Float64}:\n  + 0.7071067811865476 + 0.7071067811865475.i + 0.0.j + 0.0.k\n\n\n\n\n\n"
+    "text": "function dcm_to_quat(dcm::DCM)\n\nConvert the DCM dcm to a quaternion. The type of the quaternion will be automatically selected by the constructor Quaternion to avoid InexactError.\n\nRemarks\n\nBy convention, the real part of the quaternion will always be positive. Moreover, the function does not check if dcm is a valid direction cosine matrix. This must be handle by the user.\n\nThis algorithm was obtained from:\n\nhttp://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/\n\nExample\n\njulia> dcm = angle_to_dcm(pi/2,0.0,0.0,:XYZ);\n\njulia> q   = dcm_to_quat(dcm)\nQuaternion{Float64}:\n  + 0.7071067811865476 + 0.7071067811865475.i + 0.0.j + 0.0.k\n\n\n\n\n\n"
 },
 
 {
@@ -565,55 +589,55 @@ var documenterSearchIndex = {"docs": [
     "page": "Library",
     "title": "ReferenceFrameRotations.inv_rotation",
     "category": "method",
-    "text": "@inline function inv_rotation(R)\n\nCompute the inverse rotation of R, which can be a Direction Cosine Matrix or Quaternion.\n\nThe output will have the same type as R (DCM or quaternion).\n\nRemarks\n\nIf R is a DCM, than its transpose is computed instead of its inverse to reduce the computational burden. The both are equal if the DCM has unit norm. This must be verified by the used.\n\nIf R is a quaternion, than its conjugate is computed instead of its inverse to reduce the computational burden. The both are equal if the quaternion has unit norm. This must be verified by the used.\n\nExample\n\njulia> D = angle2dcm(+pi/3,+pi/4,+pi/5,:ZYX);\n\njulia> inv_rotation(D)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  0.353553  -0.492816  0.795068\n  0.612372   0.764452  0.201527\n -0.707107   0.415627  0.572061\n\njulia> q = angle2quat(+pi/3,+pi/4,+pi/5,:ZYX);\n\njulia> inv_rotation(q)\nQuaternion{Float64}:\n  + 0.8200711519756747 - 0.06526868310243991.i - 0.45794027732580056.j - 0.336918398289752.k\n\n\n\n\n\n"
+    "text": "@inline function inv_rotation(R)\n\nCompute the inverse rotation of R, which can be a Direction Cosine Matrix or Quaternion.\n\nThe output will have the same type as R (DCM or quaternion).\n\nRemarks\n\nIf R is a DCM, than its transpose is computed instead of its inverse to reduce the computational burden. The both are equal if the DCM has unit norm. This must be verified by the used.\n\nIf R is a quaternion, than its conjugate is computed instead of its inverse to reduce the computational burden. The both are equal if the quaternion has unit norm. This must be verified by the used.\n\nExample\n\njulia> D = angle_to_dcm(+pi/3,+pi/4,+pi/5,:ZYX);\n\njulia> inv_rotation(D)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  0.353553  -0.492816  0.795068\n  0.612372   0.764452  0.201527\n -0.707107   0.415627  0.572061\n\njulia> q = angle_to_quat(+pi/3,+pi/4,+pi/5,:ZYX);\n\njulia> inv_rotation(q)\nQuaternion{Float64}:\n  + 0.8200711519756747 - 0.06526868310243991.i - 0.45794027732580056.j - 0.336918398289752.k\n\n\n\n\n\n"
 },
 
 {
-    "location": "lib/library/#ReferenceFrameRotations.quat2angle",
+    "location": "lib/library/#ReferenceFrameRotations.quat_to_angle",
     "page": "Library",
-    "title": "ReferenceFrameRotations.quat2angle",
+    "title": "ReferenceFrameRotations.quat_to_angle",
     "category": "function",
-    "text": "function quat2angle(q::Quaternion, rot_seq::Symbol = :ZYX)\n\nConvert the quaternion q to Euler Angles (see EulerAngles) given a rotation sequence rot_seq.\n\nThe rotation sequence is defined by a :Symbol. The possible values are: :XYX, XYZ, :XZX, :XZY, :YXY, :YXZ, :YZX, :YZY, :ZXY, :ZXZ, :ZYX, and :ZYZ. If no value is specified, then it defaults to :ZYX.\n\nExample\n\njulia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0);\n\njulia> quat2angle(q,:XYZ)\nEulerAngles{Float64}(0.7853981633974484, 0.0, -0.0, :XYZ)\n\n\n\n\n\n"
+    "text": "function quat_to_angle(q::Quaternion, rot_seq::Symbol = :ZYX)\n\nConvert the quaternion q to Euler Angles (see EulerAngles) given a rotation sequence rot_seq.\n\nThe rotation sequence is defined by a :Symbol. The possible values are: :XYX, XYZ, :XZX, :XZY, :YXY, :YXZ, :YZX, :YZY, :ZXY, :ZXZ, :ZYX, and :ZYZ. If no value is specified, then it defaults to :ZYX.\n\nExample\n\njulia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0);\n\njulia> quat_to_angle(q,:XYZ)\nEulerAngles{Float64}(0.7853981633974484, 0.0, -0.0, :XYZ)\n\n\n\n\n\n"
 },
 
 {
-    "location": "lib/library/#ReferenceFrameRotations.quat2angleaxis-Union{Tuple{Quaternion{T}}, Tuple{T}} where T",
+    "location": "lib/library/#ReferenceFrameRotations.quat_to_angleaxis-Union{Tuple{Quaternion{T}}, Tuple{T}} where T",
     "page": "Library",
-    "title": "ReferenceFrameRotations.quat2angleaxis",
+    "title": "ReferenceFrameRotations.quat_to_angleaxis",
     "category": "method",
-    "text": "function quat2angleaxis(q::Quaternion{T}) where T\n\nConvert the quaternion q to a Euler angle and axis representation (see EulerAngleAxis).\n\nRemarks\n\nThis function will not fail if the quaternion norm is not 1. However, the meaning of the results will not be defined, because the input quaternion does not represent a 3D rotation. The user must handle such situations.\n\nExample\n\njulia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0);\n\njulia> quat2angleaxis(q)\nEulerAngleAxis{Float64}(0.7853981633974484, [1.0, 0.0, 0.0])\n\n\n\n\n\n"
+    "text": "function quat_to_angleaxis(q::Quaternion{T}) where T\n\nConvert the quaternion q to a Euler angle and axis representation (see EulerAngleAxis).\n\nRemarks\n\nThis function will not fail if the quaternion norm is not 1. However, the meaning of the results will not be defined, because the input quaternion does not represent a 3D rotation. The user must handle such situations.\n\nExample\n\njulia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0);\n\njulia> quat_to_angleaxis(q)\nEulerAngleAxis{Float64}(0.7853981633974484, [1.0, 0.0, 0.0])\n\n\n\n\n\n"
 },
 
 {
-    "location": "lib/library/#ReferenceFrameRotations.quat2dcm-Tuple{Quaternion}",
+    "location": "lib/library/#ReferenceFrameRotations.quat_to_dcm-Tuple{Quaternion}",
     "page": "Library",
-    "title": "ReferenceFrameRotations.quat2dcm",
+    "title": "ReferenceFrameRotations.quat_to_dcm",
     "category": "method",
-    "text": "function quat2dcm(q::Quaternion)\n\nConvert the quaternion q to a Direction Cosine Matrix (DCM).\n\nExample\n\njulia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0);\n\njulia> quat2dcm(q)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n 1.0   0.0       0.0\n 0.0   0.707107  0.707107\n 0.0  -0.707107  0.707107\n\n\n\n\n\n"
+    "text": "function quat_to_dcm(q::Quaternion)\n\nConvert the quaternion q to a Direction Cosine Matrix (DCM).\n\nExample\n\njulia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0);\n\njulia> quat_to_dcm(q)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n 1.0   0.0       0.0\n 0.0   0.707107  0.707107\n 0.0  -0.707107  0.707107\n\n\n\n\n\n"
 },
 
 {
-    "location": "lib/library/#ReferenceFrameRotations.smallangle2dcm-Tuple{Number,Number,Number}",
+    "location": "lib/library/#ReferenceFrameRotations.smallangle_to_dcm-Tuple{Number,Number,Number}",
     "page": "Library",
-    "title": "ReferenceFrameRotations.smallangle2dcm",
+    "title": "ReferenceFrameRotations.smallangle_to_dcm",
     "category": "method",
-    "text": "function smallangle2dcm(θx::Number, θy::Number, θz::Number)\n\nCreate a direction cosine matrix from three small rotations of angles θx, θy, and θz [rad] about the axes X, Y, and Z, respectively.\n\nRemarks\n\nNo process of ortho-normalization is performed with the computed DCM.\n\nExample\n\njulia> smallangle2dcm(+0.01, -0.01, +0.01)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  1.0    0.01  0.01\n -0.01   1.0   0.01\n -0.01  -0.01  1.0\n\n\n\n\n\n"
+    "text": "function smallangle_to_dcm(θx::Number, θy::Number, θz::Number)\n\nCreate a direction cosine matrix from three small rotations of angles θx, θy, and θz [rad] about the axes X, Y, and Z, respectively.\n\nRemarks\n\nNo process of ortho-normalization is performed with the computed DCM.\n\nExample\n\njulia> smallangle_to_dcm(+0.01, -0.01, +0.01)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  1.0    0.01  0.01\n -0.01   1.0   0.01\n -0.01  -0.01  1.0\n\n\n\n\n\n"
 },
 
 {
-    "location": "lib/library/#ReferenceFrameRotations.smallangle2quat-Tuple{Number,Number,Number}",
+    "location": "lib/library/#ReferenceFrameRotations.smallangle_to_quat-Tuple{Number,Number,Number}",
     "page": "Library",
-    "title": "ReferenceFrameRotations.smallangle2quat",
+    "title": "ReferenceFrameRotations.smallangle_to_quat",
     "category": "method",
-    "text": "function smallangle2quat(θx::Number, θy::Number, θz::Number)\n\nCreate a quaternion from three small rotations of angles θx, θy, and θz [rad] about the axes X, Y, and Z, respectively.\n\nRemarks\n\nThe quaternion is normalized.\n\nExample\n\njulia> smallangle2quat(+0.01, -0.01, +0.01)\nQuaternion{Float64}:\n  + 0.9999625021092433 + 0.004999812510546217.i - 0.004999812510546217.j + 0.004999812510546217.k\n\n\n\n\n\n"
+    "text": "function smallangle_to_quat(θx::Number, θy::Number, θz::Number)\n\nCreate a quaternion from three small rotations of angles θx, θy, and θz [rad] about the axes X, Y, and Z, respectively.\n\nRemarks\n\nThe quaternion is normalized.\n\nExample\n\njulia> smallangle_to_quat(+0.01, -0.01, +0.01)\nQuaternion{Float64}:\n  + 0.9999625021092433 + 0.004999812510546217.i - 0.004999812510546217.j + 0.004999812510546217.k\n\n\n\n\n\n"
 },
 
 {
-    "location": "lib/library/#ReferenceFrameRotations.smallangle2rot-Tuple{Number,Number,Number}",
+    "location": "lib/library/#ReferenceFrameRotations.smallangle_to_rot-Tuple{Number,Number,Number}",
     "page": "Library",
-    "title": "ReferenceFrameRotations.smallangle2rot",
+    "title": "ReferenceFrameRotations.smallangle_to_rot",
     "category": "method",
-    "text": "function smallangle2rot([T,] θx::Number, θy::Number, θz::Number)\n\nCreate a rotation description of type T from three small rotations of angles θx, θy, and θz [rad] about the axes X, Y, and Z, respectively.\n\nThe type T of the rotation description can be DCM or Quaternion. If the type T is not specified, then if defaults to DCM.\n\nReturns\n\nThe rotation description according to the type T.\n\nExample\n\njulia> dcm = smallangle2rot(+0.01, -0.01, +0.01);\n\njulia> q   = smallangle2rot(Quaternion,+0.01, -0.01, +0.01);\n\njulia> dcm = smallangle2rot(+0.01, -0.01, +0.01)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  1.0    0.01  0.01\n -0.01   1.0   0.01\n -0.01  -0.01  1.0\n\njulia> q   = smallangle2rot(Quaternion,+0.01, -0.01, +0.01)\nQuaternion{Float64}:\n  + 0.9999625021092433 + 0.004999812510546217.i - 0.004999812510546217.j + 0.004999812510546217.k\n\n\n\n\n\n"
+    "text": "function smallangle_to_rot([T,] θx::Number, θy::Number, θz::Number)\n\nCreate a rotation description of type T from three small rotations of angles θx, θy, and θz [rad] about the axes X, Y, and Z, respectively.\n\nThe type T of the rotation description can be DCM or Quaternion. If the type T is not specified, then if defaults to DCM.\n\nReturns\n\nThe rotation description according to the type T.\n\nExample\n\njulia> dcm = smallangle_to_rot(+0.01, -0.01, +0.01);\n\njulia> q   = smallangle_to_rot(Quaternion,+0.01, -0.01, +0.01);\n\njulia> dcm = smallangle_to_rot(+0.01, -0.01, +0.01)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  1.0    0.01  0.01\n -0.01   1.0   0.01\n -0.01  -0.01  1.0\n\njulia> q   = smallangle_to_rot(Quaternion,+0.01, -0.01, +0.01)\nQuaternion{Float64}:\n  + 0.9999625021092433 + 0.004999812510546217.i - 0.004999812510546217.j + 0.004999812510546217.k\n\n\n\n\n\n"
 },
 
 {
@@ -630,6 +654,14 @@ var documenterSearchIndex = {"docs": [
     "title": "Base.:*",
     "category": "method",
     "text": "@inline function *(v::AbstractVector, q::Quaternion)\n@inline function *(q::Quaternion, v::AbstractVector)\n\nCompute the multiplication qv*q or q*qv in which qv is a quaternion with real part 0 and vectorial/imaginary part v (Hamilton product).\n\n\n\n\n\n"
+},
+
+{
+    "location": "lib/library/#Base.:*-Tuple{EulerAngles,EulerAngles}",
+    "page": "Library",
+    "title": "Base.:*",
+    "category": "method",
+    "text": "function *(Θ₂::EulerAngles, Θ₁::EulerAngles)\n\nCompute the composed rotation of Θ₁ -> Θ₂. Notice that the rotation will be represented by Euler angles (see EulerAngles) with the same rotation sequence as Θ₂.\n\n\n\n\n\n"
 },
 
 {
@@ -766,6 +798,14 @@ var documenterSearchIndex = {"docs": [
     "title": "Base.imag",
     "category": "method",
     "text": "@inline function imag(q::Quaternion)\n\nReturn the vectorial or imaginary part of the quaternion q represented by a 3 × 1 vector of type SVector{3}.\n\n\n\n\n\n"
+},
+
+{
+    "location": "lib/library/#Base.inv-Tuple{EulerAngles}",
+    "page": "Library",
+    "title": "Base.inv",
+    "category": "method",
+    "text": "function inv(Θ::EulerAngles)\n\nReturn the Euler angles that represent the inverse rotation of Θ. Notice that the rotation sequence of the result will be the inverse of the input. Hence, if the input rotation sequence is, for example, :XYZ, then the result will be represented using :ZYX.\n\n\n\n\n\n"
 },
 
 {

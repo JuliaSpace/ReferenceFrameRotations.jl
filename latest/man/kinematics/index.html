@@ -9,7 +9,7 @@
     -\omega_{ba,b,y} &amp; +\omega_{ba,b,x} &amp;        0
 \end{array}\right] \cdot \mathbf{D}_{b}^{a}~.\]</div><p>In this package, the time-derivative of this DCM can be computed using the function:</p><pre><code class="language-julia">function ddcm(Dba, wba_b)</code></pre><pre><code class="language-julia-repl">julia&gt; wba_b = [0.01;0;0];
 
-julia&gt; Dba = angle2dcm(0.5,0,0,:XYZ)
+julia&gt; Dba = angle_to_dcm(0.5,0,0,:XYZ)
 3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
   1.0   0.0       0.0
  -0.0   0.877583  0.479426
@@ -30,7 +30,7 @@ julia&gt; ddcm(Dba,wba_b)
     +\omega_{ba,b,z} &amp;  +\omega_{ba,b,y} &amp;  -\omega_{ba,b,x} &amp;        0       
 \end{array}\right] \cdot \mathbf{q}_{ba}~.\]</div><p>In this package, the time-derivative of this quaternion can be computed using the function:</p><pre><code class="language-julia">function dquat(qba, wba_b)</code></pre><pre><code class="language-julia-repl">julia&gt; wba_b = [0.01;0;0];
 
-julia&gt; qba = angle2quat(0.5,0,0,:XYZ);
+julia&gt; qba = angle_to_quat(0.5,0,0,:XYZ);
 
 julia&gt; dquat(qba,wba_b)
 Quaternion{Float64}:
