@@ -57,7 +57,7 @@ EulerAngleAxis{Float64}(1.0, [1.0, 1.0, 1.0])
 
 The multiplication of two Euler angle and axis sets is defined here as the
 composition of the rotations. Let ``\Theta_1`` and ``\Theta_2`` be two Euler
-angle and axis set (instances of the structure `EulerAngleAxis`).  Thus, the
+angle and axis sets (instances of the structure `EulerAngleAxis`).  Thus, the
 operation:
 
 ```math
