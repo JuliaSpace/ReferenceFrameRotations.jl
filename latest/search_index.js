@@ -125,7 +125,15 @@ var documenterSearchIndex = {"docs": [
     "page": "Euler Angle and Axis",
     "title": "Multiplication",
     "category": "section",
-    "text": "The multiplication of two Euler angle and axis sets is defined here as the composition of the rotations. Let Theta_1 and Theta_2 be two Euler angle and axis set (instances of the structure EulerAngleAxis).  Thus, the operation:Theta_21 = Theta_2 cdot Theta_1will return a new set of Euler angle and axis Theta_21 that represents the composed rotation of Theta_1 followed by Theta_2.warning: Warning\nThis operation is only valid if the vector of the Euler angle and axis set is unitary. The multiplication function does not verify this and does not normalize the vector.julia> ea1 = EulerAngleAxis(30*pi/180, [1.0;0.0;0.0])\nEulerAngleAxis{Float64}(0.5235987755982988, [1.0, 0.0, 0.0])\n\njulia> ea2 = EulerAngleAxis(60*pi/180, [1.0;0.0;0.0])\nEulerAngleAxis{Float64}(1.0471975511965976, [1.0, 0.0, 0.0])\n\njulia> ea2*ea1\nEulerAngleAxis{Float64}(1.5707963267948966, [1.0, 0.0, 0.0])"
+    "text": "The multiplication of two Euler angle and axis sets is defined here as the composition of the rotations. Let Theta_1 and Theta_2 be two Euler angle and axis sets (instances of the structure EulerAngleAxis).  Thus, the operation:Theta_21 = Theta_2 cdot Theta_1will return a new set of Euler angle and axis Theta_21 that represents the composed rotation of Theta_1 followed by Theta_2.warning: Warning\nThis operation is only valid if the vector of the Euler angle and axis set is unitary. The multiplication function does not verify this and does not normalize the vector.julia> ea1 = EulerAngleAxis(30*pi/180, [1.0;0.0;0.0])\nEulerAngleAxis{Float64}(0.5235987755982988, [1.0, 0.0, 0.0])\n\njulia> ea2 = EulerAngleAxis(60*pi/180, [1.0;0.0;0.0])\nEulerAngleAxis{Float64}(1.0471975511965976, [1.0, 0.0, 0.0])\n\njulia> ea2*ea1\nEulerAngleAxis{Float64}(1.5707963267948966, [1.0, 0.0, 0.0])"
+},
+
+{
+    "location": "man/euler_angle_axis/#Inversion-1",
+    "page": "Euler Angle and Axis",
+    "title": "Inversion",
+    "category": "section",
+    "text": "The inv function applied to Euler angle and axis will return the inverse rotation. Hence, if the Euler angle is a and the Euler axis is aligned with the unitary vector v, then it will return a as the Euler angle and -v as the Euler axis.julia> ea = EulerAngleAxis(1.3,[1.0,0,0]);\n\njulia> inv(ea)\nEulerAngleAxis{Float64}(1.3, [-1.0, -0.0, -0.0])\n\njulia> ea = EulerAngleAxis(-π,[sqrt(3),sqrt(3),sqrt(3)]);\n\njulia> inv(ea)\nEulerAngleAxis{Float64}(-3.141592653589793, [-1.73205, -1.73205, -1.73205])"
 },
 
 {
@@ -478,6 +486,14 @@ var documenterSearchIndex = {"docs": [
     "title": "ReferenceFrameRotations.Quaternion",
     "category": "method",
     "text": "function Quaternion(u::UniformScaling{T}) where T\nfunction Quaternion{T}(u::UniformScaling) where T\n\nCreate the quaternion u.λ + 0.i + 0.j + 0.k.\n\n\n\n\n\n"
+},
+
+{
+    "location": "lib/library/#Base.inv-Tuple{EulerAngleAxis}",
+    "page": "Library",
+    "title": "Base.inv",
+    "category": "method",
+    "text": "@inline function inv(ea::EulerAngleAxis)\n\nCompute the inverse rotation of ea.\n\n\n\n\n\n"
 },
 
 {
