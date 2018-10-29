@@ -109,7 +109,23 @@ var documenterSearchIndex = {"docs": [
     "page": "Euler Angle and Axis",
     "title": "Euler Angle and Axis",
     "category": "section",
-    "text": "CurrentModule = ReferenceFrameRotations\nDocTestSetup = quote\n    using ReferenceFrameRotations\nendThe Euler angle and axis representation is defined by the following immutable structure:struct EulerAngleAxis{T}\n    a::T\n    v::SVector{3,T}\nendin which a is the Euler Angle and v is a unitary vector aligned with the Euler axis.The constructor for this structure is:function EulerAngleAxis(a::T1, v::AbstractVector{T2}) where {T1,T2}in which a EulerAngleAxis with angle a [rad] and vector v will be created. Notice that the type of the returned structure will be selected according to the input types T1 and T2. Furthermore, the vector v will not be normalized.julia> EulerAngleAxis(1,[1,1,1])\nEulerAngleAxis{Int64}(1, [1, 1, 1])\n\njulia> EulerAngleAxis(1.f0,[1,1,1])\nEulerAngleAxis{Float32}(1.0f0, Float32[1.0, 1.0, 1.0])\n\njulia> EulerAngleAxis(1,[1,1,1.f0])\nEulerAngleAxis{Float32}(1.0f0, Float32[1.0, 1.0, 1.0])\n\njulia> EulerAngleAxis(1.0,[1,1,1])\nEulerAngleAxis{Float64}(1.0, [1.0, 1.0, 1.0])note: Note\nThe support of this representation is still incomplete. Only the conversion to and from quaternions are implemented. Furthermore, there is no support for operations using Euler angles and axes."
+    "text": "CurrentModule = ReferenceFrameRotations\nDocTestSetup = quote\n    using ReferenceFrameRotations\nendThe Euler angle and axis representation is defined by the following immutable structure:struct EulerAngleAxis{T}\n    a::T\n    v::SVector{3,T}\nendin which a is the Euler Angle and v is a unitary vector aligned with the Euler axis.The constructor for this structure is:function EulerAngleAxis(a::T1, v::AbstractVector{T2}) where {T1,T2}in which a EulerAngleAxis with angle a [rad] and vector v will be created. Notice that the type of the returned structure will be selected according to the input types T1 and T2. Furthermore, the vector v will not be normalized.julia> EulerAngleAxis(1,[1,1,1])\nEulerAngleAxis{Int64}(1, [1, 1, 1])\n\njulia> EulerAngleAxis(1.f0,[1,1,1])\nEulerAngleAxis{Float32}(1.0f0, Float32[1.0, 1.0, 1.0])\n\njulia> EulerAngleAxis(1,[1,1,1.f0])\nEulerAngleAxis{Float32}(1.0f0, Float32[1.0, 1.0, 1.0])\n\njulia> EulerAngleAxis(1.0,[1,1,1])\nEulerAngleAxis{Float64}(1.0, [1.0, 1.0, 1.0])note: Note\nThe support of this representation is still incomplete. Only the conversion to and from quaternions are implemented."
+},
+
+{
+    "location": "man/euler_angle_axis/#Operations-1",
+    "page": "Euler Angle and Axis",
+    "title": "Operations",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "man/euler_angle_axis/#Multiplication-1",
+    "page": "Euler Angle and Axis",
+    "title": "Multiplication",
+    "category": "section",
+    "text": "The multiplication of two Euler angle and axis sets is defined here as the composition of the rotations. Let Theta_1 and Theta_2 be two Euler angle and axis set (instances of the structure EulerAngleAxis).  Thus, the operation:Theta_21 = Theta_2 cdot Theta_1will return a new set of Euler angle and axis Theta_21 that represents the composed rotation of Theta_1 followed by Theta_2.warning: Warning\nThis operation is only valid if the vector of the Euler angle and axis set is unitary. The multiplication function does not verify this and does not normalize the vector.julia> ea1 = EulerAngleAxis(30*pi/180, [1.0;0.0;0.0])\nEulerAngleAxis{Float64}(0.5235987755982988, [1.0, 0.0, 0.0])\n\njulia> ea2 = EulerAngleAxis(60*pi/180, [1.0;0.0;0.0])\nEulerAngleAxis{Float64}(1.0471975511965976, [1.0, 0.0, 0.0])\n\njulia> ea2*ea1\nEulerAngleAxis{Float64}(1.5707963267948966, [1.0, 0.0, 0.0])"
 },
 
 {
@@ -465,6 +481,22 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "lib/library/#Base.inv-Tuple{EulerAngles}",
+    "page": "Library",
+    "title": "Base.inv",
+    "category": "method",
+    "text": "function inv(Θ::EulerAngles)\n\nReturn the Euler angles that represent the inverse rotation of Θ. Notice that the rotation sequence of the result will be the inverse of the input. Hence, if the input rotation sequence is, for example, :XYZ, then the result will be represented using :ZYX.\n\n\n\n\n\n"
+},
+
+{
+    "location": "lib/library/#Base.inv-Tuple{Quaternion}",
+    "page": "Library",
+    "title": "Base.inv",
+    "category": "method",
+    "text": "@inline function inv(q::Quaternion)\n\nCompute the inverse of the quaternion q:\n\nconj(q)\n-------\n  |q|²\n\n\n\n\n\n"
+},
+
+{
     "location": "lib/library/#LinearAlgebra.norm-Tuple{Quaternion}",
     "page": "Library",
     "title": "LinearAlgebra.norm",
@@ -689,6 +721,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "lib/library/#Base.:*-Union{Tuple{T2}, Tuple{T1}, Tuple{EulerAngleAxis{T1},EulerAngleAxis{T2}}} where T2 where T1",
+    "page": "Library",
+    "title": "Base.:*",
+    "category": "method",
+    "text": "function *(ea₂::EulerAngleAxis{T1}, ea₁::EulerAngleAxis{T2}) where {T1,T2}\n\nCompute the composed rotation of ea₁ -> ea₂. Notice that the rotation will be represented by a Euler angle and axis (see EulerAngleAxis). By convention, the output angle will always be in the range [0, 2π] [rad].\n\nNotice that the vector representing the axis in ea₁ and ea₂ must be unitary. This function neither verifies this nor normalizes the vector.\n\n\n\n\n\n"
+},
+
+{
     "location": "lib/library/#Base.:+-Tuple{LinearAlgebra.UniformScaling,Quaternion}",
     "page": "Library",
     "title": "Base.:+",
@@ -798,22 +838,6 @@ var documenterSearchIndex = {"docs": [
     "title": "Base.imag",
     "category": "method",
     "text": "@inline function imag(q::Quaternion)\n\nReturn the vectorial or imaginary part of the quaternion q represented by a 3 × 1 vector of type SVector{3}.\n\n\n\n\n\n"
-},
-
-{
-    "location": "lib/library/#Base.inv-Tuple{EulerAngles}",
-    "page": "Library",
-    "title": "Base.inv",
-    "category": "method",
-    "text": "function inv(Θ::EulerAngles)\n\nReturn the Euler angles that represent the inverse rotation of Θ. Notice that the rotation sequence of the result will be the inverse of the input. Hence, if the input rotation sequence is, for example, :XYZ, then the result will be represented using :ZYX.\n\n\n\n\n\n"
-},
-
-{
-    "location": "lib/library/#Base.inv-Tuple{Quaternion}",
-    "page": "Library",
-    "title": "Base.inv",
-    "category": "method",
-    "text": "@inline function inv(q::Quaternion)\n\nCompute the inverse of the quaternion q:\n\nconj(q)\n-------\n  |q|²\n\n\n\n\n\n"
 },
 
 {
