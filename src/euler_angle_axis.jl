@@ -29,14 +29,22 @@ function *(ea₂::EulerAngleAxis{T1}, ea₁::EulerAngleAxis{T2}) where {T1,T2}
     v₁ = ea₁.v
     v₂ = ea₂.v
 
-    # Compute the new Euler angle and axis [0, 2π].
-    θ = mod(2acos(cθ₁o2*cθ₂o2 - sθ₁o2*sθ₂o2 * dot(v₁, v₂)), T(2)*π)
+    # Compute `cos(θ/2)` in which `θ` is the new Euler angle.
+    cθo2 = cθ₁o2*cθ₂o2 - sθ₁o2*sθ₂o2 * dot(v₁, v₂)
 
-    if (θ == 0) || (θ == 2π)
-        # Avoid division by zero.
+    # Avoid numerical errors.
+    (abs(cθo2) > 1) && ( cθo2 = sign(cθo2) )
+
+    # Compute `sin(θ/2)` in which `θ` is the new Euler angle.
+    sθo2 = sqrt(1 - cθo2*cθo2)
+
+    if sθo2 == 0
+        # In this case, the rotation is the identity.
+        θ = T(0)
         a = SVector{3,T}(0,0,0)
     else
-        a = ( sθ₁o2*cθ₂o2*v₁ + cθ₁o2*sθ₂o2*v₂ + sθ₁o2*sθ₂o2*(v₁ × v₂) )/sin(θ/2)
+        θ = 2atan( sθo2, cθo2 )
+        a = ( sθ₁o2*cθ₂o2*v₁ + cθ₁o2*sθ₂o2*v₂ + sθ₁o2*sθ₂o2*(v₁ × v₂) )/sθo2
     end
 
     EulerAngleAxis(θ, a)
