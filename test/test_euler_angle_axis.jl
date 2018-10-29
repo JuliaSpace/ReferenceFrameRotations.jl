@@ -16,11 +16,11 @@ for k = 1:samples
 
     # Test multiplication.
     a1  = -π + 2*π*rand()
-    v1  = rand(3)
+    v1  = randn(3)
     v1 /= norm(v1)
 
     a2  = -π + 2*π*rand()
-    v2  = rand(3)
+    v2  = randn(3)
     v2 /= norm(v2)
 
     ea1 = EulerAngleAxis(a1, v1)
