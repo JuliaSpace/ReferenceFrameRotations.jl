@@ -4,6 +4,7 @@
 
 export angle_to_dcm,      angle_to_quat,      angle_to_rot
 export smallangle_to_dcm, smallangle_to_quat, smallangle_to_rot
+export inv
 
 ################################################################################
 #                                  Operations
