@@ -50,6 +50,14 @@ function *(ea₂::EulerAngleAxis{T1}, ea₁::EulerAngleAxis{T2}) where {T1,T2}
     EulerAngleAxis(θ, a)
 end
 
+"""
+    @inline function inv(ea::EulerAngleAxis)
+
+Compute the inverse rotation of `ea`.
+
+"""
+@inline inv(ea::EulerAngleAxis) = EulerAngleAxis(ea.a, -ea.v)
+
 ################################################################################
 #                                 Conversions
 ################################################################################

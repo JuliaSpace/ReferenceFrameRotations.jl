@@ -38,6 +38,16 @@ for k = 1:samples
     @test       ear.v[1]    ≈ s*eaq.v[1]
     @test       ear.v[2]    ≈ s*eaq.v[2]
     @test       ear.v[3]    ≈ s*eaq.v[3]
+
+    # Test inversion.
+    a   = -π + 2*π*rand()
+    v   = randn(3)
+    v  /= norm(v)
+    ea  = EulerAngleAxis(a,v)
+    ear = ea*inv(ea)
+
+    @test norm(ear.v) ≈ 0 atol = 1e-7
+    @test       ear.a ≈ 0 atol = 1e-7
 end
 
 # Test types.

@@ -83,3 +83,22 @@ EulerAngleAxis{Float64}(1.0471975511965976, [1.0, 0.0, 0.0])
 julia> ea2*ea1
 EulerAngleAxis{Float64}(1.5707963267948966, [1.0, 0.0, 0.0])
 ```
+
+### Inversion
+
+The `inv` function applied to Euler angle and axis will return the inverse
+rotation. Hence, if the Euler angle is `a` and the Euler axis is aligned with
+the unitary vector `v`, then it will return `a` as the Euler angle and `-v` as
+the Euler axis.
+
+```jldoctest
+julia> ea = EulerAngleAxis(1.3,[1.0,0,0]);
+
+julia> inv(ea)
+EulerAngleAxis{Float64}(1.3, [-1.0, -0.0, -0.0])
+
+julia> ea = EulerAngleAxis(-π,[sqrt(3),sqrt(3),sqrt(3)]);
+
+julia> inv(ea)
+EulerAngleAxis{Float64}(-3.141592653589793, [-1.73205, -1.73205, -1.73205])
+```
