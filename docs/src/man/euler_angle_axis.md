@@ -49,6 +49,37 @@ EulerAngleAxis{Float64}(1.0, [1.0, 1.0, 1.0])
 !!! note
 
     The support of this representation is still incomplete. Only the conversion
-    to and from quaternions are implemented. Furthermore, there is no support
-    for operations using Euler angles and axes.
+    to and from quaternions are implemented.
 
+## Operations
+
+### Multiplication
+
+The multiplication of two Euler angle and axis sets is defined here as the
+composition of the rotations. Let ``\Theta_1`` and ``\Theta_2`` be two Euler
+angle and axis set (instances of the structure `EulerAngleAxis`).  Thus, the
+operation:
+
+```math
+\Theta_{2,1} = \Theta_2 \cdot \Theta_1
+```
+
+will return a new set of Euler angle and axis ``\Theta_{2,1}`` that represents
+the composed rotation of ``\Theta_1`` followed by ``\Theta_2``.
+
+!!! warning
+
+    This operation is only valid if the vector of the Euler angle and axis set
+    is unitary. The multiplication function does not verify this and does not
+    normalize the vector.
+
+```jldoctest
+julia> ea1 = EulerAngleAxis(30*pi/180, [1.0;0.0;0.0])
+EulerAngleAxis{Float64}(0.5235987755982988, [1.0, 0.0, 0.0])
+
+julia> ea2 = EulerAngleAxis(60*pi/180, [1.0;0.0;0.0])
+EulerAngleAxis{Float64}(1.0471975511965976, [1.0, 0.0, 0.0])
+
+julia> ea2*ea1
+EulerAngleAxis{Float64}(1.5707963267948966, [1.0, 0.0, 0.0])
+```

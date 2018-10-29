@@ -5,6 +5,44 @@
 export angleaxis_to_quat
 
 ################################################################################
+#                                  Operations
+################################################################################
+
+"""
+    function *(ea₂::EulerAngleAxis{T1}, ea₁::EulerAngleAxis{T2}) where {T1,T2}
+
+Compute the composed rotation of `ea₁ -> ea₂`. Notice that the rotation will be
+represented by a Euler angle and axis (see `EulerAngleAxis`). By convention, the
+output angle will always be in the range [0, 2π] [rad].
+
+Notice that the vector representing the axis in `ea₁` and `ea₂` must be unitary.
+This function neither verifies this nor normalizes the vector.
+
+"""
+function *(ea₂::EulerAngleAxis{T1}, ea₁::EulerAngleAxis{T2}) where {T1,T2}
+    # Auxiliary variables.
+    T = promote_type(T1,T2)
+
+    sθ₁o2, cθ₁o2 = sincos(ea₁.a/2)
+    sθ₂o2, cθ₂o2 = sincos(ea₂.a/2)
+
+    v₁ = ea₁.v
+    v₂ = ea₂.v
+
+    # Compute the new Euler angle and axis [0, 2π].
+    θ = mod(2acos(cθ₁o2*cθ₂o2 - sθ₁o2*sθ₂o2 * dot(v₁, v₂)), T(2π))
+
+    if (θ == 0) || (θ == 2π)
+        # Avoid division by zero.
+        a = SVector{3,T}(0,0,0)
+    else
+        a = ( sθ₁o2*cθ₂o2*v₁ + cθ₁o2*sθ₂o2*v₂ + sθ₁o2*sθ₂o2*(v₁ × v₂) )/sin(θ/2)
+    end
+
+    EulerAngleAxis(θ, a)
+end
+
+################################################################################
 #                                 Conversions
 ################################################################################
 
