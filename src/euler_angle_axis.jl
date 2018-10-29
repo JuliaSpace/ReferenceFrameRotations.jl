@@ -30,7 +30,7 @@ function *(ea₂::EulerAngleAxis{T1}, ea₁::EulerAngleAxis{T2}) where {T1,T2}
     v₂ = ea₂.v
 
     # Compute the new Euler angle and axis [0, 2π].
-    θ = mod(2acos(cθ₁o2*cθ₂o2 - sθ₁o2*sθ₂o2 * dot(v₁, v₂)), T(2π))
+    θ = mod(2acos(cθ₁o2*cθ₂o2 - sθ₁o2*sθ₂o2 * dot(v₁, v₂)), T(2)*π)
 
     if (θ == 0) || (θ == 2π)
         # Avoid division by zero.
