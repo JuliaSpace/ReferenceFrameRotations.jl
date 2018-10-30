@@ -472,7 +472,8 @@ end
     function quat_to_angleaxis(q::Quaternion{T}) where T
 
 Convert the quaternion `q` to a Euler angle and axis representation (see
-`EulerAngleAxis`).
+`EulerAngleAxis`). By convention, the Euler angle will be kept between [0, π]
+rad.
 
 # Remarks
 
@@ -491,13 +492,27 @@ EulerAngleAxis{Float64}(0.7853981633974484, [1.0, 0.0, 0.0])
 
 """
 function quat_to_angleaxis(q::Quaternion{T}) where T
-    a = atan( norm(vect(q)), q.q0 )*2
 
-    # If `a` is 0, then select [1;0;0] as the Euler axis.
-    v = (a == 0) ? SVector{3,T}(1,0,0) : vect(q)/sin(a/2)
+    # If `q0` is 1 or -1, then we have an identity rotation.
+    if abs(q.q0) >= 1 - eps()
+        return EulerAngleAxis( T(0), SVector{3,T}(0, 0, 0) )
+    else
+        # Compute sin(θ/2).
+        sθo2 = sqrt( q.q1*q.q1 + q.q2*q.q2 + q.q3*q.q3 )
 
-    # TODO: Change this when the functions of Euler Angle and Axis are defined.
-    EulerAngleAxis(a, v)
+        # Compute θ in range [0, 2π].
+        θ = 2acos(q.q0)
+
+        # Keep θ between [0, π].
+        s = +1
+        if θ > π
+            θ = 2π - θ
+            s = -1
+        end
+
+        return EulerAngleAxis( θ, s*[q.q1, q.q2, q.q3]/sθo2 )
+    end
+
 end
 
 # Euler Angles
