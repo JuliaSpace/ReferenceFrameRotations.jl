@@ -21,8 +21,6 @@ This function neither verifies this nor normalizes the vector.
 """
 function *(ea₂::EulerAngleAxis{T1}, ea₁::EulerAngleAxis{T2}) where {T1,T2}
     # Auxiliary variables.
-    T = promote_type(T1,T2)
-
     sθ₁o2, cθ₁o2 = sincos(ea₁.a/2)
     sθ₂o2, cθ₂o2 = sincos(ea₂.a/2)
 
@@ -31,6 +29,8 @@ function *(ea₂::EulerAngleAxis{T1}, ea₁::EulerAngleAxis{T2}) where {T1,T2}
 
     # Compute `cos(θ/2)` in which `θ` is the new Euler angle.
     cθo2 = cθ₁o2*cθ₂o2 - sθ₁o2*sθ₂o2 * dot(v₁, v₂)
+
+    T = promote_type( T1, T2, typeof(sθ₁o2), typeof(sθ₂o2), typeof(cθo2) )
 
     if abs(cθo2) >= 1-eps()
         # In this case, the rotation is the identity.
@@ -45,7 +45,7 @@ function *(ea₂::EulerAngleAxis{T1}, ea₁::EulerAngleAxis{T2}) where {T1,T2}
         # Keep the angle between [0, π].
         s = +1
         if θ > π
-            θ = 2π - θ
+            θ = T(2)*π - θ
             s = -1
         end
 
