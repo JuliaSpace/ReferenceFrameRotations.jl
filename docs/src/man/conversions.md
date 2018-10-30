@@ -31,6 +31,22 @@ julia> dcm_to_angle(dcm, :XYZ)
 EulerAngles{Float64}(-1.5707963267948966, 0.0, 0.0, :XYZ)
 ```
 
+## DCMs to Euler Angle and Axis
+
+A DCM can be converto to an Euler angle and axis representation using the
+following method:
+
+```julia
+function dcm_to_angleaxis(dcm::DCM)
+```
+
+```jldoctest
+julia> dcm = DCM([1.0 0.0 0.0; 0.0 0.0 -1.0; 0.0 1.0 0.0]);
+
+julia> ea  = dcm_to_angleaxis(dcm)
+EulerAngleAxis{Float64}(1.5707963267948966, [-1.0, 0.0, 0.0])
+```
+
 ## DCMs to Quaternions
 
 A DCM can be converted to quaternion using the following method:
@@ -58,10 +74,40 @@ Quaternion{Float64}:
     because it can lead to `InexactError()` when converting to Quaternions. This
     bug will be addressed in a future version of **ReferenceFrameRotations.jl**.
 
+## Euler Angle and Axis to DCMs
+
+An Euler angle and axis representation can be converted to DCM using using these
+two methods:
+
+```julia
+function angleaxis_to_dcm(a::Number, v::AbstractVector)
+function angleaxis_to_dcm(ea::EulerAngleAxis)
+```
+
+```jldoctest
+julia> a = 60.0*pi/180;
+
+julia> v = [sqrt(3)/3;sqrt(3)/3;sqrt(3)/3];
+
+julia> angleaxis_to_dcm(a,v)
+3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
+  0.666667   0.666667  -0.333333
+ -0.333333   0.666667   0.666667
+  0.666667  -0.333333   0.666667
+
+julia> angleaxis = EulerAngleAxis(a,v);
+
+julia> angleaxis_to_dcm(angleaxis)
+3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
+  0.666667   0.666667  -0.333333
+ -0.333333   0.666667   0.666667
+  0.666667  -0.333333   0.666667
+```
+
 ## Euler Angle and Axis to Quaternions
 
-A Euler angle and axis representation can be converted to quaternion using these
-two methods:
+An Euler angle and axis representation can be converted to quaternion using
+these two methods:
 
 ```julia
 function angleaxis_to_quat(a::Number, v::AbstractVector)

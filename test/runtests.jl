@@ -40,6 +40,11 @@ println("")
 end
 println("")
 
+@time @testset "DCM <=> Euler Angle and Axis conversions" begin
+    include("./test_conversion_dcm_euler_angle_axis.jl")
+end
+println("")
+
 @time @testset "DCM <=> Euler Angles conversions" begin
     include("./test_conversion_dcm_euler_angles.jl")
 end

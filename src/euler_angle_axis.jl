@@ -2,7 +2,7 @@
 #                             Euler Angle and Axis
 ################################################################################
 
-export angleaxis_to_quat
+export angleaxis_to_dcm, angleaxis_to_quat
 
 ################################################################################
 #                                  Operations
@@ -78,6 +78,56 @@ end
 ################################################################################
 #                                 Conversions
 ################################################################################
+
+# DCM
+# ==============================================================================
+
+"""
+    @inline function angleaxis_to_dcm(a::Number, v::AbstractVector)
+    @inline function angleaxis_to_dcm(ea::EulerAngleAxis)
+
+Convert the Euler angle `a` [rad] and Euler axis `v`, which must be a unit
+vector to a DCM. Those values can also be passed inside the structure `ea` (see
+`EulerAngleAxis`).
+
+# Remarks
+
+It is expected that the vector `v` is unitary. However, no verification is
+performed inside the function. The user must handle this situation.
+
+# Example
+
+```julia-repl
+julia> v = [1;1;1];
+
+julia> v /= norm(v);
+
+julia> angleaxis_to_dcm(pi/2,v)
+3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
+  0.333333   0.910684  -0.244017
+ -0.244017   0.333333   0.910684
+  0.910684  -0.244017   0.333333
+
+julia> ea = EulerAngleAxis(pi/2,v);
+
+julia> angleaxis_to_dcm(ea)
+3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
+  0.333333   0.910684  -0.244017
+ -0.244017   0.333333   0.910684
+  0.910684  -0.244017   0.333333
+```
+
+"""
+@inline function angleaxis_to_dcm(a::Number, v::AbstractVector)
+    sθ, cθ = sincos(a)
+    aux    = 1 - cθ
+
+    DCM(  cθ + v[1]*v[1]*aux   , v[1]*v[2]*aux + v[3]*sθ, v[1]*v[3]*aux - v[2]*sθ,
+        v[1]*v[2]*aux - v[3]*sθ,    cθ + v[2]*v[2]*aux  , v[2]*v[3]*aux + v[1]*sθ,
+        v[1]*v[3]*aux + v[2]*sθ, v[2]*v[3]*aux - v[1]*sθ,   cθ + v[3]*v[3]*aux)'
+end
+
+@inline angleaxis_to_dcm(ea::EulerAngleAxis) = angleaxis_to_dcm(ea.a, ea.v)
 
 # Quaternions
 # ==============================================================================

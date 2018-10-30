@@ -46,11 +46,6 @@ julia> EulerAngleAxis(1.0,[1,1,1])
 EulerAngleAxis{Float64}(1.0, [1.0, 1.0, 1.0])
 ```
 
-!!! note
-
-    The support of this representation is still incomplete. Only the conversion
-    to and from quaternions are implemented.
-
 ## Operations
 
 ### Multiplication
