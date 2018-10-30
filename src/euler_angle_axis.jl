@@ -66,9 +66,9 @@ Compute the inverse rotation of `ea`.
 # ==============================================================================
 
 """
-    function angleaxis_to_quat(a::Number, v::AbstractVector)
+    function angleaxis_to_quat(θ::Number, v::AbstractVector)
 
-Convert the Euler angle `a` [rad] and Euler axis `v`, which must be a unit
+Convert the Euler angle `θ` [rad] and Euler axis `v`, which must be a unit
 vector, to a quaternion.
 
 # Remarks
@@ -89,12 +89,17 @@ Quaternion{Float64}:
 ```
 
 """
-function angleaxis_to_quat(a::Number, v::AbstractVector)
+function angleaxis_to_quat(θ::Number, v::AbstractVector)
     # Check the arguments.
     (length(v) > 3) && throw(ArgumentError("The provided vector for the Euler axis must have 3 elements."))
 
+    cθo2 = cos(θ/2)
+
+    # Keep `q0` positive.
+    s = (cθo2 < 0) ? -1 : +1
+
     # Create the quaternion.
-    Quaternion( cos(a/2), sin(a/2)*v )
+    Quaternion( s*cos(θ/2), s*sin(θ/2)*v )
 end
 
 """
