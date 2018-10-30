@@ -13,7 +13,7 @@ export angleaxis_to_quat
 
 Compute the composed rotation of `ea₁ -> ea₂`. Notice that the rotation will be
 represented by a Euler angle and axis (see `EulerAngleAxis`). By convention, the
-output angle will always be in the range [0, 2π] [rad].
+output angle will always be in the range [0, π] [rad].
 
 Notice that the vector representing the axis in `ea₁` and `ea₂` must be unitary.
 This function neither verifies this nor normalizes the vector.
@@ -32,31 +32,48 @@ function *(ea₂::EulerAngleAxis{T1}, ea₁::EulerAngleAxis{T2}) where {T1,T2}
     # Compute `cos(θ/2)` in which `θ` is the new Euler angle.
     cθo2 = cθ₁o2*cθ₂o2 - sθ₁o2*sθ₂o2 * dot(v₁, v₂)
 
-    # Avoid numerical errors.
-    (abs(cθo2) > 1) && ( cθo2 = sign(cθo2) )
-
-    # Compute `sin(θ/2)` in which `θ` is the new Euler angle.
-    sθo2 = sqrt(1 - cθo2*cθo2)
-
-    if sθo2 == 0
+    if abs(cθo2) >= 1-eps()
         # In this case, the rotation is the identity.
-        θ = T(0)
-        a = SVector{3,T}(0,0,0)
+        return EulerAngleAxis( T(0), SVector{3,T}(0,0,0) )
     else
-        θ = 2atan( sθo2, cθo2 )
-        a = ( sθ₁o2*cθ₂o2*v₁ + cθ₁o2*sθ₂o2*v₂ + sθ₁o2*sθ₂o2*(v₁ × v₂) )/sθo2
-    end
+        # Compute `sin(θ/2)` in which `θ` is the new Euler angle.
+        sθo2 = sqrt(1 - cθo2*cθo2)
 
-    EulerAngleAxis(θ, a)
+        # Compute the θ angle between [0, 2π].
+        θ = 2acos(cθo2)
+
+        # Keep the angle between [0, π].
+        s = +1
+        if θ > π
+            θ = 2π - θ
+            s = -1
+        end
+
+        v = s*( sθ₁o2*cθ₂o2*v₁ + cθ₁o2*sθ₂o2*v₂ + sθ₁o2*sθ₂o2*(v₁ × v₂) )/sθo2
+
+        return EulerAngleAxis(θ, v)
+    end
 end
 
 """
     @inline function inv(ea::EulerAngleAxis)
 
-Compute the inverse rotation of `ea`.
+Compute the inverse rotation of `ea`. The Euler angle returned by this function
+will always be in the interval [0, π].
 
 """
-@inline inv(ea::EulerAngleAxis) = EulerAngleAxis(ea.a, -ea.v)
+@inline function inv(ea::EulerAngleAxis{T}) where T<:Number
+    # Make sure that the Euler angle is always in the inverval [0,π]
+    s = -1
+    θ = mod(ea.a, T(2)*π)
+
+    if θ > π
+        s = 1
+        θ = T(2)π - θ
+    end
+
+    EulerAngleAxis(θ, s*ea.v)
+end
 
 ################################################################################
 #                                 Conversions

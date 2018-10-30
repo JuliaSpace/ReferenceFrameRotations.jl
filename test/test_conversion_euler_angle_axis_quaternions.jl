@@ -19,9 +19,14 @@ for k = 1:samples
     # Convert back to Euler Angle and Axis.
     angleaxis_conv = quat_to_angleaxis(q)
 
+    # Notice that the returned Euler angle will be always in the interval
+    # [0,π].
+    s = +1
+    (a > π) && (a = 2π - a; s = -1)
+
     # Compare.
-    @test  abs(angleaxis_conv.a - a) < 1e-10
-    @test norm(angleaxis_conv.v - v) < 1e-10
+    @test  abs(angleaxis_conv.a -   a) < 1e-10
+    @test norm(angleaxis_conv.v - s*v) < 1e-10
 
     # Rotate a vector aligned with the Euler axis using the quaternion.
     r     = v*randn()

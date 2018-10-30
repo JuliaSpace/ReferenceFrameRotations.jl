@@ -32,12 +32,10 @@ for k = 1:samples
     qr  = q1*q2
     eaq = quat_to_angleaxis(qr)
 
-    s = sign(ear.v[1])*sign(eaq.v[1])
-
-    @test mod(ear.a, 2π)    ≈ mod(eaq.a, 2π)
-    @test       ear.v[1]    ≈ s*eaq.v[1]
-    @test       ear.v[2]    ≈ s*eaq.v[2]
-    @test       ear.v[3]    ≈ s*eaq.v[3]
+    @test    ear.a ≈ eaq.a
+    @test ear.v[1] ≈ eaq.v[1]
+    @test ear.v[2] ≈ eaq.v[2]
+    @test ear.v[3] ≈ eaq.v[3]
 
     # Test inversion.
     a   = -π + 2*π*rand()
