@@ -41,13 +41,13 @@ for k = 1:samples
         θ = 2π - θ
     end
 
-    @test    eac1.a ≈ θ      atol = 1e-9
-    @test eac1.v[1] ≈ s*v[1] atol = 1e-9
-    @test eac1.v[2] ≈ s*v[2] atol = 1e-9
-    @test eac1.v[3] ≈ s*v[3] atol = 1e-9
+    @test    eac1.a ≈ θ      atol = 3e-9
+    @test eac1.v[1] ≈ s*v[1] atol = 3e-9
+    @test eac1.v[2] ≈ s*v[2] atol = 3e-9
+    @test eac1.v[3] ≈ s*v[3] atol = 3e-9
 
-    @test    eac2.a ≈ θ      atol = 1e-9
-    @test eac2.v[1] ≈ s*v[1] atol = 1e-9
-    @test eac2.v[2] ≈ s*v[2] atol = 1e-9
-    @test eac2.v[3] ≈ s*v[3] atol = 1e-9
+    @test    eac2.a ≈ θ      atol = 3e-9
+    @test eac2.v[1] ≈ s*v[1] atol = 3e-9
+    @test eac2.v[2] ≈ s*v[2] atol = 3e-9
+    @test eac2.v[3] ≈ s*v[3] atol = 3e-9
 end
