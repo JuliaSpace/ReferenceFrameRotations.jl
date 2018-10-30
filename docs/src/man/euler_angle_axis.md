@@ -65,7 +65,8 @@ operation:
 ```
 
 will return a new set of Euler angle and axis ``\Theta_{2,1}`` that represents
-the composed rotation of ``\Theta_1`` followed by ``\Theta_2``.
+the composed rotation of ``\Theta_1`` followed by ``\Theta_2``. By convention,
+the Euler angle of the result will always be in the interval ``[0, \pi]`` rad.
 
 !!! warning
 
@@ -89,7 +90,8 @@ EulerAngleAxis{Float64}(1.5707963267948966, [1.0, 0.0, 0.0])
 The `inv` function applied to Euler angle and axis will return the inverse
 rotation. Hence, if the Euler angle is `a` and the Euler axis is aligned with
 the unitary vector `v`, then it will return `a` as the Euler angle and `-v` as
-the Euler axis.
+the Euler axis. By convention, the Euler angle of the result will always be in
+the interval ``[0, \pi]`` rad.
 
 ```jldoctest
 julia> ea = EulerAngleAxis(1.3,[1.0,0,0]);
@@ -100,5 +102,10 @@ EulerAngleAxis{Float64}(1.3, [-1.0, -0.0, -0.0])
 julia> ea = EulerAngleAxis(-π,[sqrt(3),sqrt(3),sqrt(3)]);
 
 julia> inv(ea)
-EulerAngleAxis{Float64}(-3.141592653589793, [-1.73205, -1.73205, -1.73205])
+EulerAngleAxis{Float64}(3.141592653589793, [-1.73205, -1.73205, -1.73205])
+
+julia> ea = EulerAngleAxis(-3π/2,[sqrt(3),sqrt(3),sqrt(3)]);
+
+julia> inv(ea)
+EulerAngleAxis{Float64}(1.5707963267948966, [-1.73205, -1.73205, -1.73205])
 ```
