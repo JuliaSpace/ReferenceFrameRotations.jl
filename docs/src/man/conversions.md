@@ -63,17 +63,6 @@ Quaternion{Float64}:
   + 0.7071067811865476 - 0.7071067811865475.i + 0.0.j + 0.0.k
 ```
 
-!!! warning
-
-    Avoid using DCMs with `Int` numbers like:
-
-    ```julia
-    dcm = DCM([1 0 0; 0 0 -1; 0 1 0])
-    ```
-
-    because it can lead to `InexactError()` when converting to Quaternions. This
-    bug will be addressed in a future version of **ReferenceFrameRotations.jl**.
-
 ## Euler Angle and Axis to DCMs
 
 An Euler angle and axis representation can be converted to DCM using using these
