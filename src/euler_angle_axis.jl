@@ -98,24 +98,19 @@ end
 
 function show(io::IO, mime::MIME"text/plain", ea::EulerAngleAxis{T}) where T
     # Check if the user wants colors.
-    color = get(stdout, :color, false)
+    color = get(io, :color, false)
 
     b = (color) ? "\x1b[1m"         : ""
     d = (color) ? "\x1b[0m"         : ""
     g = (color) ? "\x1b[1m\x1b[32m" : ""
     y = (color) ? "\x1b[1m\x1b[33m" : ""
 
-    str_a  = @sprintf "%8.4f rad (%8.4f deg)" ea.a rad2deg(ea.a)
-    str_v1 = @sprintf "%8.4f" ea.v[1]
-    str_v2 = @sprintf "%8.4f" ea.v[2]
-    str_v3 = @sprintf "%8.4f" ea.v[3]
+    str_a = @sprintf "%8.4f rad (%8.4f deg)" ea.a rad2deg(ea.a)
+    str_v = @sprintf "[%8.4f, %8.4f, %8.4f]" ea.v[1] ea.v[2] ea.v[3]
 
-    println(stdout, "EulerAngleAxis{$T}:")
-    println(stdout, "$y  Euler angle: $d" * str_a)
-    println(stdout, "")
-    println(stdout, "               "     * str_v1)
-    println(stdout, "$y   Euler axis: $d" * str_v2)
-      print(stdout, "               "     * str_v3)
+    println(io, "EulerAngleAxis{$T}:")
+    println(io, "$y  Euler angle: $d" * str_a)
+      print(io, "$y   Euler axis: $d" * str_v)
 
     nothing
 end
