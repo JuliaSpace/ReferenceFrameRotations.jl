@@ -76,6 +76,39 @@ will always be in the interval [0, π].
 end
 
 ################################################################################
+#                                      IO
+################################################################################
+
+"""
+    function display(ea::EulerAngleAxis{T}) where T
+
+Display in `stdout` the Euler angle and axis `ea`.
+
+"""
+function display(ea::EulerAngleAxis{T}) where T
+    # Check if the user wants colors.
+    color = get(stdout, :color, false)
+
+    b = (color) ? "\x1b[1m"         : ""
+    d = (color) ? "\x1b[0m"         : ""
+    g = (color) ? "\x1b[1m\x1b[32m" : ""
+    y = (color) ? "\x1b[1m\x1b[33m" : ""
+
+    println(stdout, "EulerAngleAxis{$T}:")
+
+    str_a  = @sprintf "%8.4f rad (%8.4f deg)" ea.a rad2deg(ea.a)
+    str_v1 = @sprintf "%8.4f" ea.v[1]
+    str_v2 = @sprintf "%8.4f" ea.v[2]
+    str_v3 = @sprintf "%8.4f" ea.v[3]
+
+    println(stdout, "$y  Euler angle: $d" * str_a)
+    println(stdout, "")
+    println(stdout, "               "     * str_v1)
+    println(stdout, "$y   Euler axis: $d" * str_v2)
+    println(stdout, "               "     * str_v3)
+end
+
+################################################################################
 #                                 Conversions
 ################################################################################
 
