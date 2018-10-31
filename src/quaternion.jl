@@ -404,12 +404,38 @@ Quaternion{Float32}:
 
 """
     function show(io::IO, q::Quaternion{T}) where T
+    function show(io::IO, mime::MIME"text/plain", q::Quaternion{T}) where T
 
 Print the quaternion `q` to the stream `io`.
 
 """
 function show(io::IO, q::Quaternion{T}) where T
-    println(io, "Quaternion{$(T)}:")
+    # Get the absolute values.
+    aq0 = abs(q.q0)
+    aq1 = abs(q.q1)
+    aq2 = abs(q.q2)
+    aq3 = abs(q.q3)
+
+    # Get the signs.
+    sq0 = (q.q0 >= 0) ? "+" : "-"
+    sq1 = (q.q1 >= 0) ? "+" : "-"
+    sq2 = (q.q2 >= 0) ? "+" : "-"
+    sq3 = (q.q3 >= 0) ? "+" : "-"
+
+    print(io, "Quaternion{$(T)}:")
+    print(io, " $(sq0) $(aq0) $(sq1) $(aq1).i $(sq2) $(aq2).j $(sq3) $(aq3).k")
+
+    nothing
+end
+
+function show(io::IO, mime::MIME"text/plain", q::Quaternion{T}) where T
+    # Check if the user wants colors.
+    color = get(stdout, :color, false)
+
+    b = (color) ? "\x1b[1m"         : ""
+    d = (color) ? "\x1b[0m"         : ""
+    g = (color) ? "\x1b[1m\x1b[32m" : ""
+    y = (color) ? "\x1b[1m\x1b[33m" : ""
 
     # Get the absolute values.
     aq0 = abs(q.q0)
@@ -423,7 +449,13 @@ function show(io::IO, q::Quaternion{T}) where T
     sq2 = (q.q2 >= 0) ? "+" : "-"
     sq3 = (q.q3 >= 0) ? "+" : "-"
 
-    print(io, "  $(sq0) $(aq0) $(sq1) $(aq1).i $(sq2) $(aq2).j $(sq3) $(aq3).k")
+    # Unitary vectors.
+    i = "$(b)i$d"
+    j = "$(b)j$d"
+    k = "$(b)k$d"
+
+    println(io, "Quaternion{$(T)}:")
+    print(io, "  $(sq0) $(aq0) $(sq1) $(aq1).$i $(sq2) $(aq2).$j $(sq3) $(aq3).$k")
 
     nothing
 end
