@@ -109,7 +109,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Euler Angle and Axis",
     "title": "Euler Angle and Axis",
     "category": "section",
-    "text": "CurrentModule = ReferenceFrameRotations\nDocTestSetup = quote\n    using ReferenceFrameRotations\nendThe Euler angle and axis representation is defined by the following immutable structure:struct EulerAngleAxis{T}\n    a::T\n    v::SVector{3,T}\nendin which a is the Euler Angle and v is a unitary vector aligned with the Euler axis.The constructor for this structure is:function EulerAngleAxis(a::T1, v::AbstractVector{T2}) where {T1,T2}in which a EulerAngleAxis with angle a [rad] and vector v will be created. Notice that the type of the returned structure will be selected according to the input types T1 and T2. Furthermore, the vector v will not be normalized.julia> EulerAngleAxis(1,[1,1,1])\nEulerAngleAxis{Int64}(1, [1, 1, 1])\n\njulia> EulerAngleAxis(1.f0,[1,1,1])\nEulerAngleAxis{Float32}(1.0f0, Float32[1.0, 1.0, 1.0])\n\njulia> EulerAngleAxis(1,[1,1,1.f0])\nEulerAngleAxis{Float32}(1.0f0, Float32[1.0, 1.0, 1.0])\n\njulia> EulerAngleAxis(1.0,[1,1,1])\nEulerAngleAxis{Float64}(1.0, [1.0, 1.0, 1.0])"
+    "text": "CurrentModule = ReferenceFrameRotations\nDocTestSetup = quote\n    using ReferenceFrameRotations\nendThe Euler angle and axis representation is defined by the following immutable structure:struct EulerAngleAxis{T}\n    a::T\n    v::SVector{3,T}\nendin which a is the Euler Angle and v is a unitary vector aligned with the Euler axis.The constructor for this structure is:function EulerAngleAxis(a::T1, v::AbstractVector{T2}) where {T1,T2}in which a EulerAngleAxis with angle a [rad] and vector v will be created. Notice that the type of the returned structure will be selected according to the input types T1 and T2. Furthermore, the vector v will not be normalized.julia> EulerAngleAxis(1,[1,1,1])\nEulerAngleAxis{Int64}:\n  Euler angle:   1.0000 rad ( 57.2958 deg)\n   Euler axis: [  1.0000,   1.0000,   1.0000]\n\njulia> EulerAngleAxis(1.f0,[1,1,1])\nEulerAngleAxis{Float32}:\n  Euler angle:   1.0000 rad ( 57.2958 deg)\n   Euler axis: [  1.0000,   1.0000,   1.0000]\n\njulia> EulerAngleAxis(1,[1,1,1.f0])\nEulerAngleAxis{Float32}:\n  Euler angle:   1.0000 rad ( 57.2958 deg)\n   Euler axis: [  1.0000,   1.0000,   1.0000]\n\njulia> EulerAngleAxis(1.0,[1,1,1])\nEulerAngleAxis{Float64}:\n  Euler angle:   1.0000 rad ( 57.2958 deg)\n   Euler axis: [  1.0000,   1.0000,   1.0000]\n"
 },
 
 {
@@ -125,7 +125,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Euler Angle and Axis",
     "title": "Multiplication",
     "category": "section",
-    "text": "The multiplication of two Euler angle and axis sets is defined here as the composition of the rotations. Let Theta_1 and Theta_2 be two Euler angle and axis sets (instances of the structure EulerAngleAxis).  Thus, the operation:Theta_21 = Theta_2 cdot Theta_1will return a new set of Euler angle and axis Theta_21 that represents the composed rotation of Theta_1 followed by Theta_2. By convention, the Euler angle of the result will always be in the interval 0 pi rad.warning: Warning\nThis operation is only valid if the vector of the Euler angle and axis set is unitary. The multiplication function does not verify this and does not normalize the vector.julia> ea1 = EulerAngleAxis(30*pi/180, [1.0;0.0;0.0])\nEulerAngleAxis{Float64}(0.5235987755982988, [1.0, 0.0, 0.0])\n\njulia> ea2 = EulerAngleAxis(60*pi/180, [1.0;0.0;0.0])\nEulerAngleAxis{Float64}(1.0471975511965976, [1.0, 0.0, 0.0])\n\njulia> ea2*ea1\nEulerAngleAxis{Float64}(1.5707963267948966, [1.0, 0.0, 0.0])"
+    "text": "The multiplication of two Euler angle and axis sets is defined here as the composition of the rotations. Let Theta_1 and Theta_2 be two Euler angle and axis sets (instances of the structure EulerAngleAxis).  Thus, the operation:Theta_21 = Theta_2 cdot Theta_1will return a new set of Euler angle and axis Theta_21 that represents the composed rotation of Theta_1 followed by Theta_2. By convention, the Euler angle of the result will always be in the interval 0 pi rad.warning: Warning\nThis operation is only valid if the vector of the Euler angle and axis set is unitary. The multiplication function does not verify this and does not normalize the vector.julia> ea1 = EulerAngleAxis(30*pi/180, [1.0;0.0;0.0])\nEulerAngleAxis{Float64}:\n  Euler angle:   0.5236 rad ( 30.0000 deg)\n   Euler axis: [  1.0000,   0.0000,   0.0000]\n\njulia> ea2 = EulerAngleAxis(60*pi/180, [1.0;0.0;0.0])\nEulerAngleAxis{Float64}:\n  Euler angle:   1.0472 rad ( 60.0000 deg)\n   Euler axis: [  1.0000,   0.0000,   0.0000]\n\njulia> ea2*ea1\nEulerAngleAxis{Float64}:\n  Euler angle:   1.5708 rad ( 90.0000 deg)\n   Euler axis: [  1.0000,   0.0000,   0.0000]\n"
 },
 
 {
@@ -133,7 +133,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Euler Angle and Axis",
     "title": "Inversion",
     "category": "section",
-    "text": "The inv function applied to Euler angle and axis will return the inverse rotation. Hence, if the Euler angle is a and the Euler axis is aligned with the unitary vector v, then it will return a as the Euler angle and -v as the Euler axis. By convention, the Euler angle of the result will always be in the interval 0 pi rad.julia> ea = EulerAngleAxis(1.3,[1.0,0,0]);\n\njulia> inv(ea)\nEulerAngleAxis{Float64}(1.3, [-1.0, -0.0, -0.0])\n\njulia> ea = EulerAngleAxis(-π,[sqrt(3),sqrt(3),sqrt(3)]);\n\njulia> inv(ea)\nEulerAngleAxis{Float64}(3.141592653589793, [-1.73205, -1.73205, -1.73205])\n\njulia> ea = EulerAngleAxis(-3π/2,[sqrt(3),sqrt(3),sqrt(3)]);\n\njulia> inv(ea)\nEulerAngleAxis{Float64}(1.5707963267948966, [-1.73205, -1.73205, -1.73205])"
+    "text": "The inv function applied to Euler angle and axis will return the inverse rotation. Hence, if the Euler angle is a and the Euler axis is aligned with the unitary vector v, then it will return a as the Euler angle and -v as the Euler axis. By convention, the Euler angle of the result will always be in the interval 0 pi rad.julia> ea = EulerAngleAxis(1.3,[1.0,0,0]);\n\njulia> inv(ea)\nEulerAngleAxis{Float64}:\n  Euler angle:   1.3000 rad ( 74.4845 deg)\n   Euler axis: [ -1.0000,  -0.0000,  -0.0000]\n\njulia> ea = EulerAngleAxis(-π,[sqrt(3),sqrt(3),sqrt(3)]);\n\njulia> inv(ea)\nEulerAngleAxis{Float64}:\n  Euler angle:   3.1416 rad (180.0000 deg)\n   Euler axis: [ -1.7321,  -1.7321,  -1.7321]\n\njulia> ea = EulerAngleAxis(-3π/2,[sqrt(3),sqrt(3),sqrt(3)]);\n\njulia> inv(ea)\nEulerAngleAxis{Float64}:\n  Euler angle:   1.5708 rad ( 90.0000 deg)\n   Euler axis: [ -1.7321,  -1.7321,  -1.7321]\n"
 },
 
 {
@@ -165,7 +165,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Euler Angles",
     "title": "Multiplication",
     "category": "section",
-    "text": "The multiplication of two Euler angles is defined here as the composition of the rotations. Let Theta_1 and Theta_2 be two sequences of Euler angles (instances of the structure EulerAngles). Thus, the operation:Theta_21 = Theta_2 cdot Theta_1will return a new set of Euler angles Theta_21 that represents the composed rotation of Theta_1 followed by Theta_2. Notice that Theta_21 will be represented using the same rotation sequence as Theta_2.julia> a1 = EulerAngles(1,0,0,:ZYX);\n\njulia> a2 = EulerAngles(0,-1,0,:YZY);\n\njulia> a2*a1\nEulerAngles{Float64}(0.0, 0.0, 0.0, :YZY)\n\njulia> a1 = EulerAngles(1,1,1,:YZY);\n\njulia> a2 = EulerAngles(0,0,-1,:YZY);\n\njulia> a2*a1\nEulerAngles{Float64}(1.0, 0.9999999999999998, 1.3193836087867184e-16, :YZY)\n\njulia> a1 = EulerAngles(1.3,2.2,1.4,:XYZ);\n\njulia> a2 = EulerAngles(-1.4,-2.2,-1.3,:ZYX);\n\njulia> a2*a1\nEulerAngles{Float64}(-8.326672684688677e-17, 3.3306690738754696e-16, -1.1102230246251568e-16, :ZYX)"
+    "text": "The multiplication of two Euler angles is defined here as the composition of the rotations. Let Theta_1 and Theta_2 be two sequences of Euler angles (instances of the structure EulerAngles). Thus, the operation:Theta_21 = Theta_2 cdot Theta_1will return a new set of Euler angles Theta_21 that represents the composed rotation of Theta_1 followed by Theta_2. Notice that Theta_21 will be represented using the same rotation sequence as Theta_2.julia> a1 = EulerAngles(1,0,0,:ZYX);\n\njulia> a2 = EulerAngles(0,-1,0,:YZY);\n\njulia> a2*a1\nEulerAngles{Float64}:\n  R(Y):   0.0000 rad (   0.0000 deg)\n  R(Z):   0.0000 rad (   0.0000 deg)\n  R(Y):   0.0000 rad (   0.0000 deg)\n\njulia> a1 = EulerAngles(1,1,1,:YZY);\n\njulia> a2 = EulerAngles(0,0,-1,:YZY);\n\njulia> a2*a1\nEulerAngles{Float64}:\n  R(Y):   1.0000 rad (  57.2958 deg)\n  R(Z):   1.0000 rad (  57.2958 deg)\n  R(Y):   0.0000 rad (   0.0000 deg)\n\njulia> a1 = EulerAngles(1.3,2.2,1.4,:XYZ);\n\njulia> a2 = EulerAngles(-1.4,-2.2,-1.3,:ZYX);\n\njulia> a2*a1\nEulerAngles{Float64}:\n  R(Z):  -0.0000 rad (  -0.0000 deg)\n  R(Y):   0.0000 rad (   0.0000 deg)\n  R(X):  -0.0000 rad (  -0.0000 deg)\n"
 },
 
 {
@@ -173,7 +173,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Euler Angles",
     "title": "Inversion",
     "category": "section",
-    "text": "The inv function applied to Euler angles will return the inverse rotation. If the Euler angles Theta represent a rotation through the axes a_1, a_2, and a_3 by angles alpha_1, alpha_2, and alpha_3, then Theta^-1 is a rotation through the axes a_3, a_2, and a_1 by angles -alpha_3, -alpha_2, and -alpha_1.julia> a = EulerAngles(1,2,3,:ZYX);\n\njulia> inv(a)\nEulerAngles{Int64}(-3, -2, -1, :XYZ)\n\njulia> a = EulerAngles(1.2,3.3,4.6,:XYX);\n\njulia> a*inv(a)\nEulerAngles{Float64}(-1.925929944387236e-34, 0.0, 0.0, :XYX)warning: Warning\nAll the operations related to Euler angles first convert them to DCM or Quaternions, and then the result is converted back to Euler angles. Hence, the performance will not be good."
+    "text": "The inv function applied to Euler angles will return the inverse rotation. If the Euler angles Theta represent a rotation through the axes a_1, a_2, and a_3 by angles alpha_1, alpha_2, and alpha_3, then Theta^-1 is a rotation through the axes a_3, a_2, and a_1 by angles -alpha_3, -alpha_2, and -alpha_1.julia> a = EulerAngles(1,2,3,:ZYX);\n\njulia> inv(a)\nEulerAngles{Int64}:\n  R(X):  -3.0000 rad (-171.8873 deg)\n  R(Y):  -2.0000 rad (-114.5916 deg)\n  R(Z):  -1.0000 rad ( -57.2958 deg)\n\njulia> a = EulerAngles(1.2,3.3,4.6,:XYX);\n\njulia> a*inv(a)\nEulerAngles{Float64}:\n  R(X):  -0.0000 rad (  -0.0000 deg)\n  R(Y):   0.0000 rad (   0.0000 deg)\n  R(X):   0.0000 rad (   0.0000 deg)\nwarning: Warning\nAll the operations related to Euler angles first convert them to DCM or Quaternions, and then the result is converted back to Euler angles. Hence, the performance will not be good."
 },
 
 {
@@ -269,7 +269,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Conversions",
     "title": "DCMs to Euler Angles",
     "category": "section",
-    "text": "A Direction Cosine Matrix (DCM) can be converted to Euler Angles using the following function:function dcm_to_angle(dcm::DCM, rot_seq=:ZYX)julia> dcm = DCM([1 0 0; 0 0 -1; 0 1 0]);\n\njulia> dcm_to_angle(dcm)\nEulerAngles{Float64}(0.0, 0.0, -1.5707963267948966, :ZYX)\n\njulia> dcm_to_angle(dcm, :XYZ)\nEulerAngles{Float64}(-1.5707963267948966, 0.0, 0.0, :XYZ)"
+    "text": "A Direction Cosine Matrix (DCM) can be converted to Euler Angles using the following function:function dcm_to_angle(dcm::DCM, rot_seq=:ZYX)julia> dcm = DCM([1 0 0; 0 0 -1; 0 1 0]);\n\njulia> dcm_to_angle(dcm)\nEulerAngles{Float64}:\n  R(Z):   0.0000 rad (   0.0000 deg)\n  R(Y):   0.0000 rad (   0.0000 deg)\n  R(X):  -1.5708 rad ( -90.0000 deg)\n\njulia> dcm_to_angle(dcm, :XYZ)\nEulerAngles{Float64}:\n  R(X):  -1.5708 rad ( -90.0000 deg)\n  R(Y):   0.0000 rad (   0.0000 deg)\n  R(Z):   0.0000 rad (   0.0000 deg)\n"
 },
 
 {
@@ -277,7 +277,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Conversions",
     "title": "DCMs to Euler Angle and Axis",
     "category": "section",
-    "text": "A DCM can be converto to an Euler angle and axis representation using the following method:function dcm_to_angleaxis(dcm::DCM)julia> dcm = DCM([1.0 0.0 0.0; 0.0 0.0 -1.0; 0.0 1.0 0.0]);\n\njulia> ea  = dcm_to_angleaxis(dcm)\nEulerAngleAxis{Float64}(1.5707963267948966, [-1.0, 0.0, 0.0])"
+    "text": "A DCM can be converto to an Euler angle and axis representation using the following method:function dcm_to_angleaxis(dcm::DCM)julia> dcm = DCM([1.0 0.0 0.0; 0.0 0.0 -1.0; 0.0 1.0 0.0]);\n\njulia> ea  = dcm_to_angleaxis(dcm)\nEulerAngleAxis{Float64}:\n  Euler angle:   1.5708 rad ( 90.0000 deg)\n   Euler axis: [ -1.0000,   0.0000,   0.0000]\n"
 },
 
 {
@@ -349,7 +349,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Conversions",
     "title": "Quaternions to Euler Angle and Axis",
     "category": "section",
-    "text": "A quaternion can be converted to Euler Angle and Axis representation using the following function:function quat_to_angleaxis(q::Quaternion)julia> v = [sqrt(3)/3;sqrt(3)/3;sqrt(3)/3];\n\njulia> a = 60.0*pi/180;\n\njulia> q = Quaternion(cos(a/2), v*sin(a/2));\n\njulia> quat_to_angleaxis(q)\nEulerAngleAxis{Float64}(1.0471975511965974, [0.57735, 0.57735, 0.57735])"
+    "text": "A quaternion can be converted to Euler Angle and Axis representation using the following function:function quat_to_angleaxis(q::Quaternion)julia> v = [sqrt(3)/3;sqrt(3)/3;sqrt(3)/3];\n\njulia> a = 60.0*pi/180;\n\njulia> q = Quaternion(cos(a/2), v*sin(a/2));\n\njulia> quat_to_angleaxis(q)\nEulerAngleAxis{Float64}:\n  Euler angle:   1.0472 rad ( 60.0000 deg)\n   Euler axis: [  0.5774,   0.5774,   0.5774]\n"
 },
 
 {
@@ -357,7 +357,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Conversions",
     "title": "Quaternions to Euler Angles",
     "category": "section",
-    "text": "There is one method to convert quaternions to Euler Angles:function quat_to_angle(q::Quaternion, rot_seq=:ZYX)However, it first transforms the quaternion to DCM using quat_to_dcm and then transforms the DCM into the Euler Angles. Hence, the performance will be poor. The improvement of this conversion will be addressed in a future version of ReferenceFrameRotations.jl.julia> q = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);\n\njulia> quat_to_angle(q, :XYZ)\nEulerAngles{Float64}(0.7853981633974484, 0.0, 0.0, :XYZ)"
+    "text": "There is one method to convert quaternions to Euler Angles:function quat_to_angle(q::Quaternion, rot_seq=:ZYX)However, it first transforms the quaternion to DCM using quat_to_dcm and then transforms the DCM into the Euler Angles. Hence, the performance will be poor. The improvement of this conversion will be addressed in a future version of ReferenceFrameRotations.jl.julia> q = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);\n\njulia> quat_to_angle(q, :XYZ)\nEulerAngles{Float64}:\n  R(X):   0.7854 rad (  45.0000 deg)\n  R(Y):   0.0000 rad (   0.0000 deg)\n  R(Z):   0.0000 rad (   0.0000 deg)\n"
 },
 
 {
@@ -897,11 +897,27 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "lib/library/#Base.show-Union{Tuple{T}, Tuple{IO,EulerAngleAxis{T}}} where T",
+    "page": "Library",
+    "title": "Base.show",
+    "category": "method",
+    "text": "function display(ea::EulerAngleAxis{T}) where T\nfunction show(io::IO, mime::MIME\"text/plain\", ea::EulerAngleAxis{T}) where T\n\nDisplay in stdout the Euler angle and axis ea.\n\n\n\n\n\n"
+},
+
+{
+    "location": "lib/library/#Base.show-Union{Tuple{T}, Tuple{IO,EulerAngles{T}}} where T",
+    "page": "Library",
+    "title": "Base.show",
+    "category": "method",
+    "text": "function show(io::IO, Θ::EulerAngles{T}) where T\nfunction show(io::IO, mime::MIME\"text/plain\", Θ::EulerAngles{T}) where T\n\nPrint the Euler angles Θ to the IO io.\n\n\n\n\n\n"
+},
+
+{
     "location": "lib/library/#Base.show-Union{Tuple{T}, Tuple{IO,Quaternion{T}}} where T",
     "page": "Library",
     "title": "Base.show",
     "category": "method",
-    "text": "function show(io::IO, q::Quaternion{T}) where T\n\nPrint the quaternion q to the stream io.\n\n\n\n\n\n"
+    "text": "function show(io::IO, q::Quaternion{T}) where T\nfunction show(io::IO, mime::MIME\"text/plain\", q::Quaternion{T}) where T\n\nPrint the quaternion q to the stream io.\n\n\n\n\n\n"
 },
 
 {
