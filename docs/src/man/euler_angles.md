@@ -48,21 +48,31 @@ julia> a1 = EulerAngles(1,0,0,:ZYX);
 julia> a2 = EulerAngles(0,-1,0,:YZY);
 
 julia> a2*a1
-EulerAngles{Float64}(0.0, 0.0, 0.0, :YZY)
+EulerAngles{Float64}:
+  R(Y):   0.0000 rad (   0.0000 deg)
+  R(Z):   0.0000 rad (   0.0000 deg)
+  R(Y):   0.0000 rad (   0.0000 deg)
 
 julia> a1 = EulerAngles(1,1,1,:YZY);
 
 julia> a2 = EulerAngles(0,0,-1,:YZY);
 
 julia> a2*a1
-EulerAngles{Float64}(1.0, 0.9999999999999998, 1.3193836087867184e-16, :YZY)
+EulerAngles{Float64}:
+  R(Y):   1.0000 rad (  57.2958 deg)
+  R(Z):   1.0000 rad (  57.2958 deg)
+  R(Y):   0.0000 rad (   0.0000 deg)
 
 julia> a1 = EulerAngles(1.3,2.2,1.4,:XYZ);
 
 julia> a2 = EulerAngles(-1.4,-2.2,-1.3,:ZYX);
 
 julia> a2*a1
-EulerAngles{Float64}(-8.326672684688677e-17, 3.3306690738754696e-16, -1.1102230246251568e-16, :ZYX)
+EulerAngles{Float64}:
+  R(Z):  -0.0000 rad (  -0.0000 deg)
+  R(Y):   0.0000 rad (   0.0000 deg)
+  R(X):  -0.0000 rad (  -0.0000 deg)
+
 ```
 
 ### Inversion
@@ -77,12 +87,19 @@ then ``\Theta^{-1}`` is a rotation through the axes ``a_3``, ``a_2``, and
 julia> a = EulerAngles(1,2,3,:ZYX);
 
 julia> inv(a)
-EulerAngles{Int64}(-3, -2, -1, :XYZ)
+EulerAngles{Int64}:
+  R(X):  -3.0000 rad (-171.8873 deg)
+  R(Y):  -2.0000 rad (-114.5916 deg)
+  R(Z):  -1.0000 rad ( -57.2958 deg)
 
 julia> a = EulerAngles(1.2,3.3,4.6,:XYX);
 
 julia> a*inv(a)
-EulerAngles{Float64}(-1.925929944387236e-34, 0.0, 0.0, :XYX)
+EulerAngles{Float64}:
+  R(X):  -0.0000 rad (  -0.0000 deg)
+  R(Y):   0.0000 rad (   0.0000 deg)
+  R(X):   0.0000 rad (   0.0000 deg)
+
 ```
 
 !!! warning

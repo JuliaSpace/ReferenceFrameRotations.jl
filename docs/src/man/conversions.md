@@ -25,10 +25,17 @@ function dcm_to_angle(dcm::DCM, rot_seq=:ZYX)
 julia> dcm = DCM([1 0 0; 0 0 -1; 0 1 0]);
 
 julia> dcm_to_angle(dcm)
-EulerAngles{Float64}(0.0, 0.0, -1.5707963267948966, :ZYX)
+EulerAngles{Float64}:
+  R(Z):   0.0000 rad (   0.0000 deg)
+  R(Y):   0.0000 rad (   0.0000 deg)
+  R(X):  -1.5708 rad ( -90.0000 deg)
 
 julia> dcm_to_angle(dcm, :XYZ)
-EulerAngles{Float64}(-1.5707963267948966, 0.0, 0.0, :XYZ)
+EulerAngles{Float64}:
+  R(X):  -1.5708 rad ( -90.0000 deg)
+  R(Y):   0.0000 rad (   0.0000 deg)
+  R(Z):   0.0000 rad (   0.0000 deg)
+
 ```
 
 ## DCMs to Euler Angle and Axis
@@ -44,7 +51,10 @@ function dcm_to_angleaxis(dcm::DCM)
 julia> dcm = DCM([1.0 0.0 0.0; 0.0 0.0 -1.0; 0.0 1.0 0.0]);
 
 julia> ea  = dcm_to_angleaxis(dcm)
-EulerAngleAxis{Float64}(1.5707963267948966, [-1.0, 0.0, 0.0])
+EulerAngleAxis{Float64}:
+  Euler angle:   1.5708 rad ( 90.0000 deg)
+   Euler axis: [ -1.0000,   0.0000,   0.0000]
+
 ```
 
 ## DCMs to Quaternions
@@ -238,7 +248,10 @@ julia> a = 60.0*pi/180;
 julia> q = Quaternion(cos(a/2), v*sin(a/2));
 
 julia> quat_to_angleaxis(q)
-EulerAngleAxis{Float64}(1.0471975511965974, [0.57735, 0.57735, 0.57735])
+EulerAngleAxis{Float64}:
+  Euler angle:   1.0472 rad ( 60.0000 deg)
+   Euler axis: [  0.5774,   0.5774,   0.5774]
+
 ```
 
 ### Quaternions to Euler Angles
@@ -258,5 +271,9 @@ The improvement of this conversion will be addressed in a future version of
 julia> q = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);
 
 julia> quat_to_angle(q, :XYZ)
-EulerAngles{Float64}(0.7853981633974484, 0.0, 0.0, :XYZ)
+EulerAngles{Float64}:
+  R(X):   0.7854 rad (  45.0000 deg)
+  R(Y):   0.0000 rad (   0.0000 deg)
+  R(Z):   0.0000 rad (   0.0000 deg)
+
 ```

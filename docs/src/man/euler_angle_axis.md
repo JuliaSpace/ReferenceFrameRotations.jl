@@ -34,16 +34,25 @@ normalized.
 
 ```jldoctest
 julia> EulerAngleAxis(1,[1,1,1])
-EulerAngleAxis{Int64}(1, [1, 1, 1])
+EulerAngleAxis{Int64}:
+  Euler angle:   1.0000 rad ( 57.2958 deg)
+   Euler axis: [  1.0000,   1.0000,   1.0000]
 
 julia> EulerAngleAxis(1.f0,[1,1,1])
-EulerAngleAxis{Float32}(1.0f0, Float32[1.0, 1.0, 1.0])
+EulerAngleAxis{Float32}:
+  Euler angle:   1.0000 rad ( 57.2958 deg)
+   Euler axis: [  1.0000,   1.0000,   1.0000]
 
 julia> EulerAngleAxis(1,[1,1,1.f0])
-EulerAngleAxis{Float32}(1.0f0, Float32[1.0, 1.0, 1.0])
+EulerAngleAxis{Float32}:
+  Euler angle:   1.0000 rad ( 57.2958 deg)
+   Euler axis: [  1.0000,   1.0000,   1.0000]
 
 julia> EulerAngleAxis(1.0,[1,1,1])
-EulerAngleAxis{Float64}(1.0, [1.0, 1.0, 1.0])
+EulerAngleAxis{Float64}:
+  Euler angle:   1.0000 rad ( 57.2958 deg)
+   Euler axis: [  1.0000,   1.0000,   1.0000]
+
 ```
 
 ## Operations
@@ -71,13 +80,20 @@ the Euler angle of the result will always be in the interval ``[0, \pi]`` rad.
 
 ```jldoctest
 julia> ea1 = EulerAngleAxis(30*pi/180, [1.0;0.0;0.0])
-EulerAngleAxis{Float64}(0.5235987755982988, [1.0, 0.0, 0.0])
+EulerAngleAxis{Float64}:
+  Euler angle:   0.5236 rad ( 30.0000 deg)
+   Euler axis: [  1.0000,   0.0000,   0.0000]
 
 julia> ea2 = EulerAngleAxis(60*pi/180, [1.0;0.0;0.0])
-EulerAngleAxis{Float64}(1.0471975511965976, [1.0, 0.0, 0.0])
+EulerAngleAxis{Float64}:
+  Euler angle:   1.0472 rad ( 60.0000 deg)
+   Euler axis: [  1.0000,   0.0000,   0.0000]
 
 julia> ea2*ea1
-EulerAngleAxis{Float64}(1.5707963267948966, [1.0, 0.0, 0.0])
+EulerAngleAxis{Float64}:
+  Euler angle:   1.5708 rad ( 90.0000 deg)
+   Euler axis: [  1.0000,   0.0000,   0.0000]
+
 ```
 
 ### Inversion
@@ -92,15 +108,22 @@ the interval ``[0, \pi]`` rad.
 julia> ea = EulerAngleAxis(1.3,[1.0,0,0]);
 
 julia> inv(ea)
-EulerAngleAxis{Float64}(1.3, [-1.0, -0.0, -0.0])
+EulerAngleAxis{Float64}:
+  Euler angle:   1.3000 rad ( 74.4845 deg)
+   Euler axis: [ -1.0000,  -0.0000,  -0.0000]
 
 julia> ea = EulerAngleAxis(-π,[sqrt(3),sqrt(3),sqrt(3)]);
 
 julia> inv(ea)
-EulerAngleAxis{Float64}(3.141592653589793, [-1.73205, -1.73205, -1.73205])
+EulerAngleAxis{Float64}:
+  Euler angle:   3.1416 rad (180.0000 deg)
+   Euler axis: [ -1.7321,  -1.7321,  -1.7321]
 
 julia> ea = EulerAngleAxis(-3π/2,[sqrt(3),sqrt(3),sqrt(3)]);
 
 julia> inv(ea)
-EulerAngleAxis{Float64}(1.5707963267948966, [-1.73205, -1.73205, -1.73205])
+EulerAngleAxis{Float64}:
+  Euler angle:   1.5708 rad ( 90.0000 deg)
+   Euler axis: [ -1.7321,  -1.7321,  -1.7321]
+
 ```
