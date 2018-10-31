@@ -430,7 +430,7 @@ end
 
 function show(io::IO, mime::MIME"text/plain", q::Quaternion{T}) where T
     # Check if the user wants colors.
-    color = get(stdout, :color, false)
+    color = get(io, :color, false)
 
     b = (color) ? "\x1b[1m"         : ""
     d = (color) ? "\x1b[0m"         : ""
