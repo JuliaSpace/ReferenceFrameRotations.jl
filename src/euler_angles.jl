@@ -63,14 +63,25 @@ end
 ################################################################################
 
 """
-    function display(Θ::EulerAngles{T}) where T
+    function show(io::IO, Θ::EulerAngles{T}) where T
+    function show(io::IO, mime::MIME"text/plain", Θ::EulerAngles{T}) where T
 
-Display in `stdout` the Euler angles `Θ`.
+Print the Euler angles `Θ` to the IO `io`.
 
 """
-function display(Θ::EulerAngles{T}) where T
+function show(io::IO, Θ::EulerAngles{T}) where T
+    str     = @sprintf "%8.4f %8.4f %8.4f rad" Θ.a1 Θ.a2 Θ.a3
+    rot_seq = String(Θ.rot_seq)
+
+    print(io, "EulerAngles{$T}:")
+    print(io,   " R($rot_seq): " * str)
+
+    nothing
+end
+
+function show(io::IO, mime::MIME"text/plain", Θ::EulerAngles{T}) where T
     # Check if the user wants colors.
-    color = get(stdout, :color, false)
+    color = get(io, :color, false)
 
     b = (color) ? "\x1b[1m"         : ""
     d = (color) ? "\x1b[0m"         : ""
@@ -78,17 +89,17 @@ function display(Θ::EulerAngles{T}) where T
     y = (color) ? "\x1b[1m\x1b[33m" : ""
     u = (color) ? "\x1b[1m\x1b[34m" : ""
 
-    println(stdout, "EulerAngles{$T}:")
-
-    str_θ₁ = @sprintf "%8.4f rad (%9.4f deg)" Θ.a1 rad2deg(Θ.a1)
-    str_θ₂ = @sprintf "%8.4f rad (%9.4f deg)" Θ.a2 rad2deg(Θ.a2)
-    str_θ₃ = @sprintf "%8.4f rad (%9.4f deg)" Θ.a3 rad2deg(Θ.a3)
-
+    str_θ₁  = @sprintf "%8.4f rad (%9.4f deg)" Θ.a1 rad2deg(Θ.a1)
+    str_θ₂  = @sprintf "%8.4f rad (%9.4f deg)" Θ.a2 rad2deg(Θ.a2)
+    str_θ₃  = @sprintf "%8.4f rad (%9.4f deg)" Θ.a3 rad2deg(Θ.a3)
     rot_seq = String(Θ.rot_seq)
 
-    println(stdout,   "$g  R($(rot_seq[1])): $d" * str_θ₁)
-    println(stdout,   "$y  R($(rot_seq[2])): $d" * str_θ₂)
-    println(stdout,   "$u  R($(rot_seq[3])): $d" * str_θ₃)
+    println(io, "EulerAngles{$T}:")
+    println(io,   "$g  R($(rot_seq[1])): $d" * str_θ₁)
+    println(io,   "$y  R($(rot_seq[2])): $d" * str_θ₂)
+      print(io,   "$u  R($(rot_seq[3])): $d" * str_θ₃)
+
+    nothing
 end
 
 ################################################################################
