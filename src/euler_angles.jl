@@ -262,7 +262,7 @@ smallangle_to_dcm(θx::Number, θy::Number, θz::Number) = DCM(  1, +θz, -θy,
 # ==============================================================================
 
 """
-    function angle_to_quat(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
+    function angle_to_quat(θ₁::T1, θ₂::T2, θ₃::T3, rot_seq::Symbol = :ZYX) where {T1<:Number, T2<:Number, T3<:Number}
 
 Convert the Euler angles `θ₁`, `θ₂`, and `θ₃` [rad] with the rotation sequence
 `rot_seq` to a quaternion.
@@ -285,12 +285,15 @@ Quaternion{Float64}:
 ```
 
 """
-function angle_to_quat(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
+function angle_to_quat(θ₁::T1, θ₂::T2, θ₃::T3, rot_seq::Symbol = :ZYX) where
+    {T1<:Number, T2<:Number, T3<:Number}
+
+    T = promote_type(T1,T2,T3)
 
     # Compute the sines and cosines of half angle.
-    s₁, c₁ = sincos(θ₁/2)
-    s₂, c₂ = sincos(θ₂/2)
-    s₃, c₃ = sincos(θ₃/2)
+    s₁, c₁ = sincos(T(θ₁)/2)
+    s₂, c₂ = sincos(T(θ₂)/2)
+    s₃, c₃ = sincos(T(θ₃)/2)
 
     if rot_seq == :ZYX
         q0 = c₁*c₂*c₃ + s₁*s₂*s₃
