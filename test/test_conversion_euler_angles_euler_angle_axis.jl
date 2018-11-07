@@ -3,6 +3,10 @@
 ################################################################################
 
 for k = 1:samples
+
+    # Euler Angle and Axis => Euler Angles
+    # ==========================================================================
+
     # Sample a vector that will be aligned with the Euler angle.
     v = [randn();randn();randn()]
     v = v/norm(v)
@@ -27,6 +31,26 @@ for k = 1:samples
     @test Θ.a2       ≈ Θq.a2    atol = 1e-10
     @test Θ.a3       ≈ Θq.a3    atol = 1e-10
     @test Θ.rot_seq == rot_seq
+
+    # Euler Angles => Euler Angle and Axis
+    # ==========================================================================
+
+    # Convert back to Euler angle and axis.
+    ea = angle_to_angleaxis(Θ)
+
+    # Normalize `a`.
+    s = 1
+
+    if a > π
+        a = 2π - a
+        s = -1
+    end
+
+    # Compare.
+    @test a    ≈ ea.a      atol = 1e-8
+    @test v[1] ≈ s*ea.v[1] atol = 1e-8
+    @test v[2] ≈ s*ea.v[2] atol = 1e-8
+    @test v[3] ≈ s*ea.v[3] atol = 1e-8
 end
 
 # Test the exceptions.

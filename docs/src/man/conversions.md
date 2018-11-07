@@ -199,6 +199,31 @@ julia> dcm    = angle_to_dcm(angles)
 
 ## Euler Angles to Quaternions
 
+Euler angles can be converted to an Euler angle and axis using the following
+functions:
+
+```julia
+function angle_to_angleaxis(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
+function angle_to_angleaxis(Θ::EulerAngles)
+```
+
+```jldoctest
+julia> angle_to_angleaxis(1,0,0,:XYZ)
+EulerAngleAxis{Float64}:
+  Euler angle:   1.0000 rad ( 57.2958 deg)
+   Euler axis: [  1.0000,   0.0000,   0.0000]
+
+julia> Θ = EulerAngles(1,1,1,:XYZ);
+
+julia> angle_to_angleaxis(Θ)
+EulerAngleAxis{Float64}:
+  Euler angle:   1.9391 rad (111.1015 deg)
+   Euler axis: [  0.6924,   0.2031,   0.6924]
+
+```
+
+## Euler Angles to Quaternions
+
 Euler angles can be converted to quaternions using the following functions:
 
 ```julia
