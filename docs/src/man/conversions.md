@@ -197,7 +197,7 @@ julia> dcm    = angle_to_dcm(angles)
   0.866025     0.353553   0.353553
 ```
 
-### Euler Angles to Quaternions
+## Euler Angles to Quaternions
 
 Euler angles can be converted to quaternions using the following functions:
 
@@ -274,7 +274,7 @@ julia> dcm = quat_to_dcm(q)
  0.0  -0.707107  0.707107
 ```
 
-### Quaternions to Euler Angle and Axis
+## Quaternions to Euler Angle and Axis
 
 A quaternion can be converted to Euler Angle and Axis representation using the
 following function:
@@ -297,7 +297,7 @@ EulerAngleAxis{Float64}:
 
 ```
 
-### Quaternions to Euler Angles
+## Quaternions to Euler Angles
 
 There is one method to convert quaternions to Euler Angles:
 
