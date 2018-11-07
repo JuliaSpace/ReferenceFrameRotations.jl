@@ -37,7 +37,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "Status",
     "category": "section",
-    "text": "This packages supports the following representations of 3D rotations:Euler Angle and Axis (INCOMPLETE);\nEuler Angles;\nDirection Cosine Matrices (DCMs);\nQuaternions.However, composing rotations is only currently supported for DCMs and Quaternions.Furthermore, the following conversions between the representations are available:Direction Cosine Matrices to Euler Angles;\nDirection Cosine Matrices to Quaternions;\nEuler Angle and Axis to Quaternions;\nEuler Angles to Direction Cosine Matrices;\nEuler Angles to Quaternions;\nSmall Euler Angles to Direction Cosine Matrices;\nSmall Euler Angles to Quaternions;\nQuaternions to Direction Cosine Matrices;\nQuaternions to Euler Angle and Axis;\nQuaternions to Euler Angles."
+    "text": "This packages supports the following representations of 3D rotations:Euler Angle and Axis;\nEuler Angles;\nDirection Cosine Matrices (DCMs);\nQuaternions.However, composing rotations is only currently supported for DCMs and Quaternions."
 },
 
 {
@@ -45,7 +45,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "Roadmap",
     "category": "section",
-    "text": "This package will be continuously enhanced. Next steps will be to add other representations of 3D rotations such as Euler angle and axis (initial support is already available), Rodrigues parameters, etc."
+    "text": "This package will be continuously enhanced. Next steps will be to add other representations of 3D rotations such as Rodrigues parameters, etc."
 },
 
 {
@@ -297,6 +297,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "man/conversions/#Euler-Angle-and-Axis-to-Euler-Angles-1",
+    "page": "Conversions",
+    "title": "Euler Angle and Axis to Euler Angles",
+    "category": "section",
+    "text": "An Euler angle and axis representaion can be converto to Euler angles using these two methods:function angleaxis_to_angle(θ::Number, v::AbstractVector, rot_seq::Symbol)\nfunction angleaxis_to_angle(ea::EulerAngleAxis, rot_seq::Symbol)julia> a = 19.86*pi/180;\n\njulia> v = [0;1;0];\n\njulia> angleaxis_to_angle(a,v,:XYX)\nEulerAngles{Float64}:\n  R(X):   0.0000 rad (   0.0000 deg)\n  R(Y):   0.3466 rad (  19.8600 deg)\n  R(X):   0.0000 rad (   0.0000 deg)\n\njulia> a = 60.0*pi/180;\n\njulia> v = [sqrt(3)/3;sqrt(3)/3;sqrt(3)/3];\n\njulia> angleaxis = EulerAngleAxis(a,v)\nEulerAngleAxis{Float64}:\n  Euler angle:   1.0472 rad ( 60.0000 deg)\n   Euler axis: [  0.5774,   0.5774,   0.5774]\n\njulia> angleaxis_to_angle(angleaxis,:XYZ)\nEulerAngles{Float64}:\n  R(X):   0.4636 rad (  26.5651 deg)\n  R(Y):   0.7297 rad (  41.8103 deg)\n  R(Z):   0.4636 rad (  26.5651 deg)\n\njulia> angleaxis_to_angle(angleaxis,:ZYX)\nEulerAngles{Float64}:\n  R(Z):   0.7854 rad (  45.0000 deg)\n  R(Y):   0.3398 rad (  19.4712 deg)\n  R(X):   0.7854 rad (  45.0000 deg)"
+},
+
+{
     "location": "man/conversions/#Euler-Angle-and-Axis-to-Quaternions-1",
     "page": "Conversions",
     "title": "Euler Angle and Axis to Quaternions",
@@ -314,6 +322,14 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "man/conversions/#Euler-Angles-to-Quaternions-1",
+    "page": "Conversions",
+    "title": "Euler Angles to Quaternions",
+    "category": "section",
+    "text": "Euler angles can be converted to an Euler angle and axis using the following functions:function angle_to_angleaxis(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)\nfunction angle_to_angleaxis(Θ::EulerAngles)julia> angle_to_angleaxis(1,0,0,:XYZ)\nEulerAngleAxis{Float64}:\n  Euler angle:   1.0000 rad ( 57.2958 deg)\n   Euler axis: [  1.0000,   0.0000,   0.0000]\n\njulia> Θ = EulerAngles(1,1,1,:XYZ);\n\njulia> angle_to_angleaxis(Θ)\nEulerAngleAxis{Float64}:\n  Euler angle:   1.9391 rad (111.1015 deg)\n   Euler axis: [  0.6924,   0.2031,   0.6924]\n"
+},
+
+{
+    "location": "man/conversions/#Euler-Angles-to-Quaternions-2",
     "page": "Conversions",
     "title": "Euler Angles to Quaternions",
     "category": "section",
@@ -537,6 +553,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "lib/library/#ReferenceFrameRotations.angle_to_angleaxis",
+    "page": "Library",
+    "title": "ReferenceFrameRotations.angle_to_angleaxis",
+    "category": "function",
+    "text": "@inline function angle_to_angleaxis(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)\n@inline function angle_to_angleaxis(Θ::EulerAngles)\n\nConvert the Euler angles θ₁, θ₂, and θ₃ [rad] with the rotation sequence rot_seq to an Euler angle and axis representation.  Those values can also be passed inside the structure Θ (see EulerAngles).\n\nThe rotation sequence is defined by a :Symbol. The possible values are: :XYX, XYZ, :XZX, :XZY, :YXY, :YXZ, :YZX, :YZY, :ZXY, :ZXZ, :ZYX, and :ZYZ. If no value is specified, then it defaults to :ZYX.\n\nExample\n\njulia> angle_to_angleaxis(1,0,0,:XYZ)\nEulerAngleAxis{Float64}:\n  Euler angle:   1.0000 rad ( 57.2958 deg)\n   Euler axis: [  1.0000,   0.0000,   0.0000]\n\njulia> Θ = EulerAngles(1,1,1,:XYZ);\n\njulia> angle_to_angleaxis(Θ)\nEulerAngleAxis{Float64}:\n  Euler angle:   1.9391 rad (111.1015 deg)\n   Euler axis: [  0.6924,   0.2031,   0.6924]\n\n\n\n\n\n\n"
+},
+
+{
     "location": "lib/library/#ReferenceFrameRotations.angle_to_dcm",
     "page": "Library",
     "title": "ReferenceFrameRotations.angle_to_dcm",
@@ -553,19 +577,19 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "lib/library/#ReferenceFrameRotations.angle_to_quat",
-    "page": "Library",
-    "title": "ReferenceFrameRotations.angle_to_quat",
-    "category": "function",
-    "text": "function angle_to_quat(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)\n\nConvert the Euler angles θ₁, θ₂, and θ₃ [rad] with the rotation sequence rot_seq to a quaternion.\n\nThe rotation sequence is defined by a :Symbol. The possible values are: :XYX, XYZ, :XZX, :XZY, :YXY, :YXZ, :YZX, :YZY, :ZXY, :ZXZ, :ZYX, and :ZYZ. If no value is specified, then it defaults to :ZYX.\n\nRemarks\n\nThis function assigns q = q1 * q2 * q3 in which qi is the quaternion related with the i-th rotation, i Є [1,2,3].\n\nExample\n\njulia> angle_to_quat(pi/2, pi/3, pi/4, :ZYX)\nQuaternion{Float64}:\n  + 0.7010573846499779 - 0.09229595564125714.i + 0.5609855267969309.j + 0.43045933457687935.k\n\n\n\n\n\n"
-},
-
-{
     "location": "lib/library/#ReferenceFrameRotations.angle_to_quat-Tuple{EulerAngles}",
     "page": "Library",
     "title": "ReferenceFrameRotations.angle_to_quat",
     "category": "method",
     "text": "function angle_to_quat(eulerang::EulerAngles)\n\nConvert the Euler angles eulerang (see EulerAngles) to a quaternion.\n\nRemarks\n\nThis function assigns q = q1 * q2 * q3 in which qi is the quaternion related with the i-th rotation, i Є [1,2,3].\n\nExample\n\njulia> angle_to_quat(pi/2, pi/3, pi/4, :ZYX)\nQuaternion{Float64}:\n  + 0.7010573846499779 - 0.09229595564125714.i + 0.5609855267969309.j + 0.43045933457687935.k\n\n\n\n\n\n"
+},
+
+{
+    "location": "lib/library/#ReferenceFrameRotations.angle_to_quat-Union{Tuple{T3}, Tuple{T2}, Tuple{T1}, Tuple{T1,T2,T3}, Tuple{T1,T2,T3,Symbol}} where T3<:Number where T2<:Number where T1<:Number",
+    "page": "Library",
+    "title": "ReferenceFrameRotations.angle_to_quat",
+    "category": "method",
+    "text": "function angle_to_quat(θ₁::T1, θ₂::T2, θ₃::T3, rot_seq::Symbol = :ZYX) where {T1<:Number, T2<:Number, T3<:Number}\n\nConvert the Euler angles θ₁, θ₂, and θ₃ [rad] with the rotation sequence rot_seq to a quaternion.\n\nThe rotation sequence is defined by a :Symbol. The possible values are: :XYX, XYZ, :XZX, :XZY, :YXY, :YXZ, :YZX, :YZY, :ZXY, :ZXZ, :ZYX, and :ZYZ. If no value is specified, then it defaults to :ZYX.\n\nRemarks\n\nThis function assigns q = q1 * q2 * q3 in which qi is the quaternion related with the i-th rotation, i Є [1,2,3].\n\nExample\n\njulia> angle_to_quat(pi/2, pi/3, pi/4, :ZYX)\nQuaternion{Float64}:\n  + 0.7010573846499779 - 0.09229595564125714.i + 0.5609855267969309.j + 0.43045933457687935.k\n\n\n\n\n\n"
 },
 
 {
@@ -582,6 +606,14 @@ var documenterSearchIndex = {"docs": [
     "title": "ReferenceFrameRotations.angle_to_rot",
     "category": "method",
     "text": "@inline angle_to_rot([T,] θx::Number, θy::Number, θz::Number, rot_seq::Symbol)\n\nConvert the Euler angles Θx, Θy, and Θz [rad] with the rotation sequence rot_seq to a rotation description of type T, which can be DCM or Quaternion. If the type T is not specified, then it defaults to DCM.\n\nThe rotation sequence is defined by a :Symbol. The possible values are: :XYX, XYZ, :XZX, :XZY, :YXY, :YXZ, :YZX, :YZY, :ZXY, :ZXZ, :ZYX, and :ZYZ. If no value is specified, then it defaults to :ZYX.\n\nExample\n\njulia> dcm = angle_to_rot(pi/2, pi/3, pi/4, :ZYX)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  3.06162e-17  0.5       -0.866025\n -0.707107     0.612372   0.353553\n  0.707107     0.612372   0.353553\n\njulia> q   = angle_to_rot(Quaternion,pi/2, pi/3, pi/4, :ZYX)\nQuaternion{Float64}:\n  + 0.7010573846499779 - 0.09229595564125714.i + 0.5609855267969309.j + 0.43045933457687935.k\n\n\n\n\n\n"
+},
+
+{
+    "location": "lib/library/#ReferenceFrameRotations.angleaxis_to_angle-Tuple{Number,AbstractArray{T,1} where T,Symbol}",
+    "page": "Library",
+    "title": "ReferenceFrameRotations.angleaxis_to_angle",
+    "category": "method",
+    "text": "@inline function angleaxis_to_angle(θ::Number, v::AbstractVector, rot_seq::Symbol)\n@inline function angleaxis_to_angle(ea::EulerAngleAxis, rot_seq::Symbol)\n\nConvert the Euler angle θ [rad]  and Euler axis v, which must be a unit vector, to Euler angles with rotation sequence rot_seq. Those values can also be passed inside the structure ea (see EulerAngleAxis).\n\nThe rotation sequence is defined by a :Symbol. The possible values are: :XYX, XYZ, :XZX, :XZY, :YXY, :YXZ, :YZX, :YZY, :ZXY, :ZXZ, :ZYX, and :ZYZ. If no value is specified, then it defaults to :ZYX.\n\nExample\n\njulia> ea = EulerAngleAxis(45*pi/180, [1;0;0]);\n\njulia> angleaxis_to_angles(ea, :ZXY)\nEulerAngles{Float64}:\n  R(Z):   0.0000 rad (   0.0000 deg)\n  R(X):   0.7854 rad (  45.0000 deg)\n  R(Y):   0.0000 rad (   0.0000 deg)\n\n\n\n\n\n\n"
 },
 
 {
