@@ -40,17 +40,17 @@ println("")
 end
 println("")
 
-@time @testset "DCM <=> Euler Angle and Axis conversions" begin
+@time @testset "DCM <=> Euler Angle and Axis" begin
     include("./test_conversion_dcm_euler_angle_axis.jl")
 end
 println("")
 
-@time @testset "DCM <=> Euler Angles conversions" begin
+@time @testset "DCM <=> Euler Angles" begin
     include("./test_conversion_dcm_euler_angles.jl")
 end
 println("")
 
-@time @testset "DCM <=> Quaternions conversions" begin
+@time @testset "DCM <=> Quaternions" begin
     include("./test_conversion_dcm_quaternions.jl")
 end
 println("")
@@ -60,12 +60,12 @@ println("")
 end
 println("")
 
-@time @testset "Euler Angles <=> Quaternion conversion" begin
+@time @testset "Euler Angles <=> Quaternion" begin
     include("./test_conversion_euler_angles_quaternions.jl")
 end
 println("")
 
-@time @testset "Euler Angle Axis <=> Quaternion conversions" begin
+@time @testset "Euler Angle Axis <=> Quaternion" begin
     include("./test_conversion_euler_angle_axis_quaternions.jl")
 end
 println("")
