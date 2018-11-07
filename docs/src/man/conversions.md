@@ -103,6 +103,49 @@ julia> angleaxis_to_dcm(angleaxis)
   0.666667  -0.333333   0.666667
 ```
 
+## Euler Angle and Axis to Euler Angles
+
+An Euler angle and axis representaion can be converto to Euler angles using
+these two methods:
+
+```julia
+function angleaxis_to_angle(θ::Number, v::AbstractVector, rot_seq::Symbol)
+function angleaxis_to_angle(ea::EulerAngleAxis, rot_seq::Symbol)
+```
+
+```jldoctest
+julia> a = 19.86*pi/180;
+
+julia> v = [0;1;0];
+
+julia> angleaxis_to_angle(a,v,:XYX)
+EulerAngles{Float64}:
+  R(X):   0.0000 rad (   0.0000 deg)
+  R(Y):   0.3466 rad (  19.8600 deg)
+  R(X):   0.0000 rad (   0.0000 deg)
+
+julia> a = 60.0*pi/180;
+
+julia> v = [sqrt(3)/3;sqrt(3)/3;sqrt(3)/3];
+
+julia> angleaxis = EulerAngleAxis(a,v)
+EulerAngleAxis{Float64}:
+  Euler angle:   1.0472 rad ( 60.0000 deg)
+   Euler axis: [  0.5774,   0.5774,   0.5774]
+
+julia> angleaxis_to_angle(angleaxis,:XYZ)
+EulerAngles{Float64}:
+  R(X):   0.4636 rad (  26.5651 deg)
+  R(Y):   0.7297 rad (  41.8103 deg)
+  R(Z):   0.4636 rad (  26.5651 deg)
+
+julia> angleaxis_to_angle(angleaxis,:ZYX)
+EulerAngles{Float64}:
+  R(Z):   0.7854 rad (  45.0000 deg)
+  R(Y):   0.3398 rad (  19.4712 deg)
+  R(X):   0.7854 rad (  45.0000 deg)
+```
+
 ## Euler Angle and Axis to Quaternions
 
 An Euler angle and axis representation can be converted to quaternion using

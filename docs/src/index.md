@@ -30,7 +30,7 @@ julia> Pkg.add("ReferenceFrameRotations")
 
 This packages supports the following representations of 3D rotations:
 
-* **Euler Angle and Axis** (INCOMPLETE);
+* **Euler Angle and Axis**;
 * **Euler Angles**;
 * **Direction Cosine Matrices (DCMs)**;
 * **Quaternions**.
@@ -38,25 +38,10 @@ This packages supports the following representations of 3D rotations:
 However, composing rotations is only currently supported for DCMs and
 Quaternions.
 
-Furthermore, the following conversions between the representations are
-available:
-
-* **Direction Cosine Matrices** to **Euler Angles**;
-* **Direction Cosine Matrices** to **Quaternions**;
-* **Euler Angle and Axis** to **Quaternions**;
-* **Euler Angles** to **Direction Cosine Matrices**;
-* **Euler Angles** to **Quaternions**;
-* **Small Euler Angles** to **Direction Cosine Matrices**;
-* **Small Euler Angles** to **Quaternions**;
-* **Quaternions** to **Direction Cosine Matrices**;
-* **Quaternions** to **Euler Angle and Axis**;
-* **Quaternions** to **Euler Angles**.
-
 ## Roadmap
 
 This package will be continuously enhanced. Next steps will be to add other
-representations of 3D rotations such as Euler angle and axis (initial support is
-already available), Rodrigues parameters, etc.
+representations of 3D rotations such as Rodrigues parameters, etc.
 
 ## Manual outline
 

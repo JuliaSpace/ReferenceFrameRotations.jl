@@ -2,7 +2,7 @@
 #                             Euler Angle and Axis
 ################################################################################
 
-export angleaxis_to_dcm, angleaxis_to_quat
+export angleaxis_to_angle, angleaxis_to_dcm, angleaxis_to_quat
 
 ################################################################################
 #                                  Operations
@@ -118,6 +118,43 @@ end
 ################################################################################
 #                                 Conversions
 ################################################################################
+
+# Euler Angles
+# ==============================================================================
+
+"""
+    @inline function angleaxis_to_angle(θ::Number, v::AbstractVector, rot_seq::Symbol)
+    @inline function angleaxis_to_angle(ea::EulerAngleAxis, rot_seq::Symbol)
+
+Convert the Euler angle `θ` [rad]  and Euler axis `v`, which must be a unit
+vector, to Euler angles with rotation sequence `rot_seq`. Those values can also
+be passed inside the structure `ea` (see `EulerAngleAxis`).
+
+The rotation sequence is defined by a `:Symbol`. The possible values are:
+`:XYX`, `XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`,
+`:ZYX`, and `:ZYZ`. If no value is specified, then it defaults to `:ZYX`.
+
+# Example
+
+```julia-repl
+julia> ea = EulerAngleAxis(45*pi/180, [1;0;0]);
+
+julia> angleaxis_to_angles(ea, :ZXY)
+EulerAngles{Float64}:
+  R(Z):   0.0000 rad (   0.0000 deg)
+  R(X):   0.7854 rad (  45.0000 deg)
+  R(Y):   0.0000 rad (   0.0000 deg)
+
+```
+"""
+@inline function angleaxis_to_angle(θ::Number, v::AbstractVector, rot_seq::Symbol)
+    # First we convert to quaternions then to Euler angles.
+    quat_to_angle( angleaxis_to_quat(θ, v), rot_seq )
+end
+
+@inline angleaxis_to_angle(ea::EulerAngleAxis, rot_seq::Symbol) =
+    angleaxis_to_angle(ea.a, ea.v, rot_seq)
+
 
 # DCM
 # ==============================================================================

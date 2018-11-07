@@ -55,6 +55,11 @@ println("")
 end
 println("")
 
+@time @testset "Euler Angles <=> Euler Angle and Axis" begin
+    include("./test_conversion_euler_angles_euler_angle_axis.jl")
+end
+println("")
+
 @time @testset "Euler Angles <=> Quaternion conversion" begin
     include("./test_conversion_euler_angles_quaternions.jl")
 end
