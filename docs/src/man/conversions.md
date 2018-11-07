@@ -176,7 +176,7 @@ Quaternion{Float64}:
 
 Euler angles can be converted to DCMs using the following functions:
 
-```
+```julia
 function angle_to_dcm(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
 function angle_to_dcm(Θ::EulerAngles)
 ```
