@@ -277,7 +277,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Conversions",
     "title": "DCMs to Euler Angles",
     "category": "section",
-    "text": "A Direction Cosine Matrix (DCM) can be converted to Euler Angles using the following function:function dcm_to_angle(dcm::DCM, rot_seq=:ZYX)julia> dcm = DCM([1 0 0; 0 0 -1; 0 1 0]);\n\njulia> dcm_to_angle(dcm)\nEulerAngles{Float64}:\n  R(Z):   0.0000 rad (   0.0000 deg)\n  R(Y):   0.0000 rad (   0.0000 deg)\n  R(X):  -1.5708 rad ( -90.0000 deg)\n\njulia> dcm_to_angle(dcm, :XYZ)\nEulerAngles{Float64}:\n  R(X):  -1.5708 rad ( -90.0000 deg)\n  R(Y):   0.0000 rad (   0.0000 deg)\n  R(Z):   0.0000 rad (   0.0000 deg)\n"
+    "text": "A Direction Cosine Matrix (DCM) can be converted to Euler Angles using the following function:function dcm_to_angle(dcm::DCM, rot_seq=:ZYX)note: Note\nGimbal-lock and special casesIf the rotations are about three different axes, e.g. :XYZ, :ZYX, etc., then a second rotation of pm 90^circ yields a gimbal-lock. This means that the rotations between the first and third axes have the same effect. In this case, the net rotation angle is assigned to the first rotation and the angle of the third rotation is set to 0.If the rotations are about two different axes, e.g. :XYX, :YXY, etc., then a rotation about the duplicated axis yields multiple representations. In this case, the entire angle is assigned to the first rotation and the third rotation is set to 0.julia> dcm = DCM([1 0 0; 0 0 -1; 0 1 0]);\n\njulia> dcm_to_angle(dcm)\nEulerAngles{Float64}:\n  R(Z):   0.0000 rad (   0.0000 deg)\n  R(Y):   0.0000 rad (   0.0000 deg)\n  R(X):  -1.5708 rad ( -90.0000 deg)\n\njulia> dcm_to_angle(dcm, :XYZ)\nEulerAngles{Float64}:\n  R(X):  -1.5708 rad ( -90.0000 deg)\n  R(Y):   0.0000 rad (   0.0000 deg)\n  R(Z):   0.0000 rad (   0.0000 deg)\n\njulia> D = angle_to_dcm(1, -pi/2, 2, :ZYX);\n\njulia> dcm_to_angle(D,:ZYX)\nEulerAngles{Float64}:\n  R(Z):   3.0000 rad ( 171.8873 deg)\n  R(Y):  -1.5708 rad ( -90.0000 deg)\n  R(X):   0.0000 rad (   0.0000 deg)\n\njulia> D = create_rotation_matrix(1,:X)*create_rotation_matrix(2,:X);\n\njulia> dcm_to_angle(D,:XYX)\nEulerAngles{Float64}:\n  R(X):   3.0000 rad ( 171.8873 deg)\n  R(Y):   0.0000 rad (   0.0000 deg)\n  R(X):   0.0000 rad (   0.0000 deg)"
 },
 
 {
@@ -326,6 +326,14 @@ var documenterSearchIndex = {"docs": [
     "title": "Euler Angles to Direction Cosine Matrices",
     "category": "section",
     "text": "Euler angles can be converted to DCMs using the following functions:function angle_to_dcm(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)\nfunction angle_to_dcm(Θ::EulerAngles)julia> dcm = angle_to_dcm(pi/2, pi/4, pi/3, :ZYX)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  4.32978e-17  0.707107  -0.707107\n -0.5          0.612372   0.612372\n  0.866025     0.353553   0.353553\n\njulia> angles = EulerAngles(pi/2, pi/4, pi/3, :ZYX);\n\njulia> dcm    = angle_to_dcm(angles)\n3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:\n  4.32978e-17  0.707107  -0.707107\n -0.5          0.612372   0.612372\n  0.866025     0.353553   0.353553"
+},
+
+{
+    "location": "man/conversions/#Euler-Angles-to-Euler-Angles-1",
+    "page": "Conversions",
+    "title": "Euler Angles to Euler Angles",
+    "category": "section",
+    "text": "It is possible to change the rotation sequence of a set of Euler angles using the following functions:function angle_to_angle(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq_orig::Symbol, rot_seq_dest::Symbol)\nfunction angle_to_angle(Θ::EulerAngles, rot_seq_dest::Symbol)in which rot_seq_dest is the desired rotation sequence of the result.julia> angle_to_angle(-pi/2, -pi/3, -pi/4, :ZYX, :XYZ)\nEulerAngles{Float64}:\n  R(X):  -1.0472 rad ( -60.0000 deg)\n  R(Y):   0.7854 rad (  45.0000 deg)\n  R(Z):  -1.5708 rad ( -90.0000 deg)\n\njulia> angle_to_angle(-pi/2, 0, 0, :ZYX, :XYZ)\nEulerAngles{Float64}:\n  R(X):   0.0000 rad (   0.0000 deg)\n  R(Y):   0.0000 rad (   0.0000 deg)\n  R(Z):  -1.5708 rad ( -90.0000 deg)\n\njulia> Θ = EulerAngles(1,2,3,:XYX)\nEulerAngles{Int64}:\n  R(X):   1.0000 rad (  57.2958 deg)\n  R(Y):   2.0000 rad ( 114.5916 deg)\n  R(X):   3.0000 rad ( 171.8873 deg)\n\njulia> angle_to_angle(Θ,:ZYZ)\nEulerAngles{Float64}:\n  R(Z):  -2.7024 rad (-154.8356 deg)\n  R(Y):   1.4668 rad (  84.0393 deg)\n  R(Z):  -1.0542 rad ( -60.3984 deg)"
 },
 
 {
@@ -561,6 +569,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "lib/library/#ReferenceFrameRotations.angle_to_angle-Tuple{Number,Number,Number,Symbol,Symbol}",
+    "page": "Library",
+    "title": "ReferenceFrameRotations.angle_to_angle",
+    "category": "method",
+    "text": "@inline function angle_to_angle(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq_orig::Symbol, rot_seq_dest::Symbol)\n@inline function angle_to_angle(Θ::EulerAngles, rot_seq_dest::Symbol)\n\nConvert the Euler angles θ₁, θ₂, and θ₃ [rad] with the rotation sequence rot_seq_orig to a new set of Euler angles with rotation sequence rot_seq_dest. The input values of the origin Euler angles can also be passed inside the structure Θ (see EulerAngles).\n\nThe rotation sequence is defined by a :Symbol. The possible values are: :XYX, XYZ, :XZX, :XZY, :YXY, :YXZ, :YZX, :YZY, :ZXY, :ZXZ, :ZYX, and :ZYZ. If no value is specified, then it defaults to :ZYX.\n\nExample\n\njulia> angle_to_angle(-pi/2, -pi/3, -pi/4, :ZYX, :XYZ)\nEulerAngles{Float64}:\n  R(X):  -1.0472 rad ( -60.0000 deg)\n  R(Y):   0.7854 rad (  45.0000 deg)\n  R(Z):  -1.5708 rad ( -90.0000 deg)\n\njulia> angle_to_angle(-pi/2, 0, 0, :ZYX, :XYZ)\nEulerAngles{Float64}:\n  R(X):   0.0000 rad (   0.0000 deg)\n  R(Y):   0.0000 rad (   0.0000 deg)\n  R(Z):  -1.5708 rad ( -90.0000 deg)\n\njulia> Θ = EulerAngles(1,2,3,:XYX)\nEulerAngles{Int64}:\n  R(X):   1.0000 rad (  57.2958 deg)\n  R(Y):   2.0000 rad ( 114.5916 deg)\n  R(X):   3.0000 rad ( 171.8873 deg)\n\njulia> angle_to_angle(Θ,:ZYZ)\nEulerAngles{Float64}:\n  R(Z):  -2.7024 rad (-154.8356 deg)\n  R(Y):   1.4668 rad (  84.0393 deg)\n  R(Z):  -1.0542 rad ( -60.3984 deg)\n\n\n\n\n\n"
+},
+
+{
     "location": "lib/library/#ReferenceFrameRotations.angle_to_angleaxis",
     "page": "Library",
     "title": "ReferenceFrameRotations.angle_to_angleaxis",
@@ -669,7 +685,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Library",
     "title": "ReferenceFrameRotations.dcm_to_angle",
     "category": "method",
-    "text": "function dcm_to_angle(dcm::DCM, rot_seq::Symbol=:ZYX)\n\nConvert the DCM dcm to Euler Angles (see EulerAngles) given a rotation sequence rot_seq.\n\nThe rotation sequence is defined by a :Symbol. The possible values are: :XYX, XYZ, :XZX, :XZY, :YXY, :YXZ, :YZX, :YZY, :ZXY, :ZXZ, :ZYX, and :ZYZ. If no value is specified, then it defaults to :ZYX.\n\nExample\n\njulia> D = DCM([1. 0. 0.; 0. 0. -1; 0. -1 0.]);\n\njulia> dcm_to_angle(D,:XYZ)\nReferenceFrameRotations.EulerAngles{Float64}(1.5707963267948966, 0.0, -0.0, :XYZ)\n\n\n\n\n\n"
+    "text": "function dcm_to_angle(dcm::DCM, rot_seq::Symbol=:ZYX)\n\nConvert the DCM dcm to Euler Angles (see EulerAngles) given a rotation sequence rot_seq.\n\nThe rotation sequence is defined by a :Symbol. The possible values are: :XYX, XYZ, :XZX, :XZY, :YXY, :YXZ, :YZX, :YZY, :ZXY, :ZXZ, :ZYX, and :ZYZ. If no value is specified, then it defaults to :ZYX.\n\nGimbal-lock and special cases\n\nIf the rotations are about three different axes, e.g. :XYZ, :ZYX, etc., then a second rotation of ±90˚ yields a gimbal-lock. This means that the rotations between the first and third axes have the same effect. In this case, the net rotation angle is assigned to the first rotation and the angle of the third rotation is set to 0.\n\nIf the rotations are about two different axes, e.g. :XYX, :YXY, etc., then a rotation about the duplicated axis yields multiple representations. In this case, the entire angle is assigned to the first rotation and the third rotation is set to 0.\n\nExample\n\njulia> D = DCM([1. 0. 0.; 0. 0. -1; 0. -1 0.]);\n\njulia> dcm_to_angle(D,:XYZ)\nEulerAngles{Float64}:\n  R(X):   1.5708 rad (  90.0000 deg)\n  R(Y):   0.0000 rad (   0.0000 deg)\n  R(Z):   0.0000 rad (   0.0000 deg)\n\njulia> D = angle_to_dcm(1, -pi/2, 2, :ZYX);\n\njulia> dcm_to_angle(D,:ZYX)\nEulerAngles{Float64}:\n  R(Z):   3.0000 rad ( 171.8873 deg)\n  R(Y):  -1.5708 rad ( -90.0000 deg)\n  R(X):   0.0000 rad (   0.0000 deg)\n\njulia> D = create_rotation_matrix(1,:X)*create_rotation_matrix(2,:X);\n\njulia> dcm_to_angle(D,:XYX)\nEulerAngles{Float64}:\n  R(X):   3.0000 rad ( 171.8873 deg)\n  R(Y):   0.0000 rad (   0.0000 deg)\n  R(X):   0.0000 rad (   0.0000 deg)\n\n\n\n\n\n"
 },
 
 {
