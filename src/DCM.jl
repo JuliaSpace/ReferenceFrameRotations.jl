@@ -100,6 +100,19 @@ end
 # The signed zero can lead to problems when converting from DCM to Euler angles.
 _mod_atan(y::T,x::T) where T<:Number = atan(y + T(0), x + T(0))
 
+# This modified function computes the `acos(x)` if `|x| <= 1` and computes
+# `acos( sign(x) )`  if `|x| > 1` to avoid numerical errors when converting DCM
+# to  Euler Angles.
+function _mod_acos(x::T) where T<:Number
+    if x > 1
+        return T(0)
+    elseif x < -1
+        return T(π)
+    else
+        return acos(x)
+    end
+end
+
 """
     function dcm_to_angle(dcm::DCM, rot_seq::Symbol=:ZYX)
 
@@ -138,7 +151,7 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol=:ZYX) where T<:Number
                                rot_seq)
         else
             return EulerAngles(_mod_atan(+dcm[2,3],+dcm[2,2]),
-                               T(0),
+                               _mod_acos(dcm[1,1]),
                                T(0),
                                rot_seq)
         end
@@ -160,7 +173,7 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol=:ZYX) where T<:Number
                                rot_seq)
         else
             return EulerAngles(_mod_atan(-dcm[3,2],+dcm[3,3]),
-                               T(0),
+                               _mod_acos(dcm[1,1]),
                                T(0),
                                rot_seq)
         end
@@ -182,7 +195,7 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol=:ZYX) where T<:Number
                                rot_seq)
         else
             return EulerAngles(_mod_atan(-dcm[1,3],+dcm[1,1]),
-                               T(0),
+                               _mod_acos(dcm[2,2]),
                                T(0),
                                rot_seq)
         end
@@ -211,7 +224,7 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol=:ZYX) where T<:Number
                                rot_seq)
         else
             return EulerAngles(_mod_atan(dcm[3,1], dcm[3,3]),
-                               T(0),
+                               _mod_acos(dcm[2,2]),
                                T(0),
                                rot_seq)
         end
@@ -233,7 +246,7 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol=:ZYX) where T<:Number
                                rot_seq)
         else
             return EulerAngles(_mod_atan(dcm[1,2], dcm[1,1]),
-                               T(0),
+                               _mod_acos(dcm[3,3]),
                                T(0),
                                rot_seq)
         end
@@ -248,7 +261,7 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol=:ZYX) where T<:Number
                                rot_seq)
         else
             return EulerAngles(_mod_atan(-dcm[2,1], dcm[2,2]),
-                               T(0),
+                               _mod_acos(dcm[3,3]),
                                T(0),
                                rot_seq)
         end

@@ -24,6 +24,9 @@ for k = 1:samples
     end
 
     # Check situations with singularities.
+    Rx = create_rotation_matrix(π, :X)
+    Ry = create_rotation_matrix(π, :Y)
+    Rz = create_rotation_matrix(π, :Z)
     α  = -pi + 2*pi*rand()
 
     D  = create_rotation_matrix(α, :X)
@@ -31,18 +34,36 @@ for k = 1:samples
     Θ₂ = dcm_to_angle(D, :XZX)
     @test Θ₁.a1 ≈ α
     @test Θ₂.a1 ≈ α
+    Θ₁ = dcm_to_angle(D*Ry, :XYX)
+    Θ₂ = dcm_to_angle(D*Rz, :XZX)
+    @test Θ₁.a1 ≈ -α
+    @test Θ₁.a2 ≈ π
+    @test Θ₂.a1 ≈ -α
+    @test Θ₂.a2 ≈ π
 
     D  = create_rotation_matrix(α, :Y)
     Θ₁ = dcm_to_angle(D, :YXY)
     Θ₂ = dcm_to_angle(D, :YZY)
     @test Θ₁.a1 ≈ α
     @test Θ₂.a1 ≈ α
+    Θ₁ = dcm_to_angle(D*Rx, :YXY)
+    Θ₂ = dcm_to_angle(D*Rz, :YZY)
+    @test Θ₁.a1 ≈ -α
+    @test Θ₁.a2 ≈ π
+    @test Θ₂.a1 ≈ -α
+    @test Θ₂.a2 ≈ π
 
     D  = create_rotation_matrix(α, :Z)
     Θ₁ = dcm_to_angle(D, :ZXZ)
     Θ₂ = dcm_to_angle(D, :ZYZ)
     @test Θ₁.a1 ≈ α
     @test Θ₂.a1 ≈ α
+    Θ₁ = dcm_to_angle(D*Rx, :ZXZ)
+    Θ₂ = dcm_to_angle(D*Ry, :ZYZ)
+    @test Θ₁.a1 ≈ -α
+    @test Θ₁.a2 ≈ π
+    @test Θ₂.a1 ≈ -α
+    @test Θ₂.a2 ≈ π
 end
 
 for k = 1:samples
