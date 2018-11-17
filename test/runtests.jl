@@ -85,6 +85,16 @@ println("")
 end
 println("")
 
+@time @testset "Compose rotations using Euler angle and axis" begin
+    include("./test_compose_rotations_euler_angle_axis.jl")
+end
+println("")
+
+@time @testset "Compose rotations using Euler angles" begin
+    include("./test_compose_rotations_euler_angles.jl")
+end
+println("")
+
 @time @testset "Compose rotations using Quaternions" begin
     include("./test_compose_rotations_quaternions.jl")
 end
