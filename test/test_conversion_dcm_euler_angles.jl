@@ -29,41 +29,68 @@ for k = 1:samples
     Rz = create_rotation_matrix(π, :Z)
     α  = -pi + 2*pi*rand()
 
+    # Two rotations about X
+    # --------------------------------------------------------------------------
     D  = create_rotation_matrix(α, :X)
     Θ₁ = dcm_to_angle(D, :XYX)
     Θ₂ = dcm_to_angle(D, :XZX)
     @test Θ₁.a1 ≈ α
+    @test Θ₁.a2 ≈ 0
+    @test Θ₁.a3 ≈ 0
     @test Θ₂.a1 ≈ α
+    @test Θ₂.a2 ≈ 0
+    @test Θ₂.a3 ≈ 0
+
     Θ₁ = dcm_to_angle(D*Ry, :XYX)
     Θ₂ = dcm_to_angle(D*Rz, :XZX)
     @test Θ₁.a1 ≈ -α
     @test Θ₁.a2 ≈ π
+    @test Θ₁.a3 ≈ 0
     @test Θ₂.a1 ≈ -α
     @test Θ₂.a2 ≈ π
+    @test Θ₂.a3 ≈ 0
 
+    # Two rotations about Y
+    # --------------------------------------------------------------------------
     D  = create_rotation_matrix(α, :Y)
     Θ₁ = dcm_to_angle(D, :YXY)
     Θ₂ = dcm_to_angle(D, :YZY)
     @test Θ₁.a1 ≈ α
+    @test Θ₁.a2 ≈ 0
+    @test Θ₁.a3 ≈ 0
     @test Θ₂.a1 ≈ α
+    @test Θ₂.a2 ≈ 0
+    @test Θ₂.a3 ≈ 0
+
     Θ₁ = dcm_to_angle(D*Rx, :YXY)
     Θ₂ = dcm_to_angle(D*Rz, :YZY)
     @test Θ₁.a1 ≈ -α
     @test Θ₁.a2 ≈ π
+    @test Θ₁.a3 ≈ 0
     @test Θ₂.a1 ≈ -α
     @test Θ₂.a2 ≈ π
+    @test Θ₂.a3 ≈ 0
 
+    # Two rotations about Z
+    # --------------------------------------------------------------------------
     D  = create_rotation_matrix(α, :Z)
     Θ₁ = dcm_to_angle(D, :ZXZ)
     Θ₂ = dcm_to_angle(D, :ZYZ)
     @test Θ₁.a1 ≈ α
+    @test Θ₁.a2 ≈ 0
+    @test Θ₁.a3 ≈ 0
     @test Θ₂.a1 ≈ α
+    @test Θ₂.a2 ≈ 0
+    @test Θ₂.a3 ≈ 0
+
     Θ₁ = dcm_to_angle(D*Rx, :ZXZ)
     Θ₂ = dcm_to_angle(D*Ry, :ZYZ)
     @test Θ₁.a1 ≈ -α
     @test Θ₁.a2 ≈ π
+    @test Θ₁.a3 ≈ 0
     @test Θ₂.a1 ≈ -α
     @test Θ₂.a2 ≈ π
+    @test Θ₂.a3 ≈ 0
 end
 
 for k = 1:samples
