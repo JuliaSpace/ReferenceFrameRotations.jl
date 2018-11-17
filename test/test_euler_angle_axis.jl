@@ -42,7 +42,7 @@ for k = 1:samples
     v   = randn(3)
     v  /= norm(v)
     ea  = EulerAngleAxis(a,v)
-    ear = ea*inv(ea)
+    ear = ea*inv_rotation(ea)
 
     @test norm(ear.v) ≈ 0 atol = 1e-7
     @test       ear.a ≈ 0 atol = 1e-7

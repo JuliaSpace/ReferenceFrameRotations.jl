@@ -10,8 +10,8 @@ for k = 1:samples
         θz = -pi + 2*pi*rand()
         Θ  = EulerAngles(θx, θy, θz, rot_seq)
 
-        δΘ₁ = Θ*inv(Θ)
-        δΘ₂ = inv(Θ)*Θ
+        δΘ₁ = Θ*inv_rotation(Θ)
+        δΘ₂ = inv_rotation(Θ)*Θ
 
         # Check if the rotation is identity.
         q₁ = angle_to_quat(δΘ₁)
