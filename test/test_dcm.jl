@@ -81,6 +81,40 @@ for k = 1:samples
 
     # Check if they are orthonormal.
     @test norm(inv_rotation(dcm3)-inv(dcm1)*inv(dcm2)) < 5e-10
+
+    # Orthornormalization
+    # ===================
+    ang_x = -pi + 2pi*rand()
+    ang_y = -pi + 2pi*rand()
+    ang_z = -pi + 2pi*rand()
+    α     = 1 + rand()
+
+    D  = angle_to_dcm(ang_x, ang_y, ang_z, :XYZ)
+
+    D1 = [ D[:,1]*α D[:,2]   D[:,3]   ]
+    D2 = [ D[:,1]   D[:,2]*α D[:,3]   ]
+    D3 = [ D[:,1]   D[:,2]   D[:,3]*α ]
+    D4 = [ D[:,1]*α D[:,2]*α D[:,3]   ]
+    D5 = [ D[:,1]   D[:,2]*α D[:,3]*α ]
+    D6 = [ D[:,1]*α D[:,2]   D[:,3]*α ]
+
+    @test norm( D - orthonormalize(D1) ) ≈ 0 atol=1e-15
+    @test norm( D - orthonormalize(D2) ) ≈ 0 atol=1e-15
+    @test norm( D - orthonormalize(D3) ) ≈ 0 atol=1e-15
+    @test norm( D - orthonormalize(D4) ) ≈ 0 atol=1e-15
+    @test norm( D - orthonormalize(D5) ) ≈ 0 atol=1e-15
+    @test norm( D - orthonormalize(D6) ) ≈ 0 atol=1e-15
+end
+
+# Additional test of orthonormalization obtained from:
+#   https://www.emathhelp.net/calculators/linear-algebra/gram-schmidt-calculator/
+let
+    D  = orthonormalize(DCM(0,3,4,1,0,1,1,1,3))
+    Dr = DCM([ 0   5sqrt(34)/34  -3sqrt(34)/34;
+              3/5 -6sqrt(34)/85  -2sqrt(34)/17;
+              4/5  9sqrt(34)/170  3sqrt(34)/34; ])
+
+    @test norm(D-Dr) ≈ 0 atol=1e-12
 end
 
 # Test exceptions.

@@ -3,7 +3,7 @@
 ################################################################################
 
 export create_rotation_matrix
-export ddcm, dcm_to_angle, dcm_to_angleaxis, dcm_to_quat
+export ddcm, dcm_to_angle, dcm_to_angleaxis, dcm_to_quat, orthonormalize
 
 ################################################################################
 #                                  Functions
@@ -45,6 +45,44 @@ function create_rotation_matrix(angle::Number, axis::Symbol = :X)
     else
         error("axis must be :X, :Y, or :Z");
     end
+end
+
+"""
+    function orthonormalize(dcm::DCM)
+
+Perform the Gram-Schmidt orthonormalization process in the DCM `dcm` and return
+the new matrix.
+
+**Warning**: This function does not check if the columns of the input matrix
+span a three-dimensional space. If not, then the returned matrix should have
+`NaN`. Notice, however, that such input matrix is not a valid direction cosine
+matrix.
+
+# Example
+
+```julia-repl
+julia> D = DCM(3I)
+
+julia> orthonormalize(D)
+3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
+ 1.0  0.0  0.0
+ 0.0  1.0  0.0
+ 0.0  0.0  1.0
+```
+"""
+function orthonormalize(dcm::DCM)
+    e₁ = dcm[:,1]
+    e₂ = dcm[:,2]
+    e₃ = dcm[:,3]
+
+    en₁  = e₁/norm(e₁)
+    enj₂ =   e₂ - (en₁⋅e₂)*en₁
+    en₂  = enj₂ / norm(enj₂)
+    enj₃ =   e₃ - (en₁⋅e₃)*en₁
+    enj₃ = enj₃ - (en₂⋅enj₃)*en₂
+    en₃  = enj₃ / norm(enj₃)
+
+    [en₁ en₂ en₃]
 end
 
 ################################################################################
