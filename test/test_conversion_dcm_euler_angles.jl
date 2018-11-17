@@ -58,12 +58,22 @@ for k = 1:samples
     error2 = angle_to_rot(θx, θy, θz, :XYZ) - smallangle_to_rot(Θ.a1, Θ.a2, Θ.a3)
 
     # If everything is fine, the norm of the matrix error should be small.
-    #
-    # TODO: 2018-06-21: Some tests were failing with the tolerance `5e-7` in
-    # nightly builds in Windows. Those failures were not seen in Linux or macOS.
-    @test norm(error1) < 7e-7
-    @test norm(error2) < 7e-7
+    @test norm(error1) < 1e-9
+    @test norm(error2) < 1e-9
     @test error1 ≈ error2
+end
+
+# Test orthonormalization.
+let
+    θx = -0.01 + 0.02*pi*rand()
+    θy = -0.01 + 0.02*pi*rand()
+    θz = -0.01 + 0.02*pi*rand()
+
+    D1 = smallangle_to_rot(θx, θy, θz)
+    D2 = smallangle_to_rot(θx, θy, θz; normalize = false)
+
+    @test norm(I - D1*D1') ≈    0 atol = 1e-15
+    @test norm(I - D2*D2') > 1e-7
 end
 
 # Test exceptions.

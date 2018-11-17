@@ -275,19 +275,23 @@ julia> angle_to_dcm(EulerAngles(pi/2, pi/3, pi/4, :ZYX))
 angle_to_dcm(Θ::EulerAngles) = angle_to_dcm(Θ.a1, Θ.a2, Θ.a3, Θ.rot_seq)
 
 """
-    function smallangle_to_dcm(θx::Number, θy::Number, θz::Number)
+    function smallangle_to_dcm(θx::Number, θy::Number, θz::Number; normalize = true)
 
 Create a direction cosine matrix from three small rotations of angles `θx`,
-`θy`, and `θz` [rad] about the axes X, Y, and Z, respectively.
-
-# Remarks
-
-No process of ortho-normalization is performed with the computed DCM.
+`θy`, and `θz` [rad] about the axes X, Y, and Z, respectively. If the keyword
+`normalize` is `true`, then the matrix will be normalized using the function
+`orthonormalize`.
 
 # Example
 
 ```julia-repl
 julia> smallangle_to_dcm(+0.01, -0.01, +0.01)
+3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
+  0.9999     0.00989903  0.010098
+ -0.009999   0.999901    0.00989802
+ -0.009999  -0.009998    0.9999
+
+julia> smallangle_to_dcm(+0.01, -0.01, +0.01; normalize = false)
 3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
   1.0    0.01  0.01
  -0.01   1.0   0.01
@@ -295,9 +299,14 @@ julia> smallangle_to_dcm(+0.01, -0.01, +0.01)
 ```
 
 """
-smallangle_to_dcm(θx::Number, θy::Number, θz::Number) = DCM(  1, +θz, -θy,
-                                                            -θz,   1, +θx,
-                                                            +θy, -θx,   1)'
+@inline function smallangle_to_dcm(θx::Number, θy::Number, θz::Number;
+                                   normalize = true)
+    D = DCM(  1, +θz, -θy,
+            -θz,   1, +θx,
+            +θy, -θx,   1)'
+
+    normalize ? orthonormalize(D) : D
+end
 
 # Quaternion
 # ==============================================================================
@@ -572,7 +581,7 @@ Quaternion{Float64}:
     angle_to_quat(Θ.a1, Θ.a2, Θ.a3, Θ.rot_seq)
 
 """
-    function smallangle_to_rot([T,] θx::Number, θy::Number, θz::Number)
+    function smallangle_to_rot([T,] θx::Number, θy::Number, θz::Number[; normalize = true])
 
 Create a rotation description of type `T` from three small rotations of angles
 `θx`, `θy`, and `θz` [rad] about the axes X, Y, and Z, respectively.
@@ -580,18 +589,19 @@ Create a rotation description of type `T` from three small rotations of angles
 The type `T` of the rotation description can be `DCM` or `Quaternion`. If the
 type `T` is not specified, then if defaults to `DCM`.
 
-# Returns
-
-The rotation description according to the type `T`.
+If `T` is `DCM`, then the resulting matrix will be orthonormalized using the
+`orthonormalize` function if the keyword `normalize` is `true`.
 
 # Example
 
 ```julia-repl
-julia> dcm = smallangle_to_rot(+0.01, -0.01, +0.01);
-
-julia> q   = smallangle_to_rot(Quaternion,+0.01, -0.01, +0.01);
-
 julia> dcm = smallangle_to_rot(+0.01, -0.01, +0.01)
+3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
+  0.9999     0.00989903  0.010098
+ -0.009999   0.999901    0.00989802
+ -0.009999  -0.009998    0.9999
+
+julia> dcm = smallangle_to_rot(+0.01, -0.01, +0.01; normalize = false)
 3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
   1.0    0.01  0.01
  -0.01   1.0   0.01
@@ -601,13 +611,13 @@ julia> q   = smallangle_to_rot(Quaternion,+0.01, -0.01, +0.01)
 Quaternion{Float64}:
   + 0.9999625021092433 + 0.004999812510546217.i - 0.004999812510546217.j + 0.004999812510546217.k
 ```
-
 """
-@inline smallangle_to_rot(θx::Number, θy::Number, θz::Number) =
-    smallangle_to_dcm(θx, θy, θz)
+@inline smallangle_to_rot(θx::Number, θy::Number, θz::Number; normalize = true) =
+    smallangle_to_dcm(θx, θy, θz; normalize = normalize)
 
-@inline smallangle_to_rot(::Type{DCM}, θx::Number, θy::Number, θz::Number) =
-    smallangle_to_dcm(θx, θy, θz)
+@inline smallangle_to_rot(::Type{DCM}, θx::Number, θy::Number, θz::Number;
+                          normalize = true) =
+    smallangle_to_dcm(θx, θy, θz; normalize = normalize)
 
 @inline smallangle_to_rot(::Type{Quaternion}, θx::Number, θy::Number, θz::Number) =
     smallangle_to_quat(θx, θy, θz)

@@ -248,20 +248,25 @@ Quaternion{Float64}:
 Small Euler angles can be converted to DCMs using the following function:
 
 ```julia
-function smallangle_to_dcm(θx::Number, θy::Number, θz::Number)
+function smallangle_to_dcm(θx::Number, θy::Number, θz::Number; normalize = true)
 ```
+
+in which the resulting matrix will be orthonormalized if the keyword `normalize`
+is `true`.
 
 ```jldoctest
 julia> dcm = smallangle_to_dcm(0.001, -0.002, +0.003)
+3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
+  0.999994     0.00299799   0.00200298
+ -0.00299998   0.999995     0.000993989
+ -0.00199999  -0.000999991  0.999998
+
+julia> dcm = smallangle_to_dcm(0.001, -0.002, +0.003; normalize = false)
 3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
   1.0     0.003  0.002
  -0.003   1.0    0.001
  -0.002  -0.001  1.0
 ```
-
-!!! warning
-
-    The computed DCM **is not** ortho-normalized.
 
 ## Small Euler Angles to Quaternions
 
