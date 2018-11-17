@@ -3,6 +3,8 @@
 ################################################################################
 
 for k = 1:samples
+    # Nominal cases
+    # --------------------------------------------------------------------------
     for rot_seq in rot_seq_array
         # Sample three angles form a uniform distribution [-pi,pi].
         θx = -pi + 2*pi*rand()
@@ -23,14 +25,50 @@ for k = 1:samples
         @test error1 ≈ error2
     end
 
-    # Check situations with singularities.
+    # Gimbal-lock and special cases
+    # --------------------------------------------------------------------------
+
+    # Rotation about the three axes
+    # -----------------------------
+    for rot_seq in [:ZYX, :ZXY, :YZX, :YXZ, :XZY, :XYZ]
+        # A 90 deg rotation about the second axis yields a gimbal-lock.
+        θ₁  = -π + 2π*rand()
+        θ₃  = -π + 2π*rand()
+
+        Dr1 = angle_to_dcm(θ₁, +π/2, θ₃, rot_seq)
+        Dr2 = angle_to_dcm(θ₁, -π/2, θ₃, rot_seq)
+
+        Θr1 = dcm_to_angle(Dr1, rot_seq)
+        Θr2 = dcm_to_angle(Dr2, rot_seq)
+
+        θs1, θs2 = (rot_seq in [:ZYX, :YXZ, :XZY]) ? (θ₁ - θ₃, θ₁ + θ₃) :
+                                                     (θ₁ + θ₃, θ₁ - θ₃)
+
+        # The angles must be between [-π,+π].
+        θs1 = mod(θs1, 2π)
+        θs2 = mod(θs2, 2π)
+
+        (θs1 > π) && (θs1 -= 2π)
+        (θs2 > π) && (θs2 -= 2π)
+
+        @test Θr1.a1 ≈ θs1   atol = 1e-14
+        @test Θr1.a2 ≈ +π/2  atol = 1e-14
+        @test Θr1.a3 ≈ 0     atol = 1e-14
+
+        @test Θr2.a1 ≈ θs2   atol = 1e-14
+        @test Θr2.a2 ≈ -π/2  atol = 1e-14
+        @test Θr2.a3 ≈ 0     atol = 1e-14
+    end
+    break
+
+    # Rotation about two axes
+    # -----------------------
     Rx = create_rotation_matrix(π, :X)
     Ry = create_rotation_matrix(π, :Y)
     Rz = create_rotation_matrix(π, :Z)
     α  = -pi + 2*pi*rand()
 
     # Two rotations about X
-    # --------------------------------------------------------------------------
     D  = create_rotation_matrix(α, :X)
     Θ₁ = dcm_to_angle(D, :XYX)
     Θ₂ = dcm_to_angle(D, :XZX)
@@ -51,7 +89,6 @@ for k = 1:samples
     @test Θ₂.a3 ≈ 0
 
     # Two rotations about Y
-    # --------------------------------------------------------------------------
     D  = create_rotation_matrix(α, :Y)
     Θ₁ = dcm_to_angle(D, :YXY)
     Θ₂ = dcm_to_angle(D, :YZY)
@@ -72,7 +109,6 @@ for k = 1:samples
     @test Θ₂.a3 ≈ 0
 
     # Two rotations about Z
-    # --------------------------------------------------------------------------
     D  = create_rotation_matrix(α, :Z)
     Θ₁ = dcm_to_angle(D, :ZXZ)
     Θ₂ = dcm_to_angle(D, :ZYZ)

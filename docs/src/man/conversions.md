@@ -21,6 +21,21 @@ following function:
 function dcm_to_angle(dcm::DCM, rot_seq=:ZYX)
 ```
 
+!!! note
+
+    **Gimbal-lock and special cases**
+
+    If the rotations are about three different axes, *e.g.* `:XYZ`, `:ZYX`,
+    etc., then a second rotation of ``\pm 90^{\circ}`` yields a gimbal-lock.
+    This means that the rotations between the first and third axes have the same
+    effect. In this case, the net rotation angle is assigned to the first
+    rotation and the angle of the third rotation is set to 0.
+
+    If the rotations are about two different axes, *e.g.* `:XYX`, `:YXY`, etc.,
+    then a rotation about the duplicated axis yields multiple representations.
+    In this case, the entire angle is assigned to the first rotation and the
+    third rotation is set to 0.
+
 ```jldoctest
 julia> dcm = DCM([1 0 0; 0 0 -1; 0 1 0]);
 
@@ -36,6 +51,21 @@ EulerAngles{Float64}:
   R(Y):   0.0000 rad (   0.0000 deg)
   R(Z):   0.0000 rad (   0.0000 deg)
 
+julia> D = angle_to_dcm(1, -pi/2, 2, :ZYX);
+
+julia> dcm_to_angle(D,:ZYX)
+EulerAngles{Float64}:
+  R(Z):   3.0000 rad ( 171.8873 deg)
+  R(Y):  -1.5708 rad ( -90.0000 deg)
+  R(X):   0.0000 rad (   0.0000 deg)
+
+julia> D = create_rotation_matrix(1,:X)*create_rotation_matrix(2,:X);
+
+julia> dcm_to_angle(D,:XYX)
+EulerAngles{Float64}:
+  R(X):   3.0000 rad ( 171.8873 deg)
+  R(Y):   0.0000 rad (   0.0000 deg)
+  R(X):   0.0000 rad (   0.0000 deg)
 ```
 
 ## DCMs to Euler Angle and Axis
