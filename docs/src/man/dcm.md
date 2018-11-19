@@ -102,7 +102,7 @@ for general matrices in Julia are also available for DCMs.
 
 ### Orthonomalization
 
-A DCM can be orthonormalized using the Gram-Schmidt process by the function:
+A DCM can be orthonormalized using the Gram-Schmidt algorithm by the function:
 
 ```julia
 function orthonormalize(dcm::DCM)

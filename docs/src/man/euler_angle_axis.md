@@ -27,7 +27,7 @@ The constructor for this structure is:
 function EulerAngleAxis(a::T1, v::AbstractVector{T2}) where {T1,T2}
 ```
 
-in which a `EulerAngleAxis` with angle `a [rad]` and vector `v` will be created.
+in which a `EulerAngleAxis` with angle `a` [rad] and vector `v` will be created.
 Notice that the type of the returned structure will be selected according to the
 input types `T1` and `T2`. Furthermore, the vector `v` **will not** be
 normalized.
