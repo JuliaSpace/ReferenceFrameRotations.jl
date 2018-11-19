@@ -25,6 +25,38 @@ that defines the axes. The valid values for `rot_seq` are:
 * `:XYX`, `:XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`,
   `:ZXZ`, `:ZYX`, and `ZYZ`.
 
+The constructor for this structure is:
+
+```julia
+function EulerAngles(a1::T1, a2::T2, a3::T3, rot_seq::Symbol = :ZYX) where {T1,T2,T3}
+```
+
+in which a `EulerAngles` with angles `a1`, `a2`, and `a3` [rad] and rotation
+sequence `rot_seq` will be created. Notice that the type of the returned
+structure will be selected according to the input types `T1`, `T2`, and `T3`. If
+`rot_seq` is omitted, then it defaults to `:ZYX`.
+
+```jldoctest
+julia> EulerAngles(1,1,1)
+EulerAngles{Int64}:
+  R(Z):   1.0000 rad (  57.2958 deg)
+  R(Y):   1.0000 rad (  57.2958 deg)
+  R(X):   1.0000 rad (  57.2958 deg)
+
+julia> EulerAngles(1,1,1.0f0,:XYZ)
+EulerAngles{Float32}:
+  R(X):   1.0000 rad (  57.2958 deg)
+  R(Y):   1.0000 rad (  57.2958 deg)
+  R(Z):   1.0000 rad (  57.2958 deg)
+
+julia> EulerAngles(1.,1,1,:XYX)
+EulerAngles{Float64}:
+  R(X):   1.0000 rad (  57.2958 deg)
+  R(Y):   1.0000 rad (  57.2958 deg)
+  R(X):   1.0000 rad (  57.2958 deg)
+
+```
+
 ## Operations
 
 ### Multiplication

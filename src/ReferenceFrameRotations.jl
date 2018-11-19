@@ -35,12 +35,27 @@ corresponding angle (for example, `:ZYX`). The valid values for `rot_seq` are:
 * `:XYX`, `:XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`,
   `:ZXZ`, `:ZYX`, and `ZYZ`.
 
+# Constructor
+
+    function EulerAngles(a1::T1, a2::T2, a3::T3, rot_seq::Symbol = :ZYX) where {T1,T2,T3}
+
+Create a new instance of `EulerAngles` with the angles `a1`, `a2`, and `a3` and
+the rotation sequence `rot_seq`. The type will be inferred from `T1`, `T2`, and
+`T3`. If `rot_seq` is not provided, then it defaults to `:ZYX`.
+
 """
 struct EulerAngles{T}
     a1::T
     a2::T
     a3::T
     rot_seq::Symbol
+end
+
+function EulerAngles(a1::T1, a2::T2, a3::T3, rot_seq::Symbol = :ZYX) where
+    {T1,T2,T3}
+
+    T = promote_type(T1,T2,T3)
+    EulerAngles(T(a1), T(a2), T(a3), rot_seq)
 end
 
 """
