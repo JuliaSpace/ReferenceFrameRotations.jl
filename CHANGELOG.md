@@ -1,6 +1,45 @@
 ReferenceFrameRotations.jl Changelog
 ====================================
 
+Version 0.5.0
+-------------
+
+- ![BREAKING][badge-breaking] The function `smallangle_to_dcm` now returns a
+  orthornormalized DCM by default. This behavior can be modified by the keyword
+  `normalize`.
+- ![Deprecation][badge-deprecation] The nomenclature of all conversion functions
+  was changed from `<representation 1>2<representation 2>` to
+  `<representation 1>_to_<representation 2>`. Hence, for example, `angle2dcm` is
+  now called `angle_to_dcm`. All the older names are now deprecated.
+- ![Bugfix][badge-bugfix] Many bugs were fixed in the conversion from DCM to
+  Euler angles related to singularities, gimbal-locks, multiple representations,
+  and signed zeros.
+- ![Bugfix][badge-bugfix] When converting from Euler angle and axis to
+  quaternion, the real part will always be positive now.
+- ![Feature][badge-feature] The operations `*` and `inv` with `EulerAngles` are
+  now defined.
+- ![Feature][badge-feature] The operations `*` and `inv` with `EulerAngleAxis`
+  are now defined.
+- ![Feature][badge-feature] The conversion functions between DCM and Euler angle
+  and axis were added (`angleaxis_to_dcm` and `dcm_to_angleaxis`).
+- ![Feature][badge-feature] `EulerAngles` and `EulerAngleAxis` structures now
+  have a dedicated printing function.
+- ![Feature][badge-feature] The conversion functions between Euler angle and
+  axis and Euler angles were added (`angleaxis_to_angle` and
+  `angle_to_angleaxis`).
+- ![Feature][badge-feature] The function `orthonormalize`, which orthonormalizes
+  DCMs using the Gram-Schmidt algorithm, was added.
+- ![Feature][badge-feature] The function `angle_to_angle` was added to modify
+  the rotation sequence of Euler angles.
+- ![Enhancement][badge-enhancement] Many performance improvements.
+- ![Enhancement][badge-enhancement] Improvements in the printing function of
+  quaternions.
+- ![Enhancement][badge-enhancement] The API functions `inv_rotation` and
+  `compose_rotation` now support all the representations (DCM, Euler angle and
+  axis, Euler angles, and quaternions).
+- ![Enhancement][badge-enhancement] A new, more general constructor for
+  `EulerAngles` was added.
+
 Version 0.4.1
 -------------
 
