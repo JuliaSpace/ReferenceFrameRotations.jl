@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Conversions · Reference Frame Rotations</title><link rel="canonical" href="https://juliaspace.github.io/ReferenceFrameRotations.jl/stable/man/conversions/index.html"/><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link href="../../assets/documenter.css" rel="stylesheet" type="text/css"/></head><body><nav class="toc"><a href="../../index.html"><img class="logo" src="../../assets/logo.png" alt="Reference Frame Rotations logo"/></a><h1>Reference Frame Rotations</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" id="search-form" action="../../search/"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li><a class="toctext" href="../../">Home</a></li><li><a class="toctext" href="../dcm/">Direction Cosine Matrices</a></li><li><a class="toctext" href="../euler_angle_axis/">Euler Angle and Axis</a></li><li><a class="toctext" href="../euler_angles/">Euler Angles</a></li><li><a class="toctext" href="../quaternions/">Quaternions</a></li><li class="current"><a class="toctext" href>Conversions</a><ul class="internal"><li><a class="toctext" href="#DCMs-to-Euler-Angles-1">DCMs to Euler Angles</a></li><li><a class="toctext" href="#DCMs-to-Euler-Angle-and-Axis-1">DCMs to Euler Angle and Axis</a></li><li><a class="toctext" href="#DCMs-to-Quaternions-1">DCMs to Quaternions</a></li><li><a class="toctext" href="#Euler-Angle-and-Axis-to-DCMs-1">Euler Angle and Axis to DCMs</a></li><li><a class="toctext" href="#Euler-Angle-and-Axis-to-Euler-Angles-1">Euler Angle and Axis to Euler Angles</a></li><li><a class="toctext" href="#Euler-Angle-and-Axis-to-Quaternions-1">Euler Angle and Axis to Quaternions</a></li><li><a class="toctext" href="#Euler-Angles-to-Direction-Cosine-Matrices-1">Euler Angles to Direction Cosine Matrices</a></li><li><a class="toctext" href="#Euler-Angles-to-Euler-Angles-1">Euler Angles to Euler Angles</a></li><li><a class="toctext" href="#Euler-Angles-to-Quaternions-1">Euler Angles to Quaternions</a></li><li><a class="toctext" href="#Euler-Angles-to-Quaternions-2">Euler Angles to Quaternions</a></li><li><a class="toctext" href="#Small-Euler-Angles-to-Direction-Cosine-Matrices-1">Small Euler Angles to Direction Cosine Matrices</a></li><li><a class="toctext" href="#Small-Euler-Angles-to-Quaternions-1">Small Euler Angles to Quaternions</a></li><li><a class="toctext" href="#Quaternions-to-Direction-Cosine-Matrices-1">Quaternions to Direction Cosine Matrices</a></li><li><a class="toctext" href="#Quaternions-to-Euler-Angle-and-Axis-1">Quaternions to Euler Angle and Axis</a></li><li><a class="toctext" href="#Quaternions-to-Euler-Angles-1">Quaternions to Euler Angles</a></li></ul></li><li><a class="toctext" href="../kinematics/">Kinematics</a></li><li><a class="toctext" href="../composing_rotations/">Composing rotations</a></li><li><a class="toctext" href="../inv_rotations/">Inverting rotations</a></li><li><a class="toctext" href="../../lib/library/">Library</a></li></ul></nav><article id="docs"><header><nav><ul><li><a href>Conversions</a></li></ul><a class="edit-page" href="https://github.com/JuliaSpace/ReferenceFrameRotations.jl/blob/master/docs/src/man/conversions.md"><span class="fa"></span> Edit on GitHub</a></nav><hr/><div id="topbar"><span>Conversions</span><a class="fa fa-bars" href="#"></a></div></header><h1><a class="nav-anchor" id="Conversions-1" href="#Conversions-1">Conversions</a></h1><p>There are several functions available to convert between the different types of 3D rotation representations.</p><h2><a class="nav-anchor" id="DCMs-to-Euler-Angles-1" href="#DCMs-to-Euler-Angles-1">DCMs to Euler Angles</a></h2><p>A Direction Cosine Matrix (DCM) can be converted to Euler Angles using the following function:</p><pre><code class="language-julia">function dcm_to_angle(dcm::DCM, rot_seq=:ZYX)</code></pre><div class="admonition note"><div class="admonition-title">Note</div><div class="admonition-text"><p><strong>Gimbal-lock and special cases</strong></p><p>If the rotations are about three different axes, <em>e.g.</em> <code>:XYZ</code>, <code>:ZYX</code>, etc., then a second rotation of <span>$\pm 90^{\circ}$</span> yields a gimbal-lock. This means that the rotations between the first and third axes have the same effect. In this case, the net rotation angle is assigned to the first rotation and the angle of the third rotation is set to 0.</p><p>If the rotations are about two different axes, <em>e.g.</em> <code>:XYX</code>, <code>:YXY</code>, etc., then a rotation about the duplicated axis yields multiple representations. In this case, the entire angle is assigned to the first rotation and the third rotation is set to 0.</p></div></div><pre><code class="language-julia-repl">julia&gt; dcm = DCM([1 0 0; 0 0 -1; 0 1 0]);
+
+julia&gt; dcm_to_angle(dcm)
+EulerAngles{Float64}:
+  R(Z):   0.0000 rad (   0.0000 deg)
+  R(Y):   0.0000 rad (   0.0000 deg)
+  R(X):  -1.5708 rad ( -90.0000 deg)
+
+julia&gt; dcm_to_angle(dcm, :XYZ)
+EulerAngles{Float64}:
+  R(X):  -1.5708 rad ( -90.0000 deg)
+  R(Y):   0.0000 rad (   0.0000 deg)
+  R(Z):   0.0000 rad (   0.0000 deg)
+
+julia&gt; D = angle_to_dcm(1, -pi/2, 2, :ZYX);
+
+julia&gt; dcm_to_angle(D,:ZYX)
+EulerAngles{Float64}:
+  R(Z):   3.0000 rad ( 171.8873 deg)
+  R(Y):  -1.5708 rad ( -90.0000 deg)
+  R(X):   0.0000 rad (   0.0000 deg)
+
+julia&gt; D = create_rotation_matrix(1,:X)*create_rotation_matrix(2,:X);
+
+julia&gt; dcm_to_angle(D,:XYX)
+EulerAngles{Float64}:
+  R(X):   3.0000 rad ( 171.8873 deg)
+  R(Y):   0.0000 rad (   0.0000 deg)
+  R(X):   0.0000 rad (   0.0000 deg)</code></pre><h2><a class="nav-anchor" id="DCMs-to-Euler-Angle-and-Axis-1" href="#DCMs-to-Euler-Angle-and-Axis-1">DCMs to Euler Angle and Axis</a></h2><p>A DCM can be converto to an Euler angle and axis representation using the following method:</p><pre><code class="language-julia">function dcm_to_angleaxis(dcm::DCM)</code></pre><pre><code class="language-julia-repl">julia&gt; dcm = DCM([1.0 0.0 0.0; 0.0 0.0 -1.0; 0.0 1.0 0.0]);
+
+julia&gt; ea  = dcm_to_angleaxis(dcm)
+EulerAngleAxis{Float64}:
+  Euler angle:   1.5708 rad ( 90.0000 deg)
+   Euler axis: [ -1.0000,   0.0000,   0.0000]
+</code></pre><h2><a class="nav-anchor" id="DCMs-to-Quaternions-1" href="#DCMs-to-Quaternions-1">DCMs to Quaternions</a></h2><p>A DCM can be converted to quaternion using the following method:</p><pre><code class="language-julia">function dcm_to_quat(dcm::DCM)</code></pre><pre><code class="language-julia-repl">julia&gt; dcm = DCM([1.0 0.0 0.0; 0.0 0.0 -1.0; 0.0 1.0 0.0]);
+
+julia&gt; q   = dcm_to_quat(dcm)
+Quaternion{Float64}:
+  + 0.7071067811865476 - 0.7071067811865475.i + 0.0.j + 0.0.k</code></pre><h2><a class="nav-anchor" id="Euler-Angle-and-Axis-to-DCMs-1" href="#Euler-Angle-and-Axis-to-DCMs-1">Euler Angle and Axis to DCMs</a></h2><p>An Euler angle and axis representation can be converted to DCM using using these two methods:</p><pre><code class="language-julia">function angleaxis_to_dcm(a::Number, v::AbstractVector)
+function angleaxis_to_dcm(ea::EulerAngleAxis)</code></pre><pre><code class="language-julia-repl">julia&gt; a = 60.0*pi/180;
+
+julia&gt; v = [sqrt(3)/3;sqrt(3)/3;sqrt(3)/3];
+
+julia&gt; angleaxis_to_dcm(a,v)
+3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
+  0.666667   0.666667  -0.333333
+ -0.333333   0.666667   0.666667
+  0.666667  -0.333333   0.666667
+
+julia&gt; angleaxis = EulerAngleAxis(a,v);
+
+julia&gt; angleaxis_to_dcm(angleaxis)
+3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
+  0.666667   0.666667  -0.333333
+ -0.333333   0.666667   0.666667
+  0.666667  -0.333333   0.666667</code></pre><h2><a class="nav-anchor" id="Euler-Angle-and-Axis-to-Euler-Angles-1" href="#Euler-Angle-and-Axis-to-Euler-Angles-1">Euler Angle and Axis to Euler Angles</a></h2><p>An Euler angle and axis representaion can be converto to Euler angles using these two methods:</p><pre><code class="language-julia">function angleaxis_to_angle(θ::Number, v::AbstractVector, rot_seq::Symbol)
+function angleaxis_to_angle(ea::EulerAngleAxis, rot_seq::Symbol)</code></pre><pre><code class="language-julia-repl">julia&gt; a = 19.86*pi/180;
+
+julia&gt; v = [0;1;0];
+
+julia&gt; angleaxis_to_angle(a,v,:XYX)
+EulerAngles{Float64}:
+  R(X):   0.0000 rad (   0.0000 deg)
+  R(Y):   0.3466 rad (  19.8600 deg)
+  R(X):   0.0000 rad (   0.0000 deg)
+
+julia&gt; a = 60.0*pi/180;
+
+julia&gt; v = [sqrt(3)/3;sqrt(3)/3;sqrt(3)/3];
+
+julia&gt; angleaxis = EulerAngleAxis(a,v)
+EulerAngleAxis{Float64}:
+  Euler angle:   1.0472 rad ( 60.0000 deg)
+   Euler axis: [  0.5774,   0.5774,   0.5774]
+
+julia&gt; angleaxis_to_angle(angleaxis,:XYZ)
+EulerAngles{Float64}:
+  R(X):   0.4636 rad (  26.5651 deg)
+  R(Y):   0.7297 rad (  41.8103 deg)
+  R(Z):   0.4636 rad (  26.5651 deg)
+
+julia&gt; angleaxis_to_angle(angleaxis,:ZYX)
+EulerAngles{Float64}:
+  R(Z):   0.7854 rad (  45.0000 deg)
+  R(Y):   0.3398 rad (  19.4712 deg)
+  R(X):   0.7854 rad (  45.0000 deg)</code></pre><h2><a class="nav-anchor" id="Euler-Angle-and-Axis-to-Quaternions-1" href="#Euler-Angle-and-Axis-to-Quaternions-1">Euler Angle and Axis to Quaternions</a></h2><p>An Euler angle and axis representation can be converted to quaternion using these two methods:</p><pre><code class="language-julia">function angleaxis_to_quat(a::Number, v::AbstractVector)
+function angleaxis_to_quat(angleaxis::EulerAngleAxis)</code></pre><pre><code class="language-julia-repl">julia&gt; a = 60.0*pi/180;
+
+julia&gt; v = [sqrt(3)/3;sqrt(3)/3;sqrt(3)/3];
+
+julia&gt; angleaxis_to_quat(a,v)
+Quaternion{Float64}:
+  + 0.8660254037844387 + 0.2886751345948128.i + 0.2886751345948128.j + 0.2886751345948128.k
+
+julia&gt; angleaxis = EulerAngleAxis(a,v);
+
+julia&gt; angleaxis_to_quat(angleaxis)
+Quaternion{Float64}:
+  + 0.8660254037844387 + 0.2886751345948128.i + 0.2886751345948128.j + 0.2886751345948128.k</code></pre><h2><a class="nav-anchor" id="Euler-Angles-to-Direction-Cosine-Matrices-1" href="#Euler-Angles-to-Direction-Cosine-Matrices-1">Euler Angles to Direction Cosine Matrices</a></h2><p>Euler angles can be converted to DCMs using the following functions:</p><pre><code class="language-julia">function angle_to_dcm(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
+function angle_to_dcm(Θ::EulerAngles)</code></pre><pre><code class="language-julia-repl">julia&gt; dcm = angle_to_dcm(pi/2, pi/4, pi/3, :ZYX)
+3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
+  4.32978e-17  0.707107  -0.707107
+ -0.5          0.612372   0.612372
+  0.866025     0.353553   0.353553
+
+julia&gt; angles = EulerAngles(pi/2, pi/4, pi/3, :ZYX);
+
+julia&gt; dcm    = angle_to_dcm(angles)
+3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
+  4.32978e-17  0.707107  -0.707107
+ -0.5          0.612372   0.612372
+  0.866025     0.353553   0.353553</code></pre><h2><a class="nav-anchor" id="Euler-Angles-to-Euler-Angles-1" href="#Euler-Angles-to-Euler-Angles-1">Euler Angles to Euler Angles</a></h2><p>It is possible to change the rotation sequence of a set of Euler angles using the following functions:</p><pre><code class="language-julia">function angle_to_angle(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq_orig::Symbol, rot_seq_dest::Symbol)
+function angle_to_angle(Θ::EulerAngles, rot_seq_dest::Symbol)</code></pre><p>in which <code>rot_seq_dest</code> is the desired rotation sequence of the result.</p><pre><code class="language-julia-repl">julia&gt; angle_to_angle(-pi/2, -pi/3, -pi/4, :ZYX, :XYZ)
+EulerAngles{Float64}:
+  R(X):  -1.0472 rad ( -60.0000 deg)
+  R(Y):   0.7854 rad (  45.0000 deg)
+  R(Z):  -1.5708 rad ( -90.0000 deg)
+
+julia&gt; angle_to_angle(-pi/2, 0, 0, :ZYX, :XYZ)
+EulerAngles{Float64}:
+  R(X):   0.0000 rad (   0.0000 deg)
+  R(Y):   0.0000 rad (   0.0000 deg)
+  R(Z):  -1.5708 rad ( -90.0000 deg)
+
+julia&gt; Θ = EulerAngles(1,2,3,:XYX)
+EulerAngles{Int64}:
+  R(X):   1.0000 rad (  57.2958 deg)
+  R(Y):   2.0000 rad ( 114.5916 deg)
+  R(X):   3.0000 rad ( 171.8873 deg)
+
+julia&gt; angle_to_angle(Θ,:ZYZ)
+EulerAngles{Float64}:
+  R(Z):  -2.7024 rad (-154.8356 deg)
+  R(Y):   1.4668 rad (  84.0393 deg)
+  R(Z):  -1.0542 rad ( -60.3984 deg)</code></pre><h2><a class="nav-anchor" id="Euler-Angles-to-Quaternions-1" href="#Euler-Angles-to-Quaternions-1">Euler Angles to Quaternions</a></h2><p>Euler angles can be converted to an Euler angle and axis using the following functions:</p><pre><code class="language-julia">function angle_to_angleaxis(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
+function angle_to_angleaxis(Θ::EulerAngles)</code></pre><pre><code class="language-julia-repl">julia&gt; angle_to_angleaxis(1,0,0,:XYZ)
+EulerAngleAxis{Float64}:
+  Euler angle:   1.0000 rad ( 57.2958 deg)
+   Euler axis: [  1.0000,   0.0000,   0.0000]
+
+julia&gt; Θ = EulerAngles(1,1,1,:XYZ);
+
+julia&gt; angle_to_angleaxis(Θ)
+EulerAngleAxis{Float64}:
+  Euler angle:   1.9391 rad (111.1015 deg)
+   Euler axis: [  0.6924,   0.2031,   0.6924]
+</code></pre><h2><a class="nav-anchor" id="Euler-Angles-to-Quaternions-2" href="#Euler-Angles-to-Quaternions-2">Euler Angles to Quaternions</a></h2><p>Euler angles can be converted to quaternions using the following functions:</p><pre><code class="language-julia">function angle_to_quat(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
+function angle_to_quat(Θ::EulerAngles)</code></pre><pre><code class="language-julia-repl">julia&gt; q = angle_to_quat(pi/2, pi/4, pi/3, :ZYX)
+Quaternion{Float64}:
+  + 0.7010573846499779 + 0.09229595564125723.i + 0.5609855267969309.j + 0.43045933457687935.k
+
+julia&gt; angles = EulerAngles(pi/2, pi/4, pi/3, :ZYX);
+
+julia&gt; q    = angle_to_quat(angles)
+Quaternion{Float64}:
+  + 0.7010573846499779 + 0.09229595564125723.i + 0.5609855267969309.j + 0.43045933457687935.k</code></pre><h2><a class="nav-anchor" id="Small-Euler-Angles-to-Direction-Cosine-Matrices-1" href="#Small-Euler-Angles-to-Direction-Cosine-Matrices-1">Small Euler Angles to Direction Cosine Matrices</a></h2><p>Small Euler angles can be converted to DCMs using the following function:</p><pre><code class="language-julia">function smallangle_to_dcm(θx::Number, θy::Number, θz::Number; normalize = true)</code></pre><p>in which the resulting matrix will be orthonormalized if the keyword <code>normalize</code> is <code>true</code>.</p><pre><code class="language-julia-repl">julia&gt; dcm = smallangle_to_dcm(0.001, -0.002, +0.003)
+3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
+  0.999994     0.00299799   0.00200298
+ -0.00299998   0.999995     0.000993989
+ -0.00199999  -0.000999991  0.999998
+
+julia&gt; dcm = smallangle_to_dcm(0.001, -0.002, +0.003; normalize = false)
+3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
+  1.0     0.003  0.002
+ -0.003   1.0    0.001
+ -0.002  -0.001  1.0</code></pre><h2><a class="nav-anchor" id="Small-Euler-Angles-to-Quaternions-1" href="#Small-Euler-Angles-to-Quaternions-1">Small Euler Angles to Quaternions</a></h2><p>Small Euler angles can be converted to quaternions using the following function:</p><pre><code class="language-julia">function smallangle_to_quat(θx::Number, θy::Number, θz::Number)</code></pre><pre><code class="language-julia-repl">julia&gt; q = smallangle_to_quat(0.001, -0.002, +0.003)
+Quaternion{Float64}:
+  + 0.9999982500045936 + 0.0004999991250022968.i - 0.0009999982500045936.j + 0.0014999973750068907.k</code></pre><div class="admonition note"><div class="admonition-title">Note</div><div class="admonition-text"><p>The computed quaternion <strong>is</strong> normalized.</p></div></div><h2><a class="nav-anchor" id="Quaternions-to-Direction-Cosine-Matrices-1" href="#Quaternions-to-Direction-Cosine-Matrices-1">Quaternions to Direction Cosine Matrices</a></h2><p>A quaternion can be converted to DCM using the following method:</p><pre><code class="language-julia">function quat_to_dcm(q::Quaternion)</code></pre><pre><code class="language-julia-repl">julia&gt; q   = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);
+
+julia&gt; dcm = quat_to_dcm(q)
+3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
+ 1.0   0.0       0.0
+ 0.0   0.707107  0.707107
+ 0.0  -0.707107  0.707107</code></pre><h2><a class="nav-anchor" id="Quaternions-to-Euler-Angle-and-Axis-1" href="#Quaternions-to-Euler-Angle-and-Axis-1">Quaternions to Euler Angle and Axis</a></h2><p>A quaternion can be converted to Euler Angle and Axis representation using the following function:</p><pre><code class="language-julia">function quat_to_angleaxis(q::Quaternion)</code></pre><pre><code class="language-julia-repl">julia&gt; v = [sqrt(3)/3;sqrt(3)/3;sqrt(3)/3];
+
+julia&gt; a = 60.0*pi/180;
+
+julia&gt; q = Quaternion(cos(a/2), v*sin(a/2));
+
+julia&gt; quat_to_angleaxis(q)
+EulerAngleAxis{Float64}:
+  Euler angle:   1.0472 rad ( 60.0000 deg)
+   Euler axis: [  0.5774,   0.5774,   0.5774]
+</code></pre><h2><a class="nav-anchor" id="Quaternions-to-Euler-Angles-1" href="#Quaternions-to-Euler-Angles-1">Quaternions to Euler Angles</a></h2><p>There is one method to convert quaternions to Euler Angles:</p><pre><code class="language-julia">function quat_to_angle(q::Quaternion, rot_seq=:ZYX)</code></pre><p>However, it first transforms the quaternion to DCM using <code>quat_to_dcm</code> and then transforms the DCM into the Euler Angles. Hence, the performance will be poor. The improvement of this conversion will be addressed in a future version of <strong>ReferenceFrameRotations.jl</strong>.</p><pre><code class="language-julia-repl">julia&gt; q = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);
+
+julia&gt; quat_to_angle(q, :XYZ)
+EulerAngles{Float64}:
+  R(X):   0.7854 rad (  45.0000 deg)
+  R(Y):   0.0000 rad (   0.0000 deg)
+  R(Z):   0.0000 rad (   0.0000 deg)
+</code></pre><footer><hr/><a class="previous" href="../quaternions/"><span class="direction">Previous</span><span class="title">Quaternions</span></a><a class="next" href="../kinematics/"><span class="direction">Next</span><span class="title">Kinematics</span></a></footer></article></body></html>
