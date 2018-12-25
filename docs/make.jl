@@ -2,8 +2,11 @@ using Documenter
 using ReferenceFrameRotations
 
 makedocs(
-    format = :html,
     modules = [ReferenceFrameRotations],
+    format = Documenter.HTML(
+        prettyurls = !("local" in ARGS),
+        canonical = "https://juliaspace.github.io/ReferenceFrameRotations.jl/stable/",
+    ),
     sitename = "Reference Frame Rotations",
     authors = "Ronan Arraes Jardim Chagas",
     pages = [
@@ -18,13 +21,9 @@ makedocs(
         "Inverting rotations" => "man/inv_rotations.md",
         "Library" => "lib/library.md",
     ],
-    html_prettyurls = !("local" in ARGS),
 )
 
 deploydocs(
     repo = "github.com/JuliaSpace/ReferenceFrameRotations.jl.git",
-    julia = "1.0",
     target = "build",
-    deps = nothing,
-    make = nothing,
 )

@@ -5,7 +5,7 @@
 [![codecov](https://codecov.io/gh/JuliaSpace/ReferenceFrameRotations.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/JuliaSpace/ReferenceFrameRotations.jl)
 [![Coverage Status](https://coveralls.io/repos/github/JuliaSpace/ReferenceFrameRotations.jl/badge.svg?branch=master)](https://coveralls.io/github/JuliaSpace/ReferenceFrameRotations.jl?branch=master)
 [![](https://img.shields.io/badge/docs-stable-blue.svg)][docs-stable-url]
-[![](https://img.shields.io/badge/docs-latest-blue.svg)][docs-latest-url]
+[![](https://img.shields.io/badge/docs-dev-blue.svg)][docs-dev-url]
 
 This module contains functions related to the representation of 3D rotations of
 reference frames. It is used on a daily basis on projects at the [Brazilian
@@ -29,6 +29,6 @@ julia> Pkg.add("ReferenceFrameRotations")
 
 See the [package documentation][docs-stable-url].
 
-[docs-latest-url]: https://juliaspace.github.io/ReferenceFrameRotations.jl/latest
+[docs-dev-url]: https://juliaspace.github.io/ReferenceFrameRotations.jl/dev
 [docs-stable-url]: https://juliaspace.github.io/ReferenceFrameRotations.jl/stable
 
