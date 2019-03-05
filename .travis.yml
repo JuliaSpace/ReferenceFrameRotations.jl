@@ -9,6 +9,13 @@ julia:
     - 1.1
     - nightly
 
+# Pin MbedTLS due to issue:
+#   https://github.com/JuliaWeb/MbedTLS.jl/issues/193
+before_script:
+  - julia -e 'using Pkg;
+      Pkg.add(PackageSpec(name="MbedTLS", version="0.6.6"));
+      Pkg.pin(PackageSpec(name="MbedTLS", version="0.6.6"));'
+
 codecov: true
 coveralls: true
 
