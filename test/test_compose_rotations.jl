@@ -28,8 +28,8 @@ for i = 1:samples
     # DCMs
     # ==========================================================================
 
-    # Sample 8 DCMs.
-    for sym in [:D1, :D2, :D3, :D4, :D5, :D6, :D7, :D8]
+    # Sample 4 DCMs.
+    for sym in [:D1, :D2, :D3, :D4]
         @eval $sym = angle_to_dcm(EulerAngles(-pi + 2*pi*rand(),
                                               -pi + 2*pi*rand(),
                                               -pi + 2*pi*rand(),
@@ -37,19 +37,15 @@ for i = 1:samples
     end
 
     # Test the function `compose_rotation`.
-    @test                   D2*D1 ≈ compose_rotation(D1,D2)                   atol=1e-14
-    @test                D3*D2*D1 ≈ compose_rotation(D1,D2,D3)                atol=1e-14
-    @test             D4*D3*D2*D1 ≈ compose_rotation(D1,D2,D3,D4)             atol=1e-14
-    @test          D5*D4*D3*D2*D1 ≈ compose_rotation(D1,D2,D3,D4,D5)          atol=1e-14
-    @test       D6*D5*D4*D3*D2*D1 ≈ compose_rotation(D1,D2,D3,D4,D5,D6)       atol=1e-14
-    @test    D7*D6*D5*D4*D3*D2*D1 ≈ compose_rotation(D1,D2,D3,D4,D5,D6,D7)    atol=1e-14
-    @test D8*D7*D6*D5*D4*D3*D2*D1 ≈ compose_rotation(D1,D2,D3,D4,D5,D6,D7,D8) atol=1e-14
+    @test       D2*D1 ≈ compose_rotation(D1,D2)       atol=1e-14
+    @test    D3*D2*D1 ≈ compose_rotation(D1,D2,D3)    atol=1e-14
+    @test D4*D3*D2*D1 ≈ compose_rotation(D1,D2,D3,D4) atol=1e-14
 
     # Euler angle and axis
     # ==========================================================================
 
-    # Sample 8 Euler angle and axis.
-    for sym in [:ea1, :ea2, :ea3, :ea4, :ea5, :ea6, :ea7, :ea8 ]
+    # Sample 4 Euler angle and axis.
+    for sym in [:ea1, :ea2, :ea3, :ea4]
         α   = -π + 2π*rand()
         v   = randn(3)
         v   = v/norm(v)
@@ -66,32 +62,16 @@ for i = 1:samples
     ear3 = ea4*ea3*ea2*ea1
     eac3 = compose_rotation(ea1,ea2,ea3,ea4)
 
-    ear4 = ea5*ea4*ea3*ea2*ea1
-    eac4 = compose_rotation(ea1,ea2,ea3,ea4,ea5)
-
-    ear5 = ea6*ea5*ea4*ea3*ea2*ea1
-    eac5 = compose_rotation(ea1,ea2,ea3,ea4,ea5,ea6)
-
-    ear6 = ea7*ea6*ea5*ea4*ea3*ea2*ea1
-    eac6 = compose_rotation(ea1,ea2,ea3,ea4,ea5,ea6,ea7)
-
-    ear7 = ea8*ea7*ea6*ea5*ea4*ea3*ea2*ea1
-    eac7 = compose_rotation(ea1,ea2,ea3,ea4,ea5,ea6,ea7,ea8)
-
     # Test the function `compose_rotation`.
     @test ear1 ≈ eac1 atol = 1e-14
     @test ear2 ≈ eac2 atol = 1e-14
     @test ear3 ≈ eac3 atol = 1e-14
-    @test ear4 ≈ eac4 atol = 1e-14
-    @test ear5 ≈ eac5 atol = 1e-14
-    @test ear6 ≈ eac6 atol = 1e-14
-    @test ear7 ≈ eac7 atol = 1e-14
 
     # Euler angles
     # ==========================================================================
 
-    # Sample 8 Euler angles.
-    for sym in [:Θ1, :Θ2, :Θ3, :Θ4, :Θ5, :Θ6, :Θ7, :Θ8 ]
+    # Sample 4 Euler angles.
+    for sym in [:Θ1, :Θ2, :Θ3, :Θ4]
         θx      = -π + 2π*rand()
         θy      = -π + 2π*rand()
         θz      = -π + 2π*rand()
@@ -109,32 +89,16 @@ for i = 1:samples
     Θr3 = Θ4*Θ3*Θ2*Θ1
     Θc3 = compose_rotation(Θ1,Θ2,Θ3,Θ4)
 
-    Θr4 = Θ5*Θ4*Θ3*Θ2*Θ1
-    Θc4 = compose_rotation(Θ1,Θ2,Θ3,Θ4,Θ5)
-
-    Θr5 = Θ6*Θ5*Θ4*Θ3*Θ2*Θ1
-    Θc5 = compose_rotation(Θ1,Θ2,Θ3,Θ4,Θ5,Θ6)
-
-    Θr6 = Θ7*Θ6*Θ5*Θ4*Θ3*Θ2*Θ1
-    Θc6 = compose_rotation(Θ1,Θ2,Θ3,Θ4,Θ5,Θ6,Θ7)
-
-    Θr7 = Θ8*Θ7*Θ6*Θ5*Θ4*Θ3*Θ2*Θ1
-    Θc7 = compose_rotation(Θ1,Θ2,Θ3,Θ4,Θ5,Θ6,Θ7,Θ8)
-
     # Test the function `compose_rotation`.
     @test Θr1 ≈ Θc1 atol = 1e-14
     @test Θr2 ≈ Θc2 atol = 1e-14
     @test Θr3 ≈ Θc3 atol = 1e-14
-    @test Θr4 ≈ Θc4 atol = 1e-14
-    @test Θr5 ≈ Θc5 atol = 1e-14
-    @test Θr6 ≈ Θc6 atol = 1e-14
-    @test Θr7 ≈ Θc7 atol = 1e-14
 
     # Quaternions
     # ==========================================================================
 
-    # Sample 8 quaternions.
-    for sym in [:q1, :q2, :q3, :q4, :q5, :q6, :q7, :q8]
+    # Sample 4 quaternions.
+    for sym in [:q1, :q2, :q3, :q4]
         @eval $sym = angle_to_quat(EulerAngles(-pi + 2*pi*rand(),
                                                -pi + 2*pi*rand(),
                                                -pi + 2*pi*rand(),
@@ -142,11 +106,7 @@ for i = 1:samples
     end
 
     # Test the function `compose_rotation`.
-    @test                   (q1*q2)[:] ≈ compose_rotation(q1,q2)[:]                   atol=1e-14
-    @test                (q1*q2*q3)[:] ≈ compose_rotation(q1,q2,q3)[:]                atol=1e-14
-    @test             (q1*q2*q3*q4)[:] ≈ compose_rotation(q1,q2,q3,q4)[:]             atol=1e-14
-    @test          (q1*q2*q3*q4*q5)[:] ≈ compose_rotation(q1,q2,q3,q4,q5)[:]          atol=1e-14
-    @test       (q1*q2*q3*q4*q5*q6)[:] ≈ compose_rotation(q1,q2,q3,q4,q5,q6)[:]       atol=1e-14
-    @test    (q1*q2*q3*q4*q5*q6*q7)[:] ≈ compose_rotation(q1,q2,q3,q4,q5,q6,q7)[:]    atol=1e-14
-    @test (q1*q2*q3*q4*q5*q6*q7*q8)[:] ≈ compose_rotation(q1,q2,q3,q4,q5,q6,q7,q8)[:] atol=1e-14
+    @test       (q1*q2)[:] ≈ compose_rotation(q1,q2)[:]       atol=1e-14
+    @test    (q1*q2*q3)[:] ≈ compose_rotation(q1,q2,q3)[:]    atol=1e-14
+    @test (q1*q2*q3*q4)[:] ≈ compose_rotation(q1,q2,q3,q4)[:] atol=1e-14
 end
