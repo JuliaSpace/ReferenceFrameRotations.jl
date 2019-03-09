@@ -432,10 +432,8 @@ function show(io::IO, mime::MIME"text/plain", q::Quaternion{T}) where T
     # Check if the user wants colors.
     color = get(io, :color, false)
 
-    b = (color) ? "\x1b[1m"         : ""
-    d = (color) ? "\x1b[0m"         : ""
-    g = (color) ? "\x1b[1m\x1b[32m" : ""
-    y = (color) ? "\x1b[1m\x1b[33m" : ""
+    b = (color) ? _b : ""
+    d = (color) ? _d : ""
 
     # Get the absolute values.
     aq0 = abs(q.q0)

@@ -84,11 +84,10 @@ function show(io::IO, mime::MIME"text/plain", Θ::EulerAngles{T}) where T
     # Check if the user wants colors.
     color = get(io, :color, false)
 
-    b = (color) ? "\x1b[1m"         : ""
-    d = (color) ? "\x1b[0m"         : ""
-    g = (color) ? "\x1b[1m\x1b[32m" : ""
-    y = (color) ? "\x1b[1m\x1b[33m" : ""
-    u = (color) ? "\x1b[1m\x1b[34m" : ""
+    d = (color) ? _d : ""
+    g = (color) ? _g : ""
+    y = (color) ? _y : ""
+    u = (color) ? _u : ""
 
     str_θ₁  = @sprintf "%8.4f rad (%9.4f deg)" Θ.a1 rad2deg(Θ.a1)
     str_θ₂  = @sprintf "%8.4f rad (%9.4f deg)" Θ.a2 rad2deg(Θ.a2)
