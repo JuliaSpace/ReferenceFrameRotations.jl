@@ -37,9 +37,10 @@ for i = 1:samples
     end
 
     # Test the function `compose_rotation`.
-    @test       D2*D1 ≈ compose_rotation(D1,D2)       atol=1e-14
-    @test    D3*D2*D1 ≈ compose_rotation(D1,D2,D3)    atol=1e-14
-    @test D4*D3*D2*D1 ≈ compose_rotation(D1,D2,D3,D4) atol=1e-14
+    @test          D1 === compose_rotation(D1)
+    @test       D2*D1  ≈  compose_rotation(D1,D2)       atol=1e-14
+    @test    D3*D2*D1  ≈  compose_rotation(D1,D2,D3)    atol=1e-14
+    @test D4*D3*D2*D1  ≈  compose_rotation(D1,D2,D3,D4) atol=1e-14
 
     # Euler angle and axis
     # ==========================================================================
@@ -63,6 +64,7 @@ for i = 1:samples
     eac3 = compose_rotation(ea1,ea2,ea3,ea4)
 
     # Test the function `compose_rotation`.
+    @test ea1 === compose_rotation(ea1)
     @test ear1 ≈ eac1 atol = 1e-14
     @test ear2 ≈ eac2 atol = 1e-14
     @test ear3 ≈ eac3 atol = 1e-14
@@ -90,6 +92,7 @@ for i = 1:samples
     Θc3 = compose_rotation(Θ1,Θ2,Θ3,Θ4)
 
     # Test the function `compose_rotation`.
+    @test Θ1 === compose_rotation(Θ1)
     @test Θr1 ≈ Θc1 atol = 1e-14
     @test Θr2 ≈ Θc2 atol = 1e-14
     @test Θr3 ≈ Θc3 atol = 1e-14
@@ -106,7 +109,8 @@ for i = 1:samples
     end
 
     # Test the function `compose_rotation`.
-    @test       (q1*q2)[:] ≈ compose_rotation(q1,q2)[:]       atol=1e-14
-    @test    (q1*q2*q3)[:] ≈ compose_rotation(q1,q2,q3)[:]    atol=1e-14
-    @test (q1*q2*q3*q4)[:] ≈ compose_rotation(q1,q2,q3,q4)[:] atol=1e-14
+    @test           q1     === compose_rotation(q1)
+    @test       (q1*q2)[:]  ≈  compose_rotation(q1,q2)[:]       atol=1e-14
+    @test    (q1*q2*q3)[:]  ≈  compose_rotation(q1,q2,q3)[:]    atol=1e-14
+    @test (q1*q2*q3*q4)[:]  ≈  compose_rotation(q1,q2,q3,q4)[:] atol=1e-14
 end
