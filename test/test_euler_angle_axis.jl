@@ -79,7 +79,40 @@ let
     @test eltype(ear.a) == eltype(ear.v) == Float16
 end
 
-# Test exceptions.
+# Test printing
+# =============
+
+# With colors.
+expected = """
+EulerAngleAxis{Float64}:
+\e[33;1m  Euler angle: \e[0m  0.7854 rad ( 45.0000 deg)
+\e[33;1m   Euler axis: \e[0m[  0.5774,   0.5774,   0.5774]"""
+
+result = sprint((io,ea)->show(io, MIME"text/plain"(), ea),
+				EulerAngleAxis(π/4, [sqrt(3)/3, sqrt(3)/3, sqrt(3)/3]),
+				context = :color => true)
+@test result == expected
+
+# Without colors.
+expected = """
+EulerAngleAxis{Float64}:
+  Euler angle:   0.7854 rad ( 45.0000 deg)
+   Euler axis: [  0.5774,   0.5774,   0.5774]"""
+
+result = sprint((io,ea)->show(io, MIME"text/plain"(), ea),
+				EulerAngleAxis(π/4, [sqrt(3)/3, sqrt(3)/3, sqrt(3)/3]),
+				context = :color => false)
+@test result == expected
+
+expected = """
+EulerAngleAxis{Float64}:   0.7854 rad, [  0.5774,   0.5774,   0.5774]"""
+
+result = sprint(print, EulerAngleAxis(π/4, [sqrt(3)/3, sqrt(3)/3, sqrt(3)/3]))
+@test result == expected
+
+# Test exceptions
+# ===============
+
 @test_throws Exception EulerAngleAxis(randn(), [1;1;1;1])
 @test_throws Exception EulerAngleAxis(randn(), [1;1])
 @test_throws Exception EulerAngleAxis(randn(), SVector{4,Int}[1;1;1;1])

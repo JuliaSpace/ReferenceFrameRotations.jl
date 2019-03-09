@@ -246,6 +246,36 @@ let
     @test (q\q)[:] ≈ [1;0;0;0]
 end
 
+# Test printing
+# =============
+
+# With colors.
+expected = """
+Quaternion{Float64}:
+  + 0.11111111 + 0.22222222.\e[1mi\e[0m + 0.33333333.\e[1mj\e[0m + 0.44444444.\e[1mk\e[0m"""
+
+result = sprint((io,quat)->show(io, MIME"text/plain"(), quat),
+                Quaternion(0.11111111,0.22222222,0.33333333,0.44444444);
+                context = :color => true)
+@test result == expected
+
+# Without colors.
+expected = """
+Quaternion{Float64}:
+  + 0.11111111 + 0.22222222.i + 0.33333333.j + 0.44444444.k"""
+
+result = sprint((io,quat)->show(io, MIME"text/plain"(), quat),
+                Quaternion(0.11111111,0.22222222,0.33333333,0.44444444);
+                context = :color => false)
+@test result == expected
+
+# Inline.
+expected = """
+Quaternion{Float64}: + 0.11111111 + 0.22222222.i + 0.33333333.j + 0.44444444.k"""
+
+result = sprint(print, Quaternion(0.11111111,0.22222222,0.33333333,0.44444444))
+@test result == expected
+
 # Test exceptions
 # ===============
 

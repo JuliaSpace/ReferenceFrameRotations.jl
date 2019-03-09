@@ -31,3 +31,36 @@ for k = 1:samples
         @test δΘ₂.rot_seq == Symbol(reverse(String(rot_seq)))
     end
 end
+
+# Test printing
+# =============
+
+# With colors.
+expected = """
+EulerAngles{Float64}:
+\e[32;1m  R(X): \e[0m  1.5708 rad (  90.0000 deg)
+\e[33;1m  R(Y): \e[0m  1.0472 rad (  60.0000 deg)
+\e[34;1m  R(Z): \e[0m  0.7854 rad (  45.0000 deg)"""
+
+result = sprint((io,angles)->show(io, MIME"text/plain"(), angles),
+                EulerAngles(π/2, π/3, π/4, :XYZ),
+                context = :color => true)
+@test result == expected
+
+# Without colors.
+expected = """
+EulerAngles{Float64}:
+  R(X):   1.5708 rad (  90.0000 deg)
+  R(Y):   1.0472 rad (  60.0000 deg)
+  R(Z):   0.7854 rad (  45.0000 deg)"""
+
+result = sprint((io,angles)->show(io, MIME"text/plain"(), angles),
+                EulerAngles(π/2, π/3, π/4, :XYZ),
+                context = :color => false)
+@test result == expected
+
+expected = """
+EulerAngles{Float64}: R(XYZ):   1.5708   1.0472   0.7854 rad"""
+
+result = sprint(print, EulerAngles(π/2, π/3, π/4, :XYZ))
+@test result == expected
