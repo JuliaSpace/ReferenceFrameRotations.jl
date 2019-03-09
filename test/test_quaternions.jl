@@ -114,9 +114,9 @@ for i = 1:samples
     q_eye_3 = Quaternion(I,q)
 
     # Check if the types are correct.
-    @test eltype(q_eye_1.q0) != eltype(q.q0)
-    @test eltype(q_eye_2.q0) == eltype(q.q0)
-    @test eltype(q_eye_3.q0) == eltype(q.q0)
+    @test eltype(q_eye_1.q0) != eltype(real(q))
+    @test eltype(q_eye_2.q0) == eltype(real(q))
+    @test eltype(q_eye_3.q0) == eltype(real(q))
 
     # Check if the value of the quaternion is correct.
     @test norm(vect(q_eye_3)) == 0.0
@@ -135,9 +135,9 @@ for i = 1:samples
     q_zeros_3 = zeros(q)
 
     # Check if the types are correct.
-    @test eltype(q_zeros_1.q0) != eltype(q.q0)
-    @test eltype(q_zeros_2.q0) == eltype(q.q0)
-    @test eltype(q_zeros_3.q0) == eltype(q.q0)
+    @test eltype(q_zeros_1.q0) != eltype(real(q))
+    @test eltype(q_zeros_2.q0) == eltype(real(q))
+    @test eltype(q_zeros_3.q0) == eltype(real(q))
 
     # Check if the value of the quaternion is correct.
     @test norm(q_zeros_3) == 0.0
@@ -244,6 +244,29 @@ let
     @test inv_rotation(q) != inv(q)
     @test (q/q)[:] ≈ [1;0;0;0]
     @test (q\q)[:] ≈ [1;0;0;0]
+
+    # Uniform scaling.
+    @test Quaternion(1,1,1,1) +    I === Quaternion{Int}(2,1,1,1)
+    @test Quaternion(1,1,1,1) + 1.0I === Quaternion{Float64}(2,1,1,1)
+
+    @test Quaternion(1,1,1,1) -    I === Quaternion{Int}(0,1,1,1)
+    @test Quaternion(1,1,1,1) - 1.0I === Quaternion{Float64}(0,1,1,1)
+
+    @test Quaternion(1,1,1,1)*I      === Quaternion{Int}(1,1,1,1)
+    @test Quaternion(1,1,1,1)*1.0I   === Quaternion{Float64}(1,1,1,1)
+    @test I*Quaternion(1,1,1,1)      === Quaternion{Int}(1,1,1,1)
+    @test 1.0I*Quaternion(1,1,1,1)   === Quaternion{Float64}(1,1,1,1)
+
+    @test Quaternion(1,1,1,1)/I      === Quaternion{Float64}(1,1,1,1)
+    @test Quaternion(1,1,1,1)/1.0I   === Quaternion{Float64}(1,1,1,1)
+    @test I/Quaternion(1,1,1,1)      === inv(Quaternion(1,1,1,1))
+    @test 1.0I/Quaternion(1,1,1,1)   === inv(Quaternion(1,1,1,1))
+
+    @test Quaternion(1,1,1,1)\I      === inv(Quaternion(1,1,1,1))
+    @test Quaternion(1,1,1,1)\1.0I   === inv(Quaternion(1,1,1,1))
+    @test I\Quaternion(1,1,1,1)      === Quaternion{Float64}(1,1,1,1)
+    @test 1.0I\Quaternion(1,1,1,1)   === Quaternion{Float64}(1,1,1,1)
+
 end
 
 # Test printing

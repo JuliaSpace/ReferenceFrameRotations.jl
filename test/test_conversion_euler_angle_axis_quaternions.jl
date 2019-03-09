@@ -36,5 +36,9 @@ for k = 1:samples
     @test norm(r-r_rot) < 1e-10
 end
 
+# Identity quaternion.
+@test quat_to_angleaxis(Quaternion(1I))   === EulerAngleAxis(0,   [0,0,0])
+@test quat_to_angleaxis(Quaternion(1.0I)) === EulerAngleAxis(0.0, [0,0,0])
+
 # Test the exceptions.
 @test_throws ArgumentError angleaxis_to_quat(0, [1;2;3;4])
