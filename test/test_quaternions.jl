@@ -272,15 +272,19 @@ end
 # Test printing
 # =============
 
-# With colors.
-expected = """
+# Color test is not working on AppVeyor. Hence, if the OS is windows, then we
+# just skip.
+if !Sys.iswindows()
+    # With colors.
+    expected = """
 Quaternion{Float64}:
   + 0.11111111 + 0.22222222.\e[1mi\e[0m + 0.33333333.\e[1mj\e[0m + 0.44444444.\e[1mk\e[0m"""
 
-result = sprint((io,quat)->show(io, MIME"text/plain"(), quat),
-                Quaternion(0.11111111,0.22222222,0.33333333,0.44444444);
-                context = :color => true)
-@test result == expected
+    result = sprint((io,quat)->show(io, MIME"text/plain"(), quat),
+                    Quaternion(0.11111111,0.22222222,0.33333333,0.44444444);
+                    context = :color => true)
+    @test result == expected
+end
 
 # Without colors.
 expected = """

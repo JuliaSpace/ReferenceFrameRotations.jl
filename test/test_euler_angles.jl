@@ -41,17 +41,21 @@ end
 # Test printing
 # =============
 
-# With colors.
-expected = """
+# Color test is not working on AppVeyor. Hence, if the OS is windows, then we
+# just skip.
+if !Sys.iswindows()
+    # With colors.
+    expected = """
 EulerAngles{Float64}:
 \e[32;1m  R(X): \e[0m  1.5708 rad (  90.0000 deg)
 \e[33;1m  R(Y): \e[0m  1.0472 rad (  60.0000 deg)
 \e[34;1m  R(Z): \e[0m  0.7854 rad (  45.0000 deg)"""
 
-result = sprint((io,angles)->show(io, MIME"text/plain"(), angles),
-                EulerAngles(π/2, π/3, π/4, :XYZ),
-                context = :color => true)
-@test result == expected
+    result = sprint((io,angles)->show(io, MIME"text/plain"(), angles),
+                    EulerAngles(π/2, π/3, π/4, :XYZ),
+                    context = :color => true)
+    @test result == expected
+end
 
 # Without colors.
 expected = """
