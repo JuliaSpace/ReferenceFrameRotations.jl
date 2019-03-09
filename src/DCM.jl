@@ -377,7 +377,7 @@ function dcm_to_angleaxis(dcm::DCM{T}) where T<:Number
     cθ = (dcm[1,1] + dcm[2,2] + dcm[3,3] - 1)/2
 
     # Check the undefined case.
-    if cθ >= 1 + eps()
+    if cθ >= 1 - eps()
         return EulerAngleAxis(T(0), SVector{3,T}(0,0,0))
 
     elseif cθ <= -1 + eps()
