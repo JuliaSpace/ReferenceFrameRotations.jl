@@ -1,6 +1,18 @@
 ReferenceFrameRotations.jl Changelog
 ====================================
 
+Version 0.5.1
+-------------
+
+- ![Bugfix][badge-bugfix] The conversion from DCM to Euler Angle and Axis had a
+  bug when an identity DCM was being used. In this case, the returned axis was
+  `[NaN, NaN, NaN]`, when the correct is `[0, 0, 0]`.
+- ![Enhancement][badge-enhancement] The test coverage was highly improve,
+  reaching more than 97% of the code.
+- ![Enhancement][badge-enhancement] All the colors in printing functions are now
+  handled by the package
+  [Crayons.jl](https://github.com/KristofferC/Crayons.jl).
+
 Version 0.5.0
 -------------
 
