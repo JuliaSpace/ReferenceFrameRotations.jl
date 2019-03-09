@@ -32,6 +32,12 @@ for k = 1:samples
     end
 end
 
+# Test promotion
+# ==============
+
+@test EulerAngles(1,1,1.0,  :XYZ) === EulerAngles(1.0,1.0,1.0,:XYZ)
+@test EulerAngles(1,1,1.0f0,:XYZ) === EulerAngles{Float32}(1,1,1,:XYZ)
+
 # Test printing
 # =============
 
