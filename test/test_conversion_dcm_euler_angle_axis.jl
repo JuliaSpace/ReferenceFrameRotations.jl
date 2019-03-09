@@ -51,3 +51,15 @@ for k = 1:samples
     @test eac2.v[2] ≈ s*v[2] atol = 5e-7
     @test eac2.v[3] ≈ s*v[3] atol = 5e-7
 end
+
+# Test special cases
+# ==================
+
+dcm_z = angle_to_dcm(π, 0, 0, :ZYX)
+dcm_y = angle_to_dcm(0, π, 0, :ZYX)
+dcm_x = angle_to_dcm(0, 0, π, :ZYX)
+
+@test EulerAngleAxis(π, [0, 0, 1]) ≈ dcm_to_angleaxis(dcm_z)  atol = 1e-14
+@test EulerAngleAxis(π, [0, 1, 0]) ≈ dcm_to_angleaxis(dcm_y)  atol = 1e-14
+@test EulerAngleAxis(π, [1, 0, 0]) ≈ dcm_to_angleaxis(dcm_x)  atol = 1e-14
+@test EulerAngleAxis(0, [0, 0, 0]) ≈ dcm_to_angleaxis(DCM(I)) atol = 1e-14

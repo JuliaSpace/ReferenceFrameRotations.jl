@@ -3,6 +3,28 @@ using ReferenceFrameRotations
 using LinearAlgebra
 using StaticArrays
 
+import Base: isapprox
+
+# Define the function `isapprox` for `EulerAngleAxis` to make the comparison
+# easier.
+function isapprox(x::EulerAngleAxis, y::EulerAngleAxis; keys...)
+    a = isapprox(x.a, y.a; keys...)
+    v = isapprox(x.v, y.v; keys...)
+
+    a && v
+end
+
+# Define the function `isapprox` for `EulerAngles` to make the comparison
+# easier.
+function isapprox(x::EulerAngles, y::EulerAngles; keys...)
+    a1 = isapprox(x.a1, y.a1; keys...)
+    a2 = isapprox(x.a2, y.a2; keys...)
+    a3 = isapprox(x.a3, y.a3; keys...)
+    r  = x.rot_seq == y.rot_seq
+
+    a1 && a2 && a3 && r
+end
+
 # Available rotations.
 const rot_seq_array = [:XYX,
                        :XYZ,
