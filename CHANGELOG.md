@@ -1,6 +1,12 @@
 ReferenceFrameRotations.jl Changelog
 ====================================
 
+Version 0.5.2
+-------------
+
+- Dummy release to add `Project.toml` and switch to
+  [Registrator.jl](https://github.com/JuliaComputing/Registrator.jl).
+
 Version 0.5.1
 -------------
 
