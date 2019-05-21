@@ -1,6 +1,13 @@
 ReferenceFrameRotations.jl Changelog
 ====================================
 
+Version 0.5.3
+-------------
+
+- ![Enhancement][badge-enhancement] It is not necessary to use `sprint` to
+  create the color sequences when using
+  [Crayons.jl](https://github.com/KristofferC/Crayons.jl).
+
 Version 0.5.2
 -------------
 
