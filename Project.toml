@@ -15,9 +15,9 @@ StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [compat]
-Crayons = "≥ 1.0.0"
-StaticArrays = "≥ 0.9.2"
-julia = "≥ 1.0.0"
+julia = "1"
+Crayons = "4.0"
+StaticArrays = "0.12"
 
 [targets]
 test = ["Test"]
