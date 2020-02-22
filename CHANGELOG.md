@@ -1,6 +1,13 @@
 ReferenceFrameRotations.jl Changelog
 ====================================
 
+Version 0.5.4
+-------------
+
+- ![Enhancement][badge-enhancement] Improvements in the documentation of
+  functions and macros.
+- ![Info][badge-info] The package is now tested only against Julia 1.0 and 1.3.
+
 Version 0.5.3
 -------------
 
