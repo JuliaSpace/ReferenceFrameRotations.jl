@@ -26,7 +26,7 @@ static matrix of type `T`.
 DCM{T} = SMatrix{3,3,T,9}
 
 """
-    struct EulerAngles{T}
+    EulerAngles{T}
 
 The definition of Euler Angles, which is composed of three angles `a1`, `a2`,
 and `a3` together with a rotation sequence `rot_seq`. The latter is provided by
@@ -38,7 +38,7 @@ corresponding angle (for example, `:ZYX`). The valid values for `rot_seq` are:
 
 # Constructor
 
-    function EulerAngles(a1::T1, a2::T2, a3::T3, rot_seq::Symbol = :ZYX) where {T1,T2,T3}
+    EulerAngles(a1::T1, a2::T2, a3::T3, rot_seq::Symbol = :ZYX) where {T1,T2,T3}
 
 Create a new instance of `EulerAngles` with the angles `a1`, `a2`, and `a3` and
 the rotation sequence `rot_seq`. The type will be inferred from `T1`, `T2`, and
@@ -60,7 +60,7 @@ function EulerAngles(a1::T1, a2::T2, a3::T3, rot_seq::Symbol = :ZYX) where
 end
 
 """
-    struct EulerAngleAxis{T}
+    EulerAngleAxis{T}
 
 The definition of Euler Angle and Axis to represent a 3D rotation.
 
@@ -71,7 +71,7 @@ The definition of Euler Angle and Axis to represent a 3D rotation.
 
 # Constructor
 
-    function EulerAngleAxis(a::T1, v::AbstractVector{T2}) where {T1,T2}
+    EulerAngleAxis(a::T1, v::AbstractVector{T2}) where {T1,T2}
 
 Create an Euler Angle and Axis representation structure with angle `a` [rad] and
 vector `v`. Notice that the vector `v` will not be normalized. The type of the
@@ -92,7 +92,7 @@ function EulerAngleAxis(a::T1, v::AbstractVector{T2}) where {T1,T2}
 end
 
 """
-### struct Quaternion{T}
+    Quaternion{T}
 
 The definition of the quaternion. It has four values of type `T`. The
 quaternion representation is:

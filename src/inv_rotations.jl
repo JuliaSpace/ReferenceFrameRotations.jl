@@ -5,7 +5,7 @@ export inv_rotation
 ################################################################################
 
 """
-    @inline function inv_rotation(R)
+    inv_rotation(R)
 
 Compute the inverse rotation of `R`, which can be:
 

@@ -5,7 +5,7 @@ export compose_rotation
 ################################################################################
 
 """
-    @inline function compose_rotation(R1, [, R2, R3, R4, R5, ...])
+    compose_rotation(R1, [, R2, R3, R4, R5, ...])
 
 Compute a composed rotation using the rotations `R1`, `R2`, `R3`, `R4`, ..., in
 the following order:

@@ -10,7 +10,7 @@ export ddcm, dcm_to_angle, dcm_to_angleaxis, dcm_to_quat, orthonormalize
 ################################################################################
 
 """
-    function create_rotation_matrix(angle::Number, axis::Symbol = :X)
+    create_rotation_matrix(angle::Number, axis::Symbol = :X)
 
 Compute a rotation matrix that rotates a coordinate frame about the axis `axis`
 by the angle `angle`. The `axis` must be one of the following symbols: `:X`,
@@ -48,7 +48,7 @@ function create_rotation_matrix(angle::Number, axis::Symbol = :X)
 end
 
 """
-    function orthonormalize(dcm::DCM)
+    orthonormalize(dcm::DCM)
 
 Perform the Gram-Schmidt orthonormalization process in the DCM `dcm` and return
 the new matrix.
@@ -128,7 +128,7 @@ end
 
 
 """
-    function dcm_to_angle(dcm::DCM, rot_seq::Symbol=:ZYX)
+    dcm_to_angle(dcm::DCM, rot_seq::Symbol=:ZYX)
 
 Convert the DCM `dcm` to Euler Angles (see `EulerAngles`) given a rotation
 sequence `rot_seq`.
@@ -367,7 +367,7 @@ end
 # ==============================================================================
 
 """
-    function dcm_to_angleaxis(dcm::DCM{T}) where T<:Number
+    dcm_to_angleaxis(dcm::DCM{T}) where T<:Number
 
 Convert the DCM `dcm` to an Euler angle and axis representation. By convention,
 the returned Euler angle will always be in the interval [0, π].
@@ -421,7 +421,7 @@ end
 # ==============================================================================
 
 """
-    function dcm_to_quat(dcm::DCM)
+    dcm_to_quat(dcm::DCM)
 
 Convert the DCM `dcm` to a quaternion. The type of the quaternion will be
 automatically selected by the constructor `Quaternion` to avoid `InexactError`.
@@ -509,7 +509,7 @@ end
 ################################################################################
 
 """
-    function ddcm(Dba::DCM, wba_b::AbstractArray)
+    ddcm(Dba::DCM, wba_b::AbstractArray)
 
 Compute the time-derivative of the DCM `dcm` that rotates a reference frame `a`
 into alignment to the reference frame `b` in which the angular velocity of `b`

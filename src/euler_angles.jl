@@ -12,7 +12,7 @@ export inv
 ################################################################################
 
 """
-    function *(Θ₂::EulerAngles, Θ₁::EulerAngles)
+    *(Θ₂::EulerAngles, Θ₁::EulerAngles)
 
 Compute the composed rotation of `Θ₁ -> Θ₂`. Notice that the rotation will be
 represented by Euler angles (see `EulerAngles`) with the same rotation sequence
@@ -29,7 +29,7 @@ as `Θ₂`.
 end
 
 """
-    function inv(Θ::EulerAngles)
+    inv(Θ::EulerAngles)
 
 Return the Euler angles that represent the inverse rotation of `Θ`. Notice that
 the rotation sequence of the result will be the inverse of the input. Hence, if
@@ -64,8 +64,8 @@ end
 ################################################################################
 
 """
-    function show(io::IO, Θ::EulerAngles{T}) where T
-    function show(io::IO, mime::MIME"text/plain", Θ::EulerAngles{T}) where T
+    show(io::IO, Θ::EulerAngles{T}) where T
+    show(io::IO, mime::MIME"text/plain", Θ::EulerAngles{T}) where T
 
 Print the Euler angles `Θ` to the IO `io`.
 
@@ -110,8 +110,8 @@ end
 # ==============================================================================
 
 """
-    @inline function angle_to_angleaxis(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
-    @inline function angle_to_angleaxis(Θ::EulerAngles)
+    angle_to_angleaxis(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
+    angle_to_angleaxis(Θ::EulerAngles)
 
 Convert the Euler angles `θ₁`, `θ₂`, and `θ₃` [rad] with the rotation sequence
 `rot_seq` to an Euler angle and axis representation.  Those values can also be
@@ -151,8 +151,8 @@ end
 # ==============================================================================
 
 """
-    @inline function angle_to_angle(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq_orig::Symbol, rot_seq_dest::Symbol)
-    @inline function angle_to_angle(Θ::EulerAngles, rot_seq_dest::Symbol)
+    angle_to_angle(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq_orig::Symbol, rot_seq_dest::Symbol)
+    angle_to_angle(Θ::EulerAngles, rot_seq_dest::Symbol)
 
 Convert the Euler angles `θ₁`, `θ₂`, and `θ₃` [rad] with the rotation sequence
 `rot_seq_orig` to a new set of Euler angles with rotation sequence
@@ -202,7 +202,7 @@ EulerAngles{Float64}:
 # ==============================================================================
 
 """
-    function angle_to_dcm(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
+    angle_to_dcm(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
 
 Convert the Euler angles `θ₁`, `θ₂`, and `θ₃` [rad] with the rotation sequence
 `rot_seq` to a direction cosine matrix.
@@ -299,7 +299,7 @@ function angle_to_dcm(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symb
 end
 
 """
-    function angle_to_dcm(Θ::EulerAngles)
+    angle_to_dcm(Θ::EulerAngles)
 
 Convert the Euler angles `Θ` (see `EulerAngles`) to a direction cosine matrix.
 
@@ -326,7 +326,7 @@ julia> angle_to_dcm(EulerAngles(pi/2, pi/3, pi/4, :ZYX))
 angle_to_dcm(Θ::EulerAngles) = angle_to_dcm(Θ.a1, Θ.a2, Θ.a3, Θ.rot_seq)
 
 """
-    function smallangle_to_dcm(θx::Number, θy::Number, θz::Number; normalize = true)
+    smallangle_to_dcm(θx::Number, θy::Number, θz::Number; normalize = true)
 
 Create a direction cosine matrix from three small rotations of angles `θx`,
 `θy`, and `θz` [rad] about the axes X, Y, and Z, respectively. If the keyword
@@ -363,7 +363,7 @@ end
 # ==============================================================================
 
 """
-    function angle_to_quat(θ₁::T1, θ₂::T2, θ₃::T3, rot_seq::Symbol = :ZYX) where {T1<:Number, T2<:Number, T3<:Number}
+    angle_to_quat(θ₁::T1, θ₂::T2, θ₃::T3, rot_seq::Symbol = :ZYX) where {T1<:Number, T2<:Number, T3<:Number}
 
 Convert the Euler angles `θ₁`, `θ₂`, and `θ₃` [rad] with the rotation sequence
 `rot_seq` to a quaternion.
@@ -510,7 +510,7 @@ function angle_to_quat(θ₁::T1, θ₂::T2, θ₃::T3, rot_seq::Symbol = :ZYX) 
 end
 
 """
-    function angle_to_quat(eulerang::EulerAngles)
+    angle_to_quat(eulerang::EulerAngles)
 
 Convert the Euler angles `eulerang` (see `EulerAngles`) to a quaternion.
 
@@ -531,7 +531,7 @@ Quaternion{Float64}:
 angle_to_quat(Θ::EulerAngles) = angle_to_quat(Θ.a1, Θ.a2, Θ.a3, Θ.rot_seq)
 
 """
-    function smallangle_to_quat(θx::Number, θy::Number, θz::Number)
+    smallangle_to_quat(θx::Number, θy::Number, θz::Number)
 
 Create a quaternion from three small rotations of angles `θx`, `θy`, and `θz`
 [rad] about the axes X, Y, and Z, respectively.
@@ -564,7 +564,7 @@ end
 ################################################################################
 
 """
-    @inline angle_to_rot([T,] θx::Number, θy::Number, θz::Number, rot_seq::Symbol)
+    angle_to_rot([T,] θx::Number, θy::Number, θz::Number, rot_seq::Symbol)
 
 Convert the Euler angles `Θx`, `Θy`, and `Θz` [rad] with the rotation sequence
 `rot_seq` to a rotation description of type `T`, which can be `DCM` or
@@ -601,7 +601,7 @@ Quaternion{Float64}:
     angle_to_quat(θx, θy, θz, rot_seq)
 
 """
-    @inline angle_to_rot([T,] Θ::EulerAngles)
+    angle_to_rot([T,] Θ::EulerAngles)
 
 Convert the Euler angles `Θ` (see `EulerAngles`) to a rotation description of
 type `T`, which can be `DCM` or `Quaternion`. If the type `T` is not specified,
@@ -632,7 +632,7 @@ Quaternion{Float64}:
     angle_to_quat(Θ.a1, Θ.a2, Θ.a3, Θ.rot_seq)
 
 """
-    function smallangle_to_rot([T,] θx::Number, θy::Number, θz::Number[; normalize = true])
+    smallangle_to_rot([T,] θx::Number, θy::Number, θz::Number[; normalize = true])
 
 Create a rotation description of type `T` from three small rotations of angles
 `θx`, `θy`, and `θz` [rad] about the axes X, Y, and Z, respectively.

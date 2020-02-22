@@ -9,7 +9,7 @@ export dquat, eye, norm, quat_to_angle, quat_to_angleaxis, quat_to_dcm, vect
 ################################################################################
 
 """
-    function Quaternion(q0::T0, q1::T1, q2::T2, q3::T3) where {T0,T1,T2,T3}
+    Quaternion(q0::T0, q1::T1, q2::T2, q3::T3) where {T0,T1,T2,T3}
 
 Create the following quaternion:
 
@@ -29,7 +29,7 @@ function Quaternion(q0::T0, q1::T1, q2::T2, q3::T3) where {T0,T1,T2,T3}
 end
 
 """
-    function Quaternion(v::AbstractVector)
+    Quaternion(v::AbstractVector)
 
 If the vector `v` has 3 components, then create a quaternion in which the real
 part is `0` and the vectorial or imaginary part has the same components of the
@@ -57,7 +57,7 @@ function Quaternion(v::AbstractVector)
 end
 
 """
-    function Quaternion(r::Number, v::AbstractVector)
+    Quaternion(r::Number, v::AbstractVector)
 
 Create a quaternion with real part `r` and vectorial or imaginary part `v`:
 
@@ -67,8 +67,8 @@ Create a quaternion with real part `r` and vectorial or imaginary part `v`:
 Quaternion(r::Number, v::AbstractVector) = Quaternion(r, v[1], v[2], v[3])
 
 """
-    function Quaternion(u::UniformScaling{T}) where T
-    function Quaternion{T}(u::UniformScaling) where T
+    Quaternion(u::UniformScaling{T}) where T
+    Quaternion{T}(u::UniformScaling) where T
 
 Create the quaternion `u.λ + 0.i + 0.j + 0.k`.
 
@@ -77,7 +77,7 @@ Quaternion(u::UniformScaling{T}) where T = Quaternion{T}(T(u.λ), T(0), T(0), T(
 Quaternion{T}(u::UniformScaling) where T = Quaternion{T}(T(u.λ), T(0), T(0), T(0))
 
 """
-    function Quaternion(::UniformScaling,::Quaternion{T}) where T
+    Quaternion(::UniformScaling,::Quaternion{T}) where T
 
 Create an identity quaternion of type `T`:
 
@@ -94,7 +94,7 @@ Quaternion(::UniformScaling,::Quaternion{T}) where T = Quaternion{T}(I)
 # ==============================================================================
 
 """
-    @inline function +(qa::Quaternion, qb::Quaternion)
+    +(qa::Quaternion, qb::Quaternion)
 
 Compute `qa + qb`.
 
@@ -103,8 +103,8 @@ Compute `qa + qb`.
     Quaternion(qa.q0 + qb.q0, qa.q1 + qb.q1, qa.q2 + qb.q2, qa.q3 + qb.q3)
 
 """
-    @inline function +(u::UniformScaling, q::Quaternion)
-    @inline function +(q::Quaternion, u::UniformScaling)
+    +(u::UniformScaling, q::Quaternion)
+    +(q::Quaternion, u::UniformScaling)
 
 Compute `qu + q` or `q + qu`, in which `qu` is the scaled identity quaternion
 `qu = u.λ * I`.
@@ -119,7 +119,7 @@ Compute `qu + q` or `q + qu`, in which `qu` is the scaled identity quaternion
 # ==============================================================================
 
 """
-    @inline function -(qa::Quaternion, qb::Quaternion)
+    -(qa::Quaternion, qb::Quaternion)
 
 Compute `qa - qb`.
 
@@ -128,8 +128,8 @@ Compute `qa - qb`.
     Quaternion(qa.q0 - qb.q0, qa.q1 - qb.q1, qa.q2 - qb.q2, qa.q3 - qb.q3)
 
 """
-    @inline function -(u::UniformScaling, q::Quaternion)
-    @inline function -(q::Quaternion, u::UniformScaling)
+    -(u::UniformScaling, q::Quaternion)
+    -(q::Quaternion, u::UniformScaling)
 
 Compute `qu - q` or `q - qu`, in which `qu` is the scaled identity quaternion
 `qu = u.λ * I`.
@@ -144,8 +144,8 @@ Compute `qu - q` or `q - qu`, in which `qu` is the scaled identity quaternion
 # ==============================================================================
 
 """
-    @inline function *(λ::Number, q::Quaternion)
-    @inline function *(q::Quaternion, λ::Number)
+    *(λ::Number, q::Quaternion)
+    *(q::Quaternion, λ::Number)
 
 Compute `λ*q` or `q*λ`, in which `λ` is a scalar.
 
@@ -154,7 +154,7 @@ Compute `λ*q` or `q*λ`, in which `λ` is a scalar.
 @inline *(q::Quaternion, λ::Number) = Quaternion(λ*q.q0, λ*q.q1, λ*q.q2, λ*q.q3)
 
 """
-    @inline function *(q1::Quaternion, q2::Quaternion)
+    *(q1::Quaternion, q2::Quaternion)
 
 Compute the quaternion multiplication `q1*q2` (Hamilton product).
 
@@ -166,8 +166,8 @@ Compute the quaternion multiplication `q1*q2` (Hamilton product).
                q1.q0*q2.q3 + q1.q1*q2.q2 - q1.q2*q2.q1 + q1.q3*q2.q0)
 
 """
-    @inline function *(v::AbstractVector, q::Quaternion)
-    @inline function *(q::Quaternion, v::AbstractVector)
+    *(v::AbstractVector, q::Quaternion)
+    *(q::Quaternion, v::AbstractVector)
 
 Compute the multiplication `qv*q` or `q*qv` in which `qv` is a quaternion with
 real part `0` and vectorial/imaginary part `v` (Hamilton product).
@@ -186,8 +186,8 @@ real part `0` and vectorial/imaginary part `v` (Hamilton product).
                q.q0*v[3] + q.q1*v[2] - q.q2*v[1]             )
 
 """
-    @inline function *(u::UniformScaling, q::Quaternion)
-    @inline function *(q::Quaternion, u::UniformScaling)
+    *(u::UniformScaling, q::Quaternion)
+    *(q::Quaternion, u::UniformScaling)
 
 Compute `qu*q` or `q*qu` (Hamilton product), in which `qu` is the scaled
 identity quaternion `qu = u.λ * I`.
@@ -200,8 +200,8 @@ identity quaternion `qu = u.λ * I`.
 # ==============================================================================
 
 """
-    @inline function /(λ::Number, q::Quaternion)
-    @inline function /(q::Quaternion, λ::Number)
+    /(λ::Number, q::Quaternion)
+    /(q::Quaternion, λ::Number)
 
 Compute the division `λ/q` or `q/λ`, in which `λ` is a scalar.
 
@@ -215,7 +215,7 @@ end
 @inline /(q::Quaternion, λ::Number) = q*(1/λ)
 
 """
-    @inline /(q1::Quaternion, q2::Quaternion) = q1*inv(q2)
+    /(q1::Quaternion, q2::Quaternion) = q1*inv(q2)
 
 Compute `q1*inv(q2)` (Hamilton product).
 
@@ -223,8 +223,8 @@ Compute `q1*inv(q2)` (Hamilton product).
 @inline /(q1::Quaternion, q2::Quaternion) = q1*inv(q2)
 
 """
-    @inline function /(u::UniformScaling, q::Quaternion)
-    @inline function /(q::Quaternion, u::UniformScaling)
+    /(u::UniformScaling, q::Quaternion)
+    /(q::Quaternion, u::UniformScaling)
 
 Compute `qu/q` or `q/qu` (Hamilton product), in which `qu` is the scaled
 identity quaternion `qu = u.λ * I`.
@@ -237,7 +237,7 @@ identity quaternion `qu = u.λ * I`.
 # ==============================================================================
 
 """
-    @inline \\(q1::Quaternion, q2::Quaternion) = inv(q1)*q2
+    \\(q1::Quaternion, q2::Quaternion) = inv(q1)*q2
 
 Compute `inv(q1)*q2`.
 
@@ -245,8 +245,8 @@ Compute `inv(q1)*q2`.
 @inline \(q1::Quaternion, q2::Quaternion) = inv(q1)*q2
 
 """
-    @inline \\(q::Quaternion, v::AbstractVector)
-    @inline \\(v::AbstractVector, q::Quaternion)
+    \\(q::Quaternion, v::AbstractVector)
+    \\(v::AbstractVector, q::Quaternion)
 
 Compute `inv(q)*qv` or `inv(qv)*q` in which `qv` is a quaternion with real part
 `0` and vectorial/imaginary part `v` (Hamilton product).
@@ -256,8 +256,8 @@ Compute `inv(q)*qv` or `inv(qv)*q` in which `qv` is a quaternion with real part
 @inline \(v::AbstractVector, q::Quaternion)     = inv(Quaternion(v))*q
 
 """
-    @inline function \\(u::UniformScaling, q::Quaternion)
-    @inline function \\(q::Quaternion, u::UniformScaling)
+    \\(u::UniformScaling, q::Quaternion)
+    \\(q::Quaternion, u::UniformScaling)
 
 Compute `inv(qu)*q` or `inv(q)*qu` (Hamilton product), in which `qu` is the
 scaled identity quaternion `qu = u.λ * I`.
@@ -270,7 +270,7 @@ scaled identity quaternion `qu = u.λ * I`.
 # ==============================================================================
 
 """
-    @inline function getindex(q::Quaternion, ::Colon)
+    getindex(q::Quaternion, ::Colon)
 
 Transform the quaternion into a 4x1 vector of type `T`.
 
@@ -282,7 +282,7 @@ Transform the quaternion into a 4x1 vector of type `T`.
 ################################################################################
 
 """
-    @inline function conj(q::Quaternion)
+    conj(q::Quaternion)
 
 Compute the complex conjugate of the quaternion `q`:
 
@@ -292,7 +292,7 @@ Compute the complex conjugate of the quaternion `q`:
 @inline conj(q::Quaternion) = Quaternion(q.q0, -q.q1, -q.q2, -q.q3)
 
 """
-    @inline function copy(q::Quaternion{T}) where T
+    copy(q::Quaternion{T}) where T
 
 Create a copy of the quaternion `q`.
 
@@ -300,7 +300,7 @@ Create a copy of the quaternion `q`.
 @inline copy(q::Quaternion{T}) where T = Quaternion{T}(q.q0, q.q1, q.q2, q.q3)
 
 """
-    @inline function imag(q::Quaternion)
+    imag(q::Quaternion)
 
 Return the vectorial or imaginary part of the quaternion `q` represented by a
 3 × 1 vector of type `SVector{3}`.
@@ -309,7 +309,7 @@ Return the vectorial or imaginary part of the quaternion `q` represented by a
 @inline imag(q::Quaternion) = SVector{3}(q.q1, q.q2, q.q3)
 
 """
-    @inline function inv(q::Quaternion)
+    inv(q::Quaternion)
 
 Compute the inverse of the quaternion `q`:
 
@@ -325,7 +325,7 @@ Compute the inverse of the quaternion `q`:
 end
 
 """
-    @inline function norm(q::Quaternion)
+    norm(q::Quaternion)
 
 Compute the Euclidean norm of the quaternion `q`:
 
@@ -335,7 +335,7 @@ Compute the Euclidean norm of the quaternion `q`:
 @inline norm(q::Quaternion) = sqrt(q.q0*q.q0 + q.q1*q.q1 + q.q2*q.q2 + q.q3*q.q3)
 
 """
-    @inline function real(q::Quaternion)
+    real(q::Quaternion)
 
 Return the real part of the quaternion `q`: `q0`.
 
@@ -343,7 +343,7 @@ Return the real part of the quaternion `q`: `q0`.
 @inline real(q::Quaternion) = q.q0
 
 """
-    @inline function vect(q::Quaternion)
+    vect(q::Quaternion)
 
 Return the vectorial or imaginary part of the quaternion `q` represented by a
 3 × 1 vector of type `SVector{3}`.
@@ -352,7 +352,7 @@ Return the vectorial or imaginary part of the quaternion `q` represented by a
 @inline vect(q::Quaternion) = SVector{3}(q.q1, q.q2, q.q3)
 
 """
-    @inline function zeros(::Type{Quaternion{T}}) where T
+    zeros(::Type{Quaternion{T}}) where T
 
 Create the null quaternion of type `T`:
 
@@ -379,7 +379,7 @@ Quaternion{Float64}:
 @inline zeros(::Type{Quaternion}) = Quaternion{Float64}(0.0,0.0,0.0,0.0)
 
 """
-    @inline function zeros(q::Quaternion{T}) where T
+    zeros(q::Quaternion{T}) where T
 
 Create the null quaternion with the same type `T` of another quaternion `q`:
 
@@ -403,8 +403,8 @@ Quaternion{Float32}:
 ################################################################################
 
 """
-    function show(io::IO, q::Quaternion{T}) where T
-    function show(io::IO, mime::MIME"text/plain", q::Quaternion{T}) where T
+    show(io::IO, q::Quaternion{T}) where T
+    show(io::IO, mime::MIME"text/plain", q::Quaternion{T}) where T
 
 Print the quaternion `q` to the stream `io`.
 
@@ -466,7 +466,7 @@ end
 # ==============================================================================
 
 """
-    function quat_to_dcm(q::Quaternion)
+    quat_to_dcm(q::Quaternion)
 
 Convert the quaternion `q` to a Direction Cosine Matrix (DCM).
 
@@ -499,7 +499,7 @@ end
 # ==============================================================================
 
 """
-    function quat_to_angleaxis(q::Quaternion{T}) where T
+    quat_to_angleaxis(q::Quaternion{T}) where T
 
 Convert the quaternion `q` to a Euler angle and axis representation (see
 `EulerAngleAxis`). By convention, the Euler angle will be kept between [0, π]
@@ -549,7 +549,7 @@ end
 # ==============================================================================
 
 """
-    function quat_to_angle(q::Quaternion, rot_seq::Symbol = :ZYX)
+    quat_to_angle(q::Quaternion, rot_seq::Symbol = :ZYX)
 
 Convert the quaternion `q` to Euler Angles (see `EulerAngles`) given a rotation
 sequence `rot_seq`.
@@ -585,7 +585,7 @@ end
 ################################################################################
 
 """
-    function dquat(qba::Quaternion, wba_b::AbstractVector)
+    dquat(qba::Quaternion, wba_b::AbstractVector)
 
 Compute the time-derivative of the quaternion `qba` that rotates a reference
 frame `a` into alignment to the reference frame `b` in which the angular

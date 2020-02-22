@@ -9,7 +9,7 @@ export angleaxis_to_angle, angleaxis_to_dcm, angleaxis_to_quat
 ################################################################################
 
 """
-    function *(ea₂::EulerAngleAxis{T1}, ea₁::EulerAngleAxis{T2}) where {T1,T2}
+    *(ea₂::EulerAngleAxis{T1}, ea₁::EulerAngleAxis{T2}) where {T1,T2}
 
 Compute the composed rotation of `ea₁ -> ea₂`. Notice that the rotation will be
 represented by a Euler angle and axis (see `EulerAngleAxis`). By convention, the
@@ -56,7 +56,7 @@ function *(ea₂::EulerAngleAxis{T1}, ea₁::EulerAngleAxis{T2}) where {T1,T2}
 end
 
 """
-    @inline function inv(ea::EulerAngleAxis)
+    inv(ea::EulerAngleAxis)
 
 Compute the inverse rotation of `ea`. The Euler angle returned by this function
 will always be in the interval [0, π].
@@ -80,8 +80,8 @@ end
 ################################################################################
 
 """
-    function display(ea::EulerAngleAxis{T}) where T
-    function show(io::IO, mime::MIME"text/plain", ea::EulerAngleAxis{T}) where T
+    display(ea::EulerAngleAxis{T}) where T
+    show(io::IO, mime::MIME"text/plain", ea::EulerAngleAxis{T}) where T
 
 Display in `stdout` the Euler angle and axis `ea`.
 
@@ -121,8 +121,8 @@ end
 # ==============================================================================
 
 """
-    @inline function angleaxis_to_angle(θ::Number, v::AbstractVector, rot_seq::Symbol)
-    @inline function angleaxis_to_angle(ea::EulerAngleAxis, rot_seq::Symbol)
+    angleaxis_to_angle(θ::Number, v::AbstractVector, rot_seq::Symbol)
+    angleaxis_to_angle(ea::EulerAngleAxis, rot_seq::Symbol)
 
 Convert the Euler angle `θ` [rad]  and Euler axis `v`, which must be a unit
 vector, to Euler angles with rotation sequence `rot_seq`. Those values can also
@@ -158,8 +158,8 @@ end
 # ==============================================================================
 
 """
-    @inline function angleaxis_to_dcm(a::Number, v::AbstractVector)
-    @inline function angleaxis_to_dcm(ea::EulerAngleAxis)
+    angleaxis_to_dcm(a::Number, v::AbstractVector)
+    angleaxis_to_dcm(ea::EulerAngleAxis)
 
 Convert the Euler angle `a` [rad] and Euler axis `v`, which must be a unit
 vector to a DCM. Those values can also be passed inside the structure `ea` (see
@@ -208,7 +208,7 @@ end
 # ==============================================================================
 
 """
-    function angleaxis_to_quat(θ::Number, v::AbstractVector)
+    angleaxis_to_quat(θ::Number, v::AbstractVector)
 
 Convert the Euler angle `θ` [rad] and Euler axis `v`, which must be a unit
 vector, to a quaternion.
@@ -245,7 +245,7 @@ function angleaxis_to_quat(θ::Number, v::AbstractVector)
 end
 
 """
-    function angleaxis_to_quat(angleaxis::EulerAngleAxis)
+    angleaxis_to_quat(angleaxis::EulerAngleAxis)
 
 Convert a Euler angle and Euler axis `angleaxis` (see `EulerAngleAxis`) to a
 quaternion.
