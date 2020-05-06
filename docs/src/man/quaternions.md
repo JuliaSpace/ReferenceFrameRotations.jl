@@ -13,13 +13,13 @@ represent 3D rotations. In this package, a quaternion ``\mathbf{q}`` is
 represented by
 
 ```math
-\mathbf{q} = \overbrace{q_0}^{\mbox{Real part}} + \underbrace{q_1 \cdot \mathbf{i} + q_2 \cdot \mathbf{j} + q_3 \cdot \mathbf{k}}_{\mbox{Vectorial or imaginary part}} = r + \mathbf{v}
+\mathbf{q} = q_0 + q_1 \cdot \mathbf{i} + q_2 \cdot \mathbf{j} + q_3 \cdot \mathbf{k} = r + \mathbf{v}
 ```
 
 using the following immutable structure:
 
 ```julia
-struct Quaternion{T}
+struct Quaternion{T} <: AbstractVector{T}
     q0::T
     q1::T
     q2::T
@@ -124,6 +124,17 @@ Quaternion{Float32}:
     q.q2
     q.q3
     ```
+
+    or using linear indexing:
+
+    ```julia
+    q[1]
+    q[2]
+    q[3]
+    q[4]
+    ```
+
+    Notice that, in this case, the index 1 refers to the real part of the quaternion.
 
 !!! warning
 
