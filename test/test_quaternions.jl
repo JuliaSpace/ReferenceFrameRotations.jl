@@ -267,6 +267,16 @@ let
     @test I\Quaternion(1,1,1,1)      === Quaternion{Float64}(1,1,1,1)
     @test 1.0I\Quaternion(1,1,1,1)   === Quaternion{Float64}(1,1,1,1)
 
+    # Accessing quaternion elements using index.
+    v  = randn(4)
+    q  = Quaternion(v)
+    w  = zeros(4)
+    w .= q
+
+    @test w[1] === q[1] === q.q0
+    @test w[2] === q[2] === q.q1
+    @test w[3] === q[3] === q.q2
+    @test w[4] === q[4] === q.q3
 end
 
 # Test printing
@@ -314,3 +324,5 @@ result = sprint(print, Quaternion(0.11111111,0.22222222,0.33333333,0.44444444))
 @test_throws ArgumentError dquat(Quaternion(I), [1;2])
 @test_throws ArgumentError dquat(Quaternion(I), [1;2;3;4])
 @test_throws ArgumentError dquat(Quaternion(I), [1;2;3;4;5])
+@test_throws BoundsError   Quaternion(1,2,3,4)[0]
+@test_throws BoundsError   Quaternion(1,2,3,4)[5]

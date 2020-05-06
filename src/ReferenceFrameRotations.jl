@@ -92,7 +92,7 @@ function EulerAngleAxis(a::T1, v::AbstractVector{T2}) where {T1,T2}
 end
 
 """
-    Quaternion{T}
+    Quaternion{T} <: AbstractVector{T}
 
 The definition of the quaternion. It has four values of type `T`. The
 quaternion representation is:
@@ -100,7 +100,7 @@ quaternion representation is:
     q0 + q1.i + q2.j + q3.k
 
 """
-struct Quaternion{T}
+struct Quaternion{T} <: AbstractVector{T}
     q0::T
     q1::T
     q2::T

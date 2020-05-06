@@ -266,17 +266,6 @@ scaled identity quaternion `qu = u.λ * I`.
 @inline \(u::UniformScaling, q::Quaternion) = inv(Quaternion(u))*q
 @inline \(q::Quaternion, u::UniformScaling) = inv(q)*Quaternion(u)
 
-# Operation: [:]
-# ==============================================================================
-
-"""
-    getindex(q::Quaternion, ::Colon)
-
-Transform the quaternion into a 4x1 vector of type `T`.
-
-"""
-@inline getindex(q::Quaternion, ::Colon) = [q.q0;q.q1;q.q2;q.q3]
-
 ################################################################################
 #                                  Functions
 ################################################################################
@@ -397,6 +386,25 @@ Quaternion{Float32}:
 
 """
 @inline zeros(q::Quaternion{T}) where T = zeros(Quaternion{T})
+
+# The following functions make sure that a quaternion is an iterable object.
+# This allows broadcasting without allocations.
+Base.IndexStyle(::Type{<:Quaternion}) = IndexLinear()
+@inline Base.size(::Quaternion) = (4,)
+
+@inline function Base.getindex(q::Quaternion, i::Int)
+    if i == 1
+        return q.q0
+    elseif i == 2
+        return q.q1
+    elseif i == 3
+        return q.q2
+    elseif i == 4
+        return q.q3
+    else
+        throw(BoundsError(q,i))
+    end
+end
 
 ################################################################################
 #                                      IO
