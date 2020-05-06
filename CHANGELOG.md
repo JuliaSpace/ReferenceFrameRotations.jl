@@ -1,6 +1,14 @@
 ReferenceFrameRotations.jl Changelog
 ====================================
 
+Version 0.5.5
+-------------
+
+- ![Enhancement][badge-enhancement] Quaternion now supports scalar indexing.
+  This forced `Quaternion` to be a subtype of `AbstractVector`. Thus, it can now
+  be broadcasted to a vector without any allocations.
+- ![Info][badge-info] The package is now tested only against Julia 1.0 and 1.4.
+
 Version 0.5.4
 -------------
 
