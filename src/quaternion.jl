@@ -119,6 +119,14 @@ Compute `qu + q` or `q + qu`, in which `qu` is the scaled identity quaternion
 # ==============================================================================
 
 """
+    -(q::Quaternion)
+
+Return the quaterion `-q`.
+
+"""
+@inline -(q::Quaternion) = -1*q
+
+"""
     -(qa::Quaternion, qb::Quaternion)
 
 Compute `qa - qb`.

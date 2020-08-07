@@ -207,6 +207,9 @@ end
 # ====================================
 
 let
+    q = Quaternion(randn(4))
+    @test -q === -1*q
+
     q = Quaternion(1,1,1,1)
     @test typeof(q) == Quaternion{Int}
 
