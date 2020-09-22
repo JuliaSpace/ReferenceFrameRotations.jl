@@ -1,6 +1,12 @@
 ReferenceFrameRotations.jl Changelog
 ====================================
 
+Version 0.5.6
+-------------
+
+- ![Bugfix][badge-bugfix] The operation `-(::Quaternion)` is now defined.
+- ![Info][badge-info] The package is now tested only against Julia 1.0 and 1.5.
+
 Version 0.5.5
 -------------
 
