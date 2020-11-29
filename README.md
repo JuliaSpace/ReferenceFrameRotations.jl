@@ -1,9 +1,7 @@
 # ReferenceFrameRotations
 
-[![Build Status](https://travis-ci.org/JuliaSpace/ReferenceFrameRotations.jl.svg?branch=master)](https://travis-ci.org/JuliaSpace/ReferenceFrameRotations.jl)
-[![Build status](https://ci.appveyor.com/api/projects/status/m56xqo4qcn0yoiuk/branch/master?svg=true)](https://ci.appveyor.com/project/ronisbr/referenceframerotations-jl/branch/master)
+[![Build status](https://github.com/JuliaSpace/ReferenceFrameRotations.jl/workflows/CI/badge.svg)](https://github.com/JuliaSpace/ReferenceFrameRotations.jl/actions)
 [![codecov](https://codecov.io/gh/JuliaSpace/ReferenceFrameRotations.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/JuliaSpace/ReferenceFrameRotations.jl)
-[![Coverage Status](https://coveralls.io/repos/github/JuliaSpace/ReferenceFrameRotations.jl/badge.svg?branch=master)](https://coveralls.io/github/JuliaSpace/ReferenceFrameRotations.jl?branch=master)
 [![](https://img.shields.io/badge/docs-stable-blue.svg)][docs-stable-url]
 [![](https://img.shields.io/badge/docs-dev-blue.svg)][docs-dev-url]
 
