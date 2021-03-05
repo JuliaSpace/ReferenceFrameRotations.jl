@@ -1,6 +1,11 @@
 ReferenceFrameRotations.jl Changelog
 ====================================
 
+Version 0.5.7
+-------------
+
+- ![Enhancement][badge-enhancement] The compat bounds were updated.
+
 Version 0.5.6
 -------------
 
