@@ -24,22 +24,22 @@ Quaternions.
 
 ```jldoctest
 julia> D1 = angle_to_dcm(0.5,0.5,0.5,:XYZ)
-3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9} with indices SOneTo(3)×SOneTo(3):
+3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
   0.770151   0.622447  -0.139381
  -0.420735   0.659956   0.622447
   0.479426  -0.420735   0.770151
 
 julia> D2 = angle_to_dcm(-0.5,-0.5,-0.5,:ZYX)
-3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9} with indices SOneTo(3)×SOneTo(3):
+3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
   0.770151  -0.420735   0.479426
   0.622447   0.659956  -0.420735
  -0.139381   0.622447   0.770151
 
 julia> compose_rotation(D1,D2)
-3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9} with indices SOneTo(3)×SOneTo(3):
- 1.0          2.77556e-17  0.0
- 2.77556e-17  1.0          5.55112e-17
- 0.0          5.55112e-17  1.0
+3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+  1.0          3.41413e-17  -1.73278e-17
+  3.41413e-17  1.0           1.97327e-17
+ -1.73278e-17  1.97327e-17   1.0
 
 julia> ea1 = EulerAngleAxis(30*pi/180, [0;1;0]);
 

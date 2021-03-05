@@ -40,25 +40,25 @@ can be initialized by the following methods:
 
 ```jldoctest
 julia> DCM(I)  # Create a Boolean DCM, this can be used to save space.
-3×3 StaticArrays.SArray{Tuple{3,3},Bool,2,9} with indices SOneTo(3)×SOneTo(3):
+3×3 StaticArrays.SMatrix{3, 3, Bool, 9} with indices SOneTo(3)×SOneTo(3):
  1  0  0
  0  1  0
  0  0  1
 
 julia> DCM(Int64(1)I)  # Create an Integer DCM.
-3×3 StaticArrays.SArray{Tuple{3,3},Int64,2,9} with indices SOneTo(3)×SOneTo(3):
+3×3 StaticArrays.SMatrix{3, 3, Int64, 9} with indices SOneTo(3)×SOneTo(3):
  1  0  0
  0  1  0
  0  0  1
 
 julia> DCM(1.f0I) # Create a Float32 DCM.
-3×3 StaticArrays.SArray{Tuple{3,3},Float32,2,9} with indices SOneTo(3)×SOneTo(3):
+3×3 StaticArrays.SMatrix{3, 3, Float32, 9} with indices SOneTo(3)×SOneTo(3):
  1.0  0.0  0.0
  0.0  1.0  0.0
  0.0  0.0  1.0
 
 julia> DCM(1.0I)  # Create a Float64 DCM.
-3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9} with indices SOneTo(3)×SOneTo(3):
+3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
  1.0  0.0  0.0
  0.0  1.0  0.0
  0.0  0.0  1.0
@@ -68,19 +68,19 @@ julia> DCM(1.0I)  # Create a Float64 DCM.
 
 ```jldoctest
 julia> DCM([-1 0 0; 0 -1 0; 0 0 1])
-3×3 StaticArrays.SArray{Tuple{3,3},Int64,2,9} with indices SOneTo(3)×SOneTo(3):
+3×3 StaticArrays.SMatrix{3, 3, Int64, 9} with indices SOneTo(3)×SOneTo(3):
  -1   0  0
   0  -1  0
   0   0  1
 
 julia> DCM([-1.f0 0.f0 0.f0; 0.f0 -1.f0 0.f0; 0.f0 0.f0 1.f0])
-3×3 StaticArrays.SArray{Tuple{3,3},Float32,2,9} with indices SOneTo(3)×SOneTo(3):
+3×3 StaticArrays.SMatrix{3, 3, Float32, 9} with indices SOneTo(3)×SOneTo(3):
  -1.0   0.0  0.0
   0.0  -1.0  0.0
   0.0   0.0  1.0
 
 julia> DCM([-1.0 0.0 0.0; 0.0 -1.0 0.0; 0.0 0.0 1.0])
-3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9} with indices SOneTo(3)×SOneTo(3):
+3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
  -1.0   0.0  0.0
   0.0  -1.0  0.0
   0.0   0.0  1.0
@@ -112,7 +112,7 @@ function orthonormalize(dcm::DCM)
 julia> D = DCM([2 0 0; 0 2 0; 0 0 2]);
 
 julia> orthonormalize(D)
-3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9} with indices SOneTo(3)×SOneTo(3):
+3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
  1.0  0.0  0.0
  0.0  1.0  0.0
  0.0  0.0  1.0
@@ -120,7 +120,7 @@ julia> orthonormalize(D)
 julia> D = DCM(3.0f0I);
 
 julia> orthonormalize(D)
-3×3 StaticArrays.SArray{Tuple{3,3},Float32,2,9} with indices SOneTo(3)×SOneTo(3):
+3×3 StaticArrays.SMatrix{3, 3, Float32, 9} with indices SOneTo(3)×SOneTo(3):
  1.0  0.0  0.0
  0.0  1.0  0.0
  0.0  0.0  1.0
@@ -128,17 +128,16 @@ julia> orthonormalize(D)
 julia> D = DCM(1,1,2,2,3,3,4,4,5);
 
 julia> Dn = orthonormalize(D)
-3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9} with indices SOneTo(3)×SOneTo(3):
+3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
  0.408248   0.123091   0.904534
  0.408248   0.86164   -0.301511
  0.816497  -0.492366  -0.301511
 
 julia> Dn*Dn'
-3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9} with indices SOneTo(3)×SOneTo(3):
-  1.0          -2.77556e-16  -8.32667e-16
- -2.77556e-16   1.0           3.33067e-16
- -8.32667e-16   3.33067e-16   1.0
-
+3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+  1.0          -2.87528e-16  -8.47673e-16
+ -2.87528e-16   1.0           3.31283e-16
+ -9.03184e-16   3.31283e-16   1.0
 ```
 
 !!! warning

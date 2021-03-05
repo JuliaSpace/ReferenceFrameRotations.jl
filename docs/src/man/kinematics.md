@@ -47,13 +47,13 @@ function ddcm(Dba, wba_b)
 julia> wba_b = [0.01;0;0];
 
 julia> Dba = angle_to_dcm(0.5,0,0,:XYZ)
-3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9} with indices SOneTo(3)×SOneTo(3):
+3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
   1.0   0.0       0.0
  -0.0   0.877583  0.479426
   0.0  -0.479426  0.877583
 
 julia> ddcm(Dba,wba_b)
-3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9} with indices SOneTo(3)×SOneTo(3):
+3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
  -0.0   0.0          0.0
   0.0  -0.00479426   0.00877583
   0.0  -0.00877583  -0.00479426

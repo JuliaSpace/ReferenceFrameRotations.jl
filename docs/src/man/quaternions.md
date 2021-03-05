@@ -378,7 +378,7 @@ Quaternion{Float64}:
   + 1.0 + 0.0.i + 5.551115123125783e-17.j + 0.0.k
 
 julia> imag(q)  # Returns the vectorial / imaginary part of the quaternion.
-3-element StaticArrays.SArray{Tuple{3},Float64,1,3} with indices SOneTo(3):
+3-element StaticArrays.SVector{3, Float64} with indices SOneTo(3):
  2.0
  3.0
  4.0
@@ -390,7 +390,7 @@ julia> real(q)  # Returns the real part of the quaternion.
 1.0
 
 julia> vect(q)  # Returns the vectorial / imaginary part of the quaternion.
-3-element StaticArrays.SArray{Tuple{3},Float64,1,3} with indices SOneTo(3):
+3-element StaticArrays.SVector{3, Float64} with indices SOneTo(3):
  2.0
  3.0
  4.0
@@ -429,7 +429,7 @@ julia> vA  = [0;1;0];
 julia> vB  = vect(qBA\vA*qBA); # Equivalent to: vect(inv(qBA)*vA*qBA);
 
 julia> vB
-3-element StaticArrays.SArray{Tuple{3},Float64,1,3}:
+3-element StaticArrays.SVector{3, Float64}:
   0.0
   0.707107
  -0.707107
