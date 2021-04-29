@@ -409,7 +409,7 @@ aligned with the Euler Axis and ``\theta`` is the Euler angle). Construct the
 following quaternion:
 
 ```math
-\mathbf{q}_{ba} = cos\left(\frac{\theta}{2}\right) + sin\left(\frac{\theta}{2}\right) \cdot \mathbf{w}~.
+\mathbf{q}_{ba} = \cos\left(\frac{\theta}{2}\right) + \sin\left(\frac{\theta}{2}\right) \cdot \mathbf{w}~.
 ```
 
 Then, a vector ``\mathbf{v}`` represented in reference frame **A**
