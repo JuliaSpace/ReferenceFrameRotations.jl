@@ -10,9 +10,26 @@
 export DCM, EulerAngles, EulerAngleAxis, Quaternion
 
 """
-The Direction Cosine Matrix of type `T` is a `SMatrix{3,3,T,9}`, which is a 3x3
-static matrix of type `T`.
+    DCM{T}
 
+The Direction Cosine Matrix (DCM) of type `T` is a `SMatrix{3,3,T,9}`, which is
+a 3x3 static matrix of type `T`.
+
+# Examples
+
+```jldoctest
+julia> DCM(1.0I)
+3×3 SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+ 1.0  0.0  0.0
+ 0.0  1.0  0.0
+ 0.0  0.0  1.0
+
+julia> DCM([1 0 0; 0 -1 0; 0 0 -1])
+3×3 SMatrix{3, 3, Int64, 9} with indices SOneTo(3)×SOneTo(3):
+ 1   0   0
+ 0  -1   0
+ 0   0  -1
+```
 """
 DCM{T} = SMatrix{3,3,T,9}
 
@@ -20,21 +37,43 @@ DCM{T} = SMatrix{3,3,T,9}
     EulerAngles{T}
 
 The definition of Euler Angles, which is composed of three angles `a1`, `a2`,
-and `a3` together with a rotation sequence `rot_seq`. The latter is provided by
-a symbol with three characters, each one indicating the rotation axis of the
-corresponding angle (for example, `:ZYX`). The valid values for `rot_seq` are:
+and `a3` together with a rotation sequence `rot_seq`.
 
-* `:XYX`, `:XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`,
-  `:ZXZ`, `:ZYX`, and `ZYZ`.
+# Fields
+
+- `a1::T`: First rotation [rad].
+- `a2::T`: Second rotation [rad].
+- `a3::T`: Third rotation [rad].
+- `rot_seq::Symbol`: Rotation sequence.
+
+!!! info
+    `rot_seq` is provided by a symbol with three characters, each one indicating
+    the rotation axis of the corresponding angle, *e.g.* `:ZYX`. The valid
+    values for `rot_seq` are:
+
+    - `:XYX`, `:XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`,
+        `:ZXZ`, `:ZYX`, and `ZYZ`.
 
 # Constructor
 
-    EulerAngles(a1::T1, a2::T2, a3::T3, rot_seq::Symbol = :ZYX) where {T1,T2,T3}
+    EulerAngles(a1::T1, a2::T2, a3::T3, rot_seq::Symbol = :ZYX) where {T1, T2, T3}
 
 Create a new instance of `EulerAngles` with the angles `a1`, `a2`, and `a3` and
-the rotation sequence `rot_seq`. The type will be inferred from `T1`, `T2`, and
-`T3`. If `rot_seq` is not provided, then it defaults to `:ZYX`.
+the rotation sequence `rot_seq`.
 
+The type will be inferred from `T1`, `T2`, and `T3`.
+
+If `rot_seq` is not provided, then it defaults to `:ZYX`.
+
+# Examples
+
+```jldoctest
+julia> EulerAngles(pi / 2, pi / 4, -pi, :XYZ)
+EulerAngles{Float64}:
+  R(X):   1.5708 rad (  90.0000 deg)
+  R(Y):   0.7854 rad (  45.0000 deg)
+  R(Z):  -3.1416 rad (-180.0000 deg)
+```
 """
 struct EulerAngles{T}
     a1::T
@@ -43,11 +82,15 @@ struct EulerAngles{T}
     rot_seq::Symbol
 end
 
-function EulerAngles(a1::T1, a2::T2, a3::T3, rot_seq::Symbol = :ZYX) where
-    {T1,T2,T3}
-
+function EulerAngles(
+    a1::T1,
+    a2::T2,
+    a3::T3,
+    rot_seq::Symbol = :ZYX
+) where {T1,T2,T3}
     T = promote_type(T1,T2,T3)
-    EulerAngles(T(a1), T(a2), T(a3), rot_seq)
+
+    return EulerAngles(T(a1), T(a2), T(a3), rot_seq)
 end
 
 """
@@ -57,39 +100,67 @@ The definition of Euler Angle and Axis to represent a 3D rotation.
 
 # Fields
 
-* `a`: The Euler angle [rad].
-* `v`: The unitary vector aligned with the Euler axis.
+- `a::T`: The Euler angle [rad].
+- `v::SVector{3, T}`: The unitary vector aligned with the Euler axis.
 
 # Constructor
 
     EulerAngleAxis(a::T1, v::AbstractVector{T2}) where {T1,T2}
 
 Create an Euler Angle and Axis representation structure with angle `a` [rad] and
-vector `v`. Notice that the vector `v` will not be normalized. The type of the
-returned structure will be selected according to the input types.
+vector `v`.
 
+The vector `v` will not be normalized.
+
+The returned structure type will be selected according to the input types.
+
+# Examples
+
+```jldoctest
+julia> EulerAngleAxis(pi / 3, [sqrt(2), sqrt(2), 0])
+EulerAngleAxis{Float64}:
+  Euler angle:   1.0472 rad ( 60.0000 deg)
+   Euler axis: [  1.4142,   1.4142,   0.0000]
+```
 """
 struct EulerAngleAxis{T}
     a::T
-    v::SVector{3,T}
+    v::SVector{3, T}
 
-    EulerAngleAxis(a::T,v::SVector{3,T}) where T<:Number = new{T}(a,v)
+    EulerAngleAxis(a::T, v::SVector{3, T}) where T<:Number = new{T}(a, v)
 end
 
 function EulerAngleAxis(a::T1, v::AbstractVector{T2}) where {T1,T2}
     (length(v) != 3) && error("The vector `v` must have 3 dimensions.")
     T = promote_type(T1,T2)
-    EulerAngleAxis(T(a), SVector{3,T}(v))
+
+    return EulerAngleAxis(T(a), SVector{3, T}(v))
 end
 
 """
     Quaternion{T} <: AbstractVector{T}
 
-The definition of the quaternion. It has four values of type `T`. The
-quaternion representation is:
+The definition of the quaternion.
 
-    q0 + q1.i + q2.j + q3.k
+# Fields
 
+- `q0::T`: Quaternion real part.
+- `q1::T`: X component of the quaternion imaginary part.
+- `q2::T`: Y component of the quaternion imaginary part.
+- `q3::T`: Z component of the quaternion imaginary part.
+
+!!! note
+    The quaternion `q` in this structure is represented by:
+
+        q = q0 + q1.i + q2.j + q3.k
+
+# Example
+
+```jldoctest
+julia> Quaternion(cosd(45), sind(45), 0, 0)
+Quaternion{Float64}:
+  + 0.7071067811865476 + 0.7071067811865476.i + 0.0.j + 0.0.k
+```
 """
 struct Quaternion{T} <: AbstractVector{T}
     q0::T
@@ -97,4 +168,3 @@ struct Quaternion{T} <: AbstractVector{T}
     q2::T
     q3::T
 end
-
