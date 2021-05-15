@@ -138,7 +138,7 @@ const _u = _crayon_u
 ################################################################################
 
 include("compose_rotations.jl")
-include("DCM.jl")
+include("dcm.jl")
 include("euler_angle_axis.jl")
 include("euler_angles.jl")
 include("inv_rotations.jl")
