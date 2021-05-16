@@ -1,7 +1,7 @@
 module ReferenceFrameRotations
 
 import Base: +, -, *, /, \, conj, copy, display, getindex, inv, imag, real, show
-import Base: zeros
+import Base: zeros, eltype
 import LinearAlgebra: norm
 
 using Crayons
