@@ -75,6 +75,7 @@ println("")
 
 @time @testset "Quaternions" begin
     include("./quaternion/constructors.jl")
+    include("./quaternion/kinematics.jl")
     include("./quaternion/operations.jl")
 end
 println("")
@@ -83,6 +84,9 @@ println("")
     include("./conversions/dcm_to_angleaxis.jl")
     include("./conversions/dcm_to_euler_angles.jl")
     include("./conversions/dcm_to_quaternion.jl")
+    include("./conversions/quaternion_to_angle.jl")
+    include("./conversions/quaternion_to_angleaxis.jl")
+    include("./conversions/quaternion_to_dcm.jl")
 end
 println("")
 
