@@ -70,7 +70,7 @@ function *(av₂::EulerAngleAxis{T1}, av₁::EulerAngleAxis{T2}) where {T1, T2}
         # Keep the angle between [0, π].
         s = +1
         if θ > π
-            θ = T(2)*π - θ
+            θ = T(2π) - θ
             s = -1
         end
 
