@@ -13,7 +13,7 @@
 # Functions: dcm_to_angle
 # -----------------------
 
-@testset "DCM => Euler angles" begin
+@testset "DCM => Euler angles (Float64)" begin
     # The conversion is performed by creating DCMs using the tested function
     # `create_rotation_matrix`, and then converting to Euler angles.
 

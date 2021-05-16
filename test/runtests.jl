@@ -10,13 +10,13 @@ import Base: isapprox
 ################################################################################
 
 # Function to uniformly sample an angle in [-π, π].
-_rand_ang() = -π + 2π * rand()
+_rand_ang(T = Float64) = -T(π) + T(2π) * rand(T)
 
 # Function to uniformly sample an angle in [-π / 2, +π / 2].
-_rand_ang2() = -π / 2 + π * rand()
+_rand_ang2(T = Float64) = -T(π) / 2 + T(π) * rand(T)
 
 # Function to uniformly sample an angle in [0.1, 1.5].
-_rand_ang3() = 0.1 + 1.4 * rand()
+_rand_ang3(T = Float64) = T(0.1) + T(1.4) * rand(T)
 
 # Normalize angle between [-π, +π].
 function _norm_ang(α)
@@ -72,6 +72,12 @@ const samples = 1000
 end
 println("")
 
+@time @testset "Quaternions" begin
+    include("./quaternion/constructors.jl")
+    include("./quaternion/operations.jl")
+end
+println("")
+
 @time @testset "Conversions" begin
     include("./conversions/dcm_to_angleaxis.jl")
     include("./conversions/dcm_to_euler_angles.jl")
@@ -86,11 +92,6 @@ println("")
 
 @time @testset "Euler Angle and Axis" begin
     include("./test_euler_angle_axis.jl")
-end
-println("")
-
-@time @testset "Quaternions" begin
-    include("./test_quaternions.jl")
 end
 println("")
 
