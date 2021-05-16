@@ -724,13 +724,6 @@ end
 ################################################################################
 
 # TODO: Add support to compact printing.
-"""
-    show(io::IO, q::Quaternion{T}) where T
-    show(io::IO, mime::MIME"text/plain", q::Quaternion{T}) where T
-
-Print the quaternion `q` to the stream `io`.
-
-"""
 function show(io::IO, q::Quaternion{T}) where T
     # Get the absolute values.
     aq0 = abs(q.q0)
