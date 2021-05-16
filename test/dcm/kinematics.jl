@@ -14,6 +14,8 @@
 # ---------------
 
 @testset "Kinematics of DCMs (Float64)" begin
+    T = Float64
+
     # Create a random DCM.
     Dba₀ = create_rotation_matrix(_rand_ang(), :Z) *
         create_rotation_matrix(_rand_ang(), :Y) *
@@ -37,8 +39,8 @@
     v₀ = Dba₀ * wba_a
     v₁ = Dba * wba_a
     @test v₁ ≈ v₀
-    @test eltype(v₀) === Float64
-    @test eltype(v₁) === Float64
+    @test eltype(v₀) === T
+    @test eltype(v₁) === T
 
     # In the end, a vector perpendicular to `wba_a` must rotate the angle
     # compatible with the angular velocity and time of integration.
@@ -49,6 +51,8 @@
     vr_b₀ = Dba₀ * vr_a
     vr_b  = Dba  * vr_a
     θ     = acos(vr_b ⋅ vr_b₀)
+    @test eltype(vr_b₀) === T
+    @test eltype(vr_b) === T
 
     # Estimate θ based on the angular velocity.
     θest = mod(norm(wba_a) * Δ * num, 2π)
@@ -57,13 +61,15 @@
 end
 
 @testset "Kinematics of DCMs (Float32)" begin
+    T = Float32
+
     # Create a random DCM.
-    Dba₀ = create_rotation_matrix(_rand_ang(Float32), :Z) *
-        create_rotation_matrix(_rand_ang(Float32), :Y) *
-        create_rotation_matrix(_rand_ang(Float32), :X)
+    Dba₀ = create_rotation_matrix(_rand_ang(T), :Z) *
+        create_rotation_matrix(_rand_ang(T), :Y) *
+        create_rotation_matrix(_rand_ang(T), :X)
 
     # Create a random velocity vector.
-    wba_a = @SVector randn(Float32, 3)
+    wba_a = @SVector randn(T, 3)
 
     # Propagate the initial DCM using the sampled velocity vector.
     Δ   = 1f-7
@@ -80,22 +86,24 @@ end
     v₀ = Dba₀ * wba_a
     v₁ = Dba * wba_a
     @test v₁ ≈ v₀ rtol = 1e-3
-    @test eltype(v₀) === Float32
-    @test eltype(v₁) === Float32
+    @test eltype(v₀) === T
+    @test eltype(v₁) === T
 
     # In the end, a vector perpendicular to `wba_a` must rotate the angle
     # compatible with the angular velocity and time of integration.
-    aux   = @SVector randn(Float32, 3)
+    aux   = @SVector randn(T, 3)
     aux   = aux / norm(aux)
     vr_a  = wba_a × aux
     vr_a  = vr_a / norm(vr_a)
     vr_b₀ = Dba₀ * vr_a
     vr_b  = Dba  * vr_a
     θ     = acos(vr_b ⋅ vr_b₀)
+    @test eltype(vr_b₀) === T
+    @test eltype(vr_b) === T
 
     # Estimate θ based on the angular velocity.
-    θest = mod(norm(wba_a) * Δ * num, 2π)
-    θest > pi && (θest = 2π - θest)
+    θest = mod(norm(wba_a) * Δ * num, T(2π))
+    θest > pi && (θest = T(2π) - θest)
     @test θ ≈ θest atol = 1e-3
 end
 
