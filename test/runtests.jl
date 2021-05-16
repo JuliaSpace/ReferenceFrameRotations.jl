@@ -5,6 +5,29 @@ using StaticArrays
 
 import Base: isapprox
 
+################################################################################
+#                             Auxiliary functions
+################################################################################
+
+# Function to uniformly sample an angle in [-π, π].
+_rand_ang() = -π + 2π * rand()
+
+# Function to uniformly sample an angle in [-π / 2, +π / 2].
+_rand_ang2() = -π / 2 + π * rand()
+
+# Function to uniformly sample an angle in [0.1, 1.5].
+_rand_ang3() = 0.1 + 1.4 * rand()
+
+# Normalize angle between [-π, +π].
+function _norm_ang(α)
+    α = mod(α, 2π)  # Make sure α ∈ [0, 2π].
+    if α ≤ π
+        return α
+    else
+        return α - 2π
+    end
+end
+
 # Define the function `isapprox` for `EulerAngleAxis` to make the comparison
 # easier.
 function isapprox(x::EulerAngleAxis, y::EulerAngleAxis; keys...)
@@ -42,8 +65,17 @@ const rot_seq_array = [:XYX,
 # Number of samples.
 const samples = 1000
 
-@time @testset "Direction Cosine Matrices" begin
-    include("./test_dcm.jl")
+@time @testset "Direction cosine matrices" begin
+    include("./dcm/create_rotation_matrix.jl")
+    include("./dcm/kinematics.jl")
+    include("./dcm/orthonormalize.jl")
+end
+println("")
+
+@time @testset "Conversions" begin
+    include("./conversions/dcm_to_angleaxis.jl")
+    include("./conversions/dcm_to_euler_angles.jl")
+    include("./conversions/dcm_to_quaternion.jl")
 end
 println("")
 
