@@ -48,9 +48,9 @@ const _u = _crayon_u
 #                                   Includes
 ################################################################################
 
+include("angleaxis.jl")
 include("compose_rotations.jl")
 include("dcm.jl")
-include("euler_angle_axis.jl")
 include("euler_angles.jl")
 include("inv_rotations.jl")
 include("quaternion.jl")

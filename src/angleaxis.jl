@@ -1,6 +1,11 @@
-################################################################################
-#                             Euler Angle and Axis
-################################################################################
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#
+# Description
+# ==============================================================================
+#
+#   Functions related to the Euler angle and axis.
+#
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 export angleaxis_to_angle, angleaxis_to_dcm, angleaxis_to_quat
 
@@ -9,35 +14,55 @@ export angleaxis_to_angle, angleaxis_to_dcm, angleaxis_to_quat
 ################################################################################
 
 """
-    *(ea₂::EulerAngleAxis{T1}, ea₁::EulerAngleAxis{T2}) where {T1,T2}
+    *(av₂::EulerAngleAxis{T1}, av₁::EulerAngleAxis{T2}) where {T1,T2}
 
-Compute the composed rotation of `ea₁ -> ea₂`. Notice that the rotation will be
-represented by a Euler angle and axis (see `EulerAngleAxis`). By convention, the
-output angle will always be in the range [0, π] [rad].
+Compute the composed rotation of `av₁ -> av₂`.
 
-Notice that the vector representing the axis in `ea₁` and `ea₂` must be unitary.
+The rotation will be represented by a Euler angle and axis (see
+[`EulerAngleAxis`](@ref)). By convention, the output angle will always be in the
+range `[0, π] rad`.
+
+Notice that the vector representing the axis in `av₁` and `av₂` must be unitary.
 This function neither verifies this nor normalizes the vector.
 
-"""
-function *(ea₂::EulerAngleAxis{T1}, ea₁::EulerAngleAxis{T2}) where {T1,T2}
-    # Auxiliary variables.
-    sθ₁o2, cθ₁o2 = sincos(ea₁.a/2)
-    sθ₂o2, cθ₂o2 = sincos(ea₂.a/2)
+# Examples
 
-    v₁ = ea₁.v
-    v₂ = ea₂.v
+```julia-repl
+julia> av1 = EulerAngleAxis(deg2rad(45), [sqrt(2)/2, sqrt(2)/2, 0])
+EulerAngleAxis{Float64}:
+  Euler angle:   0.7854 rad ( 45.0000 deg)
+   Euler axis: [  0.7071,   0.7071,   0.0000]
+
+julia> av2 = EulerAngleAxis(deg2rad(22.5), [sqrt(2)/2, sqrt(2)/2, 0])
+EulerAngleAxis{Float64}:
+  Euler angle:   0.3927 rad ( 22.5000 deg)
+   Euler axis: [  0.7071,   0.7071,   0.0000]
+
+julia> av1 * av2
+EulerAngleAxis{Float64}:
+  Euler angle:   1.1781 rad ( 67.5000 deg)
+   Euler axis: [  0.7071,   0.7071,   0.0000]
+```
+"""
+function *(av₂::EulerAngleAxis{T1}, av₁::EulerAngleAxis{T2}) where {T1, T2}
+    # Auxiliary variables.
+    sθ₁o2, cθ₁o2 = sincos(av₁.a / 2)
+    sθ₂o2, cθ₂o2 = sincos(av₂.a / 2)
+
+    v₁ = av₁.v
+    v₂ = av₂.v
 
     # Compute `cos(θ/2)` in which `θ` is the new Euler angle.
-    cθo2 = cθ₁o2*cθ₂o2 - sθ₁o2*sθ₂o2 * dot(v₁, v₂)
+    cθo2 = cθ₁o2 * cθ₂o2 - sθ₁o2 * sθ₂o2 * dot(v₁, v₂)
 
-    T = promote_type( T1, T2, typeof(sθ₁o2), typeof(sθ₂o2), typeof(cθo2) )
+    T = promote_type(T1, T2, typeof(sθ₁o2), typeof(sθ₂o2), typeof(cθo2))
 
-    if abs(cθo2) >= 1-eps()
+    if abs(cθo2) >= 1 - eps()
         # In this case, the rotation is the identity.
-        return EulerAngleAxis( T(0), SVector{3,T}(0,0,0) )
+        return EulerAngleAxis(T(0), SVector{3,T}(0, 0, 0))
     else
         # Compute `sin(θ/2)` in which `θ` is the new Euler angle.
-        sθo2 = sqrt(1 - cθo2*cθo2)
+        sθo2 = √(1 - cθo2 * cθo2)
 
         # Compute the θ angle between [0, 2π].
         θ = 2acos(cθo2)
@@ -49,30 +74,30 @@ function *(ea₂::EulerAngleAxis{T1}, ea₁::EulerAngleAxis{T2}) where {T1,T2}
             s = -1
         end
 
-        v = s*( sθ₁o2*cθ₂o2*v₁ + cθ₁o2*sθ₂o2*v₂ + sθ₁o2*sθ₂o2*(v₁ × v₂) )/sθo2
+        v = s * (sθ₁o2 * cθ₂o2*v₁ + cθ₁o2 * sθ₂o2 * v₂ + sθ₁o2 * sθ₂o2 * (v₁ × v₂)) / sθo2
 
         return EulerAngleAxis(θ, v)
     end
 end
 
 """
-    inv(ea::EulerAngleAxis)
+    inv(av::EulerAngleAxis)
 
 Compute the inverse rotation of `ea`. The Euler angle returned by this function
 will always be in the interval [0, π].
 
 """
-@inline function inv(ea::EulerAngleAxis{T}) where T<:Number
+@inline function inv(av::EulerAngleAxis{T}) where T<:Number
     # Make sure that the Euler angle is always in the inverval [0,π]
     s = -1
-    θ = mod(ea.a, T(2)*π)
+    θ = mod(av.a, T(2)*π)
 
     if θ > π
         s = 1
         θ = T(2)π - θ
     end
 
-    EulerAngleAxis(θ, s*ea.v)
+    EulerAngleAxis(θ, s*av.v)
 end
 
 ################################################################################
@@ -80,31 +105,31 @@ end
 ################################################################################
 
 """
-    display(ea::EulerAngleAxis{T}) where T
-    show(io::IO, mime::MIME"text/plain", ea::EulerAngleAxis{T}) where T
+    display(av::EulerAngleAxis{T}) where T
+    show(io::IO, mime::MIME"text/plain", av::EulerAngleAxis{T}) where T
 
 Display in `stdout` the Euler angle and axis `ea`.
 
 """
-function show(io::IO, ea::EulerAngleAxis{T}) where T
-    θ   = ea.a
-    v   = ea.v
-    str = @sprintf "%8.4f rad, [%8.4f, %8.4f, %8.4f]" ea.a v[1] v[2] v[3]
+function show(io::IO, av::EulerAngleAxis{T}) where T
+    θ   = av.a
+    v   = av.v
+    str = @sprintf "%8.4f rad, [%8.4f, %8.4f, %8.4f]" av.a v[1] v[2] v[3]
 
     print(io, "EulerAngleAxis{$T}: $str")
 
     nothing
 end
 
-function show(io::IO, mime::MIME"text/plain", ea::EulerAngleAxis{T}) where T
+function show(io::IO, mime::MIME"text/plain", av::EulerAngleAxis{T}) where T
     # Check if the user wants colors.
     color = get(io, :color, false)
 
     y = (color) ? _y : ""
     d = (color) ? _d : ""
 
-    str_a = @sprintf "%8.4f rad (%8.4f deg)" ea.a rad2deg(ea.a)
-    str_v = @sprintf "[%8.4f, %8.4f, %8.4f]" ea.v[1] ea.v[2] ea.v[3]
+    str_a = @sprintf "%8.4f rad (%8.4f deg)" av.a rad2deg(av.a)
+    str_v = @sprintf "[%8.4f, %8.4f, %8.4f]" av.v[1] av.v[2] av.v[3]
 
     println(io, "EulerAngleAxis{$T}:")
     println(io, "$y  Euler angle: $d" * str_a)
@@ -122,7 +147,7 @@ end
 
 """
     angleaxis_to_angle(θ::Number, v::AbstractVector, rot_seq::Symbol)
-    angleaxis_to_angle(ea::EulerAngleAxis, rot_seq::Symbol)
+    angleaxis_to_angle(av::EulerAngleAxis, rot_seq::Symbol)
 
 Convert the Euler angle `θ` [rad]  and Euler axis `v`, which must be a unit
 vector, to Euler angles with rotation sequence `rot_seq`. Those values can also
@@ -150,8 +175,8 @@ EulerAngles{Float64}:
     quat_to_angle( angleaxis_to_quat(θ, v), rot_seq )
 end
 
-@inline angleaxis_to_angle(ea::EulerAngleAxis, rot_seq::Symbol) =
-    angleaxis_to_angle(ea.a, ea.v, rot_seq)
+@inline angleaxis_to_angle(av::EulerAngleAxis, rot_seq::Symbol) =
+    angleaxis_to_angle(av.a, av.v, rot_seq)
 
 
 # DCM
@@ -159,7 +184,7 @@ end
 
 """
     angleaxis_to_dcm(a::Number, v::AbstractVector)
-    angleaxis_to_dcm(ea::EulerAngleAxis)
+    angleaxis_to_dcm(av::EulerAngleAxis)
 
 Convert the Euler angle `a` [rad] and Euler axis `v`, which must be a unit
 vector to a DCM. Those values can also be passed inside the structure `ea` (see
@@ -202,7 +227,7 @@ julia> angleaxis_to_dcm(ea)
         v[1]*v[3]*aux + v[2]*sθ, v[2]*v[3]*aux - v[1]*sθ,   cθ + v[3]*v[3]*aux)'
 end
 
-@inline angleaxis_to_dcm(ea::EulerAngleAxis) = angleaxis_to_dcm(ea.a, ea.v)
+@inline angleaxis_to_dcm(av::EulerAngleAxis) = angleaxis_to_dcm(av.a, av.v)
 
 # Quaternions
 # ==============================================================================
