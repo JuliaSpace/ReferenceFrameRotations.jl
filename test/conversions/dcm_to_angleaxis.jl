@@ -15,13 +15,16 @@
 # ---------------------------
 
 @testset "DCM => Euler angle and axis (Float64)" begin
+    T = Float64
+
     # Create a random DCM.
-    D = create_rotation_matrix(_rand_ang(), :X) *
-        create_rotation_matrix(_rand_ang(), :Y) *
-        create_rotation_matrix(_rand_ang(), :Z)
+    D = create_rotation_matrix(_rand_ang(T), :X) *
+        create_rotation_matrix(_rand_ang(T), :Y) *
+        create_rotation_matrix(_rand_ang(T), :Z)
 
     # Convert to Euler angle and axis.
     av = dcm_to_angleaxis(D)
+    @test eltype(av) === T
 
     # Check if the rotation expressed by D is consistent, which is performed in
     # two steps:
@@ -32,6 +35,7 @@
     v = av.v
     vr = D * v
     @test vr ≈ v
+    @test eltype(v) === eltype(vr) === T
 
     # Auxiliary vector to obtain a vector perpendicular to `v`.
     aux = @SVector randn(3)
@@ -40,6 +44,7 @@
     vp = av.v × aux
     vp = vp / norm(vp)
     vpr = D * vp
+    @test eltype(vp) === eltype(vpr) === T
 
     # Compute the angle between vp and vpr in [0, 2π].
     a = acos(vp ⋅ vpr)
@@ -47,13 +52,16 @@
 end
 
 @testset "DCM => Euler angle and axis (Float32)" begin
+    T = Float32
+
     # Create a random DCM.
-    D = create_rotation_matrix(_rand_ang(), :X) *
-        create_rotation_matrix(_rand_ang(), :Y) *
-        create_rotation_matrix(_rand_ang(), :Z)
+    D = create_rotation_matrix(_rand_ang(T), :X) *
+        create_rotation_matrix(_rand_ang(T), :Y) *
+        create_rotation_matrix(_rand_ang(T), :Z)
 
     # Convert to Euler angle and axis.
     av = dcm_to_angleaxis(D)
+    @test eltype(av) === T
 
     # Check if the rotation expressed by D is consistent, which is performed in
     # two steps:
@@ -64,14 +72,16 @@ end
     v = av.v
     vr = D * v
     @test vr ≈ v
+    @test eltype(v) === eltype(vr) === T
 
     # Auxiliary vector to obtain a vector perpendicular to `v`.
-    aux = @SVector randn(3)
+    aux = @SVector randn(T, 3)
     aux = aux / norm(aux)
 
     vp = av.v × aux
     vp = vp / norm(vp)
     vpr = D * vp
+    @test eltype(vp) === eltype(vpr) === T
 
     # Compute the angle between vp and vpr in [0, 2π].
     a = acos(vp ⋅ vpr)

@@ -19,12 +19,13 @@ _rand_ang2(T = Float64) = -T(π) / 2 + T(π) * rand(T)
 _rand_ang3(T = Float64) = T(0.1) + T(1.4) * rand(T)
 
 # Normalize angle between [-π, +π].
-function _norm_ang(α)
-    α = mod(α, 2π)  # Make sure α ∈ [0, 2π].
-    if α ≤ π
-        return α
+function _norm_ang(α::T) where T
+    Tf = float(T)
+    αr = mod(α, Tf(2π))  # Make sure α ∈ [0, 2π].
+    if αr ≤ π
+        return αr
     else
-        return α - 2π
+        return αr - Tf(2π)
     end
 end
 
