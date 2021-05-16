@@ -552,7 +552,7 @@ function quat_to_angleaxis(q::Quaternion{T}) where T
         # Keep θ between [0, π].
         s = +1
         if θ > π
-            θ = 2π - θ
+            θ = T(2π) - θ
             s = -1
         end
 
