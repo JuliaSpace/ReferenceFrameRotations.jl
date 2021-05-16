@@ -59,12 +59,12 @@ end
     D5 = hcat(D[:, 1],   D[:, 2]*α, D[:, 3]*α)
     D6 = hcat(D[:, 1]*α, D[:, 2],   D[:, 3]*α)
 
-    @test norm(D - orthonormalize(D1)) ≈ 0 atol=1e-7
-    @test norm(D - orthonormalize(D2)) ≈ 0 atol=1e-7
-    @test norm(D - orthonormalize(D3)) ≈ 0 atol=1e-7
-    @test norm(D - orthonormalize(D4)) ≈ 0 atol=1e-7
-    @test norm(D - orthonormalize(D5)) ≈ 0 atol=1e-7
-    @test norm(D - orthonormalize(D6)) ≈ 0 atol=1e-7
+    @test norm(D - orthonormalize(D1)) ≈ 0 atol=1e-5
+    @test norm(D - orthonormalize(D2)) ≈ 0 atol=1e-5
+    @test norm(D - orthonormalize(D3)) ≈ 0 atol=1e-5
+    @test norm(D - orthonormalize(D4)) ≈ 0 atol=1e-5
+    @test norm(D - orthonormalize(D5)) ≈ 0 atol=1e-5
+    @test norm(D - orthonormalize(D6)) ≈ 0 atol=1e-5
 
     Do = orthonormalize(D1)
     @test eltype(Do) === Float32

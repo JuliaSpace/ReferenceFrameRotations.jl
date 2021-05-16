@@ -38,7 +38,7 @@
     # In the end, the vector aligned with `wba_a` must not change.
     v₀ = Dba₀ * wba_a
     v₁ = Dba * wba_a
-    @test v₁ ≈ v₀
+    @test v₁ ≈ v₀ rtol = 1e-6
     @test eltype(v₀) === T
     @test eltype(v₁) === T
 
