@@ -54,7 +54,7 @@ function create_rotation_matrix(angle::Number, axis::Symbol = :X)
               0,   0, 1
         )'
     else
-        error("axis must be :X, :Y, or :Z")
+        throw(ArgumentError("Axis must be :X, :Y, or :Z"))
     end
 end
 
