@@ -83,7 +83,7 @@ end
     # In the end, the vector aligned with `wba_a` must not change.
     v₀ = vect(qba₀ \ wba_a * qba₀)
     v₁ = vect(qba \ wba_a * qba)
-    @test v₁ ≈ v₀ rtol = 1e-3
+    @test v₁ ≈ v₀ rtol = 1e-2
     @test eltype(v₀) === T
     @test eltype(v₁) === T
 
@@ -102,5 +102,5 @@ end
     # Estimate θ based on the angular velocity.
     θest = mod(norm(wba_a) * Δ * num, T(2π))
     θest > pi && (θest = T(2π) - θest)
-    @test θ ≈ θest atol = 1e-3
+    @test θ ≈ θest atol = 1e-2
 end
