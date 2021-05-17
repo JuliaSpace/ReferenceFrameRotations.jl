@@ -104,3 +104,8 @@ end
     θest > pi && (θest = T(2π) - θest)
     @test θ ≈ θest atol = 1e-2
 end
+
+@testset "Kinematics of quaternions (Errors)" begin
+    @test_throws ArgumentError dquat(Quaternion(I), [1, 2])
+    @test_throws ArgumentError dquat(Quaternion(I), [1, 2, 3, 4])
+end
