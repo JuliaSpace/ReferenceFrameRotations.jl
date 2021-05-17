@@ -715,7 +715,7 @@ julia> dcm = smallangle_to_rot(+0.01, -0.01, +0.01; normalize = false)
  -0.01   1.0   0.01
  -0.01  -0.01  1.0
 
-julia> q = smallangle_to_rot(Quaternion,+0.01, -0.01, +0.01)
+julia> q = smallangle_to_rot(Quaternion, +0.01, -0.01, +0.01)
 Quaternion{Float64}:
   + 0.9999625021092433 + 0.004999812510546217.i - 0.004999812510546217.j + 0.004999812510546217.k
 ```
