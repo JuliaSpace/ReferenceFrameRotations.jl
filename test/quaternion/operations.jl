@@ -275,4 +275,19 @@ end
     q3 = inv(q1) * Quaternion(0, v1)
     @test q2 ≈ q3
     @test eltype(q2) == Float32
+
+    # Operations with `I`.
+    q1 = Quaternion{Float64}(randn(), randn(), randn(), randn())
+    q2 = I \ q1
+    @test q2 == q1
+
+    q2 = q1 \ I
+    @test q2 == inv(q1)
+
+    q1 = Quaternion{Float32}(randn(), randn(), randn(), randn())
+    q2 = I \ q1
+    @test q2 == q1
+
+    q2 = q1 \ I
+    @test q2 == inv(q1)
 end
