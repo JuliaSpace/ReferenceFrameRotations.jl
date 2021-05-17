@@ -86,6 +86,7 @@ println("")
 
 @time @testset "Quaternions" begin
     include("./quaternion/constructors.jl")
+    include("./quaternion/functions.jl")
     include("./quaternion/kinematics.jl")
     include("./quaternion/operations.jl")
 end
