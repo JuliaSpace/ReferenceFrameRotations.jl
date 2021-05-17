@@ -148,3 +148,7 @@ end
     # Test the angle between the two representations.
     @test abs(sin(ang) - sin_ang) ≈ 0 atol = 1e-6
 end
+
+@testset "Function create_rotation_matrix (Errors)" begin
+    @test_throws ArgumentError create_rotation_matrix(0, :A)
+end
