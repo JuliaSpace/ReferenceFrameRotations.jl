@@ -50,6 +50,21 @@ function isapprox(x::EulerAngles, y::EulerAngles; keys...)
 end
 
 # Available rotations.
+const valid_rot_seqs = (
+    :XYX,
+    :XYZ,
+    :XZX,
+    :XZY,
+    :YXY,
+    :YXZ,
+    :YZX,
+    :YZY,
+    :ZXY,
+    :ZXZ,
+    :ZYX,
+    :ZYZ
+)
+
 const rot_seq_array = [:XYX,
                        :XYZ,
                        :XZX,
@@ -72,6 +87,12 @@ const samples = 1000
 end
 println("")
 
+@time @testset "Euler angles" begin
+    include("./angle/functions.jl")
+    include("./angle/operations.jl")
+end
+println("")
+
 @time @testset "Direction cosine matrices" begin
     include("./dcm/create_rotation_matrix.jl")
     include("./dcm/kinematics.jl")
@@ -87,6 +108,11 @@ end
 println("")
 
 @time @testset "Conversions" begin
+    include("./conversions/angle_to_angle.jl")
+    include("./conversions/angle_to_angleaxis.jl")
+    include("./conversions/angle_to_dcm.jl")
+    include("./conversions/angle_to_quat.jl")
+    include("./conversions/angle_to_rot.jl")
     include("./conversions/angleaxis_to_angle.jl")
     include("./conversions/angleaxis_to_dcm.jl")
     include("./conversions/angleaxis_to_quat.jl")
