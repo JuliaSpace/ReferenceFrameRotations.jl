@@ -15,7 +15,7 @@
 
 @testset "Euler angle and axis => Euler angles (Float64)" begin
     T = Float64
-    # We do not need comprehensive test here because `quat_to_angle` first
+    # We do not need comprehensive test here because `angleaxis_to_angle` first
     # converts an Euler angle and axis to DCM and then to Euler angles. Those
     # two operations are already heavily tested.
 
