@@ -17,7 +17,7 @@ a 3x3 static matrix of type `T`.
 
 # Examples
 
-```jldoctest
+```julia-repl
 julia> DCM(1.0I)
 3×3 SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
  1.0  0.0  0.0
@@ -67,7 +67,7 @@ If `rot_seq` is not provided, then it defaults to `:ZYX`.
 
 # Examples
 
-```jldoctest
+```julia-repl
 julia> EulerAngles(pi / 2, pi / 4, -pi, :XYZ)
 EulerAngles{Float64}:
   R(X):   1.5708 rad (  90.0000 deg)
@@ -118,7 +118,7 @@ The returned structure type will be selected according to the input types.
 
 # Examples
 
-```jldoctest
+```julia-repl
 julia> EulerAngleAxis(pi / 3, [sqrt(2), sqrt(2), 0])
 EulerAngleAxis{Float64}:
   Euler angle:   1.0472 rad ( 60.0000 deg)
@@ -160,7 +160,7 @@ The definition of the quaternion.
 
 # Example
 
-```jldoctest
+```julia-repl
 julia> Quaternion(cosd(45), sind(45), 0, 0)
 Quaternion{Float64}:
   + 0.7071067811865476 + 0.7071067811865476.i + 0.0.j + 0.0.k
