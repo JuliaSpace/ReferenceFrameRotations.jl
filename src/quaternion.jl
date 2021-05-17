@@ -715,7 +715,7 @@ Base.IndexStyle(::Type{<:Quaternion}) = IndexLinear()
     elseif i == 4
         return q.q3
     else
-        throw(BoundsError(q,i))
+        throw(BoundsError(q, i))
     end
 end
 

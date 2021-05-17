@@ -206,6 +206,9 @@ end
     @test q[2] == q.q1
     @test q[3] == q.q2
     @test q[4] == q.q3
+
+    @test_throws BoundsError q[0]
+    @test_throws BoundsError q[5]
 end
 
 # Functions: show
