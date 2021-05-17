@@ -48,10 +48,10 @@ const _u = _crayon_u
 #                                   Includes
 ################################################################################
 
+include("angle.jl")
 include("angleaxis.jl")
 include("compose_rotations.jl")
 include("dcm.jl")
-include("euler_angles.jl")
 include("inv_rotations.jl")
 include("quaternion.jl")
 

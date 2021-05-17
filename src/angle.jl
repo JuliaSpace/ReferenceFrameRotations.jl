@@ -1,6 +1,11 @@
-################################################################################
-#                                 Euler Angles
-################################################################################
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#
+# Description
+# ==============================================================================
+#
+#   Functions related to the Euler angles.
+#
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 export angle_to_angleaxis, angle_to_angle, angle_to_dcm, angle_to_quat
 export smallangle_to_dcm, smallangle_to_quat
@@ -14,10 +19,32 @@ export inv
 """
     *(Θ₂::EulerAngles, Θ₁::EulerAngles)
 
-Compute the composed rotation of `Θ₁ -> Θ₂`. Notice that the rotation will be
-represented by Euler angles (see `EulerAngles`) with the same rotation sequence
-as `Θ₂`.
+Compute the composed rotation of `Θ₁ -> Θ₂`.
 
+The rotation will be represented by Euler angles (see [`EulerAngles`](@ref))
+with the same rotation sequence as `Θ₂`.
+
+# Examples
+
+```julia-repl
+julia> ea1 = EulerAngles(deg2rad(35), 0, 0, :XYZ)
+EulerAngles{Float64}:
+  R(X):   0.6109 rad (  35.0000 deg)
+  R(Y):   0.0000 rad (   0.0000 deg)
+  R(Z):   0.0000 rad (   0.0000 deg)
+
+julia> ea2 = EulerAngles(0, 0, deg2rad(25), :ZYX)
+EulerAngles{Float64}:
+  R(Z):   0.0000 rad (   0.0000 deg)
+  R(Y):   0.0000 rad (   0.0000 deg)
+  R(X):   0.4363 rad (  25.0000 deg)
+
+julia> ea2 * ea1
+EulerAngles{Float64}:
+  R(Z):   0.0000 rad (   0.0000 deg)
+  R(Y):  -0.0000 rad (  -0.0000 deg)
+  R(X):   1.0472 rad (  60.0000 deg)
+```
 """
 @inline function *(Θ₂::EulerAngles, Θ₁::EulerAngles)
     # Convert to quaternions, compute the composition, and convert back to Euler
@@ -25,7 +52,7 @@ as `Θ₂`.
     q₁ = angle_to_quat(Θ₁)
     q₂ = angle_to_quat(Θ₂)
 
-    quat_to_angle(q₁*q₂, Θ₂.rot_seq)
+    return quat_to_angle(q₁ * q₂, Θ₂.rot_seq)
 end
 
 """
