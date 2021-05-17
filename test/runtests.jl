@@ -66,6 +66,12 @@ const rot_seq_array = [:XYX,
 # Number of samples.
 const samples = 1000
 
+@time @testset "Euler angle and axis" begin
+    include("./angleaxis/functions.jl")
+    include("./angleaxis/operations.jl")
+end
+println("")
+
 @time @testset "Direction cosine matrices" begin
     include("./dcm/create_rotation_matrix.jl")
     include("./dcm/kinematics.jl")
@@ -81,6 +87,9 @@ end
 println("")
 
 @time @testset "Conversions" begin
+    include("./conversions/angleaxis_to_angle.jl")
+    include("./conversions/angleaxis_to_dcm.jl")
+    include("./conversions/angleaxis_to_quat.jl")
     include("./conversions/dcm_to_angleaxis.jl")
     include("./conversions/dcm_to_euler_angles.jl")
     include("./conversions/dcm_to_quaternion.jl")
