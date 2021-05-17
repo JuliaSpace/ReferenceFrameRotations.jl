@@ -13,7 +13,7 @@
 # Functions: inv
 # --------------
 
-@testset "General functions of quaternions: inv" begin
+@testset "General functions of Euler angle and axis: inv" begin
     # Float64
     # ==========================================================================
     T = Float64
@@ -48,7 +48,7 @@ end
 # Functions: show
 # ---------------
 
-@testset "General functions of quaternions: show" begin
+@testset "General functions of Euler angle and axis: show" begin
     buf = IOBuffer()
     io = IOContext(buf)
     av = EulerAngleAxis(π / 3, [sqrt(3) / 3, -sqrt(3) / 3, sqrt(3) / 3])
