@@ -107,3 +107,7 @@ end
     @test θ ≈ θest atol = 1e-3
 end
 
+@testset "Kinematics of DCMs (Errors)" begin
+    @test_throws ArgumentError ddcm(DCM(I), [1, 2])
+    @test_throws ArgumentError ddcm(DCM(I), [1, 2, 3, 4])
+end
