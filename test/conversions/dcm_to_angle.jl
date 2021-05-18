@@ -3,7 +3,7 @@
 # Desription
 # ==============================================================================
 #
-#   Tests related to conversion from direction cosine matrices to euler angles.
+#   Tests related to conversion from direction cosine matrices to Euler angles.
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
