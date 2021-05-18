@@ -80,7 +80,7 @@ into alignment with the reference frame **B**, then its time-derivative is
            0         &  -\omega_{ba,b,x} &  -\omega_{ba,b,y} & -\omega_{ba,b,z} \\
     +\omega_{ba,b,x} &         0         &  +\omega_{ba,b,z} & -\omega_{ba,b,y} \\
     +\omega_{ba,b,y} &  -\omega_{ba,b,z} &         0         & +\omega_{ba,b,x} \\
-    +\omega_{ba,b,z} &  +\omega_{ba,b,y} &  -\omega_{ba,b,x} &        0       
+    +\omega_{ba,b,z} &  +\omega_{ba,b,y} &  -\omega_{ba,b,x} &        0
 \end{array}\right] \cdot \mathbf{q}_{ba}~.
 ```
 

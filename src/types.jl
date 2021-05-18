@@ -70,9 +70,9 @@ If `rot_seq` is not provided, then it defaults to `:ZYX`.
 ```julia-repl
 julia> EulerAngles(pi / 2, pi / 4, -pi, :XYZ)
 EulerAngles{Float64}:
-  R(X):   1.5708 rad (  90.0000 deg)
-  R(Y):   0.7854 rad (  45.0000 deg)
-  R(Z):  -3.1416 rad (-180.0000 deg)
+  R(X) :  1.5707963267948966 rad  ( 90.0°)
+  R(Y) :  0.7853981633974483 rad  ( 45.0°)
+  R(Z) : -3.141592653589793  rad  (-180.0°)
 ```
 """
 struct EulerAngles{T}

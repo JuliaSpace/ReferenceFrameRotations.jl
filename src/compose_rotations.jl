@@ -67,9 +67,9 @@ julia> Θ2 = EulerAngles(-3, -2, -1, :XYZ);
 
 julia> compose_rotation(Θ1, Θ2)
 EulerAngles{Float64}:
-  R(X):  -0.0000 rad (  -0.0000 deg)
-  R(Y):   0.0000 rad (   0.0000 deg)
-  R(Z):  -0.0000 rad (  -0.0000 deg)
+  R(X) : -1.6653345369377348e-16 rad  (-9.54166404439055e-15°)
+  R(Y) :  9.244463733058732e-33  rad  ( 5.29668755766019e-31°)
+  R(Z) : -1.1102230246251565e-16 rad  (-6.3611093629270335e-15°)
 
 julia> q1 = angle_to_quat(pi / 3, pi / 4, pi / 5, :ZYX);
 

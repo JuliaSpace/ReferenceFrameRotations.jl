@@ -41,31 +41,31 @@ julia> dcm = DCM([1 0 0; 0 0 -1; 0 1 0]);
 
 julia> dcm_to_angle(dcm)
 EulerAngles{Float64}:
-  R(Z):   0.0000 rad (   0.0000 deg)
-  R(Y):   0.0000 rad (   0.0000 deg)
-  R(X):  -1.5708 rad ( -90.0000 deg)
+  R(Z) :  0.0    rad  ( 0.0°)
+  R(Y) :  0.0    rad  ( 0.0°)
+  R(X) : -1.5708 rad  (-90.0°)
 
 julia> dcm_to_angle(dcm, :XYZ)
 EulerAngles{Float64}:
-  R(X):  -1.5708 rad ( -90.0000 deg)
-  R(Y):   0.0000 rad (   0.0000 deg)
-  R(Z):   0.0000 rad (   0.0000 deg)
+  R(X) : -1.5708 rad  (-90.0°)
+  R(Y) :  0.0    rad  ( 0.0°)
+  R(Z) :  0.0    rad  ( 0.0°)
 
 julia> D = angle_to_dcm(1, -pi / 2, 2, :ZYX);
 
 julia> dcm_to_angle(D, :ZYX)
 EulerAngles{Float64}:
-  R(Z):   3.0000 rad ( 171.8873 deg)
-  R(Y):  -1.5708 rad ( -90.0000 deg)
-  R(X):   0.0000 rad (   0.0000 deg)
+  R(Z) :  3.0    rad  ( 171.887°)
+  R(Y) : -1.5708 rad  (-90.0°)
+  R(X) :  0.0    rad  ( 0.0°)
 
 julia> D = create_rotation_matrix(1, :X) * create_rotation_matrix(2, :X);
 
 julia> dcm_to_angle(D, :XYX)
 EulerAngles{Float64}:
-  R(X):   3.0000 rad ( 171.8873 deg)
-  R(Y):   0.0000 rad (   0.0000 deg)
-  R(X):   0.0000 rad (   0.0000 deg)
+  R(X) :  3.0 rad  ( 171.887°)
+  R(Y) :  0.0 rad  ( 0.0°)
+  R(X) :  0.0 rad  ( 0.0°)
 ```
 
 ## DCMs to Euler Angle and Axis
@@ -150,9 +150,9 @@ julia> v = [0, 1, 0];
 
 julia> angleaxis_to_angle(a, v, :XYX)
 EulerAngles{Float64}:
-  R(X):   0.0000 rad (   0.0000 deg)
-  R(Y):   0.3466 rad (  19.8600 deg)
-  R(X):   0.0000 rad (   0.0000 deg)
+  R(X) :  0.0      rad  ( 0.0°)
+  R(Y) :  0.346622 rad  ( 19.86°)
+  R(X) :  0.0      rad  ( 0.0°)
 
 julia> a = 60.0 * pi / 180;
 
@@ -165,15 +165,15 @@ EulerAngleAxis{Float64}:
 
 julia> angleaxis_to_angle(angleaxis, :XYZ)
 EulerAngles{Float64}:
-  R(X):   0.4636 rad (  26.5651 deg)
-  R(Y):   0.7297 rad (  41.8103 deg)
-  R(Z):   0.4636 rad (  26.5651 deg)
+  R(X) :  0.463648 rad  ( 26.5651°)
+  R(Y) :  0.729728 rad  ( 41.8103°)
+  R(Z) :  0.463648 rad  ( 26.5651°)
 
 julia> angleaxis_to_angle(angleaxis, :ZYX)
 EulerAngles{Float64}:
-  R(Z):   0.7854 rad (  45.0000 deg)
-  R(Y):   0.3398 rad (  19.4712 deg)
-  R(X):   0.7854 rad (  45.0000 deg)
+  R(Z) :  0.785398 rad  ( 45.0°)
+  R(Y) :  0.339837 rad  ( 19.4712°)
+  R(X) :  0.785398 rad  ( 45.0°)
 ```
 
 ## Euler Angle and Axis to Quaternions
@@ -242,27 +242,27 @@ in which `rot_seq_dest` is the desired rotation sequence of the result.
 ```jldoctest
 julia> angle_to_angle(-pi / 2, -pi / 3, -pi / 4, :ZYX, :XYZ)
 EulerAngles{Float64}:
-  R(X):  -1.0472 rad ( -60.0000 deg)
-  R(Y):   0.7854 rad (  45.0000 deg)
-  R(Z):  -1.5708 rad ( -90.0000 deg)
+  R(X) : -1.0472   rad  (-60.0°)
+  R(Y) :  0.785398 rad  ( 45.0°)
+  R(Z) : -1.5708   rad  (-90.0°)
 
 julia> angle_to_angle(-pi / 2, 0, 0, :ZYX, :XYZ)
 EulerAngles{Float64}:
-  R(X):   0.0000 rad (   0.0000 deg)
-  R(Y):   0.0000 rad (   0.0000 deg)
-  R(Z):  -1.5708 rad ( -90.0000 deg)
+  R(X) :  0.0    rad  ( 0.0°)
+  R(Y) :  0.0    rad  ( 0.0°)
+  R(Z) : -1.5708 rad  (-90.0°)
 
 julia> Θ = EulerAngles(1, 2, 3, :XYX)
 EulerAngles{Int64}:
-  R(X):   1.0000 rad (  57.2958 deg)
-  R(Y):   2.0000 rad ( 114.5916 deg)
-  R(X):   3.0000 rad ( 171.8873 deg)
+  R(X) :  1 rad  ( 57.2958°)
+  R(Y) :  2 rad  ( 114.592°)
+  R(X) :  3 rad  ( 171.887°)
 
 julia> angle_to_angle(Θ, :ZYZ)
 EulerAngles{Float64}:
-  R(Z):  -2.7024 rad (-154.8356 deg)
-  R(Y):   1.4668 rad (  84.0393 deg)
-  R(Z):  -1.0542 rad ( -60.3984 deg)
+  R(Z) : -2.70239 rad  (-154.836°)
+  R(Y) :  1.46676 rad  ( 84.0393°)
+  R(Z) : -1.05415 rad  (-60.3984°)
 ```
 
 ## Euler Angles to Quaternions
@@ -392,7 +392,6 @@ julia> quat_to_angleaxis(q)
 EulerAngleAxis{Float64}:
   Euler angle:   1.0472 rad ( 60.0000 deg)
    Euler axis: [  0.5774,   0.5774,   0.5774]
-
 ```
 
 ## Quaternions to Euler Angles
@@ -413,8 +412,7 @@ julia> q = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);
 
 julia> quat_to_angle(q, :XYZ)
 EulerAngles{Float64}:
-  R(X):   0.7854 rad (  45.0000 deg)
-  R(Y):   0.0000 rad (   0.0000 deg)
-  R(Z):   0.0000 rad (   0.0000 deg)
-
+  R(X) :  0.785398 rad  ( 45.0°)
+  R(Y) :  0.0      rad  ( 0.0°)
+  R(Z) :  0.0      rad  ( 0.0°)
 ```

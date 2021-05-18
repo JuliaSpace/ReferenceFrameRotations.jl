@@ -24,21 +24,21 @@ with the same rotation sequence as `Θ₂`.
 ```julia-repl
 julia> ea1 = EulerAngles(deg2rad(35), 0, 0, :XYZ)
 EulerAngles{Float64}:
-  R(X):   0.6109 rad (  35.0000 deg)
-  R(Y):   0.0000 rad (   0.0000 deg)
-  R(Z):   0.0000 rad (   0.0000 deg)
+  R(X) :  0.6108652381980153 rad  ( 35.0°)
+  R(Y) :  0.0                rad  ( 0.0°)
+  R(Z) :  0.0                rad  ( 0.0°)
 
 julia> ea2 = EulerAngles(0, 0, deg2rad(25), :ZYX)
 EulerAngles{Float64}:
-  R(Z):   0.0000 rad (   0.0000 deg)
-  R(Y):   0.0000 rad (   0.0000 deg)
-  R(X):   0.4363 rad (  25.0000 deg)
+  R(Z) :  0.0                rad  ( 0.0°)
+  R(Y) :  0.0                rad  ( 0.0°)
+  R(X) :  0.4363323129985824 rad  ( 25.0°)
 
 julia> ea2 * ea1
 EulerAngles{Float64}:
-  R(Z):   0.0000 rad (   0.0000 deg)
-  R(Y):  -0.0000 rad (  -0.0000 deg)
-  R(X):   1.0472 rad (  60.0000 deg)
+  R(Z) :  0.0                rad  ( 0.0°)
+  R(Y) : -0.0                rad  (-0.0°)
+  R(X) :  1.0471975511965979 rad  ( 60.00000000000001°)
 ```
 """
 @inline function *(Θ₂::EulerAngles, Θ₁::EulerAngles)
@@ -62,6 +62,17 @@ represented using `:ZYX`.
 # Examples
 
 ```julia-repl
+julia> ea = EulerAngles(π / 3, π / 6,  2 / 3 * π, :ZYX)
+EulerAngles{Float64}:
+  R(Z) :  1.0471975511965976 rad  ( 59.99999999999999°)
+  R(Y) :  0.5235987755982988 rad  ( 29.999999999999996°)
+  R(X) :  2.0943951023931953 rad  ( 119.99999999999999°)
+
+julia> inv(ea)
+EulerAngles{Float64}:
+  R(X) : -2.0943951023931953 rad  (-119.99999999999999°)
+  R(Y) : -0.5235987755982988 rad  (-29.999999999999996°)
+  R(Z) : -1.0471975511965976 rad  (-59.99999999999999°)
 ```
 """
 function inv(Θ::EulerAngles)
@@ -91,11 +102,17 @@ end
 ################################################################################
 
 function show(io::IO, Θ::EulerAngles{T}) where T
-    str     = @sprintf "%8.4f %8.4f %8.4f rad" Θ.a1 Θ.a2 Θ.a3
+    # Get if `io` request a compact printing, defaulting to true.
+    compact_printing = get(io, :compact, true)
+
+    # Convert the values using `print` and compact printing.
+    θ₁_str = sprint(print, Θ.a1; context = :compact => compact_printing)
+    θ₂_str = sprint(print, Θ.a2; context = :compact => compact_printing)
+    θ₃_str = sprint(print, Θ.a3; context = :compact => compact_printing)
     rot_seq = String(Θ.rot_seq)
 
     print(io, "EulerAngles{$T}:")
-    print(io,   " R($rot_seq): " * str)
+    print(io, " R($rot_seq)  " * θ₁_str * "  " * θ₂_str * "  " * θ₃_str * " rad")
 
     return nothing
 end
@@ -104,20 +121,47 @@ function show(io::IO, mime::MIME"text/plain", Θ::EulerAngles{T}) where T
     # Check if the user wants colors.
     color = get(io, :color, false)
 
+    # Check if the user wants compact printing, defaulting to `true`.
+    compact_printing = get(io, :compact, true)
+
+    # Assemble the context.
+    context = IOContext(io, :color => color, :compact => compact_printing)
+
     d = (color) ? _d : ""
     g = (color) ? _g : ""
     y = (color) ? _y : ""
     u = (color) ? _u : ""
 
-    str_θ₁  = @sprintf "%8.4f rad (%9.4f deg)" Θ.a1 rad2deg(Θ.a1)
-    str_θ₂  = @sprintf "%8.4f rad (%9.4f deg)" Θ.a2 rad2deg(Θ.a2)
-    str_θ₃  = @sprintf "%8.4f rad (%9.4f deg)" Θ.a3 rad2deg(Θ.a3)
+    # Convert the values using `print` and compact printing.
+    θ₁_alg = !signbit(Θ.a1) ? " " : ""
+    θ₁_str = θ₁_alg * sprint(print, Θ.a1; context = context)
+    lθ₁ = length(θ₁_str)
+
+    θ₂_alg = !signbit(Θ.a2) ? " " : ""
+    θ₂_str = θ₂_alg * sprint(print, Θ.a2; context = context)
+    lθ₂ = length(θ₂_str)
+
+    θ₃_alg = !signbit(Θ.a3) ? " " : ""
+    θ₃_str = θ₃_alg * sprint(print, Θ.a3; context = context)
+    lθ₃ = length(θ₃_str)
+
+    alignment_pad = max(lθ₁, lθ₂, lθ₃)
+
+    θ₁_str *= " "^(alignment_pad - lθ₁) * " rad  (" *
+        θ₁_alg * sprint(print, rad2deg(Θ.a1); context = context) * "°)"
+
+    θ₂_str *= " "^(alignment_pad - lθ₂) * " rad  (" *
+        θ₂_alg * sprint(print, rad2deg(Θ.a2); context = context) * "°)"
+
+    θ₃_str *= " "^(alignment_pad - lθ₃) * " rad  (" *
+        θ₃_alg * sprint(print, rad2deg(Θ.a3); context = context) * "°)"
+
     rot_seq = String(Θ.rot_seq)
 
     println(io, "EulerAngles{$T}:")
-    println(io,   "$g  R($(rot_seq[1])): $d" * str_θ₁)
-    println(io,   "$y  R($(rot_seq[2])): $d" * str_θ₂)
-      print(io,   "$u  R($(rot_seq[3])): $d" * str_θ₃)
+    println(io, "$g  R($(rot_seq[1])) : $d" * θ₁_str)
+    println(io, "$y  R($(rot_seq[2])) : $d" * θ₂_str)
+    print(io,   "$u  R($(rot_seq[3])) : $d" * θ₃_str)
 
     return nothing
 end

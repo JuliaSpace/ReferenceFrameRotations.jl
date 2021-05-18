@@ -57,9 +57,9 @@ julia> Θ = EulerAngles(-pi / 3, -pi / 2, -pi, :YXZ);
 
 julia> inv_rotation(Θ)
 EulerAngles{Float64}:
-  R(Z):   3.1416 rad ( 180.0000 deg)
-  R(X):   1.5708 rad (  90.0000 deg)
-  R(Y):   1.0472 rad (  60.0000 deg)
+  R(Z) :  3.141592653589793  rad  ( 180.0°)
+  R(X) :  1.5707963267948966 rad  ( 90.0°)
+  R(Y) :  1.0471975511965976 rad  ( 59.99999999999999°)
 
 julia> q = angle_to_quat(pi / 3, pi / 4, pi / 5, :ZYX);
 

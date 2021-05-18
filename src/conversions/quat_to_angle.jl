@@ -26,11 +26,11 @@ julia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0)
 Quaternion{Float64}:
   + 0.9238795325112867 + 0.3826834323650898.i + 0.0.j + 0.0.k
 
-julia> quat_to_angle(q,:XYZ)
+julia> quat_to_angle(q, :XYZ)
 EulerAngles{Float64}:
-  R(X):   0.7854 rad (  45.0000 deg)
-  R(Y):   0.0000 rad (   0.0000 deg)
-  R(Z):   0.0000 rad (   0.0000 deg)
+  R(X) :  0.7853981633974484 rad  ( 45.00000000000001°)
+  R(Y) :  0.0                rad  ( 0.0°)
+  R(Z) :  0.0                rad  ( 0.0°)
 ```
 """
 function quat_to_angle(q::Quaternion, rot_seq::Symbol = :ZYX)

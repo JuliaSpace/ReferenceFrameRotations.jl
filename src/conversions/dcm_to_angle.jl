@@ -39,25 +39,25 @@ julia> D = DCM([1. 0. 0.; 0. 0. -1; 0. -1 0.]);
 
 julia> dcm_to_angle(D,:XYZ)
 EulerAngles{Float64}:
-  R(X):   1.5708 rad (  90.0000 deg)
-  R(Y):   0.0000 rad (   0.0000 deg)
-  R(Z):   0.0000 rad (   0.0000 deg)
+  R(X) :  1.5707963267948966 rad  ( 90.0°)
+  R(Y) :  0.0                rad  ( 0.0°)
+  R(Z) :  0.0                rad  ( 0.0°)
 
 julia> D = angle_to_dcm(1, -pi / 2, 2, :ZYX);
 
 julia> dcm_to_angle(D, :ZYX)
 EulerAngles{Float64}:
-  R(Z):   3.0000 rad ( 171.8873 deg)
-  R(Y):  -1.5708 rad ( -90.0000 deg)
-  R(X):   0.0000 rad (   0.0000 deg)
+  R(Z) :  3.0                rad  ( 171.88733853924697°)
+  R(Y) : -1.5707963267948966 rad  (-90.0°)
+  R(X) :  0.0                rad  ( 0.0°)
 
 julia> D = create_rotation_matrix(1, :X) * create_rotation_matrix(2, :X);
 
 julia> dcm_to_angle(D, :XYX)
 EulerAngles{Float64}:
-  R(X):   3.0000 rad ( 171.8873 deg)
-  R(Y):   0.0000 rad (   0.0000 deg)
-  R(X):   0.0000 rad (   0.0000 deg)
+  R(X) :  3.0 rad  ( 171.88733853924697°)
+  R(Y) :  0.0 rad  ( 0.0°)
+  R(X) :  0.0 rad  ( 0.0°)
 ```
 """
 function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol=:ZYX) where T<:Number

@@ -91,15 +91,15 @@ end
     show(io, MIME"text/plain"(), ea)
     expected = """
         EulerAngles{Float64}:
-          R(Z):   1.0472 rad (  60.0000 deg)
-          R(Y):   0.5236 rad (  30.0000 deg)
-          R(X):   2.0944 rad ( 120.0000 deg)"""
+          R(Z) :  1.0472   rad  ( 60.0°)
+          R(Y) :  0.523599 rad  ( 30.0°)
+          R(X) :  2.0944   rad  ( 120.0°)"""
     @test String(take!(io.io)) == expected
 
     # Comapct printing.
     show(io, ea)
     expected = """
-        EulerAngles{Float64}: R(ZYX):   1.0472   0.5236   2.0944 rad"""
+        EulerAngles{Float64}: R(ZYX)  1.0472  0.523599  2.0944 rad"""
     @test String(take!(io.io)) == expected
 
     # Colors.
@@ -107,8 +107,8 @@ end
     show(io, MIME"text/plain"(), ea)
     expected = """
         EulerAngles{Float64}:
-        \e[32;1m  R(Z): \e[0m  1.0472 rad (  60.0000 deg)
-        \e[33;1m  R(Y): \e[0m  0.5236 rad (  30.0000 deg)
-        \e[34;1m  R(X): \e[0m  2.0944 rad ( 120.0000 deg)"""
+        \e[32;1m  R(Z) : \e[0m 1.0472   rad  ( 60.0°)
+        \e[33;1m  R(Y) : \e[0m 0.523599 rad  ( 30.0°)
+        \e[34;1m  R(X) : \e[0m 2.0944   rad  ( 120.0°)"""
     @test String(take!(io.io)) == expected
 end

@@ -38,9 +38,9 @@ EulerAngleAxis{Float64}:
 
 julia> angleaxis_to_angle(av, :ZXY)
 EulerAngles{Float64}:
-  R(Z):   0.0000 rad (   0.0000 deg)
-  R(X):   0.7854 rad (  45.0000 deg)
-  R(Y):   0.0000 rad (   0.0000 deg)
+  R(Z) :  0.0                rad  ( 0.0°)
+  R(X) :  0.7853981633974482 rad  ( 44.99999999999999°)
+  R(Y) :  0.0                rad  ( 0.0°)
 ```
 """
 @inline function angleaxis_to_angle(θ::Number, v::AbstractVector, rot_seq::Symbol)

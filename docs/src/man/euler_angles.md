@@ -37,24 +37,23 @@ structure will be selected according to the input types `T1`, `T2`, and `T3`. If
 `rot_seq` is omitted, then it defaults to `:ZYX`.
 
 ```jldoctest
-julia> EulerAngles(1,1,1)
+julia> EulerAngles(1, 1, 1)
 EulerAngles{Int64}:
-  R(Z):   1.0000 rad (  57.2958 deg)
-  R(Y):   1.0000 rad (  57.2958 deg)
-  R(X):   1.0000 rad (  57.2958 deg)
+  R(Z) :  1 rad  ( 57.2958°)
+  R(Y) :  1 rad  ( 57.2958°)
+  R(X) :  1 rad  ( 57.2958°)
 
-julia> EulerAngles(1,1,1.0f0,:XYZ)
+julia> EulerAngles(1, 1, 1.0f0, :XYZ)
 EulerAngles{Float32}:
-  R(X):   1.0000 rad (  57.2958 deg)
-  R(Y):   1.0000 rad (  57.2958 deg)
-  R(Z):   1.0000 rad (  57.2958 deg)
+  R(X) :  1.0 rad  ( 57.2958°)
+  R(Y) :  1.0 rad  ( 57.2958°)
+  R(Z) :  1.0 rad  ( 57.2958°)
 
-julia> EulerAngles(1.,1,1,:XYX)
+julia> EulerAngles(1., 1, 1, :XYX)
 EulerAngles{Float64}:
-  R(X):   1.0000 rad (  57.2958 deg)
-  R(Y):   1.0000 rad (  57.2958 deg)
-  R(X):   1.0000 rad (  57.2958 deg)
-
+  R(X) :  1.0 rad  ( 57.2958°)
+  R(Y) :  1.0 rad  ( 57.2958°)
+  R(X) :  1.0 rad  ( 57.2958°)
 ```
 
 ## Operations
@@ -75,36 +74,35 @@ composed rotation of ``\Theta_1`` followed by ``\Theta_2``. Notice that
 ``\Theta_2``.
 
 ```jldoctest
-julia> a1 = EulerAngles(1,0,0,:ZYX);
+julia> a1 = EulerAngles(1, 0, 0, :ZYX);
 
-julia> a2 = EulerAngles(0,-1,0,:YZY);
+julia> a2 = EulerAngles(0, -1, 0, :YZY);
 
-julia> a2*a1
+julia> a2 * a1
 EulerAngles{Float64}:
-  R(Y):   0.0000 rad (   0.0000 deg)
-  R(Z):   0.0000 rad (   0.0000 deg)
-  R(Y):   0.0000 rad (   0.0000 deg)
+  R(Y) :  0.0 rad  ( 0.0°)
+  R(Z) :  0.0 rad  ( 0.0°)
+  R(Y) :  0.0 rad  ( 0.0°)
 
-julia> a1 = EulerAngles(1,1,1,:YZY);
+julia> a1 = EulerAngles(1, 1, 1, :YZY);
 
-julia> a2 = EulerAngles(0,0,-1,:YZY);
+julia> a2 = EulerAngles(0, 0, -1, :YZY);
 
-julia> a2*a1
+julia> a2 * a1
 EulerAngles{Float64}:
-  R(Y):   1.0000 rad (  57.2958 deg)
-  R(Z):   1.0000 rad (  57.2958 deg)
-  R(Y):   0.0000 rad (   0.0000 deg)
+  R(Y) :  1.0         rad  ( 57.2958°)
+  R(Z) :  1.0         rad  ( 57.2958°)
+  R(Y) :  1.31938e-16 rad  ( 7.55951e-15°)
 
-julia> a1 = EulerAngles(1.3,2.2,1.4,:XYZ);
+julia> a1 = EulerAngles(1.3, 2.2, 1.4, :XYZ);
 
-julia> a2 = EulerAngles(-1.4,-2.2,-1.3,:ZYX);
+julia> a2 = EulerAngles(-1.4, -2.2, -1.3, :ZYX);
 
-julia> a2*a1
+julia> a2 * a1
 EulerAngles{Float64}:
-  R(Z):  -0.0000 rad (  -0.0000 deg)
-  R(Y):   0.0000 rad (   0.0000 deg)
-  R(X):  -0.0000 rad (  -0.0000 deg)
-
+  R(Z) : -8.32667e-17 rad  (-4.77083e-15°)
+  R(Y) :  3.33067e-16 rad  ( 1.90833e-14°)
+  R(X) : -1.11022e-16 rad  (-6.36111e-15°)
 ```
 
 ### Inversion
@@ -120,18 +118,17 @@ julia> a = EulerAngles(1,2,3,:ZYX);
 
 julia> inv(a)
 EulerAngles{Int64}:
-  R(X):  -3.0000 rad (-171.8873 deg)
-  R(Y):  -2.0000 rad (-114.5916 deg)
-  R(Z):  -1.0000 rad ( -57.2958 deg)
+  R(X) : -3 rad  (-171.887°)
+  R(Y) : -2 rad  (-114.592°)
+  R(Z) : -1 rad  (-57.2958°)
 
 julia> a = EulerAngles(1.2,3.3,4.6,:XYX);
 
 julia> a*inv(a)
 EulerAngles{Float64}:
-  R(X):  -0.0000 rad (  -0.0000 deg)
-  R(Y):   0.0000 rad (   0.0000 deg)
-  R(X):   0.0000 rad (   0.0000 deg)
-
+  R(X) : -1.92593e-34 rad  (-1.10348e-32°)
+  R(Y) :  0.0         rad  ( 0.0°)
+  R(X) :  0.0         rad  ( 0.0°)
 ```
 
 !!! warning
