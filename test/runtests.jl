@@ -114,3 +114,8 @@ println("")
     include("./compose_rotations.jl")
 end
 println("")
+
+@time @testset "Invert rotations" begin
+    include("./inv_rotations.jl")
+end
+println("")
