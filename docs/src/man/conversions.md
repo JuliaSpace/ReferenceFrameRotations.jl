@@ -51,17 +51,17 @@ EulerAngles{Float64}:
   R(Y):   0.0000 rad (   0.0000 deg)
   R(Z):   0.0000 rad (   0.0000 deg)
 
-julia> D = angle_to_dcm(1, -pi/2, 2, :ZYX);
+julia> D = angle_to_dcm(1, -pi / 2, 2, :ZYX);
 
-julia> dcm_to_angle(D,:ZYX)
+julia> dcm_to_angle(D, :ZYX)
 EulerAngles{Float64}:
   R(Z):   3.0000 rad ( 171.8873 deg)
   R(Y):  -1.5708 rad ( -90.0000 deg)
   R(X):   0.0000 rad (   0.0000 deg)
 
-julia> D = create_rotation_matrix(1,:X)*create_rotation_matrix(2,:X);
+julia> D = create_rotation_matrix(1, :X) * create_rotation_matrix(2, :X);
 
-julia> dcm_to_angle(D,:XYX)
+julia> dcm_to_angle(D, :XYX)
 EulerAngles{Float64}:
   R(X):   3.0000 rad ( 171.8873 deg)
   R(Y):   0.0000 rad (   0.0000 deg)
@@ -114,17 +114,17 @@ function angleaxis_to_dcm(ea::EulerAngleAxis)
 ```
 
 ```jldoctest
-julia> a = 60.0*pi/180;
+julia> a = 60.0 * pi / 180;
 
-julia> v = [sqrt(3)/3;sqrt(3)/3;sqrt(3)/3];
+julia> v = [sqrt(3) / 3, sqrt(3) / 3, sqrt(3)/3];
 
-julia> angleaxis_to_dcm(a,v)
+julia> angleaxis_to_dcm(a, v)
 3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
   0.666667   0.666667  -0.333333
  -0.333333   0.666667   0.666667
   0.666667  -0.333333   0.666667
 
-julia> angleaxis = EulerAngleAxis(a,v);
+julia> angleaxis = EulerAngleAxis(a, v);
 
 julia> angleaxis_to_dcm(angleaxis)
 3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
@@ -144,32 +144,32 @@ function angleaxis_to_angle(ea::EulerAngleAxis, rot_seq::Symbol)
 ```
 
 ```jldoctest
-julia> a = 19.86*pi/180;
+julia> a = 19.86 * pi / 180;
 
-julia> v = [0;1;0];
+julia> v = [0, 1, 0];
 
-julia> angleaxis_to_angle(a,v,:XYX)
+julia> angleaxis_to_angle(a, v, :XYX)
 EulerAngles{Float64}:
   R(X):   0.0000 rad (   0.0000 deg)
   R(Y):   0.3466 rad (  19.8600 deg)
   R(X):   0.0000 rad (   0.0000 deg)
 
-julia> a = 60.0*pi/180;
+julia> a = 60.0 * pi / 180;
 
-julia> v = [sqrt(3)/3;sqrt(3)/3;sqrt(3)/3];
+julia> v = [sqrt(3) / 3, sqrt(3) / 3, sqrt(3) / 3];
 
-julia> angleaxis = EulerAngleAxis(a,v)
+julia> angleaxis = EulerAngleAxis(a, v)
 EulerAngleAxis{Float64}:
   Euler angle:   1.0472 rad ( 60.0000 deg)
    Euler axis: [  0.5774,   0.5774,   0.5774]
 
-julia> angleaxis_to_angle(angleaxis,:XYZ)
+julia> angleaxis_to_angle(angleaxis, :XYZ)
 EulerAngles{Float64}:
   R(X):   0.4636 rad (  26.5651 deg)
   R(Y):   0.7297 rad (  41.8103 deg)
   R(Z):   0.4636 rad (  26.5651 deg)
 
-julia> angleaxis_to_angle(angleaxis,:ZYX)
+julia> angleaxis_to_angle(angleaxis, :ZYX)
 EulerAngles{Float64}:
   R(Z):   0.7854 rad (  45.0000 deg)
   R(Y):   0.3398 rad (  19.4712 deg)
@@ -187,9 +187,9 @@ function angleaxis_to_quat(angleaxis::EulerAngleAxis)
 ```
 
 ```jldoctest
-julia> a = 60.0*pi/180;
+julia> a = 60.0 * pi / 180;
 
-julia> v = [sqrt(3)/3;sqrt(3)/3;sqrt(3)/3];
+julia> v = [sqrt(3) / 3, sqrt(3) / 3, sqrt(3) / 3];
 
 julia> angleaxis_to_quat(a,v)
 Quaternion{Float64}:
@@ -212,15 +212,15 @@ function angle_to_dcm(Θ::EulerAngles)
 ```
 
 ```jldoctest
-julia> dcm = angle_to_dcm(pi/2, pi/4, pi/3, :ZYX)
+julia> dcm = angle_to_dcm(pi / 2, pi / 4, pi / 3, :ZYX)
 3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
   4.32978e-17  0.707107  -0.707107
  -0.5          0.612372   0.612372
   0.866025     0.353553   0.353553
 
-julia> angles = EulerAngles(pi/2, pi/4, pi/3, :ZYX);
+julia> angles = EulerAngles(pi / 2, pi / 4, pi / 3, :ZYX);
 
-julia> dcm    = angle_to_dcm(angles)
+julia> dcm = angle_to_dcm(angles)
 3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
   4.32978e-17  0.707107  -0.707107
  -0.5          0.612372   0.612372
@@ -240,25 +240,25 @@ function angle_to_angle(Θ::EulerAngles, rot_seq_dest::Symbol)
 in which `rot_seq_dest` is the desired rotation sequence of the result.
 
 ```jldoctest
-julia> angle_to_angle(-pi/2, -pi/3, -pi/4, :ZYX, :XYZ)
+julia> angle_to_angle(-pi / 2, -pi / 3, -pi / 4, :ZYX, :XYZ)
 EulerAngles{Float64}:
   R(X):  -1.0472 rad ( -60.0000 deg)
   R(Y):   0.7854 rad (  45.0000 deg)
   R(Z):  -1.5708 rad ( -90.0000 deg)
 
-julia> angle_to_angle(-pi/2, 0, 0, :ZYX, :XYZ)
+julia> angle_to_angle(-pi / 2, 0, 0, :ZYX, :XYZ)
 EulerAngles{Float64}:
   R(X):   0.0000 rad (   0.0000 deg)
   R(Y):   0.0000 rad (   0.0000 deg)
   R(Z):  -1.5708 rad ( -90.0000 deg)
 
-julia> Θ = EulerAngles(1,2,3,:XYX)
+julia> Θ = EulerAngles(1, 2, 3, :XYX)
 EulerAngles{Int64}:
   R(X):   1.0000 rad (  57.2958 deg)
   R(Y):   2.0000 rad ( 114.5916 deg)
   R(X):   3.0000 rad ( 171.8873 deg)
 
-julia> angle_to_angle(Θ,:ZYZ)
+julia> angle_to_angle(Θ, :ZYZ)
 EulerAngles{Float64}:
   R(Z):  -2.7024 rad (-154.8356 deg)
   R(Y):   1.4668 rad (  84.0393 deg)
@@ -276,12 +276,12 @@ function angle_to_angleaxis(Θ::EulerAngles)
 ```
 
 ```jldoctest
-julia> angle_to_angleaxis(1,0,0,:XYZ)
+julia> angle_to_angleaxis(1, 0, 0, :XYZ)
 EulerAngleAxis{Float64}:
   Euler angle:   1.0000 rad ( 57.2958 deg)
    Euler axis: [  1.0000,   0.0000,   0.0000]
 
-julia> Θ = EulerAngles(1,1,1,:XYZ);
+julia> Θ = EulerAngles(1, 1, 1, :XYZ);
 
 julia> angle_to_angleaxis(Θ)
 EulerAngleAxis{Float64}:
@@ -300,11 +300,11 @@ function angle_to_quat(Θ::EulerAngles)
 ```
 
 ```jldoctest
-julia> q = angle_to_quat(pi/2, pi/4, pi/3, :ZYX)
+julia> q = angle_to_quat(pi / 2, pi / 4, pi / 3, :ZYX)
 Quaternion{Float64}:
   + 0.7010573846499779 + 0.09229595564125723.i + 0.5609855267969309.j + 0.43045933457687935.k
 
-julia> angles = EulerAngles(pi/2, pi/4, pi/3, :ZYX);
+julia> angles = EulerAngles(pi / 2, pi / 4, pi / 3, :ZYX);
 
 julia> q    = angle_to_quat(angles)
 Quaternion{Float64}:
