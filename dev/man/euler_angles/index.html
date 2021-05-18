@@ -4,65 +4,62 @@
     a2::T
     a3::T
     rot_seq::Symbol
-end</code></pre><p>in which <code>a1</code>, <code>a2</code>, and <code>a3</code> define the angles and the <code>rot_seq</code> is a symbol that defines the axes. The valid values for <code>rot_seq</code> are:</p><ul><li><code>:XYX</code>, <code>:XYZ</code>, <code>:XZX</code>, <code>:XZY</code>, <code>:YXY</code>, <code>:YXZ</code>, <code>:YZX</code>, <code>:YZY</code>, <code>:ZXY</code>, <code>:ZXZ</code>, <code>:ZYX</code>, and <code>ZYZ</code>.</li></ul><p>The constructor for this structure is:</p><pre><code class="language-julia">function EulerAngles(a1::T1, a2::T2, a3::T3, rot_seq::Symbol = :ZYX) where {T1,T2,T3}</code></pre><p>in which a <code>EulerAngles</code> with angles <code>a1</code>, <code>a2</code>, and <code>a3</code> [rad] and rotation sequence <code>rot_seq</code> will be created. Notice that the type of the returned structure will be selected according to the input types <code>T1</code>, <code>T2</code>, and <code>T3</code>. If <code>rot_seq</code> is omitted, then it defaults to <code>:ZYX</code>.</p><pre><code class="language-julia-repl">julia&gt; EulerAngles(1,1,1)
+end</code></pre><p>in which <code>a1</code>, <code>a2</code>, and <code>a3</code> define the angles and the <code>rot_seq</code> is a symbol that defines the axes. The valid values for <code>rot_seq</code> are:</p><ul><li><code>:XYX</code>, <code>:XYZ</code>, <code>:XZX</code>, <code>:XZY</code>, <code>:YXY</code>, <code>:YXZ</code>, <code>:YZX</code>, <code>:YZY</code>, <code>:ZXY</code>, <code>:ZXZ</code>, <code>:ZYX</code>, and <code>ZYZ</code>.</li></ul><p>The constructor for this structure is:</p><pre><code class="language-julia">function EulerAngles(a1::T1, a2::T2, a3::T3, rot_seq::Symbol = :ZYX) where {T1,T2,T3}</code></pre><p>in which a <code>EulerAngles</code> with angles <code>a1</code>, <code>a2</code>, and <code>a3</code> [rad] and rotation sequence <code>rot_seq</code> will be created. Notice that the type of the returned structure will be selected according to the input types <code>T1</code>, <code>T2</code>, and <code>T3</code>. If <code>rot_seq</code> is omitted, then it defaults to <code>:ZYX</code>.</p><pre><code class="language-julia-repl">julia&gt; EulerAngles(1, 1, 1)
 EulerAngles{Int64}:
-  R(Z):   1.0000 rad (  57.2958 deg)
-  R(Y):   1.0000 rad (  57.2958 deg)
-  R(X):   1.0000 rad (  57.2958 deg)
+  R(Z) :  1 rad  ( 57.2958°)
+  R(Y) :  1 rad  ( 57.2958°)
+  R(X) :  1 rad  ( 57.2958°)
 
-julia&gt; EulerAngles(1,1,1.0f0,:XYZ)
+julia&gt; EulerAngles(1, 1, 1.0f0, :XYZ)
 EulerAngles{Float32}:
-  R(X):   1.0000 rad (  57.2958 deg)
-  R(Y):   1.0000 rad (  57.2958 deg)
-  R(Z):   1.0000 rad (  57.2958 deg)
+  R(X) :  1.0 rad  ( 57.2958°)
+  R(Y) :  1.0 rad  ( 57.2958°)
+  R(Z) :  1.0 rad  ( 57.2958°)
 
-julia&gt; EulerAngles(1.,1,1,:XYX)
+julia&gt; EulerAngles(1., 1, 1, :XYX)
 EulerAngles{Float64}:
-  R(X):   1.0000 rad (  57.2958 deg)
-  R(Y):   1.0000 rad (  57.2958 deg)
-  R(X):   1.0000 rad (  57.2958 deg)
-</code></pre><h2 id="Operations"><a class="docs-heading-anchor" href="#Operations">Operations</a><a id="Operations-1"></a><a class="docs-heading-anchor-permalink" href="#Operations" title="Permalink"></a></h2><h3 id="Multiplication"><a class="docs-heading-anchor" href="#Multiplication">Multiplication</a><a id="Multiplication-1"></a><a class="docs-heading-anchor-permalink" href="#Multiplication" title="Permalink"></a></h3><p>The multiplication of two Euler angles is defined here as the composition of the rotations. Let <span>$\Theta_1$</span> and <span>$\Theta_2$</span> be two sequences of Euler angles (instances of the structure <code>EulerAngles</code>). Thus, the operation:</p><p class="math-container">\[\Theta_{2,1} = \Theta_2 \cdot \Theta_1\]</p><p>will return a new set of Euler angles <span>$\Theta_{2,1}$</span> that represents the composed rotation of <span>$\Theta_1$</span> followed by <span>$\Theta_2$</span>. Notice that <span>$\Theta_{2,1}$</span> will be represented using the same rotation sequence as <span>$\Theta_2$</span>.</p><pre><code class="language-julia-repl">julia&gt; a1 = EulerAngles(1,0,0,:ZYX);
+  R(X) :  1.0 rad  ( 57.2958°)
+  R(Y) :  1.0 rad  ( 57.2958°)
+  R(X) :  1.0 rad  ( 57.2958°)</code></pre><h2 id="Operations"><a class="docs-heading-anchor" href="#Operations">Operations</a><a id="Operations-1"></a><a class="docs-heading-anchor-permalink" href="#Operations" title="Permalink"></a></h2><h3 id="Multiplication"><a class="docs-heading-anchor" href="#Multiplication">Multiplication</a><a id="Multiplication-1"></a><a class="docs-heading-anchor-permalink" href="#Multiplication" title="Permalink"></a></h3><p>The multiplication of two Euler angles is defined here as the composition of the rotations. Let <span>$\Theta_1$</span> and <span>$\Theta_2$</span> be two sequences of Euler angles (instances of the structure <code>EulerAngles</code>). Thus, the operation:</p><p class="math-container">\[\Theta_{2,1} = \Theta_2 \cdot \Theta_1\]</p><p>will return a new set of Euler angles <span>$\Theta_{2,1}$</span> that represents the composed rotation of <span>$\Theta_1$</span> followed by <span>$\Theta_2$</span>. Notice that <span>$\Theta_{2,1}$</span> will be represented using the same rotation sequence as <span>$\Theta_2$</span>.</p><pre><code class="language-julia-repl">julia&gt; a1 = EulerAngles(1, 0, 0, :ZYX);
 
-julia&gt; a2 = EulerAngles(0,-1,0,:YZY);
+julia&gt; a2 = EulerAngles(0, -1, 0, :YZY);
 
-julia&gt; a2*a1
+julia&gt; a2 * a1
 EulerAngles{Float64}:
-  R(Y):   0.0000 rad (   0.0000 deg)
-  R(Z):   0.0000 rad (   0.0000 deg)
-  R(Y):   0.0000 rad (   0.0000 deg)
+  R(Y) :  0.0 rad  ( 0.0°)
+  R(Z) :  0.0 rad  ( 0.0°)
+  R(Y) :  0.0 rad  ( 0.0°)
 
-julia&gt; a1 = EulerAngles(1,1,1,:YZY);
+julia&gt; a1 = EulerAngles(1, 1, 1, :YZY);
 
-julia&gt; a2 = EulerAngles(0,0,-1,:YZY);
+julia&gt; a2 = EulerAngles(0, 0, -1, :YZY);
 
-julia&gt; a2*a1
+julia&gt; a2 * a1
 EulerAngles{Float64}:
-  R(Y):   1.0000 rad (  57.2958 deg)
-  R(Z):   1.0000 rad (  57.2958 deg)
-  R(Y):   0.0000 rad (   0.0000 deg)
+  R(Y) :  1.0         rad  ( 57.2958°)
+  R(Z) :  1.0         rad  ( 57.2958°)
+  R(Y) :  1.31938e-16 rad  ( 7.55951e-15°)
 
-julia&gt; a1 = EulerAngles(1.3,2.2,1.4,:XYZ);
+julia&gt; a1 = EulerAngles(1.3, 2.2, 1.4, :XYZ);
 
-julia&gt; a2 = EulerAngles(-1.4,-2.2,-1.3,:ZYX);
+julia&gt; a2 = EulerAngles(-1.4, -2.2, -1.3, :ZYX);
 
-julia&gt; a2*a1
+julia&gt; a2 * a1
 EulerAngles{Float64}:
-  R(Z):  -0.0000 rad (  -0.0000 deg)
-  R(Y):   0.0000 rad (   0.0000 deg)
-  R(X):  -0.0000 rad (  -0.0000 deg)
-</code></pre><h3 id="Inversion"><a class="docs-heading-anchor" href="#Inversion">Inversion</a><a id="Inversion-1"></a><a class="docs-heading-anchor-permalink" href="#Inversion" title="Permalink"></a></h3><p>The <code>inv</code> function applied to Euler angles will return the inverse rotation. If the Euler angles <span>$\Theta$</span> represent a rotation through the axes <span>$a_1$</span>, <span>$a_2$</span>, and <span>$a_3$</span> by angles <span>$\alpha_1$</span>, <span>$\alpha_2$</span>, and <span>$\alpha_3$</span>, then <span>$\Theta^{-1}$</span> is a rotation through the axes <span>$a_3$</span>, <span>$a_2$</span>, and <span>$a_1$</span> by angles <span>$-\alpha_3$</span>, <span>$-\alpha_2$</span>, and <span>$-\alpha_1$</span>.</p><pre><code class="language-julia-repl">julia&gt; a = EulerAngles(1,2,3,:ZYX);
+  R(Z) : -8.32667e-17 rad  (-4.77083e-15°)
+  R(Y) :  3.33067e-16 rad  ( 1.90833e-14°)
+  R(X) : -1.11022e-16 rad  (-6.36111e-15°)</code></pre><h3 id="Inversion"><a class="docs-heading-anchor" href="#Inversion">Inversion</a><a id="Inversion-1"></a><a class="docs-heading-anchor-permalink" href="#Inversion" title="Permalink"></a></h3><p>The <code>inv</code> function applied to Euler angles will return the inverse rotation. If the Euler angles <span>$\Theta$</span> represent a rotation through the axes <span>$a_1$</span>, <span>$a_2$</span>, and <span>$a_3$</span> by angles <span>$\alpha_1$</span>, <span>$\alpha_2$</span>, and <span>$\alpha_3$</span>, then <span>$\Theta^{-1}$</span> is a rotation through the axes <span>$a_3$</span>, <span>$a_2$</span>, and <span>$a_1$</span> by angles <span>$-\alpha_3$</span>, <span>$-\alpha_2$</span>, and <span>$-\alpha_1$</span>.</p><pre><code class="language-julia-repl">julia&gt; a = EulerAngles(1,2,3,:ZYX);
 
 julia&gt; inv(a)
 EulerAngles{Int64}:
-  R(X):  -3.0000 rad (-171.8873 deg)
-  R(Y):  -2.0000 rad (-114.5916 deg)
-  R(Z):  -1.0000 rad ( -57.2958 deg)
+  R(X) : -3 rad  (-171.887°)
+  R(Y) : -2 rad  (-114.592°)
+  R(Z) : -1 rad  (-57.2958°)
 
 julia&gt; a = EulerAngles(1.2,3.3,4.6,:XYX);
 
 julia&gt; a*inv(a)
 EulerAngles{Float64}:
-  R(X):  -0.0000 rad (  -0.0000 deg)
-  R(Y):   0.0000 rad (   0.0000 deg)
-  R(X):   0.0000 rad (   0.0000 deg)
-</code></pre><div class="admonition is-warning"><header class="admonition-header">Warning</header><div class="admonition-body"><p>All the operations related to Euler angles first convert them to DCM or Quaternions, and then the result is converted back to Euler angles. Hence, the performance will not be good.</p></div></div></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../euler_angle_axis/">« Euler Angle and Axis</a><a class="docs-footer-nextpage" href="../quaternions/">Quaternions »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Tuesday 18 May 2021 16:38">Tuesday 18 May 2021</span>. Using Julia version 1.6.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+  R(X) : -1.92593e-34 rad  (-1.10348e-32°)
+  R(Y) :  0.0         rad  ( 0.0°)
+  R(X) :  0.0         rad  ( 0.0°)</code></pre><div class="admonition is-warning"><header class="admonition-header">Warning</header><div class="admonition-body"><p>All the operations related to Euler angles first convert them to DCM or Quaternions, and then the result is converted back to Euler angles. Hence, the performance will not be good.</p></div></div></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../euler_angle_axis/">« Euler Angle and Axis</a><a class="docs-footer-nextpage" href="../quaternions/">Quaternions »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Tuesday 18 May 2021 18:19">Tuesday 18 May 2021</span>. Using Julia version 1.6.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
