@@ -57,4 +57,22 @@ include("quaternion.jl")
 
 include("deprecations.jl")
 
+include("./conversions/angle_to_angle.jl")
+include("./conversions/angle_to_angleaxis.jl")
+include("./conversions/angle_to_dcm.jl")
+include("./conversions/angle_to_quat.jl")
+include("./conversions/angle_to_rot.jl")
+include("./conversions/angleaxis_to_angle.jl")
+include("./conversions/angleaxis_to_dcm.jl")
+include("./conversions/angleaxis_to_quat.jl")
+include("./conversions/dcm_to_angle.jl")
+include("./conversions/dcm_to_angleaxis.jl")
+include("./conversions/dcm_to_quat.jl")
+include("./conversions/quat_to_angle.jl")
+include("./conversions/quat_to_angleaxis.jl")
+include("./conversions/quat_to_dcm.jl")
+include("./conversions/smallangle_to_dcm.jl")
+include("./conversions/smallangle_to_quat.jl")
+include("./conversions/smallangle_to_rot.jl")
+
 end # module

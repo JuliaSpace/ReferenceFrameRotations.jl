@@ -7,8 +7,8 @@
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-# File: ./src/angleaxis.jl
-# ========================
+# File: ./src/conversions/angleaxis_to_angle.jl
+# =============================================
 
 # Functions: angleaxis_to_angle
 # -----------------------------

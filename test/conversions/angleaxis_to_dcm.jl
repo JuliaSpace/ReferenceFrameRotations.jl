@@ -7,8 +7,8 @@
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-# File: ./src/angleaxis.jl
-# ========================
+# File: ./src/conversions/angleaxis_to_dcm.jl
+# ===========================================
 
 # Functions: angleaxis_to_dcm
 # ---------------------------

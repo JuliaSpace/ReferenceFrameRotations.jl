@@ -7,8 +7,8 @@
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-# File: ./src/quaternion.jl
-# =========================
+# File: ./src/conversions/quaternion_to_angleaxis.jl
+# ==================================================
 
 # Functions: quat_to_angleaxis
 # ----------------------------

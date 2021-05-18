@@ -7,8 +7,8 @@
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-# File: ./src/quaternion.jl
-# =========================
+# File: ./src/conversions/quaternion_to_angle.jl
+# ==============================================
 
 # Functions: quat_to_angle
 # ------------------------

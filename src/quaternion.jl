@@ -7,7 +7,7 @@
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-export dquat, eye, norm, quat_to_angle, quat_to_angleaxis, quat_to_dcm, vect
+export dquat, eye, norm, vect
 
 ################################################################################
 #                                 Constructors
@@ -771,130 +771,6 @@ function show(io::IO, mime::MIME"text/plain", q::Quaternion{T}) where T
     print(io, "  $(sq0) $(aq0) $(sq1) $(aq1).$i $(sq2) $(aq2).$j $(sq3) $(aq3).$k")
 
     return nothing
-end
-
-################################################################################
-#                                 Conversions
-################################################################################
-
-# Direction Cosine Matrix
-# ==============================================================================
-
-"""
-    quat_to_dcm(q::Quaternion)
-
-Convert the quaternion `q` to a Direction Cosine Matrix (DCM).
-
-# Examples
-
-```julia-repl
-julia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0);
-
-julia> quat_to_dcm(q)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
- 1.0   0.0       0.0
- 0.0   0.707107  0.707107
- 0.0  -0.707107  0.707107
-```
-"""
-function quat_to_dcm(q::Quaternion)
-    # Auxiliary variables.
-    q0 = q.q0
-    q1 = q.q1
-    q2 = q.q2
-    q3 = q.q3
-
-    return DCM(
-        q0^2+q1^2-q2^2-q3^2,   2(q1*q2+q0*q3)   ,   2(q1*q3-q0*q2),
-          2(q1*q2-q0*q3)   , q0^2-q1^2+q2^2-q3^2,   2(q2*q3+q0*q1),
-          2(q1*q3+q0*q2)   ,   2(q2*q3-q0*q1)   , q0^2-q1^2-q2^2+q3^2
-    )'
-end
-
-# Euler Angle and Axis
-# ==============================================================================
-
-"""
-    quat_to_angleaxis(q::Quaternion{T}) where T
-
-Convert the quaternion `q` to a Euler angle and axis representation (see
-[`EulerAngleAxis`](@ref)). By convention, the Euler angle will be kept between
-`[0, π] rad`.
-
-# Remarks
-
-This function will not fail if the quaternion norm is not 1. However, the
-meaning of the results will not be defined, because the input quaternion does
-not represent a 3D rotation. The user must handle such situations.
-
-# Examples
-
-```julia-repl
-julia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0)
-Quaternion{Float64}:
-  + 0.9238795325112867 + 0.3826834323650898.i + 0.0.j + 0.0.k
-
-julia> quat_to_angleaxis(q)
-EulerAngleAxis{Float64}:
-  Euler angle:   0.7854 rad ( 45.0000 deg)
-   Euler axis: [  1.0000,   0.0000,   0.0000]
-```
-"""
-function quat_to_angleaxis(q::Quaternion{T}) where T
-    # If `q0` is 1 or -1, then we have an identity rotation.
-    if abs(q.q0) >= 1 - eps()
-        return EulerAngleAxis(T(0), SVector{3, T}(0, 0, 0))
-    else
-        # Compute sin(θ/2).
-        sθo2 = √( q.q1 * q.q1 + q.q2 * q.q2 + q.q3 * q.q3 )
-
-        # Compute θ in range [0, 2π].
-        θ = 2acos(q.q0)
-
-        # Keep θ between [0, π].
-        s = +1
-        if θ > π
-            θ = T(2π) - θ
-            s = -1
-        end
-
-        return EulerAngleAxis( θ, s * [q.q1, q.q2, q.q3] / sθo2 )
-    end
-end
-
-# Euler Angles
-# ==============================================================================
-
-"""
-    quat_to_angle(q::Quaternion, rot_seq::Symbol = :ZYX)
-
-Convert the quaternion `q` to Euler Angles (see [`EulerAngles`](@ref)) given a
-rotation sequence `rot_seq`.
-
-The rotation sequence is defined by a `:Symbol`. The possible values are:
-`:XYX`, `XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`,
-`:ZYX`, and `:ZYZ`. If no value is specified, then it defaults to `:ZYX`.
-
-# Examples
-
-```julia-repl
-julia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0)
-Quaternion{Float64}:
-  + 0.9238795325112867 + 0.3826834323650898.i + 0.0.j + 0.0.k
-
-julia> quat_to_angle(q,:XYZ)
-EulerAngles{Float64}:
-  R(X):   0.7854 rad (  45.0000 deg)
-  R(Y):   0.0000 rad (   0.0000 deg)
-  R(Z):   0.0000 rad (   0.0000 deg)
-```
-"""
-function quat_to_angle(q::Quaternion, rot_seq::Symbol = :ZYX)
-    # Convert the quaternion to DCM.
-    dcm = quat_to_dcm(q)
-
-    # Convert the DCM to the Euler Angles.
-    return dcm_to_angle(dcm, rot_seq)
 end
 
 ################################################################################
