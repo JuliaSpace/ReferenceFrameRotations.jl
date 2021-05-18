@@ -42,6 +42,10 @@
         (_rand_ang(), 0           , _rand_ang(), :X, :Z, :X, :sum)
         (_rand_ang(), +π          , _rand_ang(), :X, :Z, :X, :sub)
         (_rand_ang(), -π          , _rand_ang(), :X, :Z, :X, :sub)
+        # XZY
+        (_rand_ang(), _rand_ang2(), _rand_ang(), :X, :Z, :Y, :none)
+        (_rand_ang(), +π / 2      , _rand_ang(), :X, :Z, :Y, :sub)
+        (_rand_ang(), -π / 2      , _rand_ang(), :X, :Z, :Y, :sum)
         # YXY
         (_rand_ang(), _rand_ang3(), _rand_ang(), :Y, :X, :Y, :none)
         (_rand_ang(), 0           , _rand_ang(), :Y, :X, :Y, :sum)
@@ -51,6 +55,10 @@
         (_rand_ang(), _rand_ang2(), _rand_ang(), :Y, :X, :Z, :none)
         (_rand_ang(), +π / 2      , _rand_ang(), :Y, :X, :Z, :sub)
         (_rand_ang(), -π / 2      , _rand_ang(), :Y, :X, :Z, :sum)
+        # YZX
+        (_rand_ang(), _rand_ang2(), _rand_ang(), :Y, :Z, :X, :none)
+        (_rand_ang(), +π / 2      , _rand_ang(), :Y, :Z, :X, :sum)
+        (_rand_ang(), -π / 2      , _rand_ang(), :Y, :Z, :X, :sub)
         # YZY
         (_rand_ang(), _rand_ang3(), _rand_ang(), :Y, :Z, :Y, :none)
         (_rand_ang(), 0           , _rand_ang(), :Y, :Z, :Y, :sum)
