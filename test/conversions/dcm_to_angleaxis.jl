@@ -89,26 +89,133 @@ end
 end
 
 @testset "DCM => Euler angle and axis (Special cases)" begin
-    # Test special cases
+    # Float64
     # ==========================================================================
 
-    D = DCM(I)
+    T = Float64
+
+    D = DCM(T(1) * I)
     av = dcm_to_angleaxis(D)
+    @test eltype(av) === T
     @test av.a ≈ 0
     @test av.v ≈ [0, 0, 0]
 
-    D = create_rotation_matrix(π, :X)
+    D = create_rotation_matrix(T(π), :X)
     av = dcm_to_angleaxis(D)
+    @test eltype(av) === T
     @test av.a ≈ π
     @test av.v ≈ [1, 0, 0]
 
-    D = create_rotation_matrix(π, :Y)
+    D = create_rotation_matrix(T(π), :Y)
     av = dcm_to_angleaxis(D)
+    @test eltype(av) === T
     @test av.a ≈ π
     @test av.v ≈ [0, 1, 0]
 
-    D = create_rotation_matrix(π, :Z)
+    D = create_rotation_matrix(T(π), :Z)
     av = dcm_to_angleaxis(D)
+    @test eltype(av) === T
     @test av.a ≈ π
     @test av.v ≈ [0, 0, 1]
+
+    D = create_rotation_matrix(T(2π / 3), :X)
+    av = dcm_to_angleaxis(D)
+    @test eltype(av) === T
+    @test av.a ≈ T(2π / 3)
+    @test av.v ≈ [1, 0, 0]
+
+    D = create_rotation_matrix(T(-2π / 3), :X)
+    av = dcm_to_angleaxis(D)
+    @test eltype(av) === T
+    @test av.a ≈ T(2π / 3)
+    @test av.v ≈ [-1, 0, 0]
+
+    D = create_rotation_matrix(T(2π / 3), :Y)
+    av = dcm_to_angleaxis(D)
+    @test eltype(av) === T
+    @test av.a ≈ T(2π / 3)
+    @test av.v ≈ [0, 1, 0]
+
+    D = create_rotation_matrix(T(-2π / 3), :Y)
+    av = dcm_to_angleaxis(D)
+    @test eltype(av) === T
+    @test av.a ≈ T(2π / 3)
+    @test av.v ≈ [0, -1, 0]
+
+    D = create_rotation_matrix(T(2π / 3), :Z)
+    av = dcm_to_angleaxis(D)
+    @test eltype(av) === T
+    @test av.a ≈ T(2π / 3)
+    @test av.v ≈ [0, 0, 1]
+
+    D = create_rotation_matrix(T(-2π / 3), :Z)
+    av = dcm_to_angleaxis(D)
+    @test eltype(av) === T
+    @test av.a ≈ T(2π / 3)
+    @test av.v ≈ [0, 0, -1]
+
+    # Float32
+    # ==========================================================================
+
+    T = Float32
+
+    D = DCM(T(1) * I)
+    av = dcm_to_angleaxis(D)
+    @test eltype(av) === T
+    @test av.a ≈ 0
+    @test av.v ≈ [0, 0, 0]
+
+    D = create_rotation_matrix(T(π), :X)
+    av = dcm_to_angleaxis(D)
+    @test eltype(av) === T
+    @test av.a ≈ π
+    @test av.v ≈ [1, 0, 0]
+
+    D = create_rotation_matrix(T(π), :Y)
+    av = dcm_to_angleaxis(D)
+    @test eltype(av) === T
+    @test av.a ≈ π
+    @test av.v ≈ [0, 1, 0]
+
+    D = create_rotation_matrix(T(π), :Z)
+    av = dcm_to_angleaxis(D)
+    @test eltype(av) === T
+    @test av.a ≈ π
+    @test av.v ≈ [0, 0, 1]
+
+    D = create_rotation_matrix(T(2π / 3), :X)
+    av = dcm_to_angleaxis(D)
+    @test eltype(av) === T
+    @test av.a ≈ T(2π / 3)
+    @test av.v ≈ [1, 0, 0]
+
+    D = create_rotation_matrix(T(-2π / 3), :X)
+    av = dcm_to_angleaxis(D)
+    @test eltype(av) === T
+    @test av.a ≈ T(2π / 3)
+    @test av.v ≈ [-1, 0, 0]
+
+    D = create_rotation_matrix(T(2π / 3), :Y)
+    av = dcm_to_angleaxis(D)
+    @test eltype(av) === T
+    @test av.a ≈ T(2π / 3)
+    @test av.v ≈ [0, 1, 0]
+
+    D = create_rotation_matrix(T(-2π / 3), :Y)
+    av = dcm_to_angleaxis(D)
+    @test eltype(av) === T
+    @test av.a ≈ T(2π / 3)
+    @test av.v ≈ [0, -1, 0]
+
+    D = create_rotation_matrix(T(2π / 3), :Z)
+    av = dcm_to_angleaxis(D)
+    @test eltype(av) === T
+    @test av.a ≈ T(2π / 3)
+    @test av.v ≈ [0, 0, 1]
+
+    D = create_rotation_matrix(T(-2π / 3), :Z)
+    av = dcm_to_angleaxis(D)
+    @test eltype(av) === T
+    @test av.a ≈ T(2π / 3)
+    @test av.v ≈ [0, 0, -1]
 end
