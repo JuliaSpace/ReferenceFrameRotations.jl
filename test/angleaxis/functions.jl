@@ -57,14 +57,14 @@ end
     show(io, MIME"text/plain"(), av)
     expected = """
         EulerAngleAxis{Float64}:
-          Euler angle:   1.0472 rad ( 60.0000 deg)
-           Euler axis: [  0.5774,  -0.5774,   0.5774]"""
+          Euler angle : 1.0472 rad  (0.018277°)
+          Euler axis  : [0.57735, -0.57735, 0.57735]"""
     @test String(take!(io.io)) == expected
 
     # Comapct printing.
     show(io, av)
     expected = """
-        EulerAngleAxis{Float64}:   1.0472 rad, [  0.5774,  -0.5774,   0.5774]"""
+        EulerAngleAxis{Float64}: θ = 1.0472 rad, v = [1.41421, 1.41421, 0.0]"""
     @test String(take!(io.io)) == expected
 
     # Colors.
@@ -72,7 +72,7 @@ end
     show(io, MIME"text/plain"(), av)
     expected = """
         EulerAngleAxis{Float64}:
-        \e[33;1m  Euler angle: \e[0m  1.0472 rad ( 60.0000 deg)
-        \e[33;1m   Euler axis: \e[0m[  0.5774,  -0.5774,   0.5774]"""
+        \e[32;1m  Euler angle : \e[0m1.0472 rad  (0.018277°)
+        \e[33;1m  Euler axis  : \e[0m[0.57735, -0.57735, 0.57735]"""
     @test String(take!(io.io)) == expected
 end

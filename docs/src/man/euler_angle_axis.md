@@ -33,26 +33,25 @@ input types `T1` and `T2`. Furthermore, the vector `v` **will not** be
 normalized.
 
 ```jldoctest
-julia> EulerAngleAxis(1,[1,1,1])
+julia> EulerAngleAxis(1, [1, 1, 1])
 EulerAngleAxis{Int64}:
-  Euler angle:   1.0000 rad ( 57.2958 deg)
-   Euler axis: [  1.0000,   1.0000,   1.0000]
+  Euler angle : 1 rad  (0.0174533°)
+  Euler axis  : [1, 1, 1]
 
-julia> EulerAngleAxis(1.f0,[1,1,1])
+julia> EulerAngleAxis(1.f0, [1, 1, 1])
 EulerAngleAxis{Float32}:
-  Euler angle:   1.0000 rad ( 57.2958 deg)
-   Euler axis: [  1.0000,   1.0000,   1.0000]
+  Euler angle : 1.0 rad  (0.0174533°)
+  Euler axis  : [1.0, 1.0, 1.0]
 
-julia> EulerAngleAxis(1,[1,1,1.f0])
+julia> EulerAngleAxis(1, [1, 1, 1.f0])
 EulerAngleAxis{Float32}:
-  Euler angle:   1.0000 rad ( 57.2958 deg)
-   Euler axis: [  1.0000,   1.0000,   1.0000]
+  Euler angle : 1.0 rad  (0.0174533°)
+  Euler axis  : [1.0, 1.0, 1.0]
 
-julia> EulerAngleAxis(1.0,[1,1,1])
+julia> EulerAngleAxis(1.0, [1, 1, 1])
 EulerAngleAxis{Float64}:
-  Euler angle:   1.0000 rad ( 57.2958 deg)
-   Euler axis: [  1.0000,   1.0000,   1.0000]
-
+  Euler angle : 1.0 rad  (0.0174533°)
+  Euler axis  : [1.0, 1.0, 1.0]
 ```
 
 ## Operations
@@ -81,19 +80,18 @@ the Euler angle of the result will always be in the interval ``[0, \pi]`` rad.
 ```jldoctest
 julia> ea1 = EulerAngleAxis(30*pi/180, [1.0;0.0;0.0])
 EulerAngleAxis{Float64}:
-  Euler angle:   0.5236 rad ( 30.0000 deg)
-   Euler axis: [  1.0000,   0.0000,   0.0000]
+  Euler angle : 0.523599 rad  (0.00913852°)
+  Euler axis  : [1.0, 0.0, 0.0]
 
 julia> ea2 = EulerAngleAxis(60*pi/180, [1.0;0.0;0.0])
 EulerAngleAxis{Float64}:
-  Euler angle:   1.0472 rad ( 60.0000 deg)
-   Euler axis: [  1.0000,   0.0000,   0.0000]
+  Euler angle : 1.0472 rad  (0.018277°)
+  Euler axis  : [1.0, 0.0, 0.0]
 
 julia> ea2*ea1
 EulerAngleAxis{Float64}:
-  Euler angle:   1.5708 rad ( 90.0000 deg)
-   Euler axis: [  1.0000,   0.0000,   0.0000]
-
+  Euler angle : 1.5708 rad  (0.0274156°)
+  Euler axis  : [1.0, 0.0, 0.0]
 ```
 
 ### Inversion
@@ -105,25 +103,24 @@ the Euler axis. By convention, the Euler angle of the result will always be in
 the interval ``[0, \pi]`` rad.
 
 ```jldoctest
-julia> ea = EulerAngleAxis(1.3,[1.0,0,0]);
+julia> ea = EulerAngleAxis(1.3, [1.0, 0, 0]);
 
 julia> inv(ea)
 EulerAngleAxis{Float64}:
-  Euler angle:   1.3000 rad ( 74.4845 deg)
-   Euler axis: [ -1.0000,  -0.0000,  -0.0000]
+  Euler angle : 1.3 rad  (0.0226893°)
+  Euler axis  : [-1.0, -0.0, -0.0]
 
-julia> ea = EulerAngleAxis(-π,[sqrt(3),sqrt(3),sqrt(3)]);
-
-julia> inv(ea)
-EulerAngleAxis{Float64}:
-  Euler angle:   3.1416 rad (180.0000 deg)
-   Euler axis: [ -1.7321,  -1.7321,  -1.7321]
-
-julia> ea = EulerAngleAxis(-3π/2,[sqrt(3),sqrt(3),sqrt(3)]);
+julia> ea = EulerAngleAxis(-π, [sqrt(3), sqrt(3), sqrt(3)]);
 
 julia> inv(ea)
 EulerAngleAxis{Float64}:
-  Euler angle:   1.5708 rad ( 90.0000 deg)
-   Euler axis: [ -1.7321,  -1.7321,  -1.7321]
+  Euler angle : 3.14159 rad  (0.0548311°)
+  Euler axis  : [-1.73205, -1.73205, -1.73205]
 
+julia> ea = EulerAngleAxis(-3π/2, [sqrt(3), sqrt(3), sqrt(3)]);
+
+julia> inv(ea)
+EulerAngleAxis{Float64}:
+  Euler angle : 1.5708 rad  (0.0274156°)
+  Euler axis  : [-1.73205, -1.73205, -1.73205]
 ```

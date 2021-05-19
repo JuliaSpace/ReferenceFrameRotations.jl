@@ -114,7 +114,7 @@ then ``\Theta^{-1}`` is a rotation through the axes ``a_3``, ``a_2``, and
 ``a_1`` by angles ``-\alpha_3``, ``-\alpha_2``, and ``-\alpha_1``.
 
 ```jldoctest
-julia> a = EulerAngles(1,2,3,:ZYX);
+julia> a = EulerAngles(1, 2, 3, :ZYX);
 
 julia> inv(a)
 EulerAngles{Int64}:
@@ -122,9 +122,9 @@ EulerAngles{Int64}:
   R(Y) : -2 rad  (-114.592°)
   R(Z) : -1 rad  (-57.2958°)
 
-julia> a = EulerAngles(1.2,3.3,4.6,:XYX);
+julia> a = EulerAngles(1.2, 3.3, 4.6, :XYX);
 
-julia> a*inv(a)
+julia> a * inv(a)
 EulerAngles{Float64}:
   R(X) : -1.92593e-34 rad  (-1.10348e-32°)
   R(Y) :  0.0         rad  ( 0.0°)

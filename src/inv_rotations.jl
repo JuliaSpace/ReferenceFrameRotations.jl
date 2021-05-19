@@ -50,8 +50,8 @@ julia> ea = EulerAngleAxis(30 * pi / 180, [1, 0, 0]);
 
 julia> inv_rotation(ea)
 EulerAngleAxis{Float64}:
-  Euler angle:   0.5236 rad ( 30.0000 deg)
-   Euler axis: [ -1.0000,  -0.0000,  -0.0000]
+  Euler angle : 0.523599 rad  (0.00913852°)
+  Euler axis  : [-1.0, -0.0, -0.0]
 
 julia> Θ = EulerAngles(-pi / 3, -pi / 2, -pi, :YXZ);
 

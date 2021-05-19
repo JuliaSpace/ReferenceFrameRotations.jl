@@ -31,16 +31,13 @@ The rotation sequence is defined by a `:Symbol`. The possible values are:
 # Example
 
 ```julia-repl
-julia> av = EulerAngleAxis(deg2rad(45), [1, 0, 0])
-EulerAngleAxis{Float64}:
-  Euler angle:   0.7854 rad ( 45.0000 deg)
-   Euler axis: [  1.0000,   0.0000,   0.0000]
+julia> av = EulerAngleAxis(deg2rad(45), [1, 0, 0]);
 
 julia> angleaxis_to_angle(av, :ZXY)
 EulerAngles{Float64}:
-  R(Z) :  0.0                rad  ( 0.0°)
-  R(X) :  0.7853981633974482 rad  ( 44.99999999999999°)
-  R(Y) :  0.0                rad  ( 0.0°)
+  R(Z) :  0.0      rad  ( 0.0°)
+  R(X) :  0.785398 rad  ( 45.0°)
+  R(Y) :  0.0      rad  ( 0.0°)
 ```
 """
 @inline function angleaxis_to_angle(θ::Number, v::AbstractVector, rot_seq::Symbol)

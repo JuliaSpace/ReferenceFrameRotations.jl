@@ -25,14 +25,12 @@ not represent a 3D rotation. The user must handle such situations.
 # Examples
 
 ```julia-repl
-julia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0)
-Quaternion{Float64}:
-  + 0.9238795325112867 + 0.3826834323650898.i + 0.0.j + 0.0.k
+julia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0);
 
 julia> quat_to_angleaxis(q)
 EulerAngleAxis{Float64}:
-  Euler angle:   0.7854 rad ( 45.0000 deg)
-   Euler axis: [  1.0000,   0.0000,   0.0000]
+  Euler angle : 0.785398 rad  (0.0137078°)
+  Euler axis  : [1.0, 0.0, 0.0]
 ```
 """
 function quat_to_angleaxis(q::Quaternion{T}) where T

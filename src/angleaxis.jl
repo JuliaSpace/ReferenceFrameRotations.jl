@@ -28,18 +28,18 @@ This function neither verifies this nor normalizes the vector.
 ```julia-repl
 julia> av1 = EulerAngleAxis(deg2rad(45), [sqrt(2)/2, sqrt(2)/2, 0])
 EulerAngleAxis{Float64}:
-  Euler angle:   0.7854 rad ( 45.0000 deg)
-   Euler axis: [  0.7071,   0.7071,   0.0000]
+  Euler angle : 0.785398 rad  (0.0137078°)
+  Euler axis  : [0.707107, 0.707107, 0.0]
 
 julia> av2 = EulerAngleAxis(deg2rad(22.5), [sqrt(2)/2, sqrt(2)/2, 0])
 EulerAngleAxis{Float64}:
-  Euler angle:   0.3927 rad ( 22.5000 deg)
-   Euler axis: [  0.7071,   0.7071,   0.0000]
+  Euler angle : 0.392699 rad  (0.00685389°)
+  Euler axis  : [0.707107, 0.707107, 0.0]
 
 julia> av1 * av2
 EulerAngleAxis{Float64}:
-  Euler angle:   1.1781 rad ( 67.5000 deg)
-   Euler axis: [  0.7071,   0.7071,   0.0000]
+  Euler angle : 1.1781 rad  (0.0205617°)
+  Euler axis  : [0.707107, 0.707107, 0.0]
 ```
 """
 function *(av₂::EulerAngleAxis{T1}, av₁::EulerAngleAxis{T2}) where {T1, T2}
@@ -128,11 +128,17 @@ end
 ################################################################################
 
 function show(io::IO, av::EulerAngleAxis{T}) where T
-    θ   = av.a
-    v   = av.v
-    str = @sprintf "%8.4f rad, [%8.4f, %8.4f, %8.4f]" av.a v[1] v[2] v[3]
+    # Get if `io` request a compact printing, defaulting to true.
+    compact_printing = get(io, :compact, true)
 
-    print(io, "EulerAngleAxis{$T}: $str")
+    # Convert the values using `print` and compact printing.
+    θ_str  = sprint(print, av.a;    context = :compact => compact_printing)
+    v₁_str = sprint(print, av.v[1]; context = :compact => compact_printing)
+    v₂_str = sprint(print, av.v[2]; context = :compact => compact_printing)
+    v₃_str = sprint(print, av.v[3]; context = :compact => compact_printing)
+
+    print(io, "EulerAngleAxis{$T}: θ = " * θ_str * " rad, v = [" *
+        v₁_str * ", " * v₂_str * ", " * v₃_str * "]")
 
     return nothing
 end
@@ -141,15 +147,32 @@ function show(io::IO, mime::MIME"text/plain", av::EulerAngleAxis{T}) where T
     # Check if the user wants colors.
     color = get(io, :color, false)
 
+    # Check if the user wants compact printing, defaulting to `true`.
+    compact_printing = get(io, :compact, true)
+
+    # Assemble the context.
+    context = IOContext(io, :color => color, :compact => compact_printing)
+
+    g = (color) ? _g : ""
     y = (color) ? _y : ""
     d = (color) ? _d : ""
 
-    str_a = @sprintf "%8.4f rad (%8.4f deg)" av.a rad2deg(av.a)
-    str_v = @sprintf "[%8.4f, %8.4f, %8.4f]" av.v[1] av.v[2] av.v[3]
+    θ_str  = sprint(print, av.a; context = context)
+    θd_str = sprint(print, deg2rad(av.a); context = context)
+    v₁_str = sprint(print, av.v[1]; context = context)
+    v₂_str = sprint(print, av.v[2]; context = context)
+    v₃_str = sprint(print, av.v[3]; context = context)
 
     println(io, "EulerAngleAxis{$T}:")
-    println(io, "$y  Euler angle: $d" * str_a)
-      print(io, "$y   Euler axis: $d" * str_v)
+    print(  io, g)
+    print(  io, "  Euler angle : ")
+    print(  io, d)
+    print(  io, θ_str * " rad  ")
+    println(io, "(" * θd_str * "°)")
+    print(  io, y)
+    print(  io, "  Euler axis  : ")
+    print(  io, d)
+    print(io, "[" * v₁_str * ", " * v₂_str * ", " * v₃_str * "]")
 
     return nothing
 end

@@ -58,8 +58,8 @@ julia> ea2 = EulerAngleAxis(45 * pi / 180, [0, 1, 0]);
 
 julia> compose_rotation(ea1, ea2)
 EulerAngleAxis{Float64}:
-  Euler angle:   1.3090 rad ( 75.0000 deg)
-   Euler axis: [  0.0000,   1.0000,   0.0000]
+  Euler angle : 1.309 rad  (0.0228463°)
+  Euler axis  : [0.0, 1.0, 0.0]
 
 julia> Θ1 = EulerAngles(1, 2, 3, :ZYX);
 
