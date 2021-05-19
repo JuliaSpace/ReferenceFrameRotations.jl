@@ -64,7 +64,7 @@ end
     # Comapct printing.
     show(io, av)
     expected = """
-        EulerAngleAxis{Float64}: θ = 1.0472 rad, v = [1.41421, 1.41421, 0.0]"""
+        EulerAngleAxis{Float64}: θ = 1.0472 rad, v = [0.57735, -0.57735, 0.57735]"""
     @test String(take!(io.io)) == expected
 
     # Colors.
