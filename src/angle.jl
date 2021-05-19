@@ -119,18 +119,18 @@ end
 
 function show(io::IO, mime::MIME"text/plain", Θ::EulerAngles{T}) where T
     # Check if the user wants colors.
-    color = get(io, :color, false)
+    color = get(io, :color, false)::Bool
 
     # Check if the user wants compact printing, defaulting to `true`.
-    compact_printing = get(io, :compact, true)
+    compact_printing = get(io, :compact, true)::Bool
 
     # Assemble the context.
     context = IOContext(io, :color => color, :compact => compact_printing)
 
-    d = (color) ? _d : ""
-    g = (color) ? _g : ""
-    y = (color) ? _y : ""
-    u = (color) ? _u : ""
+    d = color ? string(_d) : ""
+    g = color ? string(_g) : ""
+    y = color ? string(_y) : ""
+    u = color ? string(_u) : ""
 
     # Convert the values using `print` and compact printing.
     θ₁_alg = !signbit(Θ.a1) ? " " : ""

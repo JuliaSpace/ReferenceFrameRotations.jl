@@ -145,17 +145,17 @@ end
 
 function show(io::IO, mime::MIME"text/plain", av::EulerAngleAxis{T}) where T
     # Check if the user wants colors.
-    color = get(io, :color, false)
+    color = get(io, :color, false)::Bool
 
     # Check if the user wants compact printing, defaulting to `true`.
-    compact_printing = get(io, :compact, true)
+    compact_printing = get(io, :compact, true)::Bool
 
     # Assemble the context.
     context = IOContext(io, :color => color, :compact => compact_printing)
 
-    g = (color) ? _g : ""
-    y = (color) ? _y : ""
-    d = (color) ? _d : ""
+    g = color ? string(_g) : ""
+    y = color ? string(_y) : ""
+    d = color ? string(_d) : ""
 
     θ_str  = sprint(print, av.a; context = context)
     θd_str = sprint(print, deg2rad(av.a); context = context)
