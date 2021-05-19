@@ -219,3 +219,45 @@ end
     D = DCM(I)
     @test_throws ArgumentError dcm_to_angle(D, :XXY)
 end
+
+@testset "DCM => Euler angles (internal functions)" begin
+    # Float64
+    # ==========================================================================
+    T = Float64
+
+    a = ReferenceFrameRotations._mod_acos(1.0 + eps(T))
+    @test a isa T
+    @test a == 0
+
+    a = ReferenceFrameRotations._mod_acos(-1.0 - eps(T))
+    @test a isa T
+    @test a == T(π)
+
+    a = ReferenceFrameRotations._mod_asin(1.0 + eps(T))
+    @test a isa T
+    @test a == T(π / 2)
+
+    a = ReferenceFrameRotations._mod_asin(-1.0 - eps(T))
+    @test a isa T
+    @test a == T(-π / 2)
+
+    # Float32
+    # ==========================================================================
+    T = Float32
+
+    a = ReferenceFrameRotations._mod_acos(1.0f0 + eps(T))
+    @test a isa T
+    @test a == 0
+
+    a = ReferenceFrameRotations._mod_acos(-1.0f0 - eps(T))
+    @test a isa T
+    @test a == T(π)
+
+    a = ReferenceFrameRotations._mod_asin(1.0f0 + eps(T))
+    @test a isa T
+    @test a == T(π / 2)
+
+    a = ReferenceFrameRotations._mod_asin(-1.0f0 - eps(T))
+    @test a isa T
+    @test a == T(-π / 2)
+end
