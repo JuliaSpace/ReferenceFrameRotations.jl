@@ -34,7 +34,7 @@ is set to 0.
 
 # Example
 
-```julia-repl
+```jldoctest
 julia> D = DCM([1. 0. 0.; 0. 0. -1; 0. -1 0.]);
 
 julia> dcm_to_angle(D,:XYZ)

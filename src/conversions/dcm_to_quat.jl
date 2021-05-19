@@ -27,7 +27,7 @@ This algorithm was obtained from [^1].
 
 # Example
 
-```julia-repl
+```jldoctest
 julia> dcm = angle_to_dcm(pi / 2, 0.0, 0.0, :XYZ);
 
 julia> q = dcm_to_quat(dcm)

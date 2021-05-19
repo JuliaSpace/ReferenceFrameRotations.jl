@@ -37,7 +37,7 @@ The output will have the same type as `R`.
 
 # Example
 
-```julia-repl
+```jldoctest
 julia> D = angle_to_dcm(pi / 3, pi / 4, pi / 5, :ZYX);
 
 julia> inv_rotation(D)

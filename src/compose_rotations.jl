@@ -41,7 +41,7 @@ The output will have the same type as the inputs.
 
 # Example
 
-```julia-repl
+```jldoctest
 julia> D1 = angle_to_dcm(pi / 3, pi / 4, pi / 5, :ZYX);
 
 julia> D2 = angle_to_dcm(-pi / 5, -pi / 4, -pi / 3, :XYZ);
@@ -58,7 +58,7 @@ julia> ea2 = EulerAngleAxis(45 * pi / 180, [0, 1, 0]);
 
 julia> compose_rotation(ea1, ea2)
 EulerAngleAxis{Float64}:
-  Euler angle : 1.309 rad  (0.0228463°)
+  Euler angle : 1.309 rad  (75.0°)
   Euler axis  : [0.0, 1.0, 0.0]
 
 julia> Θ1 = EulerAngles(1, 2, 3, :ZYX);
@@ -67,9 +67,9 @@ julia> Θ2 = EulerAngles(-3, -2, -1, :XYZ);
 
 julia> compose_rotation(Θ1, Θ2)
 EulerAngles{Float64}:
-  R(X) : -1.6653345369377348e-16 rad  (-9.54166404439055e-15°)
-  R(Y) :  9.244463733058732e-33  rad  ( 5.29668755766019e-31°)
-  R(Z) : -1.1102230246251565e-16 rad  (-6.3611093629270335e-15°)
+  R(X) : -1.66533e-16 rad  (-9.54166e-15°)
+  R(Y) :  9.24446e-33 rad  ( 5.29669e-31°)
+  R(Z) : -1.11022e-16 rad  (-6.36111e-15°)
 
 julia> q1 = angle_to_quat(pi / 3, pi / 4, pi / 5, :ZYX);
 
@@ -77,7 +77,7 @@ julia> q2 = angle_to_quat(-pi / 5, -pi / 4, -pi / 3, :XYZ);
 
 julia> compose_rotation(q1, q2)
 Quaternion{Float64}:
-  + 1.0 + 0.0.i + 2.0816681711721685e-17.j + 5.551115123125783e-17.k
+  + 1.0 + 0.0⋅i + 2.08167e-17⋅j + 2.08167e-17⋅k
 ```
 """
 @inline compose_rotation(D::DCM) = D

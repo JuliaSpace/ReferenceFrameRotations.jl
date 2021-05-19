@@ -26,30 +26,30 @@ The rotation sequence is defined by a `:Symbol`. The possible values are:
 
 # Example
 
-```julia-repl
+```jldoctest
 julia> angle_to_angle(-pi / 2, -pi / 3, -pi / 4, :ZYX, :XYZ)
 EulerAngles{Float64}:
-  R(X) : -1.0471975511965976 rad  (-59.99999999999999°)
-  R(Y) :  0.7853981633974482 rad  ( 44.99999999999999°)
-  R(Z) : -1.5707963267948966 rad  (-90.0°)
+  R(X) : -1.0472   rad  (-60.0°)
+  R(Y) :  0.785398 rad  ( 45.0°)
+  R(Z) : -1.5708   rad  (-90.0°)
 
 julia> angle_to_angle(-pi / 2, 0, 0, :ZYX, :XYZ)
 EulerAngles{Float64}:
-  R(X) :  0.0                rad  ( 0.0°)
-  R(Y) :  0.0                rad  ( 0.0°)
-  R(Z) : -1.5707963267948966 rad  (-90.0°)
+  R(X) :  0.0    rad  ( 0.0°)
+  R(Y) :  0.0    rad  ( 0.0°)
+  R(Z) : -1.5708 rad  (-90.0°)
 
 julia> Θ = EulerAngles(1, 2, 3, :XYX)
 EulerAngles{Int64}:
-  R(X) :  1 rad  ( 57.29577951308232°)
-  R(Y) :  2 rad  ( 114.59155902616465°)
-  R(X) :  3 rad  ( 171.88733853924697°)
+  R(X) :  1 rad  ( 57.2958°)
+  R(Y) :  2 rad  ( 114.592°)
+  R(X) :  3 rad  ( 171.887°)
 
 julia> angle_to_angle(Θ, :ZYZ)
 EulerAngles{Float64}:
-  R(Z) : -2.7023903824034057 rad  (-154.83556350845976°)
-  R(Y) :  1.4667622012262838 rad  ( 84.03928367958444°)
-  R(Z) : -1.0541508719307968 rad  (-60.398395931670414°)
+  R(Z) : -2.70239 rad  (-154.836°)
+  R(Y) :  1.46676 rad  ( 84.0393°)
+  R(Z) : -1.05415 rad  (-60.3984°)
 ```
 """
 @inline function angle_to_angle(

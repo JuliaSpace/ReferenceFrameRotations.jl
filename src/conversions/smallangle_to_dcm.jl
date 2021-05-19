@@ -20,7 +20,7 @@ the function `orthonormalize`.
 
 # Example
 
-```julia-repl
+```jldoctest
 julia> smallangle_to_dcm(+0.01, -0.01, +0.01)
 3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
   0.9999     0.00989903  0.010098

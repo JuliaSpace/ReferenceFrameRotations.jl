@@ -30,7 +30,7 @@ The rotation sequence is defined by a `:Symbol`. The possible values are:
 
 # Example
 
-```julia-repl
+```jldoctest
 julia> av = EulerAngleAxis(deg2rad(45), [1, 0, 0]);
 
 julia> angleaxis_to_angle(av, :ZXY)

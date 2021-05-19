@@ -21,7 +21,7 @@ The rotation sequence is defined by a `:Symbol`. The possible values are:
 
 # Examples
 
-```julia-repl
+```jldoctest
 julia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0);
 
 julia> quat_to_angle(q, :XYZ)

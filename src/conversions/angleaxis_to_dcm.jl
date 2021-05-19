@@ -24,7 +24,7 @@ Those values can also be passed inside the structure `ea` (see
 
 # Example
 
-```julia-repl
+```jldoctest
 julia> v = [1, 1, 1];
 
 julia> v /= norm(v);

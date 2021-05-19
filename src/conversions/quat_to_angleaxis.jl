@@ -24,7 +24,7 @@ not represent a 3D rotation. The user must handle such situations.
 
 # Examples
 
-```julia-repl
+```jldoctest
 julia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0);
 
 julia> quat_to_angleaxis(q)

@@ -1,6 +1,13 @@
 using Documenter
 using ReferenceFrameRotations
 
+DocMeta.setdocmeta!(
+    ReferenceFrameRotations,
+    :DocTestSetup,
+    :(using ReferenceFrameRotations);
+    recursive=true
+)
+
 makedocs(
     modules = [ReferenceFrameRotations],
     format = Documenter.HTML(

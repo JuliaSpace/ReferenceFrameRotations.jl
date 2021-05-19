@@ -32,14 +32,14 @@ in which:
 
 # Examples
 
-```julia-repl
+```jldoctest
 julia> Quaternion(1, 0, 0, 0)
 Quaternion{Int64}:
-  + 1 + 0.i + 0.j + 0.k
+  + 1 + 0⋅i + 0⋅j + 0⋅k
 
 julia> Quaternion(1, 0, 0, 0.0)
 Quaternion{Float64}:
-  + 1.0 + 0.0.i + 0.0.j + 0.0.k
+  + 1.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
 ```
 
 ---
@@ -62,7 +62,7 @@ the elements match those of the input vector:
 
 # Examples
 
-```julia-repl
+```jldoctest
 julia> Quaternion([0, cosd(45), sind(45)])
 Quaternion{Float64}:
   + 0.0 + 0.0⋅i + 0.707107⋅j + 0.707107⋅k
@@ -86,7 +86,7 @@ Create a quaternion with real part `r` and vectorial or imaginary part `v`:
 
 # Examples
 
-```julia-repl
+```jldoctest
 julia> Quaternion(cosd(45), [0, sind(45), 0])
 Quaternion{Float64}:
   + 0.707107 + 0.0⋅i + 0.707107⋅j + 0.707107⋅k
@@ -105,7 +105,7 @@ will have the same type.
 
 # Examples
 
-```julia-repl
+```jldoctest
 julia> Quaternion(I)
 Quaternion{Bool}:
   + true + false⋅i + false⋅j + false⋅k
@@ -167,7 +167,7 @@ then it is considered as the quaternion `u.λ + 0 ⋅ i + 0 ⋅ j + 0 ⋅ k`.
 
 # Examples
 
-```julia-repl
+```jldoctest
 julia> q1 = Quaternion(1, 0, 0, 0)
 Quaternion{Int64}:
   + 1 + 0⋅i + 0⋅j + 0⋅k
@@ -202,7 +202,7 @@ Return the quaterion `-q`.
 
 # Examples
 
-```julia-repl
+```jldoctest
 julia> q = Quaternion(1, 0, 0, 0)
 Quaternion{Int64}:
   + 1 + 0⋅i + 0⋅j + 0⋅k
@@ -228,7 +228,7 @@ then it is considered as the quaternion `u.λ + 0 ⋅ i + 0 ⋅ j + 0 ⋅ k`.
 
 # Examples
 
-```julia-repl
+```jldoctest
 julia> q1 = Quaternion(1, 0, 0, 0)
 Quaternion{Int64}:
   + 1 + 0⋅i + 0⋅j + 0⋅k
@@ -264,7 +264,7 @@ Compute `λ * q` or `q * λ`, in which `λ` is a scalar.
 
 # Examples
 
-```julia-repl
+```jldoctest
 julia> q = Quaternion(1, 0, 0, 0)
 Quaternion{Int64}:
   + 1 + 0⋅i + 0⋅j + 0⋅k
@@ -291,7 +291,7 @@ then it is considered as the quaternion `u.λ + 0 ⋅ i + 0 ⋅ j + 0 ⋅ k`.
 
 # Examples
 
-```julia-repl
+```jldoctest
 julia> q1 = Quaternion(cosd(30), 0, sind(30), 0)
 Quaternion{Float64}:
   + 0.866025 + 0.0⋅i + 0.5⋅j + 0.5⋅k
@@ -330,7 +330,7 @@ with real part `0` and vectorial/imaginary part `v` (Hamilton product).
 
 # Examples
 
-```julia-repl
+```jldoctest
 julia> q = Quaternion(1, 0, 0, 0)
 Quaternion{Int64}:
   + 1 + 0⋅i + 0⋅j + 0⋅k
@@ -375,7 +375,7 @@ Compute the division `λ / q` or `q / λ`, in which `λ` is a scalar.
 
 # Examples
 
-```julia-repl
+```jldoctest
 julia> q = Quaternion(2, 0, 0, 0)
 Quaternion{Int64}:
   + 2 + 0⋅i + 0⋅j + 0⋅k
@@ -413,7 +413,7 @@ then it is considered as the quaternion `u.λ + 0 ⋅ i + 0 ⋅ j + 0 ⋅ k`.
 
 # Examples
 
-```julia-repl
+```jldoctest
 julia> q1 = Quaternion(cosd(75), 0, sind(75), 0)
 Quaternion{Float64}:
   + 0.258819 + 0.0⋅i + 0.965926⋅j + 0.965926⋅k
@@ -452,7 +452,7 @@ then it is considered as the quaternion `u.λ + 0 ⋅ i + 0 ⋅ j + 0 ⋅ k`.
 
 # Examples
 
-```julia-repl
+```jldoctest
 julia> q1 = Quaternion(cosd(75), 0, sind(75), 0)
 Quaternion{Float64}:
   + 0.258819 + 0.0⋅i + 0.965926⋅j + 0.965926⋅k
@@ -479,7 +479,7 @@ real part `0` and vectorial/imaginary part `v` (Hamilton product).
 
 # Examples
 
-```julia-repl
+```jldoctest
 julia> q = Quaternion(1, 0, 0, 0)
 Quaternion{Int64}:
   + 1 + 0⋅i + 0⋅j + 0⋅k
@@ -513,7 +513,7 @@ See also: [`inv`](@ref)
 
 # Examples
 
-```julia-repl
+```jldoctest
 julia> q = Quaternion(1, cosd(75), 0, sind(75))
 Quaternion{Float64}:
   + 1.0 + 0.258819⋅i + 0.0⋅j + 0.0⋅k
@@ -545,7 +545,7 @@ See also: [`real`](@ref), [`vect`](@ref)
 
 # Examples
 
-```julia-repl
+```jldoctest
 julia> q = Quaternion(cosd(75), 0, sind(75), 0)
 Quaternion{Float64}:
   + 0.258819 + 0.0⋅i + 0.965926⋅j + 0.965926⋅k
@@ -572,7 +572,7 @@ See also: [`conj`](@ref)
 
 # Examples
 
-```julia-repl
+```jldoctest
 julia> q = Quaternion(1, 0, cosd(75), sind(75))
 Quaternion{Float64}:
   + 1.0 + 0.0⋅i + 0.258819⋅j + 0.258819⋅k
@@ -603,7 +603,7 @@ Compute the Euclidean norm of the quaternion `q`:
 
 # Examples
 
-```julia-repl
+```jldoctest
 julia> q = Quaternion(cosd(75), 0, sind(75), 0)
 Quaternion{Float64}:
   + 0.258819 + 0.0⋅i + 0.965926⋅j + 0.965926⋅k
@@ -623,7 +623,7 @@ See also: [`imag`](@ref), [`vect`](@ref)
 
 # Examples
 
-```julia-repl
+```jldoctest
 julia> q = Quaternion(cosd(75), 0, sind(75), 0)
 Quaternion{Float64}:
   + 0.258819 + 0.0⋅i + 0.965926⋅j + 0.965926⋅k
@@ -644,7 +644,7 @@ See also: [`imag`](@ref), [`real`](@ref)
 
 # Examples
 
-```julia-repl
+```jldoctest
 julia> q = Quaternion(cosd(75), 0, sind(75), 0)
 Quaternion{Float64}:
   + 0.258819 + 0.0⋅i + 0.965926⋅j + 0.965926⋅k
@@ -668,7 +668,7 @@ defaults to `Float64`.
 
 # Example
 
-```julia-repl
+```jldoctest
 julia> zeros(Quaternion{Float32})
 Quaternion{Float32}:
   + 0.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
@@ -686,7 +686,7 @@ Create the null quaternion with the same type `T` of another quaternion `q`.
 
 # Examples
 
-```julia-repl
+```jldoctest
 julia> q = Quaternion{Float32}(1, 0, 0, 0)
 Quaternion{Float32}:
   + 1.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
@@ -800,7 +800,7 @@ velocity of `b` with respect to `a`, and represented in `b`, is `wba_b`.
 
 # Examples
 
-```julia-repl
+```jldoctest
 julia> q = Quaternion(1.0I);
 
 julia> dquat(q,[1;0;0])

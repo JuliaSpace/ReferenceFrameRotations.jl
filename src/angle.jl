@@ -21,24 +21,24 @@ with the same rotation sequence as `Θ₂`.
 
 # Examples
 
-```julia-repl
+```jldoctest
 julia> ea1 = EulerAngles(deg2rad(35), 0, 0, :XYZ)
 EulerAngles{Float64}:
-  R(X) :  0.6108652381980153 rad  ( 35.0°)
-  R(Y) :  0.0                rad  ( 0.0°)
-  R(Z) :  0.0                rad  ( 0.0°)
+  R(X) :  0.610865 rad  ( 35.0°)
+  R(Y) :  0.0      rad  ( 0.0°)
+  R(Z) :  0.0      rad  ( 0.0°)
 
 julia> ea2 = EulerAngles(0, 0, deg2rad(25), :ZYX)
 EulerAngles{Float64}:
-  R(Z) :  0.0                rad  ( 0.0°)
-  R(Y) :  0.0                rad  ( 0.0°)
-  R(X) :  0.4363323129985824 rad  ( 25.0°)
+  R(Z) :  0.0      rad  ( 0.0°)
+  R(Y) :  0.0      rad  ( 0.0°)
+  R(X) :  0.436332 rad  ( 25.0°)
 
 julia> ea2 * ea1
 EulerAngles{Float64}:
-  R(Z) :  0.0                rad  ( 0.0°)
-  R(Y) : -0.0                rad  (-0.0°)
-  R(X) :  1.0471975511965979 rad  ( 60.00000000000001°)
+  R(Z) :  0.0    rad  ( 0.0°)
+  R(Y) : -0.0    rad  (-0.0°)
+  R(X) :  1.0472 rad  ( 60.0°)
 ```
 """
 @inline function *(Θ₂::EulerAngles, Θ₁::EulerAngles)
@@ -64,15 +64,15 @@ represented using `:ZYX`.
 ```julia-repl
 julia> ea = EulerAngles(π / 3, π / 6,  2 / 3 * π, :ZYX)
 EulerAngles{Float64}:
-  R(Z) :  1.0471975511965976 rad  ( 59.99999999999999°)
-  R(Y) :  0.5235987755982988 rad  ( 29.999999999999996°)
-  R(X) :  2.0943951023931953 rad  ( 119.99999999999999°)
+  R(Z) :  1.0472   rad  ( 60.0°)
+  R(Y) :  0.523599 rad  ( 30.0°)
+  R(X) :  2.0944   rad  ( 120.0°)
 
 julia> inv(ea)
 EulerAngles{Float64}:
-  R(X) : -2.0943951023931953 rad  (-119.99999999999999°)
-  R(Y) : -0.5235987755982988 rad  (-29.999999999999996°)
-  R(Z) : -1.0471975511965976 rad  (-59.99999999999999°)
+  R(X) : -2.0944   rad  (-120.0°)
+  R(Y) : -0.523599 rad  (-30.0°)
+  R(Z) : -1.0472   rad  (-60.0°)
 ```
 """
 function inv(Θ::EulerAngles)

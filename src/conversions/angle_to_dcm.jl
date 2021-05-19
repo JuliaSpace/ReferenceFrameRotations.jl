@@ -30,7 +30,7 @@ the *i*-th rotation, `i Є [1,2,3]`.
 
 # Example
 
-```julia-repl
+```jldoctest
 julia> dcm = angle_to_dcm(pi / 2, pi / 3, pi / 4, :ZYX)
 3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
   3.06162e-17  0.5       -0.866025

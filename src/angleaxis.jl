@@ -25,20 +25,20 @@ This function neither verifies this nor normalizes the vector.
 
 # Examples
 
-```julia-repl
+```jldoctest
 julia> av1 = EulerAngleAxis(deg2rad(45), [sqrt(2)/2, sqrt(2)/2, 0])
 EulerAngleAxis{Float64}:
-  Euler angle : 0.785398 rad  (0.0137078°)
+  Euler angle : 0.785398 rad  (45.0°)
   Euler axis  : [0.707107, 0.707107, 0.0]
 
 julia> av2 = EulerAngleAxis(deg2rad(22.5), [sqrt(2)/2, sqrt(2)/2, 0])
 EulerAngleAxis{Float64}:
-  Euler angle : 0.392699 rad  (0.00685389°)
+  Euler angle : 0.392699 rad  (22.5°)
   Euler axis  : [0.707107, 0.707107, 0.0]
 
 julia> av1 * av2
 EulerAngleAxis{Float64}:
-  Euler angle : 1.1781 rad  (0.0205617°)
+  Euler angle : 1.1781 rad  (67.5°)
   Euler axis  : [0.707107, 0.707107, 0.0]
 ```
 """
@@ -88,26 +88,26 @@ rad`.
 
 # Examples
 
-```julia-repl
-julia> av = EulerAngleAxis(deg2rad(20), [sqrt(2)/2, 0, sqrt(2)/2])
+```jldoctest
+julia> av = EulerAngleAxis(deg2rad(20), [sqrt(2) / 2, 0, sqrt(2) / 2])
 EulerAngleAxis{Float64}:
-  Euler angle:   0.3491 rad ( 20.0000 deg)
-   Euler axis: [  0.7071,   0.0000,   0.7071]
+  Euler angle : 0.349066 rad  (20.0°)
+  Euler axis  : [0.707107, 0.0, 0.707107]
 
 julia> inv(av)
 EulerAngleAxis{Float64}:
-  Euler angle:   0.3491 rad ( 20.0000 deg)
-   Euler axis: [ -0.7071,  -0.0000,  -0.7071]
+  Euler angle : 0.349066 rad  (20.0°)
+  Euler axis  : [-0.707107, -0.0, -0.707107]
 
-julia> av = EulerAngleAxis(deg2rad(-20), [sqrt(2)/2, 0, sqrt(2)/2])
+julia> av = EulerAngleAxis(deg2rad(-20), [sqrt(2) / 2, 0, sqrt(2) / 2])
 EulerAngleAxis{Float64}:
-  Euler angle:  -0.3491 rad (-20.0000 deg)
-   Euler axis: [  0.7071,   0.0000,   0.7071]
+  Euler angle : -0.349066 rad  (-20.0°)
+  Euler axis  : [0.707107, 0.0, 0.707107]
 
 julia> inv(av)
 EulerAngleAxis{Float64}:
-  Euler angle:   0.3491 rad ( 20.0000 deg)
-   Euler axis: [  0.7071,   0.0000,   0.7071]
+  Euler angle : 0.349066 rad  (20.0°)
+  Euler axis  : [0.707107, 0.0, 0.707107]
 ```
 """
 @inline function inv(av::EulerAngleAxis{T}) where T<:Number

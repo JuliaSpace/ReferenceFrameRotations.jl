@@ -24,9 +24,8 @@ If `T` is `DCM`, then the resulting matrix will be orthonormalized using the
 
 # Example
 
-```julia-repl
+```jldoctest
 julia> dcm = smallangle_to_rot(+0.01, -0.01, +0.01)
-
 3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
   0.9999     0.00989903  0.010098
  -0.009999   0.999901    0.00989802

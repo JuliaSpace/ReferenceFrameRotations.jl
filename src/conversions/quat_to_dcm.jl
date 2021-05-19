@@ -16,7 +16,7 @@ Convert the quaternion `q` to a Direction Cosine Matrix (DCM).
 
 # Examples
 
-```julia-repl
+```jldoctest
 julia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0);
 
 julia> quat_to_dcm(q)

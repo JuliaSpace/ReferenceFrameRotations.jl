@@ -26,7 +26,7 @@ The rotation sequence is defined by a `:Symbol`. The possible values are:
 
 # Example
 
-```julia-repl
+```jldoctest
 julia> angle_to_angleaxis(1, 0, 0, :XYZ)
 EulerAngleAxis{Float64}:
   Euler angle : 1.0 rad  (57.2958°)
