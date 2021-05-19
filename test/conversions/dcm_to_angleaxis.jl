@@ -154,6 +154,13 @@ end
     @test av.a ≈ T(2π / 3)
     @test av.v ≈ [0, 0, -1]
 
+    D = create_rotation_matrix(T(-2π / 3), :Z) *
+        create_rotation_matrix(T(-π / 2), :Y)
+    av = dcm_to_angleaxis(D)
+    @test eltype(av) === T
+    @test av.a ≈ 2.4188584057763776
+    @test av.v ≈ [0.6546536707079772, -0.37796447300922736, -0.6546536707079772]
+
     # Float32
     # ==========================================================================
 
@@ -218,4 +225,11 @@ end
     @test eltype(av) === T
     @test av.a ≈ T(2π / 3)
     @test av.v ≈ [0, 0, -1]
+
+    D = create_rotation_matrix(T(-2π / 3), :Z) *
+        create_rotation_matrix(T(-π / 2), :Y)
+    av = dcm_to_angleaxis(D)
+    @test eltype(av) === T
+    @test av.a ≈ 2.4188584057763776
+    @test av.v ≈ [0.6546536707079772, -0.37796447300922736, -0.6546536707079772]
 end
