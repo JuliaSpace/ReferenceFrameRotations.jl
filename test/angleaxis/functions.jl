@@ -57,7 +57,7 @@ end
     show(io, MIME"text/plain"(), av)
     expected = """
         EulerAngleAxis{Float64}:
-          Euler angle : 1.0472 rad  (0.018277°)
+          Euler angle : 1.0472 rad  (60.0°)
           Euler axis  : [0.57735, -0.57735, 0.57735]"""
     @test String(take!(io.io)) == expected
 
@@ -72,7 +72,7 @@ end
     show(io, MIME"text/plain"(), av)
     expected = """
         EulerAngleAxis{Float64}:
-        \e[32;1m  Euler angle : \e[0m1.0472 rad  (0.018277°)
+        \e[32;1m  Euler angle : \e[0m1.0472 rad  (60.0°)
         \e[33;1m  Euler axis  : \e[0m[0.57735, -0.57735, 0.57735]"""
     @test String(take!(io.io)) == expected
 end

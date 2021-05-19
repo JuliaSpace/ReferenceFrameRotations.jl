@@ -29,7 +29,7 @@ julia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0);
 
 julia> quat_to_angleaxis(q)
 EulerAngleAxis{Float64}:
-  Euler angle : 0.785398 rad  (0.0137078°)
+  Euler angle : 0.785398 rad  (45.0°)
   Euler axis  : [1.0, 0.0, 0.0]
 ```
 """

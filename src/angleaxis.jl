@@ -158,7 +158,7 @@ function show(io::IO, mime::MIME"text/plain", av::EulerAngleAxis{T}) where T
     d = color ? string(_d) : ""
 
     θ_str  = sprint(print, av.a; context = context)
-    θd_str = sprint(print, deg2rad(av.a); context = context)
+    θd_str = sprint(print, rad2deg(av.a); context = context)
     v₁_str = sprint(print, av.v[1]; context = context)
     v₂_str = sprint(print, av.v[2]; context = context)
     v₃_str = sprint(print, av.v[3]; context = context)
