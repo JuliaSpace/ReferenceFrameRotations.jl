@@ -286,9 +286,9 @@ _mod_atan(y::T, x::T) where T<:Number = atan(y + T(0), x + T(0))
 # to  Euler Angles.
 function _mod_acos(x::T) where T<:Number
     if x > 1
-        return T(0)
+        return float(T(0))
     elseif x < -1
-        return T(π)
+        return float(T(π))
     else
         return acos(x)
     end
@@ -299,9 +299,9 @@ end
 # to  Euler Angles.
 function _mod_asin(x::T) where T<:Number
     if x > 1
-        return +T(π / 2)
+        return +float(T(π / 2))
     elseif x < -1
-        return -T(π / 2)
+        return -float(T(π / 2))
     else
         return asin(x)
     end
