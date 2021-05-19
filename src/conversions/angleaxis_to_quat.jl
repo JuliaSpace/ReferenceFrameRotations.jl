@@ -25,13 +25,13 @@ Those values can also be passed inside the structure `ea` (see
 # Example
 
 ```julia-repl
-julia> v = [1;1;1];
+julia> v = [1, 1, 1];
 
 julia> v /= norm(v);
 
 julia> angleaxis_to_quat(pi/2,v)
 Quaternion{Float64}:
-  + 0.7071067811865476 + 0.408248290463863.i + 0.408248290463863.j + 0.408248290463863.k
+  + 0.707107 + 0.408248⋅i + 0.408248⋅j + 0.408248⋅k
 ```
 """
 @inline function angleaxis_to_quat(θ::Number, v::AbstractVector)

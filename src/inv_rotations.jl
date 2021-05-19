@@ -50,22 +50,22 @@ julia> ea = EulerAngleAxis(30 * pi / 180, [1, 0, 0]);
 
 julia> inv_rotation(ea)
 EulerAngleAxis{Float64}:
-  Euler angle : 0.523599 rad  (0.00913852°)
+  Euler angle : 0.523599 rad  (30.0°)
   Euler axis  : [-1.0, -0.0, -0.0]
 
 julia> Θ = EulerAngles(-pi / 3, -pi / 2, -pi, :YXZ);
 
 julia> inv_rotation(Θ)
 EulerAngles{Float64}:
-  R(Z) :  3.141592653589793  rad  ( 180.0°)
-  R(X) :  1.5707963267948966 rad  ( 90.0°)
-  R(Y) :  1.0471975511965976 rad  ( 59.99999999999999°)
+  R(Z) :  3.14159 rad  ( 180.0°)
+  R(X) :  1.5708  rad  ( 90.0°)
+  R(Y) :  1.0472  rad  ( 60.0°)
 
 julia> q = angle_to_quat(pi / 3, pi / 4, pi / 5, :ZYX);
 
 julia> inv_rotation(q)
 Quaternion{Float64}:
-  + 0.8200711519756747 - 0.06526868310243991.i - 0.45794027732580056.j - 0.336918398289752.k
+  + 0.820071 - 0.0652687⋅i - 0.45794⋅j - 0.45794⋅k
 ```
 """
 @inline inv_rotation(D::DCM) = D'

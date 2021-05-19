@@ -26,6 +26,7 @@ If `T` is `DCM`, then the resulting matrix will be orthonormalized using the
 
 ```julia-repl
 julia> dcm = smallangle_to_rot(+0.01, -0.01, +0.01)
+
 3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
   0.9999     0.00989903  0.010098
  -0.009999   0.999901    0.00989802
@@ -39,7 +40,7 @@ julia> dcm = smallangle_to_rot(+0.01, -0.01, +0.01; normalize = false)
 
 julia> q = smallangle_to_rot(Quaternion, +0.01, -0.01, +0.01)
 Quaternion{Float64}:
-  + 0.9999625021092433 + 0.004999812510546217.i - 0.004999812510546217.j + 0.004999812510546217.k
+  + 0.999963 + 0.00499981⋅i - 0.00499981⋅j - 0.00499981⋅k
 ```
 """
 @inline function smallangle_to_rot(

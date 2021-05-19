@@ -37,7 +37,7 @@ with the *i*-th rotation, `i Є [1,2,3]`.
 ```julia-repl
 julia> angle_to_quat(pi / 2, pi / 3, pi / 4, :ZYX)
 Quaternion{Float64}:
-  + 0.7010573846499779 - 0.09229595564125714.i + 0.5609855267969309.j + 0.43045933457687935.k
+  + 0.701057 - 0.092296⋅i + 0.560986⋅j + 0.560986⋅k
 ```
 """
 function angle_to_quat(

@@ -44,15 +44,15 @@ function ddcm(Dba, wba_b)
 ```
 
 ```jldoctest
-julia> wba_b = [0.01;0;0];
+julia> wba_b = [0.01, 0, 0];
 
-julia> Dba = angle_to_dcm(0.5,0,0,:XYZ)
+julia> Dba = angle_to_dcm(0.5, 0, 0, :XYZ)
 3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
   1.0   0.0       0.0
  -0.0   0.877583  0.479426
   0.0  -0.479426  0.877583
 
-julia> ddcm(Dba,wba_b)
+julia> ddcm(Dba, wba_b)
 3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
  -0.0   0.0          0.0
   0.0  -0.00479426   0.00877583
@@ -92,11 +92,11 @@ function dquat(qba, wba_b)
 ```
 
 ```jldoctest
-julia> wba_b = [0.01;0;0];
+julia> wba_b = [0.01, 0, 0];
 
-julia> qba = angle_to_quat(0.5,0,0,:XYZ);
+julia> qba = angle_to_quat(0.5, 0, 0, :XYZ);
 
-julia> dquat(qba,wba_b)
+julia> dquat(qba, wba_b)
 Quaternion{Float64}:
-  - 0.0012370197962726147 + 0.004844562108553224.i + 0.0.j + 0.0.k
+  - 0.00123702 + 0.00484456⋅i + 0.0⋅j + 0.0⋅k
 ```

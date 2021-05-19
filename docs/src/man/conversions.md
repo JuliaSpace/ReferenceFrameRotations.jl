@@ -99,7 +99,7 @@ julia> dcm = DCM([1.0 0.0 0.0; 0.0 0.0 -1.0; 0.0 1.0 0.0]);
 
 julia> q   = dcm_to_quat(dcm)
 Quaternion{Float64}:
-  + 0.7071067811865476 - 0.7071067811865475.i + 0.0.j + 0.0.k
+  + 0.707107 - 0.707107⋅i + 0.0⋅j + 0.0⋅k
 ```
 
 ## Euler Angle and Axis to DCMs
@@ -192,13 +192,13 @@ julia> v = [sqrt(3) / 3, sqrt(3) / 3, sqrt(3) / 3];
 
 julia> angleaxis_to_quat(a,v)
 Quaternion{Float64}:
-  + 0.8660254037844387 + 0.2886751345948128.i + 0.2886751345948128.j + 0.2886751345948128.k
+  + 0.866025 + 0.288675⋅i + 0.288675⋅j + 0.288675⋅k
 
 julia> angleaxis = EulerAngleAxis(a,v);
 
 julia> angleaxis_to_quat(angleaxis)
 Quaternion{Float64}:
-  + 0.8660254037844387 + 0.2886751345948128.i + 0.2886751345948128.j + 0.2886751345948128.k
+  + 0.866025 + 0.288675⋅i + 0.288675⋅j + 0.288675⋅k
 ```
 
 ## Euler Angles to Direction Cosine Matrices
@@ -300,13 +300,13 @@ function angle_to_quat(Θ::EulerAngles)
 ```jldoctest
 julia> q = angle_to_quat(pi / 2, pi / 4, pi / 3, :ZYX)
 Quaternion{Float64}:
-  + 0.7010573846499779 + 0.09229595564125723.i + 0.5609855267969309.j + 0.43045933457687935.k
+  + 0.701057 + 0.092296⋅i + 0.560986⋅j + 0.560986⋅k
 
 julia> angles = EulerAngles(pi / 2, pi / 4, pi / 3, :ZYX);
 
-julia> q    = angle_to_quat(angles)
+julia> q = angle_to_quat(angles)
 Quaternion{Float64}:
-  + 0.7010573846499779 + 0.09229595564125723.i + 0.5609855267969309.j + 0.43045933457687935.k
+  + 0.701057 + 0.092296⋅i + 0.560986⋅j + 0.560986⋅k
 ```
 
 ## Small Euler Angles to Direction Cosine Matrices
@@ -345,7 +345,7 @@ function smallangle_to_quat(θx::Number, θy::Number, θz::Number)
 ```jldoctest
 julia> q = smallangle_to_quat(0.001, -0.002, +0.003)
 Quaternion{Float64}:
-  + 0.9999982500045936 + 0.0004999991250022968.i - 0.0009999982500045936.j + 0.0014999973750068907.k
+  + 0.999998 + 0.000499999⋅i - 0.000999998⋅j - 0.000999998⋅k
 ```
 
 !!! note
@@ -361,7 +361,7 @@ function quat_to_dcm(q::Quaternion)
 ```
 
 ```jldoctest
-julia> q   = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);
+julia> q = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);
 
 julia> dcm = quat_to_dcm(q)
 3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):

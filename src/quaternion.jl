@@ -65,11 +65,11 @@ the elements match those of the input vector:
 ```julia-repl
 julia> Quaternion([0, cosd(45), sind(45)])
 Quaternion{Float64}:
-  + 0.0 + 0.0.i + 0.7071067811865476.j + 0.7071067811865476.k
+  + 0.0 + 0.0⋅i + 0.707107⋅j + 0.707107⋅k
 
 julia> Quaternion([cosd(45), 0, sind(45), 0])
 Quaternion{Float64}:
-  + 0.7071067811865476 + 0.0.i + 0.7071067811865476.j + 0.0.k
+  + 0.707107 + 0.0⋅i + 0.707107⋅j + 0.707107⋅k
 ```
 
 ---
@@ -89,7 +89,7 @@ Create a quaternion with real part `r` and vectorial or imaginary part `v`:
 ```julia-repl
 julia> Quaternion(cosd(45), [0, sind(45), 0])
 Quaternion{Float64}:
-  + 0.7071067811865476 + 0.0.i + 0.7071067811865476.j + 0.0.k
+  + 0.707107 + 0.0⋅i + 0.707107⋅j + 0.707107⋅k
 ```
 
 ---
@@ -108,19 +108,19 @@ will have the same type.
 ```julia-repl
 julia> Quaternion(I)
 Quaternion{Bool}:
-  + true + false.i + false.j + false.k
+  + true + false⋅i + false⋅j + false⋅k
 
 julia> Quaternion(1.0I)
 Quaternion{Float64}:
-  + 1.0 + 0.0.i + 0.0.j + 0.0.k
+  + 1.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
 
 julia> q = Quaternion{Float32}(I)
 Quaternion{Float32}:
-  + 1.0 + 0.0.i + 0.0.j + 0.0.k
+  + 1.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
 
 julia> Quaternion(I, q)
 Quaternion{Float32}:
-  + 1.0 + 0.0.i + 0.0.j + 0.0.k
+  + 1.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
 ```
 """
 function Quaternion(q0::T0, q1::T1, q2::T2, q3::T3) where {T0, T1, T2, T3}
@@ -170,19 +170,19 @@ then it is considered as the quaternion `u.λ + 0 ⋅ i + 0 ⋅ j + 0 ⋅ k`.
 ```julia-repl
 julia> q1 = Quaternion(1, 0, 0, 0)
 Quaternion{Int64}:
-  + 1 + 0.i + 0.j + 0.k
+  + 1 + 0⋅i + 0⋅j + 0⋅k
 
 julia> q2 = Quaternion(0, cosd(45), 0, sind(45))
 Quaternion{Float64}:
-  + 0.0 + 0.7071067811865476.i + 0.0.j + 0.7071067811865476.k
+  + 0.0 + 0.707107⋅i + 0.0⋅j + 0.0⋅k
 
 julia> q1 + q2
 Quaternion{Float64}:
-  + 1.0 + 0.7071067811865476.i + 0.0.j + 0.7071067811865476.k
+  + 1.0 + 0.707107⋅i + 0.0⋅j + 0.0⋅k
 
 julia> q1 + I
 Quaternion{Int64}:
-  + 2 + 0.i + 0.j + 0.k
+  + 2 + 0⋅i + 0⋅j + 0⋅k
 ```
 """
 @inline function +(qa::Quaternion, qb::Quaternion)
@@ -205,11 +205,11 @@ Return the quaterion `-q`.
 ```julia-repl
 julia> q = Quaternion(1, 0, 0, 0)
 Quaternion{Int64}:
-  + 1 + 0.i + 0.j + 0.k
+  + 1 + 0⋅i + 0⋅j + 0⋅k
 
 julia> -q
 Quaternion{Int64}:
-  - 1 + 0.i + 0.j + 0.k
+  - 1 + 0⋅i + 0⋅j + 0⋅k
 ```
 """
 @inline -(q::Quaternion) = -1*q
@@ -231,19 +231,19 @@ then it is considered as the quaternion `u.λ + 0 ⋅ i + 0 ⋅ j + 0 ⋅ k`.
 ```julia-repl
 julia> q1 = Quaternion(1, 0, 0, 0)
 Quaternion{Int64}:
-  + 1 + 0.i + 0.j + 0.k
+  + 1 + 0⋅i + 0⋅j + 0⋅k
 
 julia> q2 = Quaternion(0, cosd(45), 0, sind(45))
 Quaternion{Float64}:
-  + 0.0 + 0.7071067811865476.i + 0.0.j + 0.7071067811865476.k
+  + 0.0 + 0.707107⋅i + 0.0⋅j + 0.0⋅k
 
 julia> q1 - q2
 Quaternion{Float64}:
-  + 1.0 - 0.7071067811865476.i + 0.0.j - 0.7071067811865476.k
+  + 1.0 - 0.707107⋅i + 0.0⋅j + 0.0⋅k
 
 julia> q1 - I
 Quaternion{Int64}:
-  + 0 + 0.i + 0.j + 0.k
+  + 0 + 0⋅i + 0⋅j + 0⋅k
 ```
 """
 @inline function -(qa::Quaternion, qb::Quaternion)
@@ -267,11 +267,11 @@ Compute `λ * q` or `q * λ`, in which `λ` is a scalar.
 ```julia-repl
 julia> q = Quaternion(1, 0, 0, 0)
 Quaternion{Int64}:
-  + 1 + 0.i + 0.j + 0.k
+  + 1 + 0⋅i + 0⋅j + 0⋅k
 
 julia> 2 * q
 Quaternion{Int64}:
-  + 2 + 0.i + 0.j + 0.k
+  + 2 + 0⋅i + 0⋅j + 0⋅k
 ```
 """
 @inline *(λ::Number, q::Quaternion) = Quaternion(λ * q.q0, λ * q.q1, λ * q.q2, λ * q.q3)
@@ -294,19 +294,19 @@ then it is considered as the quaternion `u.λ + 0 ⋅ i + 0 ⋅ j + 0 ⋅ k`.
 ```julia-repl
 julia> q1 = Quaternion(cosd(30), 0, sind(30), 0)
 Quaternion{Float64}:
-  + 0.8660254037844386 + 0.0.i + 0.5.j + 0.0.k
+  + 0.866025 + 0.0⋅i + 0.5⋅j + 0.5⋅k
 
 julia> q2 = Quaternion(cosd(60), 0, sind(60), 0)
 Quaternion{Float64}:
-  + 0.5 + 0.0.i + 0.8660254037844386.j + 0.0.k
+  + 0.5 + 0.0⋅i + 0.866025⋅j + 0.866025⋅k
 
 julia> q1 * q2
 Quaternion{Float64}:
-  + 0.0 + 0.0.i + 0.9999999999999999.j + 0.0.k
+  + 0.0 + 0.0⋅i + 1.0⋅j + 1.0⋅k
 
 julia> I * q1
 Quaternion{Float64}:
-  + 0.8660254037844386 + 0.0.i + 0.5.j + 0.0.k
+  + 0.866025 + 0.0⋅i + 0.5⋅j + 0.5⋅k
 ```
 """
 @inline function *(q1::Quaternion, q2::Quaternion)
@@ -333,7 +333,7 @@ with real part `0` and vectorial/imaginary part `v` (Hamilton product).
 ```julia-repl
 julia> q = Quaternion(1, 0, 0, 0)
 Quaternion{Int64}:
-  + 1 + 0.i + 0.j + 0.k
+  + 1 + 0⋅i + 0⋅j + 0⋅k
 
 julia> v = [0, cosd(60), sind(60)]
 3-element Vector{Float64}:
@@ -343,7 +343,7 @@ julia> v = [0, cosd(60), sind(60)]
 
 julia> q * v
 Quaternion{Float64}:
-  + 0.0 + 0.0.i + 0.5.j + 0.8660254037844386.k
+  + 0.0 + 0.0⋅i + 0.5⋅j + 0.5⋅k
 ```
 """
 @inline function *(v::AbstractVector, q::Quaternion)
@@ -378,11 +378,11 @@ Compute the division `λ / q` or `q / λ`, in which `λ` is a scalar.
 ```julia-repl
 julia> q = Quaternion(2, 0, 0, 0)
 Quaternion{Int64}:
-  + 2 + 0.i + 0.j + 0.k
+  + 2 + 0⋅i + 0⋅j + 0⋅k
 
 julia> q / 2
 Quaternion{Float64}:
-  + 1.0 + 0.0.i + 0.0.j + 0.0.k
+  + 1.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
 ```
 """
 @inline function /(λ::Number, q::Quaternion)
@@ -416,19 +416,19 @@ then it is considered as the quaternion `u.λ + 0 ⋅ i + 0 ⋅ j + 0 ⋅ k`.
 ```julia-repl
 julia> q1 = Quaternion(cosd(75), 0, sind(75), 0)
 Quaternion{Float64}:
-  + 0.25881904510252074 + 0.0.i + 0.9659258262890683.j + 0.0.k
+  + 0.258819 + 0.0⋅i + 0.965926⋅j + 0.965926⋅k
 
 julia> q2 = Quaternion(cosd(30), 0, sind(30), 0)
 Quaternion{Float64}:
-  + 0.8660254037844386 + 0.0.i + 0.5.j + 0.0.k
+  + 0.866025 + 0.0⋅i + 0.5⋅j + 0.5⋅k
 
 julia> q1 / q2
 Quaternion{Float64}:
-  + 0.7071067811865477 + 0.0.i + 0.7071067811865476.j + 0.0.k
+  + 0.707107 + 0.0⋅i + 0.707107⋅j + 0.707107⋅k
 
 julia> q1 / (2 * I)
 Quaternion{Float64}:
-  + 0.12940952255126037 + 0.0.i + 0.48296291314453416.j + 0.0.k
+  + 0.12941 + 0.0⋅i + 0.482963⋅j + 0.482963⋅k
 ```
 """
 @inline /(q1::Quaternion, q2::Quaternion) = q1 * inv(q2)
@@ -455,15 +455,15 @@ then it is considered as the quaternion `u.λ + 0 ⋅ i + 0 ⋅ j + 0 ⋅ k`.
 ```julia-repl
 julia> q1 = Quaternion(cosd(75), 0, sind(75), 0)
 Quaternion{Float64}:
-  + 0.25881904510252074 + 0.0.i + 0.9659258262890683.j + 0.0.k
+  + 0.258819 + 0.0⋅i + 0.965926⋅j + 0.965926⋅k
 
 julia> q2 = Quaternion(cosd(30), 0, sind(30), 0)
 Quaternion{Float64}:
-  + 0.8660254037844386 + 0.0.i + 0.5.j + 0.0.k
+  + 0.866025 + 0.0⋅i + 0.5⋅j + 0.5⋅k
 
 julia> q2 \\ q1
 Quaternion{Float64}:
-  + 0.7071067811865477 + 0.0.i + 0.7071067811865476.j + 0.0.k
+  + 0.707107 + 0.0⋅i + 0.707107⋅j + 0.707107⋅k
 ```
 """
 @inline \(q1::Quaternion, q2::Quaternion) = inv(q1) * q2
@@ -482,7 +482,7 @@ real part `0` and vectorial/imaginary part `v` (Hamilton product).
 ```julia-repl
 julia> q = Quaternion(1, 0, 0, 0)
 Quaternion{Int64}:
-  + 1 + 0.i + 0.j + 0.k
+  + 1 + 0⋅i + 0⋅j + 0⋅k
 
 julia> v = [0, cosd(60), sind(60)]
 3-element Vector{Float64}:
@@ -492,7 +492,7 @@ julia> v = [0, cosd(60), sind(60)]
 
 julia> v \\ q
 Quaternion{Float64}:
-  + 0.0 + 0.0.i - 0.5000000000000001.j - 0.8660254037844387.k
+  + 0.0 + 0.0⋅i - 0.5⋅j - 0.5⋅k
 ```
 """
 @inline \(q::Quaternion, v::AbstractVector) = inv(q)*v
@@ -516,11 +516,11 @@ See also: [`inv`](@ref)
 ```julia-repl
 julia> q = Quaternion(1, cosd(75), 0, sind(75))
 Quaternion{Float64}:
-  + 1.0 + 0.25881904510252074.i + 0.0.j + 0.9659258262890683.k
+  + 1.0 + 0.258819⋅i + 0.0⋅j + 0.0⋅k
 
 julia> conj(q)
 Quaternion{Float64}:
-  + 1.0 - 0.25881904510252074.i + 0.0.j - 0.9659258262890683.k
+  + 1.0 - 0.258819⋅i - 0.0⋅j - 0.0⋅k
 ```
 """
 @inline conj(q::Quaternion) = Quaternion(q.q0, -q.q1, -q.q2, -q.q3)
@@ -548,7 +548,7 @@ See also: [`real`](@ref), [`vect`](@ref)
 ```julia-repl
 julia> q = Quaternion(cosd(75), 0, sind(75), 0)
 Quaternion{Float64}:
-  + 0.25881904510252074 + 0.0.i + 0.9659258262890683.j + 0.0.k
+  + 0.258819 + 0.0⋅i + 0.965926⋅j + 0.965926⋅k
 
 julia> imag(q)
 3-element StaticArrays.SVector{3, Float64} with indices SOneTo(3):
@@ -575,11 +575,11 @@ See also: [`conj`](@ref)
 ```julia-repl
 julia> q = Quaternion(1, 0, cosd(75), sind(75))
 Quaternion{Float64}:
-  + 1.0 + 0.0.i + 0.25881904510252074.j + 0.9659258262890683.k
+  + 1.0 + 0.0⋅i + 0.258819⋅j + 0.258819⋅k
 
 julia> inv(q)
 Quaternion{Float64}:
-  + 0.5 + 0.0.i - 0.12940952255126037.j - 0.48296291314453416.k
+  + 0.5 - 0.0⋅i - 0.12941⋅j - 0.12941⋅k
 ```
 """
 @inline function inv(q::Quaternion)
@@ -606,7 +606,7 @@ Compute the Euclidean norm of the quaternion `q`:
 ```julia-repl
 julia> q = Quaternion(cosd(75), 0, sind(75), 0)
 Quaternion{Float64}:
-  + 0.25881904510252074 + 0.0.i + 0.9659258262890683.j + 0.0.k
+  + 0.258819 + 0.0⋅i + 0.965926⋅j + 0.965926⋅k
 
 julia> norm(q)
 1.0
@@ -626,7 +626,7 @@ See also: [`imag`](@ref), [`vect`](@ref)
 ```julia-repl
 julia> q = Quaternion(cosd(75), 0, sind(75), 0)
 Quaternion{Float64}:
-  + 0.25881904510252074 + 0.0.i + 0.9659258262890683.j + 0.0.k
+  + 0.258819 + 0.0⋅i + 0.965926⋅j + 0.965926⋅k
 
 julia> real(q)
 0.25881904510252074
@@ -647,7 +647,7 @@ See also: [`imag`](@ref), [`real`](@ref)
 ```julia-repl
 julia> q = Quaternion(cosd(75), 0, sind(75), 0)
 Quaternion{Float64}:
-  + 0.25881904510252074 + 0.0.i + 0.9659258262890683.j + 0.0.k
+  + 0.258819 + 0.0⋅i + 0.965926⋅j + 0.965926⋅k
 
 julia> vect(q)
 3-element StaticArrays.SVector{3, Float64} with indices SOneTo(3):
@@ -671,11 +671,11 @@ defaults to `Float64`.
 ```julia-repl
 julia> zeros(Quaternion{Float32})
 Quaternion{Float32}:
-  + 0.0 + 0.0.i + 0.0.j + 0.0.k
+  + 0.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
 
 julia> zeros(Quaternion)
 Quaternion{Float64}:
-  + 0.0 + 0.0.i + 0.0.j + 0.0.k
+  + 0.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
 ```
 
 ---
@@ -689,11 +689,11 @@ Create the null quaternion with the same type `T` of another quaternion `q`.
 ```julia-repl
 julia> q = Quaternion{Float32}(1, 0, 0, 0)
 Quaternion{Float32}:
-  + 0.0 + 0.0.i + 0.0.j + 0.0.k
+  + 1.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
 
 julia> zeros(q)
 Quaternion{Float32}:
-  + 0.0 + 0.0.i + 0.0.j + 0.0.k
+  + 0.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
 ```
 """
 @inline zeros(::Type{Quaternion{T}}) where T = Quaternion{T}(T(0), T(0), T(0), T(0))
@@ -723,52 +723,66 @@ end
 #                                      IO
 ################################################################################
 
-# TODO: Add support to compact printing.
 function show(io::IO, q::Quaternion{T}) where T
-    # Get the absolute values.
-    aq0 = abs(q.q0)
-    aq1 = abs(q.q1)
-    aq2 = abs(q.q2)
-    aq3 = abs(q.q3)
+    # Check if the user wants compact printing, defaulting to `true`.
+    compact_printing = get(io, :compact, true)::Bool
+
+    # Get the absolute values using `print`.
+    aq0 = sprint(print, abs(q.q0), context = :compact => compact_printing)
+    aq1 = sprint(print, abs(q.q1), context = :compact => compact_printing)
+    aq2 = sprint(print, abs(q.q2), context = :compact => compact_printing)
+    aq3 = sprint(print, abs(q.q3), context = :compact => compact_printing)
 
     # Get the signs.
-    sq0 = (q.q0 >= 0) ? "+" : "-"
-    sq1 = (q.q1 >= 0) ? "+" : "-"
-    sq2 = (q.q2 >= 0) ? "+" : "-"
-    sq3 = (q.q3 >= 0) ? "+" : "-"
+    sq0 = signbit(q.q0) ? "-" : "+"
+    sq1 = signbit(q.q1) ? "-" : "+"
+    sq2 = signbit(q.q2) ? "-" : "+"
+    sq3 = signbit(q.q3) ? "-" : "+"
 
-    print(io, "Quaternion{$(T)}:")
-    print(io, " $(sq0) $(aq0) $(sq1) $(aq1).i $(sq2) $(aq2).j $(sq3) $(aq3).k")
+    print(io, "Quaternion{$(T)}: ")
+    print(io,
+        sq0, " ", aq0, " ",
+        sq1, " ", aq1, "⋅i ",
+        sq2, " ", aq2, "⋅j ",
+        sq3, " ", aq3, "⋅k"
+    )
 
     return nothing
 end
 
 function show(io::IO, mime::MIME"text/plain", q::Quaternion{T}) where T
     # Check if the user wants colors.
-    color = get(io, :color, false)
+    color = get(io, :color, false)::Bool
 
-    b = (color) ? _b : ""
-    d = (color) ? _d : ""
+    # Check if the user wants compact printing, defaulting to `true`.
+    compact_printing = get(io, :compact, true)::Bool
 
-    # Get the absolute values.
-    aq0 = abs(q.q0)
-    aq1 = abs(q.q1)
-    aq2 = abs(q.q2)
-    aq3 = abs(q.q3)
+    # Assemble the context.
+    context = IOContext(io, :color => color, :compact => compact_printing)
+
+    b = color ? string(_b) : ""
+    d = color ? string(_d) : ""
+
+    # Get the absolute values using `print`.
+    aq0 = sprint(print, abs(q.q0), context = context)
+    aq1 = sprint(print, abs(q.q1), context = context)
+    aq2 = sprint(print, abs(q.q2), context = context)
+    aq3 = sprint(print, abs(q.q3), context = context)
 
     # Get the signs.
-    sq0 = (q.q0 >= 0) ? "+" : "-"
-    sq1 = (q.q1 >= 0) ? "+" : "-"
-    sq2 = (q.q2 >= 0) ? "+" : "-"
-    sq3 = (q.q3 >= 0) ? "+" : "-"
-
-    # Unitary vectors.
-    i = "$(b)i$d"
-    j = "$(b)j$d"
-    k = "$(b)k$d"
+    sq0 = signbit(q.q0) ? "-" : "+"
+    sq1 = signbit(q.q1) ? "-" : "+"
+    sq2 = signbit(q.q2) ? "-" : "+"
+    sq3 = signbit(q.q3) ? "-" : "+"
 
     println(io, "Quaternion{$(T)}:")
-    print(io, "  $(sq0) $(aq0) $(sq1) $(aq1).$i $(sq2) $(aq2).$j $(sq3) $(aq3).$k")
+    print(io,
+        "  ",
+        sq0, " ", aq0, " ",
+        sq1, " ", aq1, "⋅", b, "i", d, " ",
+        sq2, " ", aq2, "⋅", b, "j", d, " ",
+        sq2, " ", aq2, "⋅", b, "k", d
+    )
 
     return nothing
 end
@@ -791,9 +805,8 @@ julia> q = Quaternion(1.0I);
 
 julia> dquat(q,[1;0;0])
 Quaternion{Float64}:
-  + 0.0 + 0.5.i + 0.0.j + 0.0.k
+  - 0.0 + 0.5⋅i + 0.0⋅j + 0.0⋅k
 ```
-
 """
 function dquat(qba::Quaternion, wba_b::AbstractVector)
     # Auxiliary variable.

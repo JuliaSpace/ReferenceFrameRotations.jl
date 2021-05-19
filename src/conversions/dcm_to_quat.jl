@@ -32,7 +32,7 @@ julia> dcm = angle_to_dcm(pi / 2, 0.0, 0.0, :XYZ);
 
 julia> q = dcm_to_quat(dcm)
 Quaternion{Float64}:
-  + 0.7071067811865476 + 0.7071067811865475.i + 0.0.j + 0.0.k
+  + 0.707107 + 0.707107⋅i + 0.0⋅j + 0.0⋅k
 ```
 
 # References

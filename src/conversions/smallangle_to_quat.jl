@@ -23,7 +23,7 @@ Create a quaternion from three small rotations of angles `θx`, `θy`, and `θz`
 ```julia-repl
 julia> smallangle_to_quat(+0.01, -0.01, +0.01)
 Quaternion{Float64}:
-  + 0.9999625021092433 + 0.004999812510546217.i - 0.004999812510546217.j + 0.004999812510546217.k
+  + 0.999963 + 0.00499981⋅i - 0.00499981⋅j - 0.00499981⋅k
 ```
 """
 function smallangle_to_quat(θx::Number, θy::Number, θz::Number)

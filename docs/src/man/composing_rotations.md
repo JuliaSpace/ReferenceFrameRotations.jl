@@ -66,5 +66,5 @@ julia> q2 = angle_to_quat(-0.5, -0.5, -0.5, :ZYX);
 
 julia> compose_rotation(q1, q2)
 Quaternion{Float64}:
-  + 0.9999999999999998 + 0.0.i + 0.0.j + 0.0.k
+  + 1.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
 ```
