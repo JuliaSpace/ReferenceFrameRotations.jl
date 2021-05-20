@@ -65,26 +65,43 @@ function isapprox(x::EulerAngles, y::EulerAngles; keys...)
     return a1 && a2 && a3 && r
 end
 
-@time @testset "Direction cosine matrices" begin
+# Add `verbose = true` option to testsets if Julia version is 1.6 or higher.
+macro addverbose(expr)
+    if VERSION ≥ v"1.6.0"
+        if (expr.head == :macrocall) &&
+            (expr.args[1] == Symbol("@testset")) &&
+            (length(expr.args) ≥ 4)
+            expr.args = vcat(
+                expr.args[1:3],
+                Expr(:(=), :verbose, true),
+                expr.args[4:end]
+            )
+        end
+    end
+
+    return expr
+end
+
+@time @addverbose @testset "Direction cosine matrices" begin
     include("./dcm/create_rotation_matrix.jl")
     include("./dcm/kinematics.jl")
     include("./dcm/orthonormalize.jl")
 end
 println("")
 
-@time @testset "Euler angle and axis" begin
+@time @addverbose @testset "Euler angle and axis" begin
     include("./angleaxis/functions.jl")
     include("./angleaxis/operations.jl")
 end
 println("")
 
-@time @testset "Euler angles" begin
+@time @addverbose @testset "Euler angles" begin
     include("./angle/functions.jl")
     include("./angle/operations.jl")
 end
 println("")
 
-@time @testset "Quaternions" begin
+@time @addverbose @testset "Quaternions" begin
     include("./quaternion/constructors.jl")
     include("./quaternion/functions.jl")
     include("./quaternion/kinematics.jl")
@@ -92,7 +109,7 @@ println("")
 end
 println("")
 
-@time @testset "Conversions" begin
+@time @addverbose @testset "Conversions" begin
     include("./conversions/angle_to_angle.jl")
     include("./conversions/angle_to_angleaxis.jl")
     include("./conversions/angle_to_dcm.jl")
@@ -110,12 +127,12 @@ println("")
 end
 println("")
 
-@time @testset "Compose rotations" begin
+@time @addverbose @testset "Compose rotations" begin
     include("./compose_rotations.jl")
 end
 println("")
 
-@time @testset "Invert rotations" begin
+@time @addverbose @testset "Invert rotations" begin
     include("./inv_rotations.jl")
 end
 println("")
