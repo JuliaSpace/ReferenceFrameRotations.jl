@@ -1,6 +1,27 @@
 ReferenceFrameRotations.jl Changelog
 ====================================
 
+Version 1.0.0
+-------------
+
+The following rotation representations and the conversion between them are now
+considered stable:
+
+* Direction cosine matrix (DCM);
+* Euler angle and axis;
+* Euler angles; and
+* Quaternion.
+
+- ![Enhancement][badge-enhancement] The printing of Euler angle and axis, Euler
+  angles, and quaternion were improved. Everything is now printed with context
+  `:compact => true`, and can be changed using `IOContext`.
+- ![Enhancement][badge-enhancement] The tests were entirely redesigned, leading
+  to 100% of coverage.
+- ![Enhancement][badge-enhancement] The code now follows the
+  [BlueStyle](https://github.com/invenia/BlueStyle).
+- ![Deprecation][badge-deprecation] All deprecated functions in v0.4 were
+  removed.
+
 Version 0.5.7
 -------------
 
