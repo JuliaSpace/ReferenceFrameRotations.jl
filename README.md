@@ -10,11 +10,6 @@ This module contains functions related to the representation of 3D rotations of
 reference frames. It is used on a daily basis on projects at the [Brazilian
 National Institute for Space Research (INPE)](http://www.inpe.br).
 
-## Requirements
-
-* Julia >= 1.0
-* StaticArrays >= 0.9.2
-
 ## Installation
 
 This package can be installed using:
