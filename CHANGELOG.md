@@ -1,6 +1,12 @@
 ReferenceFrameRotations.jl Changelog
 ====================================
 
+Version 1.0.1
+-------------
+
+- ![Bugfix][badge-bugfix] The display function of quaternions was showing `q2`
+  instead of `q3`.
+
 Version 1.0.0
 -------------
 
