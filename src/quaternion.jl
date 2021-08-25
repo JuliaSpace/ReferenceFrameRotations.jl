@@ -781,7 +781,7 @@ function show(io::IO, mime::MIME"text/plain", q::Quaternion{T}) where T
         sq0, " ", aq0, " ",
         sq1, " ", aq1, "⋅", b, "i", d, " ",
         sq2, " ", aq2, "⋅", b, "j", d, " ",
-        sq2, " ", aq2, "⋅", b, "k", d
+        sq3, " ", aq3, "⋅", b, "k", d
     )
 
     return nothing

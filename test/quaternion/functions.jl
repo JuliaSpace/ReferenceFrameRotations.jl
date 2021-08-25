@@ -223,7 +223,7 @@ end
     show(io, MIME"text/plain"(), q)
     expected = """
         Quaternion{Float64}:
-          + 1.0 + 2.0⋅i + 2.71828⋅j + 2.71828⋅k"""
+          + 1.0 + 2.0⋅i + 2.71828⋅j + 3.14159⋅k"""
     @test String(take!(io.io)) == expected
 
     # Comapct printing.
@@ -237,6 +237,6 @@ end
     show(io, MIME"text/plain"(), q)
     expected = """
         Quaternion{Float64}:
-          + 1.0 + 2.0⋅\e[1mi\e[0m + 2.71828⋅\e[1mj\e[0m + 2.71828⋅\e[1mk\e[0m"""
+          + 1.0 + 2.0⋅\e[1mi\e[0m + 2.71828⋅\e[1mj\e[0m + 3.14159⋅\e[1mk\e[0m"""
     @test String(take!(io.io)) == expected
 end
