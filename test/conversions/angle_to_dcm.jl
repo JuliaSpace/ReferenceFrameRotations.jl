@@ -166,9 +166,9 @@ end
 
         # Create the DCM by composing the rotations.
         rot_seq_str = string(rot_seq)
-        D₁ = create_rotation_matrix(ea.a1, Symbol(rot_seq_str[1]))
-        D₂ = create_rotation_matrix(ea.a2, Symbol(rot_seq_str[2]))
-        D₃ = create_rotation_matrix(ea.a3, Symbol(rot_seq_str[3]))
+        D₁ = angle_to_dcm(ea.a1, Symbol(rot_seq_str[1]))
+        D₂ = angle_to_dcm(ea.a2, Symbol(rot_seq_str[2]))
+        D₃ = angle_to_dcm(ea.a3, Symbol(rot_seq_str[3]))
         De = D₃ * D₂ * D₁
 
         # Compare.
@@ -189,9 +189,9 @@ end
 
         # Create the DCM by composing the rotations.
         rot_seq_str = string(rot_seq)
-        D₁ = create_rotation_matrix(ea.a1, Symbol(rot_seq_str[1]))
-        D₂ = create_rotation_matrix(ea.a2, Symbol(rot_seq_str[2]))
-        D₃ = create_rotation_matrix(ea.a3, Symbol(rot_seq_str[3]))
+        D₁ = angle_to_dcm(ea.a1, Symbol(rot_seq_str[1]))
+        D₂ = angle_to_dcm(ea.a2, Symbol(rot_seq_str[2]))
+        D₃ = angle_to_dcm(ea.a3, Symbol(rot_seq_str[3]))
         De = D₃ * D₂ * D₁
 
         # Compare.
