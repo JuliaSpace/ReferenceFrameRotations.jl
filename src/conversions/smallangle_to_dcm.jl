@@ -35,12 +35,16 @@ julia> smallangle_to_dcm(+0.01, -0.01, +0.01; normalize = false)
 ```
 """
 @inline function smallangle_to_dcm(
-    θx::Number,
-    θy::Number,
-    θz::Number;
+    θx::T1,
+    θy::T2,
+    θz::T3;
     normalize = true
-)
-    D = DCM(
+) where {T1<:Number, T2<:Number, T3<:Number}
+    # Since we might orthonormalize `D`, we need to get the float to avoid type
+    # instabilities.
+    T = float(promote_type(T1, T2, T3))
+
+    D = DCM{T}(
           1, +θz, -θy,
         -θz,   1, +θx,
         +θy, -θx,   1

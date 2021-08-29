@@ -273,3 +273,15 @@ end
 
     @test orthonormalize(De) ≈ D
 end
+
+@testset "Small Euler angles => DCM (Promotion)" begin
+    # Check if promotion is working as intended.
+    dcm = smallangle_to_dcm(Int64(1), 0.0f0, Float64(0))
+    @test eltype(dcm) === Float64
+
+    dcm = smallangle_to_dcm(Int64(1), 0.0f0, 0.0f0)
+    @test eltype(dcm) === Float32
+
+    dcm = smallangle_to_dcm(Int64(1), Int32(0), Float16(0))
+    @test eltype(dcm) === Float16
+end
