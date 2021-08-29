@@ -7,52 +7,7 @@
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-export create_rotation_matrix
 export ddcm, orthonormalize
-
-"""
-    create_rotation_matrix(angle::Number, axis::Symbol = :X)
-
-Compute a rotation matrix that rotates a coordinate frame about the `axis` by
-the `angle`.
-
-The `axis` must be one of the following symbols: `:X`, `:Y`, or `:Z`.
-
-# Example
-
-```jldocstest
-julia> create_rotation_matrix(pi/2, :X)
-3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
- 1.0   0.0          0.0
- 0.0   6.12323e-17  1.0
- 0.0  -1.0          6.12323e-17
-```
-"""
-function create_rotation_matrix(angle::Number, axis::Symbol = :X)
-    sa, ca = sincos(angle)
-
-    if axis == :X
-        return DCM(
-            1,   0,   0,
-            0, +ca, +sa,
-            0, -sa, +ca
-        )'
-    elseif axis == :Y
-        return DCM(
-            +ca, 0, -sa,
-              0, 1,   0,
-            +sa, 0, +ca
-        )'
-    elseif axis == :Z
-        return DCM(
-            +ca, +sa, 0,
-            -sa, +ca, 0,
-              0,   0, 1
-        )'
-    else
-        throw(ArgumentError("Axis must be :X, :Y, or :Z"))
-    end
-end
 
 """
     orthonormalize(dcm::DCM)

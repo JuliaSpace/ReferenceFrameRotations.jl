@@ -10,6 +10,48 @@
 export angle_to_dcm
 
 """
+    angle_to_dcm(θ::Number, axis::Symbol)
+
+Create a direction cosine matrix that rotates the `axis` by an angle `θ` [rad].
+`axis` can be `:X`, `:Y`, or `:Z`.
+
+# Example
+
+```jldocstest
+julia> angle_to_dcm(pi/2, :X)
+3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
+ 1.0   0.0          0.0
+ 0.0   6.12323e-17  1.0
+ 0.0  -1.0          6.12323e-17
+```
+"""
+function angle_to_dcm(θ::Number, axis::Symbol)
+    sa, ca = sincos(θ)
+
+    if axis == :X
+        return DCM(
+            1,   0,   0,
+            0, +ca, +sa,
+            0, -sa, +ca
+        )'
+    elseif axis == :Y
+        return DCM(
+            +ca, 0, -sa,
+              0, 1,   0,
+            +sa, 0, +ca
+        )'
+    elseif axis == :Z
+        return DCM(
+            +ca, +sa, 0,
+            -sa, +ca, 0,
+              0,   0, 1
+        )'
+    else
+        throw(ArgumentError("Axis must be :X, :Y, or :Z"))
+    end
+end
+
+"""
     angle_to_dcm(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
     angle_to_dcm(Θ::EulerAngles)
 

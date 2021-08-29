@@ -226,6 +226,22 @@ julia> dcm = angle_to_dcm(angles)
   0.866025     0.353553   0.353553
 ```
 
+Suppose the user desires to obtain the DCM that rotates the coordinate system by
+a specific angle about only one axis. In that case, it is better to use the
+following function due to improved accuracy in some cases:
+
+```
+function angle_to_dcm(θ::Number, axis::Symbol)
+```
+
+```jldoctest
+julia> angle_to_dcm(-pi / 4, 0, 0, :ZYZ)
+3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+ 0.707107  -0.707107  -0.0
+ 0.707107   0.707107   0.0
+ 0.0       -0.0        1.0
+```
+
 ## Euler Angles to Euler Angles
 
 It is possible to change the rotation sequence of a set of Euler angles using
