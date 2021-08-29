@@ -199,6 +199,18 @@ end
     end
 end
 
+@testset "Euler angler => DCM (Promotion)" begin
+    # Check if promotion is working as intended.
+    dcm = angle_to_dcm(Int64(1), 0.0f0, Float64(0))
+    @test eltype(dcm) === Float64
+
+    dcm = angle_to_dcm(Int64(1), 0.0f0, 0.0f0)
+    @test eltype(dcm) === Float32
+
+    dcm = angle_to_dcm(Int64(1), Int32(0), Float16(0))
+    @test eltype(dcm) === Float16
+end
+
 @testset "Euler angles => DCM (Errors)" begin
     @test_throws ArgumentError angle_to_dcm(1, 2, 3, :ZZY)
 end

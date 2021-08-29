@@ -80,11 +80,18 @@ julia> dcm = angle_to_dcm(pi / 2, pi / 3, pi / 4, :ZYX)
   0.707107     0.612372   0.353553
 ```
 """
-function angle_to_dcm(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
+function angle_to_dcm(
+    θ₁::T1,
+    θ₂::T2,
+    θ₃::T3,
+    rot_seq::Symbol = :ZYX
+) where {T1<:Number, T2<:Number, T3<:Number}
+    T = promote_type(T1, T2, T3)
+
     # Compute the sines and cosines.
-    s₁, c₁ = sincos(θ₁)
-    s₂, c₂ = sincos(θ₂)
-    s₃, c₃ = sincos(θ₃)
+    s₁, c₁ = sincos(T(θ₁))
+    s₂, c₂ = sincos(T(θ₂))
+    s₃, c₃ = sincos(T(θ₃))
 
     if rot_seq == :ZYX
         return DCM(
