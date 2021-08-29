@@ -304,6 +304,20 @@ EulerAngleAxis{Float64}:
   Euler axis  : [0.692363, 0.203145, 0.692363]
 ```
 
+Suppose the user desires to obtain the quaternion that rotates the coordinate
+system by a specific angle about only one axis. In that case, it is better to
+use the following function due to improved accuracy in some cases:
+
+```
+function angle_to_quat(θ::Number, axis::Symbol)
+```
+
+```jldoctest
+julia> angle_to_quat(-pi / 4, :Z)
+Quaternion{Float64}:
+  + 0.92388 + 0.0⋅i + 0.0⋅j - 0.382683⋅k
+```
+
 ## Euler Angles to Quaternions
 
 Euler angles can be converted to quaternions using the following functions:

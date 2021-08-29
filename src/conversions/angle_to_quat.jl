@@ -10,6 +10,41 @@
 export angle_to_quat
 
 """
+    angle_to_quat(θ::Number, axis::Symbol)
+
+Create a quaternion that rotates the `axis` by an angle `θ` [rad]. `axis` can be
+`:X`, `:Y`, or `:Z`.
+
+# Example
+
+```jldocstest
+julia> angle_to_quat(pi / 2, :Y)
+Quaternion{Float64}:
+  + 0.707107 + 0.0⋅i + 0.707107⋅j + 0.0⋅k
+```
+"""
+function angle_to_quat(θ::Number, axis::Symbol)
+    # Compute the sines and cosines of half angle.
+    s, c = sincos(θ / 2)
+
+    # Make sure that the real part is always positive.
+    if c < 0
+        c = -c
+        s = -s
+    end
+
+    if axis == :X
+        return Quaternion(c, s, 0, 0)
+    elseif axis == :Y
+        return Quaternion(c, 0, s, 0)
+    elseif axis == :Z
+        return Quaternion(c, 0, 0, s)
+    else
+        throw(ArgumentError("Axis must be :X, :Y, or :Z"))
+    end
+end
+
+"""
     angle_to_quat(θ₁::T1, θ₂::T2, θ₃::T3, rot_seq::Symbol = :ZYX) where {T1<:Number, T2<:Number, T3<:Number}
     angle_to_quat(eulerang::EulerAngles)
 
