@@ -199,7 +199,7 @@ end
     end
 end
 
-@testset "Euler angler => DCM (Promotion)" begin
+@testset "Euler angles => DCM (Promotion)" begin
     # Check if promotion is working as intended.
     dcm = angle_to_dcm(Int64(1), 0.0f0, Float64(0))
     @test eltype(dcm) === Float64
