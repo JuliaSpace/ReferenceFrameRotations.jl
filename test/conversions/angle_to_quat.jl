@@ -257,3 +257,15 @@ end
 
     @test qe ≈ q
 end
+
+@testset "Small Euler angles => Quaternion (Promotion)" begin
+    # Check if promotion is working as intended.
+    quat = smallangle_to_quat(Int64(1), 0.0f0, Float64(0))
+    @test eltype(quat) === Float64
+
+    quat = smallangle_to_quat(Int64(1), 0.0f0, 0.0f0)
+    @test eltype(quat) === Float32
+
+    quat = smallangle_to_quat(Int64(1), Int32(0), Float16(0))
+    @test eltype(quat) === Float16
+end
