@@ -12,8 +12,8 @@ export angle_to_dcm
 """
     angle_to_dcm(θ::Number, axis::Symbol)
 
-Create a direction cosine matrix that rotates the `axis` by an angle `θ` [rad].
-`axis` can be `:X`, `:Y`, or `:Z`.
+Create a direction cosine matrix that rotates the reference frame about `axis`
+by an angle `θ` [rad]. `axis` can be `:X`, `:Y`, or `:Z`.
 
 # Example
 

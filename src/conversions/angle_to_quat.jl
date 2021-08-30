@@ -12,8 +12,8 @@ export angle_to_quat
 """
     angle_to_quat(θ::Number, axis::Symbol)
 
-Create a quaternion that rotates the `axis` by an angle `θ` [rad]. `axis` can be
-`:X`, `:Y`, or `:Z`.
+Create a quaternion that rotates the reference frame about `axis` by an angle
+`θ` [rad]. `axis` can be `:X`, `:Y`, or `:Z`.
 
 # Example
 
