@@ -23,7 +23,7 @@ By convention, the real part of the quaternion will always be positive.
 Moreover, the function does not check if `dcm` is a valid direction cosine
 matrix. This must be handle by the user.
 
-This algorithm was obtained from [^1].
+This algorithm was obtained from **[1]**.
 
 # Example
 
@@ -37,7 +37,7 @@ Quaternion{Float64}:
 
 # References
 
-[^1]: http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/
+- **[1]**: http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/
 """
 function dcm_to_quat(dcm::DCM)
     if  tr(dcm) > 0

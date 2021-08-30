@@ -77,7 +77,7 @@ julia> q2 = angle_to_quat(-pi / 5, -pi / 4, -pi / 3, :XYZ);
 
 julia> compose_rotation(q1, q2)
 Quaternion{Float64}:
-  + 1.0 + 0.0⋅i + 2.08167e-17⋅j + 2.08167e-17⋅k
+  + 1.0 + 0.0⋅i + 2.08167e-17⋅j + 5.55112e-17⋅k
 ```
 """
 @inline compose_rotation(D::DCM) = D

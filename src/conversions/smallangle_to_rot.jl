@@ -39,7 +39,7 @@ julia> dcm = smallangle_to_rot(+0.01, -0.01, +0.01; normalize = false)
 
 julia> q = smallangle_to_rot(Quaternion, +0.01, -0.01, +0.01)
 Quaternion{Float64}:
-  + 0.999963 + 0.00499981⋅i - 0.00499981⋅j - 0.00499981⋅k
+  + 0.999963 + 0.00499981⋅i - 0.00499981⋅j + 0.00499981⋅k
 ```
 """
 @inline function smallangle_to_rot(

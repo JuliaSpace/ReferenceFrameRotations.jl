@@ -50,9 +50,9 @@ julia> q1 = angle_to_quat(0.5, 0.5, 0.5, :XYZ);
 
 julia> q2 = inv_rotation(q1)
 Quaternion{Float64}:
-  + 0.894463 - 0.291567⋅i - 0.172955⋅j - 0.172955⋅k
+  + 0.894463 - 0.291567⋅i - 0.172955⋅j - 0.291567⋅k
 
 julia> q2 * q1
 Quaternion{Float64}:
-  + 1.0 + 0.0⋅i - 1.38778e-17⋅j - 1.38778e-17⋅k
+  + 1.0 + 0.0⋅i - 1.38778e-17⋅j + 0.0⋅k
 ```

@@ -73,7 +73,7 @@ julia> dcm = angle_to_rot(pi / 2, pi / 3, pi / 4, :ZYX)
 
 julia> q = angle_to_rot(Quaternion, pi / 2, pi / 3, pi / 4, :ZYX)
 Quaternion{Float64}:
-  + 0.701057 - 0.092296⋅i + 0.560986⋅j + 0.560986⋅k
+  + 0.701057 - 0.092296⋅i + 0.560986⋅j + 0.430459⋅k
 ```
 """
 @inline function angle_to_rot(

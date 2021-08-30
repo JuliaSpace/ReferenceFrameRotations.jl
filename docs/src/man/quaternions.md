@@ -57,7 +57,7 @@ julia> v = [1., 2., 3., 4.];
 
 julia> q = Quaternion(v)
 Quaternion{Float64}:
-  + 1.0 + 2.0⋅i + 3.0⋅j + 3.0⋅k
+  + 1.0 + 2.0⋅i + 3.0⋅j + 4.0⋅k
 ```
 
 * Provide just the imaginary part, in this case the real part will be 0:
@@ -181,31 +181,31 @@ multiplication between a quaternion and a scalar are defined as usual:
 ```
 
 ```jldoctest
-julia> q1 = Quaternion(1.0,1.0,0.0,0.0);
+julia> q1 = Quaternion(1.0, 1.0, 0.0, 0.0);
 
-julia> q2 = Quaternion(1.0,2.0,3.0,4.0);
+julia> q2 = Quaternion(1.0, 2.0, 3.0, 4.0);
 
 julia> q1 + q2
 Quaternion{Float64}:
-  + 2.0 + 3.0⋅i + 3.0⋅j + 3.0⋅k
+  + 2.0 + 3.0⋅i + 3.0⋅j + 4.0⋅k
 
 julia> q1 - q2
 Quaternion{Float64}:
-  + 0.0 - 1.0⋅i - 3.0⋅j - 3.0⋅k
+  + 0.0 - 1.0⋅i - 3.0⋅j - 4.0⋅k
 
-julia> q1 = Quaternion(1.0,2.0,3.0,4.0);
+julia> q1 = Quaternion(1.0, 2.0, 3.0, 4.0);
 
 julia> q1 * 3
 Quaternion{Float64}:
-  + 3.0 + 6.0⋅i + 9.0⋅j + 9.0⋅k
+  + 3.0 + 6.0⋅i + 9.0⋅j + 12.0⋅k
 
 julia> 4 * q1
 Quaternion{Float64}:
-  + 4.0 + 8.0⋅i + 12.0⋅j + 12.0⋅k
+  + 4.0 + 8.0⋅i + 12.0⋅j + 16.0⋅k
 
 julia> 5q1
 Quaternion{Float64}:
-  + 5.0 + 10.0⋅i + 15.0⋅j + 15.0⋅k
+  + 5.0 + 10.0⋅i + 15.0⋅j + 20.0⋅k
 ```
 
 ### Multiplication between quaternions
@@ -250,15 +250,15 @@ the vector is converted to a quaternion with real part 0, ``\mathbf{q}_v =
 ```jldoctest
 julia> q1 = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);
 
-julia> v = [0;1;0];
+julia> v = [0; 1; 0];
 
 julia> v * q1
 Quaternion{Float64}:
-  + 0.0 + 0.0⋅i + 0.92388⋅j + 0.92388⋅k
+  + 0.0 + 0.0⋅i + 0.92388⋅j - 0.382683⋅k
 
 julia> q1 * v
 Quaternion{Float64}:
-  - 0.0 + 0.0⋅i + 0.92388⋅j + 0.92388⋅k
+  - 0.0 + 0.0⋅i + 0.92388⋅j + 0.382683⋅k
 ```
 
 ### Division between quaternions
@@ -308,7 +308,7 @@ The left division (`\`) between two quaternions ``\mathbf{q}_1`` and
 ```
 
 ```jldoctest
-julia> q1 = Quaternion(cosd(45+22.5), sind(45+22.5), 0.0, 0.0);
+julia> q1 = Quaternion(cosd(45 + 22.5), sind(45 + 22.5), 0.0, 0.0);
 
 julia> q2 = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);
 
@@ -342,15 +342,15 @@ the division operation is performed as defined earlier.
 ```jldoctest
 julia> q1 = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);
 
-julia> v  = [0;1;0];
+julia> v  = [0; 1; 0];
 
 julia> q1 \ v
 Quaternion{Float64}:
-  + 0.0 + 0.0⋅i + 0.92388⋅j + 0.92388⋅k
+  + 0.0 + 0.0⋅i + 0.92388⋅j - 0.382683⋅k
 
 julia> v \ q1
 Quaternion{Float64}:
-  + 0.0 + 0.0⋅i - 0.92388⋅j - 0.92388⋅k
+  + 0.0 + 0.0⋅i - 0.92388⋅j + 0.382683⋅k
 ```
 
 ### Other operations
@@ -358,23 +358,23 @@ Quaternion{Float64}:
 There are also the following functions available:
 
 ```jldoctest
-julia> q = Quaternion(1.0,2.0,3.0,4.0);
+julia> q = Quaternion(1.0, 2.0, 3.0, 4.0);
 
 julia> conj(q)  # Returns the complex conjugate of the quaternion.
 Quaternion{Float64}:
-  + 1.0 - 2.0⋅i - 3.0⋅j - 3.0⋅k
+  + 1.0 - 2.0⋅i - 3.0⋅j - 4.0⋅k
 
 julia> copy(q)  # Creates a copy of the quaternion.
 Quaternion{Float64}:
-  + 1.0 + 2.0⋅i + 3.0⋅j + 3.0⋅k
+  + 1.0 + 2.0⋅i + 3.0⋅j + 4.0⋅k
 
 julia> inv(q)   # Computes the multiplicative inverse of the quaternion.
 Quaternion{Float64}:
-  + 0.0333333 - 0.0666667⋅i - 0.1⋅j - 0.1⋅k
+  + 0.0333333 - 0.0666667⋅i - 0.1⋅j - 0.133333⋅k
 
 julia> inv(q)*q
 Quaternion{Float64}:
-  + 1.0 + 0.0⋅i + 5.55112e-17⋅j + 5.55112e-17⋅k
+  + 1.0 + 0.0⋅i + 5.55112e-17⋅j + 0.0⋅k
 
 julia> imag(q)  # Returns the vectorial / imaginary part of the quaternion.
 3-element StaticArrays.SVector{3, Float64} with indices SOneTo(3):

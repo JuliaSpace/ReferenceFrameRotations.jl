@@ -69,7 +69,7 @@ Quaternion{Float64}:
 
 julia> Quaternion([cosd(45), 0, sind(45), 0])
 Quaternion{Float64}:
-  + 0.707107 + 0.0⋅i + 0.707107⋅j + 0.707107⋅k
+  + 0.707107 + 0.0⋅i + 0.707107⋅j + 0.0⋅k
 ```
 
 ---
@@ -89,7 +89,7 @@ Create a quaternion with real part `r` and vectorial or imaginary part `v`:
 ```jldoctest
 julia> Quaternion(cosd(45), [0, sind(45), 0])
 Quaternion{Float64}:
-  + 0.707107 + 0.0⋅i + 0.707107⋅j + 0.707107⋅k
+  + 0.707107 + 0.0⋅i + 0.707107⋅j + 0.0⋅k
 ```
 
 ---
@@ -174,11 +174,11 @@ Quaternion{Int64}:
 
 julia> q2 = Quaternion(0, cosd(45), 0, sind(45))
 Quaternion{Float64}:
-  + 0.0 + 0.707107⋅i + 0.0⋅j + 0.0⋅k
+  + 0.0 + 0.707107⋅i + 0.0⋅j + 0.707107⋅k
 
 julia> q1 + q2
 Quaternion{Float64}:
-  + 1.0 + 0.707107⋅i + 0.0⋅j + 0.0⋅k
+  + 1.0 + 0.707107⋅i + 0.0⋅j + 0.707107⋅k
 
 julia> q1 + I
 Quaternion{Int64}:
@@ -235,11 +235,11 @@ Quaternion{Int64}:
 
 julia> q2 = Quaternion(0, cosd(45), 0, sind(45))
 Quaternion{Float64}:
-  + 0.0 + 0.707107⋅i + 0.0⋅j + 0.0⋅k
+  + 0.0 + 0.707107⋅i + 0.0⋅j + 0.707107⋅k
 
 julia> q1 - q2
 Quaternion{Float64}:
-  + 1.0 - 0.707107⋅i + 0.0⋅j + 0.0⋅k
+  + 1.0 - 0.707107⋅i + 0.0⋅j - 0.707107⋅k
 
 julia> q1 - I
 Quaternion{Int64}:
@@ -294,19 +294,19 @@ then it is considered as the quaternion `u.λ + 0 ⋅ i + 0 ⋅ j + 0 ⋅ k`.
 ```jldoctest
 julia> q1 = Quaternion(cosd(30), 0, sind(30), 0)
 Quaternion{Float64}:
-  + 0.866025 + 0.0⋅i + 0.5⋅j + 0.5⋅k
+  + 0.866025 + 0.0⋅i + 0.5⋅j + 0.0⋅k
 
 julia> q2 = Quaternion(cosd(60), 0, sind(60), 0)
 Quaternion{Float64}:
-  + 0.5 + 0.0⋅i + 0.866025⋅j + 0.866025⋅k
+  + 0.5 + 0.0⋅i + 0.866025⋅j + 0.0⋅k
 
 julia> q1 * q2
 Quaternion{Float64}:
-  + 0.0 + 0.0⋅i + 1.0⋅j + 1.0⋅k
+  + 0.0 + 0.0⋅i + 1.0⋅j + 0.0⋅k
 
 julia> I * q1
 Quaternion{Float64}:
-  + 0.866025 + 0.0⋅i + 0.5⋅j + 0.5⋅k
+  + 0.866025 + 0.0⋅i + 0.5⋅j + 0.0⋅k
 ```
 """
 @inline function *(q1::Quaternion, q2::Quaternion)
@@ -343,7 +343,7 @@ julia> v = [0, cosd(60), sind(60)]
 
 julia> q * v
 Quaternion{Float64}:
-  + 0.0 + 0.0⋅i + 0.5⋅j + 0.5⋅k
+  + 0.0 + 0.0⋅i + 0.5⋅j + 0.866025⋅k
 ```
 """
 @inline function *(v::AbstractVector, q::Quaternion)
@@ -416,19 +416,19 @@ then it is considered as the quaternion `u.λ + 0 ⋅ i + 0 ⋅ j + 0 ⋅ k`.
 ```jldoctest
 julia> q1 = Quaternion(cosd(75), 0, sind(75), 0)
 Quaternion{Float64}:
-  + 0.258819 + 0.0⋅i + 0.965926⋅j + 0.965926⋅k
+  + 0.258819 + 0.0⋅i + 0.965926⋅j + 0.0⋅k
 
 julia> q2 = Quaternion(cosd(30), 0, sind(30), 0)
 Quaternion{Float64}:
-  + 0.866025 + 0.0⋅i + 0.5⋅j + 0.5⋅k
+  + 0.866025 + 0.0⋅i + 0.5⋅j + 0.0⋅k
 
 julia> q1 / q2
 Quaternion{Float64}:
-  + 0.707107 + 0.0⋅i + 0.707107⋅j + 0.707107⋅k
+  + 0.707107 + 0.0⋅i + 0.707107⋅j + 0.0⋅k
 
 julia> q1 / (2 * I)
 Quaternion{Float64}:
-  + 0.12941 + 0.0⋅i + 0.482963⋅j + 0.482963⋅k
+  + 0.12941 + 0.0⋅i + 0.482963⋅j + 0.0⋅k
 ```
 """
 @inline /(q1::Quaternion, q2::Quaternion) = q1 * inv(q2)
@@ -455,15 +455,15 @@ then it is considered as the quaternion `u.λ + 0 ⋅ i + 0 ⋅ j + 0 ⋅ k`.
 ```jldoctest
 julia> q1 = Quaternion(cosd(75), 0, sind(75), 0)
 Quaternion{Float64}:
-  + 0.258819 + 0.0⋅i + 0.965926⋅j + 0.965926⋅k
+  + 0.258819 + 0.0⋅i + 0.965926⋅j + 0.0⋅k
 
 julia> q2 = Quaternion(cosd(30), 0, sind(30), 0)
 Quaternion{Float64}:
-  + 0.866025 + 0.0⋅i + 0.5⋅j + 0.5⋅k
+  + 0.866025 + 0.0⋅i + 0.5⋅j + 0.0⋅k
 
 julia> q2 \\ q1
 Quaternion{Float64}:
-  + 0.707107 + 0.0⋅i + 0.707107⋅j + 0.707107⋅k
+  + 0.707107 + 0.0⋅i + 0.707107⋅j + 0.0⋅k
 ```
 """
 @inline \(q1::Quaternion, q2::Quaternion) = inv(q1) * q2
@@ -492,7 +492,7 @@ julia> v = [0, cosd(60), sind(60)]
 
 julia> v \\ q
 Quaternion{Float64}:
-  + 0.0 + 0.0⋅i - 0.5⋅j - 0.5⋅k
+  + 0.0 + 0.0⋅i - 0.5⋅j - 0.866025⋅k
 ```
 """
 @inline \(q::Quaternion, v::AbstractVector) = inv(q)*v
@@ -516,11 +516,11 @@ See also: [`inv`](@ref)
 ```jldoctest
 julia> q = Quaternion(1, cosd(75), 0, sind(75))
 Quaternion{Float64}:
-  + 1.0 + 0.258819⋅i + 0.0⋅j + 0.0⋅k
+  + 1.0 + 0.258819⋅i + 0.0⋅j + 0.965926⋅k
 
 julia> conj(q)
 Quaternion{Float64}:
-  + 1.0 - 0.258819⋅i - 0.0⋅j - 0.0⋅k
+  + 1.0 - 0.258819⋅i - 0.0⋅j - 0.965926⋅k
 ```
 """
 @inline conj(q::Quaternion) = Quaternion(q.q0, -q.q1, -q.q2, -q.q3)
@@ -529,7 +529,6 @@ Quaternion{Float64}:
     copy(q::Quaternion{T}) where T
 
 Create a copy of the quaternion `q`.
-
 """
 @inline copy(q::Quaternion{T}) where T = Quaternion{T}(q.q0, q.q1, q.q2, q.q3)
 # TODO: Do we really need a copy functions since Quaternion is not mutable?
@@ -548,7 +547,7 @@ See also: [`real`](@ref), [`vect`](@ref)
 ```jldoctest
 julia> q = Quaternion(cosd(75), 0, sind(75), 0)
 Quaternion{Float64}:
-  + 0.258819 + 0.0⋅i + 0.965926⋅j + 0.965926⋅k
+  + 0.258819 + 0.0⋅i + 0.965926⋅j + 0.0⋅k
 
 julia> imag(q)
 3-element StaticArrays.SVector{3, Float64} with indices SOneTo(3):
@@ -575,11 +574,11 @@ See also: [`conj`](@ref)
 ```jldoctest
 julia> q = Quaternion(1, 0, cosd(75), sind(75))
 Quaternion{Float64}:
-  + 1.0 + 0.0⋅i + 0.258819⋅j + 0.258819⋅k
+  + 1.0 + 0.0⋅i + 0.258819⋅j + 0.965926⋅k
 
 julia> inv(q)
 Quaternion{Float64}:
-  + 0.5 - 0.0⋅i - 0.12941⋅j - 0.12941⋅k
+  + 0.5 - 0.0⋅i - 0.12941⋅j - 0.482963⋅k
 ```
 """
 @inline function inv(q::Quaternion)
@@ -606,7 +605,7 @@ Compute the Euclidean norm of the quaternion `q`:
 ```jldoctest
 julia> q = Quaternion(cosd(75), 0, sind(75), 0)
 Quaternion{Float64}:
-  + 0.258819 + 0.0⋅i + 0.965926⋅j + 0.965926⋅k
+  + 0.258819 + 0.0⋅i + 0.965926⋅j + 0.0⋅k
 
 julia> norm(q)
 1.0
@@ -626,7 +625,7 @@ See also: [`imag`](@ref), [`vect`](@ref)
 ```jldoctest
 julia> q = Quaternion(cosd(75), 0, sind(75), 0)
 Quaternion{Float64}:
-  + 0.258819 + 0.0⋅i + 0.965926⋅j + 0.965926⋅k
+  + 0.258819 + 0.0⋅i + 0.965926⋅j + 0.0⋅k
 
 julia> real(q)
 0.25881904510252074
@@ -647,7 +646,7 @@ See also: [`imag`](@ref), [`real`](@ref)
 ```jldoctest
 julia> q = Quaternion(cosd(75), 0, sind(75), 0)
 Quaternion{Float64}:
-  + 0.258819 + 0.0⋅i + 0.965926⋅j + 0.965926⋅k
+  + 0.258819 + 0.0⋅i + 0.965926⋅j + 0.0⋅k
 
 julia> vect(q)
 3-element StaticArrays.SVector{3, Float64} with indices SOneTo(3):

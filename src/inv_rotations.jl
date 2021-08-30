@@ -65,7 +65,7 @@ julia> q = angle_to_quat(pi / 3, pi / 4, pi / 5, :ZYX);
 
 julia> inv_rotation(q)
 Quaternion{Float64}:
-  + 0.820071 - 0.0652687⋅i - 0.45794⋅j - 0.45794⋅k
+  + 0.820071 - 0.0652687⋅i - 0.45794⋅j - 0.336918⋅k
 ```
 """
 @inline inv_rotation(D::DCM) = D'

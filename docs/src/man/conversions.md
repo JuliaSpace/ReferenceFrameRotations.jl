@@ -280,7 +280,7 @@ EulerAngles{Float64}:
   R(Z) : -1.05415 rad  (-60.3984°)
 ```
 
-## Euler Angles to Quaternions
+## Euler Angles to Euler angle and axis
 
 Euler angles can be converted to an Euler angle and axis using the following
 functions:
@@ -304,20 +304,6 @@ EulerAngleAxis{Float64}:
   Euler axis  : [0.692363, 0.203145, 0.692363]
 ```
 
-Suppose the user desires to obtain the quaternion that rotates the coordinate
-system by a specific angle about only one axis. In that case, it is better to
-use the following function due to improved accuracy in some cases:
-
-```
-function angle_to_quat(θ::Number, axis::Symbol)
-```
-
-```jldoctest
-julia> angle_to_quat(-pi / 4, :Z)
-Quaternion{Float64}:
-  + 0.92388 + 0.0⋅i + 0.0⋅j - 0.382683⋅k
-```
-
 ## Euler Angles to Quaternions
 
 Euler angles can be converted to quaternions using the following functions:
@@ -330,13 +316,27 @@ function angle_to_quat(Θ::EulerAngles)
 ```jldoctest
 julia> q = angle_to_quat(pi / 2, pi / 4, pi / 3, :ZYX)
 Quaternion{Float64}:
-  + 0.701057 + 0.092296⋅i + 0.560986⋅j + 0.560986⋅k
+  + 0.701057 + 0.092296⋅i + 0.560986⋅j + 0.430459⋅k
 
 julia> angles = EulerAngles(pi / 2, pi / 4, pi / 3, :ZYX);
 
 julia> q = angle_to_quat(angles)
 Quaternion{Float64}:
-  + 0.701057 + 0.092296⋅i + 0.560986⋅j + 0.560986⋅k
+  + 0.701057 + 0.092296⋅i + 0.560986⋅j + 0.430459⋅k
+```
+
+Suppose the user desires to obtain the quaternion that rotates the coordinate
+system by a specific angle about only one axis. In that case, it is better to
+use the following function due to improved accuracy in some cases:
+
+```
+function angle_to_quat(θ::Number, axis::Symbol)
+```
+
+```jldoctest
+julia> angle_to_quat(-pi / 4, :Z)
+Quaternion{Float64}:
+  + 0.92388 + 0.0⋅i + 0.0⋅j - 0.382683⋅k
 ```
 
 ## Small Euler Angles to Direction Cosine Matrices
@@ -375,11 +375,10 @@ function smallangle_to_quat(θx::Number, θy::Number, θz::Number)
 ```jldoctest
 julia> q = smallangle_to_quat(0.001, -0.002, +0.003)
 Quaternion{Float64}:
-  + 0.999998 + 0.000499999⋅i - 0.000999998⋅j - 0.000999998⋅k
+  + 0.999998 + 0.000499999⋅i - 0.000999998⋅j + 0.0015⋅k
 ```
 
 !!! note
-
     The computed quaternion **is** normalized.
 
 ## Quaternions to Direction Cosine Matrices
