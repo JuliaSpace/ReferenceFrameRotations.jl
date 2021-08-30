@@ -13,6 +13,52 @@
 # Functions: angle_to_rot
 # -----------------------
 
+@testset "Angle about an axis => Rotation (Float64)" begin
+    T = Float64
+
+    for axis in [:X, :Y, :Z]
+        # Sample the angle.
+        ang = _rand_ang(T)
+
+        # Convert to DCM and quaternion.
+        q1 = angle_to_rot(Quaternion, ang, axis)
+        D1 = angle_to_rot(DCM, ang, axis)
+        D2 = angle_to_rot(ang, axis)
+        @test eltype(q1) === eltype(D1) === eltype(D2) === T
+
+        # Expected values.
+        qe = angle_to_quat(ang, axis)
+        De = angle_to_dcm(ang, axis)
+
+        @test q1 ≈ qe
+        @test D1 ≈ De
+        @test D2 ≈ De
+    end
+end
+
+@testset "Angle about an axis => Rotation (Float32)" begin
+    T = Float32
+
+    for axis in [:X, :Y, :Z]
+        # Sample the angle.
+        ang = _rand_ang(T)
+
+        # Convert to DCM and quaternion.
+        q1 = angle_to_rot(Quaternion, ang, axis)
+        D1 = angle_to_rot(DCM, ang, axis)
+        D2 = angle_to_rot(ang, axis)
+        @test eltype(q1) === eltype(D1) === eltype(D2) === T
+
+        # Expected values.
+        qe = angle_to_quat(ang, axis)
+        De = angle_to_dcm(ang, axis)
+
+        @test q1 ≈ qe
+        @test D1 ≈ De
+        @test D2 ≈ De
+    end
+end
+
 @testset "Euler angles => Rotation (Float64)" begin
     T = Float64
 

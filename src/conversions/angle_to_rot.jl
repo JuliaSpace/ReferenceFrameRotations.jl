@@ -11,6 +11,41 @@
 export angle_to_rot
 
 """
+    angle_to_rot([T,] θ::Number, axis::Symbol)
+
+Create a rotation described by the type `T` that rotates the reference frame
+about `axis` by an angle `θ` [rad]. `axis` can be `:X`, `:Y`, or `:Z`. `T`
+can be `DCM` or `Quaternion`.
+
+If the type `T` is not specified, then it defaults to `DCM`.
+
+# Example
+
+```jldocstest
+julia> angle_to_rot(-pi / 4, :Y)
+3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+  0.707107  0.0  0.707107
+  0.0       1.0  0.0
+ -0.707107  0.0  0.707107
+
+julia> angle_to_rot(Quaternion, -pi / 4, :Y)
+Quaternion{Float64}:
+  + 0.92388 + 0.0⋅i - 0.382683⋅j + 0.0⋅k
+```
+"""
+@inline function angle_to_rot(θ::Number, axis::Symbol)
+    return angle_to_dcm(θ, axis)
+end
+
+@inline function angle_to_rot(::Type{DCM}, θ::Number, axis::Symbol)
+    return angle_to_dcm(θ, axis)
+end
+
+@inline function angle_to_rot(::Type{Quaternion}, θ::Number, axis::Symbol)
+    return angle_to_quat(θ, axis)
+end
+
+"""
     angle_to_rot([T,] θx::Number, θy::Number, θz::Number, rot_seq::Symbol)
     angle_to_rot([T,] Θ::EulerAngles)
 
