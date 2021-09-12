@@ -87,10 +87,6 @@ end
 @testset "Other API functions" begin
     q = Quaternion(1.0, 2.0, 3.0, 4.0)
 
-    if VERSION ≥ v"1.6.0"
-        @test q[begin] === 1.0
-    end
-
     @test q[end] === 4.0
     @test axes(q) === (Base.OneTo(4),)
     @test first(q) === 1.0
