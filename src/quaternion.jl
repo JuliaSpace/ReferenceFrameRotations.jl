@@ -706,7 +706,7 @@ Quaternion{Float32}:
 # The following functions make sure that a quaternion is an iterable object.
 # This allows broadcasting without allocations.
 Base.IndexStyle(::Type{<:Quaternion}) = IndexLinear()
-Base.eltype(::Quaternion{T}) where T = T
+Base.eltype(::Type{Quaternion{T}}) where T = T
 Base.length(::Quaternion) = 4
 Base.ndims(::Type{<:Quaternion}) = 1
 Base.ndims(q::Quaternion) = 1
