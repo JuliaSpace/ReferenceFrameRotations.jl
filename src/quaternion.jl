@@ -707,6 +707,8 @@ Quaternion{Float32}:
 # This allows broadcasting without allocations.
 Base.IndexStyle(::Type{<:Quaternion}) = IndexLinear()
 Base.eltype(::Type{Quaternion{T}}) where T = T
+Base.firstindex(q::Quaternion) = 1
+Base.lastindex(q::Quaternion) = 4
 Base.length(::Quaternion) = 4
 Base.ndims(::Type{<:Quaternion}) = 1
 Base.ndims(q::Quaternion) = 1
