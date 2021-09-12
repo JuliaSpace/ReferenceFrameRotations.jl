@@ -49,7 +49,7 @@
     vr_a  = vr_a / norm(vr_a)
     vr_b₀ = vect(qba₀ \ vr_a * qba₀)
     vr_b  = vect(qba \ vr_a * qba)
-    θ     = acos(vr_b ⋅ vr_b₀)
+    θ     = acos(clamp(vr_b ⋅ vr_b₀, -1, 1))
     @test eltype(vr_b₀) === T
     @test eltype(vr_b) === T
 
@@ -95,7 +95,7 @@ end
     vr_a  = vr_a / norm(vr_a)
     vr_b₀ = vect(qba₀ \ vr_a * qba₀)
     vr_b  = vect(qba \ vr_a * qba)
-    θ     = acos(vr_b ⋅ vr_b₀)
+    θ     = acos(clamp(vr_b ⋅ vr_b₀, -1, 1))
     @test eltype(vr_b₀) === T
     @test eltype(vr_b) === T
 
