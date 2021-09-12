@@ -150,7 +150,7 @@ end
 end
 
 @testset "Angle about an axis => DCM (Errors)" begin
-    @test_throws ArgumentError create_rotation_matrix(0, :A)
+    @test_throws ArgumentError angle_to_dcm(0, :A)
 end
 
 @testset "Euler angles => DCM (Float64)" begin

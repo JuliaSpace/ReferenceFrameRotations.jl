@@ -17,9 +17,9 @@
     T = Float64
 
     # Create a random DCM.
-    Dba₀ = create_rotation_matrix(_rand_ang(), :Z) *
-        create_rotation_matrix(_rand_ang(), :Y) *
-        create_rotation_matrix(_rand_ang(), :X)
+    Dba₀ = angle_to_dcm(_rand_ang(), :Z) *
+        angle_to_dcm(_rand_ang(), :Y) *
+        angle_to_dcm(_rand_ang(), :X)
 
     # Create a random velocity vector.
     wba_a = @SVector randn(3)
@@ -64,9 +64,9 @@ end
     T = Float32
 
     # Create a random DCM.
-    Dba₀ = create_rotation_matrix(_rand_ang(T), :Z) *
-        create_rotation_matrix(_rand_ang(T), :Y) *
-        create_rotation_matrix(_rand_ang(T), :X)
+    Dba₀ = angle_to_dcm(_rand_ang(T), :Z) *
+        angle_to_dcm(_rand_ang(T), :Y) *
+        angle_to_dcm(_rand_ang(T), :X)
 
     # Create a random velocity vector.
     wba_a = @SVector randn(T, 3)

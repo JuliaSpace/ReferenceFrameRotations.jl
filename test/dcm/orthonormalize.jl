@@ -19,9 +19,9 @@
     ang_z = -π + 2π * rand()
     α     = 1 + rand()
 
-    D = create_rotation_matrix(ang_x, :X) *
-        create_rotation_matrix(ang_y, :Y) *
-        create_rotation_matrix(ang_z, :Z)
+    D = angle_to_dcm(ang_x, :X) *
+        angle_to_dcm(ang_y, :Y) *
+        angle_to_dcm(ang_z, :Z)
 
     D1 = hcat(D[:, 1]*α, D[:, 2],   D[:, 3])
     D2 = hcat(D[:, 1],   D[:, 2]*α, D[:, 3])
@@ -48,9 +48,9 @@ end
     ang_z = T(-π) + T(2π) * rand(T)
     α     = 1 + rand(T)
 
-    D = create_rotation_matrix(ang_x, :X) *
-        create_rotation_matrix(ang_y, :Y) *
-        create_rotation_matrix(ang_z, :Z)
+    D = angle_to_dcm(ang_x, :X) *
+        angle_to_dcm(ang_y, :Y) *
+        angle_to_dcm(ang_z, :Z)
 
     D1 = hcat(D[:, 1]*α, D[:, 2],   D[:, 3])
     D2 = hcat(D[:, 1],   D[:, 2]*α, D[:, 3])

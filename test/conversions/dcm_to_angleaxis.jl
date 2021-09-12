@@ -18,9 +18,9 @@
     T = Float64
 
     # Create a random DCM.
-    D = create_rotation_matrix(_rand_ang(T), :X) *
-        create_rotation_matrix(_rand_ang(T), :Y) *
-        create_rotation_matrix(_rand_ang(T), :Z)
+    D = angle_to_dcm(_rand_ang(T), :X) *
+        angle_to_dcm(_rand_ang(T), :Y) *
+        angle_to_dcm(_rand_ang(T), :Z)
 
     # Convert to Euler angle and axis.
     av = dcm_to_angleaxis(D)
@@ -55,9 +55,9 @@ end
     T = Float32
 
     # Create a random DCM.
-    D = create_rotation_matrix(_rand_ang(T), :X) *
-        create_rotation_matrix(_rand_ang(T), :Y) *
-        create_rotation_matrix(_rand_ang(T), :Z)
+    D = angle_to_dcm(_rand_ang(T), :X) *
+        angle_to_dcm(_rand_ang(T), :Y) *
+        angle_to_dcm(_rand_ang(T), :Z)
 
     # Convert to Euler angle and axis.
     av = dcm_to_angleaxis(D)
@@ -100,62 +100,61 @@ end
     @test av.a ≈ 0
     @test av.v ≈ [0, 0, 0]
 
-    D = create_rotation_matrix(T(π), :X)
+    D = angle_to_dcm(T(π), :X)
     av = dcm_to_angleaxis(D)
     @test eltype(av) === T
     @test av.a ≈ π
     @test av.v ≈ [1, 0, 0]
 
-    D = create_rotation_matrix(T(π), :Y)
+    D = angle_to_dcm(T(π), :Y)
     av = dcm_to_angleaxis(D)
     @test eltype(av) === T
     @test av.a ≈ π
     @test av.v ≈ [0, 1, 0]
 
-    D = create_rotation_matrix(T(π), :Z)
+    D = angle_to_dcm(T(π), :Z)
     av = dcm_to_angleaxis(D)
     @test eltype(av) === T
     @test av.a ≈ π
     @test av.v ≈ [0, 0, 1]
 
-    D = create_rotation_matrix(T(2π / 3), :X)
+    D = angle_to_dcm(T(2π / 3), :X)
     av = dcm_to_angleaxis(D)
     @test eltype(av) === T
     @test av.a ≈ T(2π / 3)
     @test av.v ≈ [1, 0, 0]
 
-    D = create_rotation_matrix(T(-2π / 3), :X)
+    D = angle_to_dcm(T(-2π / 3), :X)
     av = dcm_to_angleaxis(D)
     @test eltype(av) === T
     @test av.a ≈ T(2π / 3)
     @test av.v ≈ [-1, 0, 0]
 
-    D = create_rotation_matrix(T(2π / 3), :Y)
+    D = angle_to_dcm(T(2π / 3), :Y)
     av = dcm_to_angleaxis(D)
     @test eltype(av) === T
     @test av.a ≈ T(2π / 3)
     @test av.v ≈ [0, 1, 0]
 
-    D = create_rotation_matrix(T(-2π / 3), :Y)
+    D = angle_to_dcm(T(-2π / 3), :Y)
     av = dcm_to_angleaxis(D)
     @test eltype(av) === T
     @test av.a ≈ T(2π / 3)
     @test av.v ≈ [0, -1, 0]
 
-    D = create_rotation_matrix(T(2π / 3), :Z)
+    D = angle_to_dcm(T(2π / 3), :Z)
     av = dcm_to_angleaxis(D)
     @test eltype(av) === T
     @test av.a ≈ T(2π / 3)
     @test av.v ≈ [0, 0, 1]
 
-    D = create_rotation_matrix(T(-2π / 3), :Z)
+    D = angle_to_dcm(T(-2π / 3), :Z)
     av = dcm_to_angleaxis(D)
     @test eltype(av) === T
     @test av.a ≈ T(2π / 3)
     @test av.v ≈ [0, 0, -1]
 
-    D = create_rotation_matrix(T(-2π / 3), :Z) *
-        create_rotation_matrix(T(-π / 2), :Y)
+    D = angle_to_dcm(T(-2π / 3), :Z) * angle_to_dcm(T(-π / 2), :Y)
     av = dcm_to_angleaxis(D)
     @test eltype(av) === T
     @test av.a ≈ 2.4188584057763776
@@ -182,62 +181,61 @@ end
     @test av.a ≈ 0
     @test av.v ≈ [0, 0, 0]
 
-    D = create_rotation_matrix(T(π), :X)
+    D = angle_to_dcm(T(π), :X)
     av = dcm_to_angleaxis(D)
     @test eltype(av) === T
     @test av.a ≈ π
     @test av.v ≈ [1, 0, 0]
 
-    D = create_rotation_matrix(T(π), :Y)
+    D = angle_to_dcm(T(π), :Y)
     av = dcm_to_angleaxis(D)
     @test eltype(av) === T
     @test av.a ≈ π
     @test av.v ≈ [0, 1, 0]
 
-    D = create_rotation_matrix(T(π), :Z)
+    D = angle_to_dcm(T(π), :Z)
     av = dcm_to_angleaxis(D)
     @test eltype(av) === T
     @test av.a ≈ π
     @test av.v ≈ [0, 0, 1]
 
-    D = create_rotation_matrix(T(2π / 3), :X)
+    D = angle_to_dcm(T(2π / 3), :X)
     av = dcm_to_angleaxis(D)
     @test eltype(av) === T
     @test av.a ≈ T(2π / 3)
     @test av.v ≈ [1, 0, 0]
 
-    D = create_rotation_matrix(T(-2π / 3), :X)
+    D = angle_to_dcm(T(-2π / 3), :X)
     av = dcm_to_angleaxis(D)
     @test eltype(av) === T
     @test av.a ≈ T(2π / 3)
     @test av.v ≈ [-1, 0, 0]
 
-    D = create_rotation_matrix(T(2π / 3), :Y)
+    D = angle_to_dcm(T(2π / 3), :Y)
     av = dcm_to_angleaxis(D)
     @test eltype(av) === T
     @test av.a ≈ T(2π / 3)
     @test av.v ≈ [0, 1, 0]
 
-    D = create_rotation_matrix(T(-2π / 3), :Y)
+    D = angle_to_dcm(T(-2π / 3), :Y)
     av = dcm_to_angleaxis(D)
     @test eltype(av) === T
     @test av.a ≈ T(2π / 3)
     @test av.v ≈ [0, -1, 0]
 
-    D = create_rotation_matrix(T(2π / 3), :Z)
+    D = angle_to_dcm(T(2π / 3), :Z)
     av = dcm_to_angleaxis(D)
     @test eltype(av) === T
     @test av.a ≈ T(2π / 3)
     @test av.v ≈ [0, 0, 1]
 
-    D = create_rotation_matrix(T(-2π / 3), :Z)
+    D = angle_to_dcm(T(-2π / 3), :Z)
     av = dcm_to_angleaxis(D)
     @test eltype(av) === T
     @test av.a ≈ T(2π / 3)
     @test av.v ≈ [0, 0, -1]
 
-    D = create_rotation_matrix(T(-2π / 3), :Z) *
-        create_rotation_matrix(T(-π / 2), :Y)
+    D = angle_to_dcm(T(-2π / 3), :Z) * angle_to_dcm(T(-π / 2), :Y)
     av = dcm_to_angleaxis(D)
     @test eltype(av) === T
     @test av.a ≈ 2.4188584057763776

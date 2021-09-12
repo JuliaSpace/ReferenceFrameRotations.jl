@@ -17,7 +17,7 @@
     T = Float64
 
     # The conversion is performed by creating DCMs using the tested function
-    # `create_rotation_matrix`, and then converting to Euler angles.
+    # `angle_to_dcm`, and then converting to Euler angles.
 
     # The test set is formed of three rotations angles, the rotation sequence,
     # and the comparison mode. The latter is used for the cases with
@@ -84,9 +84,7 @@
         # Unpack values in tuple.
         a₁, a₂, a₃, r₁, r₂, r₃, c = test
 
-        D = create_rotation_matrix(a₃, r₃) *
-            create_rotation_matrix(a₂, r₂) *
-            create_rotation_matrix(a₁, r₁)
+        D = angle_to_dcm(a₃, r₃) * angle_to_dcm(a₂, r₂) * angle_to_dcm(a₁, r₁)
 
         rot_seq = Symbol(string(r₁) * string(r₂) * string(r₃))
         ea = dcm_to_angle(D, rot_seq)
@@ -122,7 +120,7 @@ end
     T = Float32
 
     # The conversion is performed by creating DCMs using the tested function
-    # `create_rotation_matrix`, and then converting to Euler angles.
+    # `angle_to_dcm`, and then converting to Euler angles.
 
     # The test set is formed of three rotations angles, the rotation sequence,
     # and the comparison mode. The latter is used for the cases with
@@ -181,9 +179,7 @@ end
         # Unpack values in tuple.
         a₁, a₂, a₃, r₁, r₂, r₃, c = test
 
-        D = create_rotation_matrix(a₃, r₃) *
-            create_rotation_matrix(a₂, r₂) *
-            create_rotation_matrix(a₁, r₁)
+        D = angle_to_dcm(a₃, r₃) * angle_to_dcm(a₂, r₂) * angle_to_dcm(a₁, r₁)
 
         rot_seq = Symbol(string(r₁) * string(r₂) * string(r₃))
         ea = dcm_to_angle(D, rot_seq)

@@ -20,9 +20,9 @@
     # ==========================================================================
 
     # Create a random DCM.
-    D = create_rotation_matrix(_rand_ang(T), :Z) *
-        create_rotation_matrix(_rand_ang(T), :Y) *
-        create_rotation_matrix(_rand_ang(T), :X)
+    D = angle_to_dcm(_rand_ang(T), :Z) *
+        angle_to_dcm(_rand_ang(T), :Y) *
+        angle_to_dcm(_rand_ang(T), :X)
 
     Di = inv_rotation(D)
     @test eltype(Di) === T
@@ -77,9 +77,9 @@ end
     # ==========================================================================
 
     # Create a random DCM.
-    D = create_rotation_matrix(_rand_ang(T), :Z) *
-        create_rotation_matrix(_rand_ang(T), :Y) *
-        create_rotation_matrix(_rand_ang(T), :X)
+    D = angle_to_dcm(_rand_ang(T), :Z) *
+        angle_to_dcm(_rand_ang(T), :Y) *
+        angle_to_dcm(_rand_ang(T), :X)
 
     Di = inv_rotation(D)
     @test eltype(Di) === T

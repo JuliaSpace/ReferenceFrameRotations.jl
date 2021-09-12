@@ -33,9 +33,7 @@
         a₁, a₂, a₃, r₁, r₂, r₃ = test
 
         # Create the DCM.
-        D = create_rotation_matrix(a₃, r₃) *
-            create_rotation_matrix(a₂, r₂) *
-            create_rotation_matrix(a₁, r₁)
+        D = angle_to_dcm(a₃, r₃) * angle_to_dcm(a₂, r₂) * angle_to_dcm(a₁, r₁)
 
         # Convert it to a quaternion.
         q = dcm_to_quat(D)
@@ -80,9 +78,7 @@ end
         a₁, a₂, a₃, r₁, r₂, r₃ = test
 
         # Create the DCM.
-        D = create_rotation_matrix(a₃, r₃) *
-            create_rotation_matrix(a₂, r₂) *
-            create_rotation_matrix(a₁, r₁)
+        D = angle_to_dcm(a₃, r₃) * angle_to_dcm(a₂, r₂) * angle_to_dcm(a₁, r₁)
 
         # Convert it to a quaternion.
         q = dcm_to_quat(D)
