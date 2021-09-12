@@ -142,7 +142,7 @@ end
 eltype(::EulerAngleAxis{T}) where T = T
 
 """
-    Quaternion{T} <: AbstractVector{T}
+    Quaternion{T}
 
 The definition of the quaternion.
 
@@ -166,7 +166,7 @@ Quaternion{Float64}:
   + 0.7071067811865476 + 0.7071067811865476.i + 0.0.j + 0.0.k
 ```
 """
-struct Quaternion{T} <: AbstractVector{T}
+struct Quaternion{T}
     q0::T
     q1::T
     q2::T

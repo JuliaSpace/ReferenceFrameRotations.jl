@@ -19,7 +19,7 @@ represented by
 using the following immutable structure:
 
 ```julia
-struct Quaternion{T} <: AbstractVector{T}
+struct Quaternion{T}
     q0::T
     q1::T
     q2::T

@@ -699,10 +699,19 @@ Quaternion{Float32}:
 @inline zeros(::Type{Quaternion}) = Quaternion{Float64}(0, 0, 0, 0)
 @inline zeros(q::Quaternion{T}) where T = zeros(Quaternion{T})
 
+################################################################################
+#                                  Julia API
+################################################################################
+
 # The following functions make sure that a quaternion is an iterable object.
 # This allows broadcasting without allocations.
 Base.IndexStyle(::Type{<:Quaternion}) = IndexLinear()
-@inline Base.size(::Quaternion) = (4,)
+Base.eltype(::Quaternion{T}) where T = T
+Base.length(::Quaternion) = 4
+Base.ndims(::Type{<:Quaternion}) = 1
+Base.ndims(q::Quaternion) = 1
+Base.size(::Quaternion) = (4,)
+Broadcast.broadcastable(q::Quaternion) = q
 
 @inline function Base.getindex(q::Quaternion, i::Int)
     if i == 1
@@ -716,6 +725,50 @@ Base.IndexStyle(::Type{<:Quaternion}) = IndexLinear()
     else
         throw(BoundsError(q, i))
     end
+end
+
+@inline function Base.getindex(q::Quaternion{T}, ::Colon) where T
+    return SVector{4, T}(q.q0, q.q1, q.q2, q.q3)
+end
+
+@inline function Base.getindex(q::Quaternion, i::CartesianIndex{1})
+    return getindex(q, first(i.I))
+end
+
+@inline function Base.iterate(q::Quaternion)
+    return iterate(q.q0, 0)
+end
+
+@inline function Base.iterate(q::Quaternion, state::Integer)
+    state = state + 1
+
+    if state == 1
+        return (q.q0, state)
+    elseif state == 2
+        return (q.q1, state)
+    elseif state == 3
+        return (q.q2, state)
+    elseif state == 4
+        return (q.q3, state)
+    else
+        return nothing
+    end
+end
+
+@inline function ≈(q1::Quaternion, q2::Quaternion; kwargs...)
+    return ≈(q1.q0, q2.q0; kwargs...) &&
+           ≈(q1.q1, q2.q1; kwargs...) &&
+           ≈(q1.q2, q2.q2; kwargs...) &&
+           ≈(q1.q3, q2.q3; kwargs...)
+end
+
+# If this function is not defined, then two quaternions are equal if and only if
+# the elements and the type are equals.
+@inline function ==(q1::Quaternion, q2::Quaternion)
+    return (q1.q0 == q2.q0) &&
+           (q1.q1 == q2.q1) &&
+           (q1.q2 == q2.q2) &&
+           (q1.q3 == q2.q3)
 end
 
 ################################################################################

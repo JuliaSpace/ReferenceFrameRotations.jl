@@ -103,6 +103,7 @@ println("")
 @time @addverbose @testset "Quaternions" begin
     include("./quaternion/constructors.jl")
     include("./quaternion/functions.jl")
+    include("./quaternion/julia_api.jl")
     include("./quaternion/kinematics.jl")
     include("./quaternion/operations.jl")
 end
