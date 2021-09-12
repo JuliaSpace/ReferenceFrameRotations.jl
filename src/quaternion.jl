@@ -738,7 +738,7 @@ end
 end
 
 @inline function Base.iterate(q::Quaternion)
-    return iterate(q.q0, 0)
+    return iterate(q, 0)
 end
 
 @inline function Base.iterate(q::Quaternion, state::Integer)
