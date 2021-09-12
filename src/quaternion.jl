@@ -757,6 +757,15 @@ end
     end
 end
 
+# We need to define `setindex!` with respect to vectors to allow operations such
+# as:
+#
+#     v[4:7] = q
+@inline function setindex!(v::Vector{T}, q::Quaternion, I::UnitRange) where T
+    # We can use all the funcion in static arrays.
+    return setindex!(v, q[:], I)
+end
+
 @inline function ≈(q1::Quaternion, q2::Quaternion; kwargs...)
     return ≈(q1.q0, q2.q0; kwargs...) &&
            ≈(q1.q1, q2.q1; kwargs...) &&

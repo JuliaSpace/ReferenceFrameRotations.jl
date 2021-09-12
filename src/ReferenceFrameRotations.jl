@@ -2,7 +2,7 @@ module ReferenceFrameRotations
 
 import Base: +, -, *, /, \, ≈, ==
 import Base: conj, copy, display, eltype, firstindex, getindex, imag, inv
-import Base: iterate, lastindex, ndims, real, show, zeros
+import Base: iterate, lastindex, ndims, real, setindex!, show, zeros
 import Base: Broadcast.broadcastable
 import LinearAlgebra: norm
 
