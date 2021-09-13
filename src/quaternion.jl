@@ -715,6 +715,10 @@ Base.ndims(q::Quaternion) = 1
 Base.size(::Quaternion) = (4,)
 Broadcast.broadcastable(q::Quaternion) = q
 
+function Base.convert(::Type{Quaternion{T}}, q::Quaternion) where T
+    return Quaternion{T}(q.q0, q.q1, q.q2, q.q3)
+end
+
 @inline function Base.getindex(q::Quaternion, i::Int)
     if i == 1
         return q.q0

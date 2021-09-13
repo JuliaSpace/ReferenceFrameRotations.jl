@@ -97,5 +97,12 @@ end
     @test size(q) === (4,)
     @test Broadcast.broadcastable(q) === q
     @test Base.IndexStyle(Quaternion) === IndexLinear()
+
+    q_conv = convert(Quaternion{Float32}, q)
+    @test q_conv.q0 == Float32(q.q0)
+    @test q_conv.q1 == Float32(q.q1)
+    @test q_conv.q2 == Float32(q.q2)
+    @test q_conv.q3 == Float32(q.q3)
+    @test eltype(q_conv) === Float32
 end
 
