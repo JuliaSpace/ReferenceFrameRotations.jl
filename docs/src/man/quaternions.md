@@ -98,20 +98,36 @@ Quaternion{Bool}:
   + true + false⋅i + false⋅j + false⋅k
 ```
 
-* Create a zero quaternion using the `zeros` function:
+* Create an additive identity quaternion using the `zero` function:
 
 ```jldoctest
-julia> q = zeros(Quaternion)  # Creates a zero quaternion of type `Float64`.
+julia> q = zero(Quaternion)
 Quaternion{Float64}:
   + 0.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
 
-julia> q = zeros(Quaternion{Float32})  # Creates a zero quaternion of type `Float32`.
+julia> q = zero(Quaternion{Float32})
 Quaternion{Float32}:
   + 0.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
 
-julia> a = zeros(q)  # Creates a zero quaternion with the same type of `q`.
+julia> a = zero(q)
 Quaternion{Float32}:
   + 0.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
+```
+
+* Create an multiplicative identity quaternion using the `one` function:
+
+```jldoctest
+julia> q = one(Quaternion)
+Quaternion{Float64}:
+  + 1.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
+
+julia> q = one(Quaternion{Float32})
+Quaternion{Float32}:
+  + 1.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
+
+julia> a = one(q)
+Quaternion{Float32}:
+  + 1.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
 ```
 
 !!! note
