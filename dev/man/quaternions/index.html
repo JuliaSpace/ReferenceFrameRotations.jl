@@ -42,17 +42,27 @@ Quaternion{Float32}:
 
 julia&gt; q = Quaternion(I)
 Quaternion{Bool}:
-  + true + false⋅i + false⋅j + false⋅k</code></pre><ul><li>Create a zero quaternion using the <code>zeros</code> function:</li></ul><pre><code class="language-julia-repl hljs">julia&gt; q = zeros(Quaternion)  # Creates a zero quaternion of type `Float64`.
+  + true + false⋅i + false⋅j + false⋅k</code></pre><ul><li>Create an additive identity quaternion using the <code>zero</code> function:</li></ul><pre><code class="language-julia-repl hljs">julia&gt; q = zero(Quaternion)
 Quaternion{Float64}:
   + 0.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
 
-julia&gt; q = zeros(Quaternion{Float32})  # Creates a zero quaternion of type `Float32`.
+julia&gt; q = zero(Quaternion{Float32})
 Quaternion{Float32}:
   + 0.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
 
-julia&gt; a = zeros(q)  # Creates a zero quaternion with the same type of `q`.
+julia&gt; a = zero(q)
 Quaternion{Float32}:
-  + 0.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k</code></pre><div class="admonition is-info"><header class="admonition-header">Note</header><div class="admonition-body"><p>Individual elements of the quaternion can be accessed by:</p><pre><code class="language-julia hljs">q.q0
+  + 0.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k</code></pre><ul><li>Create an multiplicative identity quaternion using the <code>one</code> function:</li></ul><pre><code class="language-julia-repl hljs">julia&gt; q = one(Quaternion)
+Quaternion{Float64}:
+  + 1.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
+
+julia&gt; q = one(Quaternion{Float32})
+Quaternion{Float32}:
+  + 1.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
+
+julia&gt; a = one(q)
+Quaternion{Float32}:
+  + 1.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k</code></pre><div class="admonition is-info"><header class="admonition-header">Note</header><div class="admonition-body"><p>Individual elements of the quaternion can be accessed by:</p><pre><code class="language-julia hljs">q.q0
 q.q1
 q.q2
 q.q3</code></pre><p>or using linear indexing:</p><pre><code class="language-julia hljs">q[1]
@@ -199,4 +209,4 @@ julia&gt; vB
 3-element StaticArrays.SVector{3, Float64} with indices SOneTo(3):
   0.0
   0.7071067811865475
- -0.7071067811865476</code></pre><div class="admonition is-info"><header class="admonition-header">Note</header><div class="admonition-body"><p>A <code>SArray</code> is returned instead of the usual <code>Array</code>. This is a static vector created by the package <a href="https://github.com/JuliaArrays/StaticArrays.jl"><strong>StaticArrays</strong></a>. Generally, you can treat this vector as any other one. The only downside is that you cannot modify individual components because it is immutable.</p></div></div></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../euler_angles/">« Euler Angles</a><a class="docs-footer-nextpage" href="../conversions/">Conversions »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.6 on <span class="colophon-date" title="Tuesday 14 September 2021 23:15">Tuesday 14 September 2021</span>. Using Julia version 1.6.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+ -0.7071067811865476</code></pre><div class="admonition is-info"><header class="admonition-header">Note</header><div class="admonition-body"><p>A <code>SArray</code> is returned instead of the usual <code>Array</code>. This is a static vector created by the package <a href="https://github.com/JuliaArrays/StaticArrays.jl"><strong>StaticArrays</strong></a>. Generally, you can treat this vector as any other one. The only downside is that you cannot modify individual components because it is immutable.</p></div></div></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../euler_angles/">« Euler Angles</a><a class="docs-footer-nextpage" href="../conversions/">Conversions »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.6 on <span class="colophon-date" title="Tuesday 14 September 2021 23:21">Tuesday 14 September 2021</span>. Using Julia version 1.6.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
