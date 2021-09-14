@@ -169,6 +169,33 @@ end
     @test eltype(v) === eltype(q)
 end
 
+# Functions: one
+# --------------
+
+@testset "General functions of quaternions: one" begin
+    q = one(Quaternion)
+    @test q.q0 == 1
+    @test q.q1 == 0
+    @test q.q2 == 0
+    @test q.q3 == 0
+    @test eltype(q) === Float64
+
+    q = one(Quaternion{Float32})
+    @test q.q0 == 1
+    @test q.q1 == 0
+    @test q.q2 == 0
+    @test q.q3 == 0
+    @test eltype(q) === Float32
+
+    qi = Quaternion(1, 0, 0, 0)
+    q = one(qi)
+    @test q.q0 == 1
+    @test q.q1 == 0
+    @test q.q2 == 0
+    @test q.q3 == 0
+    @test eltype(q) === Int
+end
+
 # Functions: zero
 # ---------------
 

@@ -613,6 +613,10 @@ julia> norm(q)
 """
 @inline norm(q::Quaternion) = √(q.q0 * q.q0 + q.q1 * q.q1 + q.q2 * q.q2 + q.q3 * q.q3)
 
+@inline one(::Type{Quaternion{T}}) where T = Quaternion{T}(T(1), T(0), T(0), T(0))
+@inline one(::Type{Quaternion}) = Quaternion{Float64}(1, 0, 0, 0)
+@inline one(q::Quaternion{T}) where T = one(Quaternion{T})
+
 """
     real(q::Quaternion)
 
