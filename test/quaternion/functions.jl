@@ -169,18 +169,18 @@ end
     @test eltype(v) === eltype(q)
 end
 
-# Functions: zeros
-# ----------------
+# Functions: zero
+# ---------------
 
-@testset "General functions of quaternions: zeros" begin
-    q = zeros(Quaternion)
+@testset "General functions of quaternions: zero" begin
+    q = zero(Quaternion)
     @test q.q0 == 0
     @test q.q1 == 0
     @test q.q2 == 0
     @test q.q3 == 0
     @test eltype(q) === Float64
 
-    q = zeros(Quaternion{Float32})
+    q = zero(Quaternion{Float32})
     @test q.q0 == 0
     @test q.q1 == 0
     @test q.q2 == 0
@@ -188,7 +188,7 @@ end
     @test eltype(q) === Float32
 
     qi = Quaternion(1, 0, 0, 0)
-    q = zeros(qi)
+    q = zero(qi)
     @test q.q0 == 0
     @test q.q1 == 0
     @test q.q2 == 0

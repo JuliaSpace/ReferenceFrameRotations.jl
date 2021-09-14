@@ -657,47 +657,9 @@ julia> vect(q)
 """
 @inline vect(q::Quaternion) = SVector{3}(q.q1, q.q2, q.q3)
 
-"""
-    zeros(::Type{Quaternion{T}}) where T
-
-Create the null quaternion: `0 + 0 ⋅ i + 0 ⋅ j + 0 ⋅ k`.
-
-The type of the new quaternion will be `T`. If the type `T` is omitted, then it
-defaults to `Float64`.
-
-# Example
-
-```jldoctest
-julia> zeros(Quaternion{Float32})
-Quaternion{Float32}:
-  + 0.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
-
-julia> zeros(Quaternion)
-Quaternion{Float64}:
-  + 0.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
-```
-
----
-
-    zeros(q::Quaternion{T}) where T
-
-Create the null quaternion with the same type `T` of another quaternion `q`.
-
-# Examples
-
-```jldoctest
-julia> q = Quaternion{Float32}(1, 0, 0, 0)
-Quaternion{Float32}:
-  + 1.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
-
-julia> zeros(q)
-Quaternion{Float32}:
-  + 0.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
-```
-"""
-@inline zeros(::Type{Quaternion{T}}) where T = Quaternion{T}(T(0), T(0), T(0), T(0))
-@inline zeros(::Type{Quaternion}) = Quaternion{Float64}(0, 0, 0, 0)
-@inline zeros(q::Quaternion{T}) where T = zeros(Quaternion{T})
+@inline zero(::Type{Quaternion{T}}) where T = Quaternion{T}(T(0), T(0), T(0), T(0))
+@inline zero(::Type{Quaternion}) = Quaternion{Float64}(0, 0, 0, 0)
+@inline zero(q::Quaternion{T}) where T = zero(Quaternion{T})
 
 ################################################################################
 #                                  Julia API
