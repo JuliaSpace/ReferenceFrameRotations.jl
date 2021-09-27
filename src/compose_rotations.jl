@@ -29,10 +29,10 @@ the following order:
 
 The rotations can be described by:
 
-* A direction cosine matrix ([`DCM`](@ref));
-* An Euler angle and axis ([`EulerAngleAxis`](@ref));
-* A set of Euler angles ([`EulerAngles`](@ref)); or
-* A quaternion ([`Quaternion`](@ref)).
+- A direction cosine matrix ([`DCM`](@ref));
+- An Euler angle and axis ([`EulerAngleAxis`](@ref));
+- A set of Euler angles ([`EulerAngles`](@ref)); or
+- A quaternion ([`Quaternion`](@ref)).
 
 Notice, however, that all rotations **must be** of the same type (DCM or
 quaternion).
