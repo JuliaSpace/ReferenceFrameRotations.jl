@@ -80,7 +80,7 @@ function ddcm(Dba::DCM, wba_b::AbstractArray)
         throw(ArgumentError("The angular velocity vector must have three components."))
     end
 
-    wx = SMatrix{3,3}(
+    wx = SMatrix{3, 3}(
           0  , -w[3], +w[2],
         +w[3],   0  , -w[1],
         -w[2], +w[1],   0,
