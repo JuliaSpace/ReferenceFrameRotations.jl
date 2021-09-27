@@ -43,17 +43,18 @@ EulerAngleAxis{Float64}:
 ```
 """
 function *(av₂::EulerAngleAxis{T1}, av₁::EulerAngleAxis{T2}) where {T1, T2}
-    # Auxiliary variables.
-    sθ₁o2, cθ₁o2 = sincos(av₁.a / 2)
-    sθ₂o2, cθ₂o2 = sincos(av₂.a / 2)
+    # Obtain the type of the operation result.
+    T = float(promote_type(T1, T2))
 
-    v₁ = av₁.v
-    v₂ = av₂.v
+    # Auxiliary variables.
+    sθ₁o2, cθ₁o2 = sincos(T(av₁.a) / 2)
+    sθ₂o2, cθ₂o2 = sincos(T(av₂.a) / 2)
+
+    v₁ = T.(av₁.v)
+    v₂ = T.(av₂.v)
 
     # Compute `cos(θ/2)` in which `θ` is the new Euler angle.
     cθo2 = cθ₁o2 * cθ₂o2 - sθ₁o2 * sθ₂o2 * dot(v₁, v₂)
-
-    T = promote_type(T1, T2, typeof(sθ₁o2), typeof(sθ₂o2), typeof(cθo2))
 
     if abs(cθo2) >= 1 - eps()
         # In this case, the rotation is the identity.
@@ -111,16 +112,18 @@ EulerAngleAxis{Float64}:
 ```
 """
 @inline function inv(av::EulerAngleAxis{T}) where T<:Number
+    Tout = float(T)
+
     # Make sure that the Euler angle is always in the inverval [0,π]
     s = -1
-    θ = mod(av.a, T(2π))
+    θ = mod(Tout(av.a), Tout(2π))
 
     if θ > π
         s = 1
-        θ = T(2π) - θ
+        θ = Tout(2π) - θ
     end
 
-    return EulerAngleAxis(θ, s*av.v)
+    return EulerAngleAxis(θ, s * av.v)
 end
 
 ################################################################################
