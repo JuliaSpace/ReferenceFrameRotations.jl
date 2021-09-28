@@ -18,10 +18,10 @@ export inv_rotation
 
 Compute the inverse rotation of `R`, which can be:
 
-* A direction cosina matrix (`DCM`);
-* An Euler angle and axis (`EulerAngleAxis`);
-* A set of Euler anlges (`EulerAngles`); or
-* A quaternion (`Quaternion`).
+- A direction cosine matrix (`DCM`);
+- An Euler angle and axis (`EulerAngleAxis`);
+- A set of Euler anlges (`EulerAngles`); or
+- A quaternion (`Quaternion`).
 
 The output will have the same type as `R`.
 
