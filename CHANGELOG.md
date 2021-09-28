@@ -1,6 +1,32 @@
 ReferenceFrameRotations.jl Changelog
 ====================================
 
+Version 2.0.0
+-------------
+
+- ![BREAKING][badge-breaking] Previously, `Quaternion` was `<:AbstractVector`.
+  However, this choice was leading to many problems when interfacing with other
+  packages. For example, it was very difficult to make it works together with
+  Zygote.jl because of the multiplication. In the previous version, `Quaternion`
+  was an array in which the multiplication `q1 * q2` (both 4x1 arrays) leads to
+  another 4x1 arrays, breaking a lot of assumptions about arrays. Many functions
+  were defined to reduce the number of breakage. Quaternion supports iterations
+  and broadcast. Hence, I do not expect many problems.
+- ![Deprecation][badge-deprecation] The function `zeros` for `Quaternion` is now
+  deprecated. Use `zero` instead.
+- ![Deprecation][badge-deprecation] The function `create_rotation_matrix` is now
+  deprecated. Use `angle_to_dcm` instead.
+- ![Feature][badge-feature] The function `angle_to_dcm` can now create a DCM
+  from a single rotation.
+- ![Feature][badge-feature] The function `angle_to_quat` can now create a
+  quaternion from a single rotation.
+- ![Feature][badge-feature] The function `angle_to_rot` can now create a
+  rotation from a single rotation.
+- ![Feature][badge-feature] The functions `zero` and `one` are now defined for
+  `Quaternion`.
+- ![Enhancement][badge-enhancement] Many improvements related to the type
+  promotion in the functions.
+
 Version 1.0.1
 -------------
 
