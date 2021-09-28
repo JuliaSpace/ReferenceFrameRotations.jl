@@ -18,7 +18,7 @@ by an angle `θ` [rad]. `axis` can be `:X`, `:Y`, or `:Z`.
 # Example
 
 ```jldocstest
-julia> angle_to_dcm(pi/2, :X)
+julia> angle_to_dcm(pi / 2, :X)
 3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
  1.0   0.0          0.0
  0.0   6.12323e-17  1.0
