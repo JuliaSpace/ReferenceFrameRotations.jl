@@ -39,7 +39,7 @@ function quat_to_angleaxis(q::Quaternion{T}) where T
         return EulerAngleAxis(T(0), SVector{3, T}(0, 0, 0))
     else
         # Compute sin(θ/2).
-        sθo2 = √( q.q1 * q.q1 + q.q2 * q.q2 + q.q3 * q.q3 )
+        sθo2 = √(q.q1 * q.q1 + q.q2 * q.q2 + q.q3 * q.q3)
 
         # Compute θ in range [0, 2π].
         θ = 2acos(q.q0)
@@ -51,6 +51,6 @@ function quat_to_angleaxis(q::Quaternion{T}) where T
             s = -1
         end
 
-        return EulerAngleAxis( θ, s * [q.q1, q.q2, q.q3] / sθo2 )
+        return EulerAngleAxis(θ, s * SVector{3}(q.q1, q.q2, q.q3) / sθo2)
     end
 end
