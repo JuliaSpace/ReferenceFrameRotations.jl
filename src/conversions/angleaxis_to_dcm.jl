@@ -44,17 +44,24 @@ julia> angleaxis_to_dcm(ea)
   0.910684  -0.244017   0.333333
 ```
 """
-@inline function angleaxis_to_dcm(a::Number, v::AbstractVector)
+@inline function angleaxis_to_dcm(a::T1, v::AbstractVector{T2}) where {T1, T2}
     # Check the arguments.
     (length(v) ≠ 3) && throw(ArgumentError("The provided vector for the Euler axis must have 3 elements."))
 
-    sθ, cθ = sincos(a)
+    # Obtain the output type.
+    T = float(promote_type(T1, T2))
+
+    sθ, cθ = sincos(T(a))
     aux    = 1 - cθ
 
+    v₁ = T(v[1])
+    v₂ = T(v[2])
+    v₃ = T(v[3])
+
     return DCM(
-          cθ + v[1] * v[1] * aux,      v[1] * v[2] * aux + v[3] * sθ, v[1] * v[3] * aux - v[2] * sθ,
-        v[1] * v[2] * aux - v[3] * sθ,   cθ + v[2] * v[2] * aux,      v[2] * v[3] * aux + v[1] * sθ,
-        v[1] * v[3] * aux + v[2] * sθ, v[2] * v[3] * aux - v[1] * sθ,   cθ + v[3] * v[3] * aux
+        cθ + v₁ * v₁ * aux,      v₁ * v₂ * aux + v₃ * sθ, v₁ * v₃ * aux - v₂ * sθ,
+        v₁ * v₂ * aux - v₃ * sθ, cθ + v₂ * v₂ * aux,      v₂ * v₃ * aux + v₁ * sθ,
+        v₁ * v₃ * aux + v₂ * sθ, v₂ * v₃ * aux - v₁ * sθ, cθ + v₃ * v₃ * aux
     )'
 end
 
