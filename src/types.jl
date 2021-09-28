@@ -87,8 +87,8 @@ function EulerAngles(
     a2::T2,
     a3::T3,
     rot_seq::Symbol = :ZYX
-) where {T1,T2,T3}
-    T = promote_type(T1,T2,T3)
+) where {T1, T2, T3}
+    T = promote_type(T1, T2, T3)
 
     return EulerAngles(T(a1), T(a2), T(a3), rot_seq)
 end
@@ -134,7 +134,7 @@ end
 
 function EulerAngleAxis(a::T1, v::AbstractVector{T2}) where {T1,T2}
     (length(v) != 3) && error("The vector `v` must have 3 dimensions.")
-    T = promote_type(T1,T2)
+    T = promote_type(T1, T2)
 
     return EulerAngleAxis(T(a), SVector{3, T}(v))
 end
