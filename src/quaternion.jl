@@ -130,7 +130,7 @@ end
 
 function Quaternion(v::AbstractVector)
     # The vector must have 3 or 4 components.
-    if length(v) != 3 && length(v) != 4
+    if (length(v) != 3) && (length(v) != 4)
         throw(ArgumentError("The input vector must have 3 or 4 components."))
     end
 
@@ -212,7 +212,7 @@ Quaternion{Int64}:
   - 1 + 0⋅i + 0⋅j + 0⋅k
 ```
 """
-@inline -(q::Quaternion) = -1*q
+@inline -(q::Quaternion) = -1 * q
 
 """
     -(qa::Quaternion, qb::Quaternion)
@@ -318,8 +318,8 @@ Quaternion{Float64}:
     )
 end
 
-@inline *(u::UniformScaling, q::Quaternion) = Quaternion(u)*q
-@inline *(q::Quaternion, u::UniformScaling) = q*Quaternion(u)
+@inline *(u::UniformScaling, q::Quaternion) = Quaternion(u) * q
+@inline *(q::Quaternion, u::UniformScaling) = q * Quaternion(u)
 
 """
     *(v::AbstractVector, q::Quaternion)
@@ -495,8 +495,8 @@ Quaternion{Float64}:
   + 0.0 + 0.0⋅i - 0.5⋅j - 0.866025⋅k
 ```
 """
-@inline \(q::Quaternion, v::AbstractVector) = inv(q)*v
-@inline \(v::AbstractVector, q::Quaternion) = inv(Quaternion(v))*q
+@inline \(q::Quaternion, v::AbstractVector) = inv(q) * v
+@inline \(v::AbstractVector, q::Quaternion) = inv(Quaternion(v)) * q
 
 ################################################################################
 #                                  Functions
@@ -856,9 +856,9 @@ function dquat(qba::Quaternion, wba_b::AbstractVector)
     #         2
 
     return Quaternion(
-                       -w[1]/2*qba.q1 -w[2]/2*qba.q2 -w[3]/2*qba.q3,
-        +w[1]/2*qba.q0                +w[3]/2*qba.q2 -w[2]/2*qba.q3,
-        +w[2]/2*qba.q0 -w[3]/2*qba.q1                +w[1]/2*qba.q3,
-        +w[3]/2*qba.q0 +w[2]/2*qba.q1 -w[1]/2*qba.q2
+                          - w[1] / 2 * qba.q1 - w[2] / 2 * qba.q2 - w[3] / 2 * qba.q3,
+        w[1] / 2 * qba.q0                     + w[3] / 2 * qba.q2 - w[2] / 2 * qba.q3,
+        w[2] / 2 * qba.q0 - w[3] / 2 * qba.q1                     + w[1] / 2 * qba.q3,
+        w[3] / 2 * qba.q0 + w[2] / 2 * qba.q1 - w[1] / 2 * qba.q2
     )
 end
