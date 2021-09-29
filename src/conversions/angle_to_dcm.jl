@@ -10,76 +10,136 @@
 export angle_to_dcm
 
 """
-    angle_to_dcm(θ::Number, axis::Symbol)
+    angle_to_dcm(θ₁::Number[, θ₂::Number[, θ₃::Number]], rot_seq::Symbol = :ZYX)
+    angle_to_dcm(Θ::EulerAngles)
 
-Create a direction cosine matrix that rotates the reference frame about `axis`
-by an angle `θ` [rad]. `axis` can be `:X`, `:Y`, or `:Z`.
+Create a direction cosine matrix that perform a set of rotations (`θ₁`, `θ₂`,
+`θ₃`) about the coordinate axes specified in `rot_seq`.
+
+The input values of the origin Euler angles can also be passed inside the
+structure `Θ` (see [`EulerAngles`](@ref)).
+
+The rotation sequence is defined by a `Symbol` specifing the rotation axes. The
+possible values depends on the number of rotations desired as follows:
+
+- **1 rotation** (`θ₁`): `:X`, `:Y`, or `:Z`.
+- **2 rotations** (`θ₁`, `θ₂`): `:XY`, `:XZ`, `:YX`, `:YZ`, `:ZX`, or `:ZY`.
+- **3 rotations** (`θ₁`, `θ₂`, `θ₃`): `:XYX`, `XYZ`, `:XZX`, `:XZY`, `:YXY`,
+    `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`, `:ZYX`, or `:ZYZ`
+
+# Remarks
+
+This function assigns `dcm = A3 * A2 * A1` in which `Ai` is the DCM related with
+the *i*-th rotation, `i Є [1,2,3]`. If the *i*-th rotation is not specified,
+then `Ai = I`.
 
 # Example
 
-```jldocstest
+```jldoctest
 julia> angle_to_dcm(pi / 2, :X)
 3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
  1.0   0.0          0.0
  0.0   6.12323e-17  1.0
  0.0  -1.0          6.12323e-17
+
+julia> angle_to_dcm(pi / 5, pi / 7, :YZ)
+3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+  0.728899  0.433884  -0.529576
+ -0.351019  0.900969   0.25503
+  0.587785  0.0        0.809017
+
+julia> angle_to_dcm(pi / 5, pi / 7, 0, :YZY)
+3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+  0.728899  0.433884  -0.529576
+ -0.351019  0.900969   0.25503
+  0.587785  0.0        0.809017
+
+julia> dcm = angle_to_dcm(pi / 2, pi / 3, pi / 4, :ZYX)
+3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+  3.06162e-17  0.5       -0.866025
+ -0.707107     0.612372   0.353553
+  0.707107     0.612372   0.353553
+
 ```
 """
-function angle_to_dcm(θ::Number, axis::Symbol)
+function angle_to_dcm(θ::Number, rot_seq::Symbol)
     sa, ca = sincos(θ)
 
-    if axis == :X
+    if rot_seq == :X
         return DCM(
             1,   0,   0,
             0, +ca, +sa,
             0, -sa, +ca
         )'
-    elseif axis == :Y
+    elseif rot_seq == :Y
         return DCM(
             +ca, 0, -sa,
               0, 1,   0,
             +sa, 0, +ca
         )'
-    elseif axis == :Z
+    elseif rot_seq == :Z
         return DCM(
             +ca, +sa, 0,
             -sa, +ca, 0,
               0,   0, 1
         )'
     else
-        throw(ArgumentError("Axis must be :X, :Y, or :Z"))
+        throw(ArgumentError("rot_seq must be :X, :Y, or :Z"))
     end
 end
 
-"""
-    angle_to_dcm(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
-    angle_to_dcm(Θ::EulerAngles)
+function angle_to_dcm(
+    θ₁::T1,
+    θ₂::T2,
+    rot_seq::Symbol
+) where {T1<:Number, T2<:Number}
+    T = promote_type(T1, T2)
 
-Convert the Euler angles `θ₁`, `θ₂`, and `θ₃` [rad] with the rotation sequence
-`rot_seq` to a direction cosine matrix.
+    # Compute the sines and cosines.
+    s₁, c₁ = sincos(T(θ₁))
+    s₂, c₂ = sincos(T(θ₂))
 
-The input values of the origin Euler angles can also be passed inside the
-structure `Θ` (see [`EulerAngles`](@ref)).
+    if rot_seq == :XY
+        return DCM(
+              c₂,  s₁ * s₂, -c₁ * s₂,
+            T(0),       c₁,       s₁,
+              s₂, -s₁ * c₂,  c₁ * c₂
+        )'
+    elseif rot_seq == :XZ
+        return DCM(
+              c₂, c₁ * s₂, s₁ * s₂,
+             -s₂, c₁ * c₂, s₁ * c₂,
+            T(0),     -s₁,      c₁
+        )'
+    elseif rot_seq == :YX
+        return DCM(
+                 c₁, T(0),      -s₁,
+            s₁ * s₂,   c₂,  c₁ * s₂,
+            s₁ * c₂,  -s₂,  c₁ * c₂
+        )'
+    elseif rot_seq == :YZ
+        return DCM(
+             c₁ * c₂,   s₂, -s₁ * c₂,
+            -c₁ * s₂,   c₂,  s₁ * s₂,
+                  s₁, T(0),       c₁
+        )'
+    elseif rot_seq == :ZX
+        return DCM(
+                  c₁,       s₁, T(0),
+            -c₂ * s₁,  c₂ * c₁,   s₂,
+             s₂ * s₁, -s₂ * c₁,   c₂
+        )'
+    elseif rot_seq == :ZY
+        return DCM(
+            c₂ * c₁, c₂ * s₁, -s₂ ,
+                -s₁,      c₁, T(0),
+            s₂ * c₁, s₂ * s₁,  c₂
+        )'
+    else
+        throw(ArgumentError("The rotation sequence :$rot_seq is not valid."))
+    end
+end
 
-The rotation sequence is defined by a `:Symbol`. The possible values are:
-`:XYX`, `XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`,
-`:ZYX`, and `:ZYZ`. If no value is specified, then it defaults to `:ZYX`.
-
-# Remarks
-
-This function assigns `dcm = A3 * A2 * A1` in which `Ai` is the DCM related with
-the *i*-th rotation, `i Є [1,2,3]`.
-
-# Example
-
-```jldoctest
-julia> dcm = angle_to_dcm(pi / 2, pi / 3, pi / 4, :ZYX)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
-  3.06162e-17  0.5       -0.866025
- -0.707107     0.612372   0.353553
-  0.707107     0.612372   0.353553
-```
-"""
 function angle_to_dcm(
     θ₁::T1,
     θ₂::T2,

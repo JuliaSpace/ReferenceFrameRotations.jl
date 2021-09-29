@@ -30,6 +30,15 @@ function _norm_ang(α::T) where T
 end
 
 # Available rotations.
+const valid_rot_seqs_2angles = [
+    :XY,
+    :XZ,
+    :YX,
+    :YZ,
+    :ZX,
+    :ZY,
+]
+
 const valid_rot_seqs = [
     :XYX,
     :XYZ,

@@ -156,6 +156,31 @@ end
 @testset "Euler angles => DCM (Float64)" begin
     T = Float64
 
+    # Two rotations
+    # ==========================================================================
+
+    for rot_seq in valid_rot_seqs_2angles
+        # Sample Euler angles.
+        θ₁ = _rand_ang(T)
+        θ₂ = _rand_ang(T)
+
+        # Convert to DCM.
+        D = angle_to_dcm(θ₁, θ₂, rot_seq)
+        @test eltype(D) === T
+
+        # Create the DCM by composing the rotations.
+        rot_seq_str = string(rot_seq)
+        D₁ = angle_to_dcm(θ₁, Symbol(rot_seq_str[1]))
+        D₂ = angle_to_dcm(θ₂, Symbol(rot_seq_str[2]))
+        De = D₂ * D₁
+
+        # Compare.
+        @test D ≈ De
+    end
+
+    # Three rotations
+    # ==========================================================================
+
     for rot_seq in valid_rot_seqs
         # Sample Euler angles.
         ea = EulerAngles(_rand_ang(T), _rand_ang(T), _rand_ang(T), rot_seq)
@@ -178,6 +203,31 @@ end
 
 @testset "Euler angles => DCM (Float32)" begin
     T = Float32
+
+    # Two rotations
+    # ==========================================================================
+
+    for rot_seq in valid_rot_seqs_2angles
+        # Sample Euler angles.
+        θ₁ = _rand_ang(T)
+        θ₂ = _rand_ang(T)
+
+        # Convert to DCM.
+        D = angle_to_dcm(θ₁, θ₂, rot_seq)
+        @test eltype(D) === T
+
+        # Create the DCM by composing the rotations.
+        rot_seq_str = string(rot_seq)
+        D₁ = angle_to_dcm(θ₁, Symbol(rot_seq_str[1]))
+        D₂ = angle_to_dcm(θ₂, Symbol(rot_seq_str[2]))
+        De = D₂ * D₁
+
+        # Compare.
+        @test D ≈ De
+    end
+
+    # Three rotations
+    # ==========================================================================
 
     for rot_seq in valid_rot_seqs
         # Sample Euler angles.
