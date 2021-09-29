@@ -152,6 +152,31 @@ end
 @testset "Euler angles => Quaternion (Float64)" begin
     T = Float64
 
+    # Two rotations
+    # ==========================================================================
+
+    for rot_seq in valid_rot_seqs_2angles
+        # Sample Euler angles.
+        θ₁ = _rand_ang(T)
+        θ₂ = _rand_ang(T)
+
+        # Convert to DCM.
+        q = angle_to_quat(θ₁, θ₂, rot_seq)
+        @test eltype(q) === T
+
+        # Create the DCM by composing the rotations.
+        rot_seq_str = string(rot_seq)
+        q₁ = angle_to_quat(θ₁, Symbol(rot_seq_str[1]))
+        q₂ = angle_to_quat(θ₂, Symbol(rot_seq_str[2]))
+        qe = q₁ * q₂
+
+        # Compare.
+        @test q ≈ qe
+    end
+
+    # Three rotations
+    # ==========================================================================
+
     for rot_seq in valid_rot_seqs
         # Sample Euler angles.
         ea = EulerAngles(_rand_ang(T), _rand_ang(T), _rand_ang(T), rot_seq)
@@ -178,6 +203,31 @@ end
 
 @testset "Euler angles => Quaternion (Float32)" begin
     T = Float32
+
+    # Two rotations
+    # ==========================================================================
+
+    for rot_seq in valid_rot_seqs_2angles
+        # Sample Euler angles.
+        θ₁ = _rand_ang(T)
+        θ₂ = _rand_ang(T)
+
+        # Convert to DCM.
+        q = angle_to_quat(θ₁, θ₂, rot_seq)
+        @test eltype(q) === T
+
+        # Create the DCM by composing the rotations.
+        rot_seq_str = string(rot_seq)
+        q₁ = angle_to_quat(θ₁, Symbol(rot_seq_str[1]))
+        q₂ = angle_to_quat(θ₂, Symbol(rot_seq_str[2]))
+        qe = q₁ * q₂
+
+        # Compare.
+        @test q ≈ qe
+    end
+
+    # Three rotations
+    # ==========================================================================
 
     for rot_seq in valid_rot_seqs
         # Sample Euler angles.
