@@ -59,7 +59,7 @@ EulerAngles{Float64}:
   R(Y) : -1.5708 rad  (-90.0°)
   R(X) :  0.0    rad  ( 0.0°)
 
-julia> D = create_rotation_matrix(1, :X) * create_rotation_matrix(2, :X);
+julia> D = angle_to_dcm(1, :X) * angle_to_dcm(2, :X);
 
 julia> dcm_to_angle(D, :XYX)
 EulerAngles{Float64}:
