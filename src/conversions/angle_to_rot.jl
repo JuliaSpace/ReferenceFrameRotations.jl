@@ -11,60 +11,46 @@
 export angle_to_rot
 
 """
-    angle_to_rot([T,] θ::Number, axis::Symbol)
-
-Create a rotation described by the type `T` that rotates the reference frame
-about `axis` by an angle `θ` [rad]. `axis` can be `:X`, `:Y`, or `:Z`. `T`
-can be `DCM` or `Quaternion`.
-
-If the type `T` is not specified, then it defaults to `DCM`.
-
-# Example
-
-```jldocstest
-julia> angle_to_rot(-pi / 4, :Y)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
-  0.707107  0.0  0.707107
-  0.0       1.0  0.0
- -0.707107  0.0  0.707107
-
-julia> angle_to_rot(Quaternion, -pi / 4, :Y)
-Quaternion{Float64}:
-  + 0.92388 + 0.0⋅i - 0.382683⋅j + 0.0⋅k
-```
-"""
-@inline function angle_to_rot(θ::Number, axis::Symbol)
-    return angle_to_dcm(θ, axis)
-end
-
-@inline function angle_to_rot(::Type{DCM}, θ::Number, axis::Symbol)
-    return angle_to_dcm(θ, axis)
-end
-
-@inline function angle_to_rot(::Type{Quaternion}, θ::Number, axis::Symbol)
-    return angle_to_quat(θ, axis)
-end
-
-"""
-    angle_to_rot([T,] θx::Number, θy::Number, θz::Number, rot_seq::Symbol)
+    angle_to_rot([T,] θ₁::Number[, θ₂::Number[, θ₃::Number]], rot_seq::Symbol)
     angle_to_rot([T,] Θ::EulerAngles)
 
-Convert the Euler angles `Θx`, `Θy`, and `Θz` [rad] with the rotation sequence
-`rot_seq` to a rotation description of type `T`, which can be `DCM` or
-`Quaternion`.
+Create a rotation description of type `T` that perform a set of rotations (`θ₁`,
+`θ₂`, `θ₃`) about the coordinate axes specified in `rot_seq`.
 
 The input values of the origin Euler angles can also be passed inside the
 structure `Θ` (see [`EulerAngles`](@ref)).
 
-If the type `T` is not specified, then it defaults to `DCM`.
+The rotation sequence is defined by a `Symbol` specifing the rotation axes. The
+possible values depends on the number of rotations desired as follows:
 
-The rotation sequence is defined by a `:Symbol`. The possible values are:
-`:XYX`, `XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`,
-`:ZYX`, and `:ZYZ`. If no value is specified, then it defaults to `:ZYX`.
+- **1 rotation** (`θ₁`): `:X`, `:Y`, or `:Z`.
+- **2 rotations** (`θ₁`, `θ₂`): `:XY`, `:XZ`, `:YX`, `:YZ`, `:ZX`, or `:ZY`.
+- **3 rotations** (`θ₁`, `θ₂`, `θ₃`): `:XYX`, `XYZ`, `:XZX`, `:XZY`, `:YXY`,
+    `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`, `:ZYX`, or `:ZYZ`
 
 # Example
 
 ```julia-repl
+julia> dcm = angle_to_rot(pi / 5, :Z)
+3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+  0.809017  0.587785  0.0
+ -0.587785  0.809017  0.0
+  0.0       0.0       1.0
+
+julia> quat = angle_to_rot(Quaternion, pi / 5, :Z)
+Quaternion{Float64}:
+  + 0.951057 + 0.0⋅i + 0.0⋅j + 0.309017⋅k
+
+julia> dcm = angle_to_rot(pi / 5, pi / 7, :YZ)
+3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+  0.728899  0.433884  -0.529576
+ -0.351019  0.900969   0.25503
+  0.587785  0.0        0.809017
+
+julia> quat = angle_to_rot(Quaternion, pi / 5, pi / 7, :YZ)
+Quaternion{Float64}:
+  + 0.927212 + 0.0687628⋅i + 0.301269⋅j + 0.21163⋅k
+
 julia> dcm = angle_to_rot(pi / 2, pi / 3, pi / 4, :ZYX)
 3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
   3.06162e-17  0.5       -0.866025
@@ -76,33 +62,71 @@ Quaternion{Float64}:
   + 0.701057 - 0.092296⋅i + 0.560986⋅j + 0.430459⋅k
 ```
 """
+@inline function angle_to_rot(θ::Number, rot_seq::Symbol)
+    return angle_to_dcm(θ, rot_seq)
+end
+
+@inline function angle_to_rot(::Type{DCM}, θ::Number, rot_seq::Symbol)
+    return angle_to_dcm(θ, rot_seq)
+end
+
+@inline function angle_to_rot(::Type{Quaternion}, θ::Number, rot_seq::Symbol)
+    return angle_to_quat(θ, rot_seq)
+end
+
 @inline function angle_to_rot(
-    θx::Number,
-    θy::Number,
-    θz::Number,
+    θ₁::Number,
+    θ₂::Number,
     rot_seq::Symbol
 )
-    return angle_to_dcm(θx, θy, θz, rot_seq)
+    return angle_to_dcm(θ₁, θ₂, rot_seq)
 end
 
 @inline function angle_to_rot(
-        ::Type{DCM},
-        θx::Number,
-        θy::Number,
-        θz::Number,
-        rot_seq::Symbol
+    ::Type{DCM},
+    θ₁::Number,
+    θ₂::Number,
+    rot_seq::Symbol
 )
-    return angle_to_dcm(θx, θy, θz, rot_seq)
+    return angle_to_dcm(θ₁, θ₂, rot_seq)
 end
 
 @inline function angle_to_rot(
-        ::Type{Quaternion},
-        θx::Number,
-        θy::Number,
-        θz::Number,
-        rot_seq::Symbol
+    ::Type{Quaternion},
+    θ₁::Number,
+    θ₂::Number,
+    rot_seq::Symbol
 )
-    return angle_to_quat(θx, θy, θz, rot_seq)
+    return angle_to_quat(θ₁, θ₂, rot_seq)
+end
+
+@inline function angle_to_rot(
+    θ₁::Number,
+    θ₂::Number,
+    θ₃::Number,
+    rot_seq::Symbol
+)
+    return angle_to_dcm(θ₁, θ₂, θ₃, rot_seq)
+end
+
+@inline function angle_to_rot(
+    ::Type{DCM},
+    θ₁::Number,
+    θ₂::Number,
+    θ₃::Number,
+    rot_seq::Symbol
+)
+    return angle_to_dcm(θ₁, θ₂, θ₃, rot_seq)
+end
+
+@inline function angle_to_rot(
+    ::Type{Quaternion},
+    θ₁::Number,
+    θ₂::Number,
+    θ₃::Number,
+    rot_seq::Symbol
+)
+    return angle_to_quat(θ₁, θ₂, θ₃, rot_seq)
 end
 
 @inline function angle_to_rot(Θ::EulerAngles)
@@ -110,8 +134,8 @@ end
 end
 
 @inline function angle_to_rot(
-        T::Union{Type{DCM}, Type{Quaternion}},
-        Θ::EulerAngles
+    T::Union{Type{DCM}, Type{Quaternion}},
+    Θ::EulerAngles
 )
     return angle_to_rot(T, Θ.a1, Θ.a2, Θ.a3, Θ.rot_seq)
 end
