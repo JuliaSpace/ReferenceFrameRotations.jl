@@ -94,14 +94,7 @@ function angle_to_quat(
 
     s = (q0 < 0) ? -1 : +1
 
-    if rot_seq == :ZY
-        return Quaternion(
-            s * q0,
-            s * (-s₁ * s₂),
-            s * ( c₁ * s₂),
-            s * ( s₁ * c₂)
-        )
-    elseif rot_seq == :XY
+    if rot_seq == :XY
         return Quaternion(
             s * q0,
             s * (s₁ * c₂),
