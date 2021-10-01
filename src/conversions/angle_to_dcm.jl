@@ -59,7 +59,6 @@ julia> dcm = angle_to_dcm(pi / 2, pi / 3, pi / 4, :ZYX)
   3.06162e-17  0.5       -0.866025
  -0.707107     0.612372   0.353553
   0.707107     0.612372   0.353553
-
 ```
 """
 function angle_to_dcm(θ::Number, rot_seq::Symbol)
