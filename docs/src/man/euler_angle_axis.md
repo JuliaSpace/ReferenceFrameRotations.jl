@@ -78,12 +78,12 @@ the Euler angle of the result will always be in the interval ``[0, \pi]`` rad.
     normalize the vector.
 
 ```jldoctest
-julia> ea1 = EulerAngleAxis(30 * pi / 180, [1.0;0.0;0.0])
+julia> ea1 = EulerAngleAxis(30 * pi / 180, [1.0, 0.0, 0.0])
 EulerAngleAxis{Float64}:
   Euler angle : 0.523599 rad  (30.0°)
   Euler axis  : [1.0, 0.0, 0.0]
 
-julia> ea2 = EulerAngleAxis(60 * pi / 180, [1.0;0.0;0.0])
+julia> ea2 = EulerAngleAxis(60 * pi / 180, [1.0, 0.0, 0.0])
 EulerAngleAxis{Float64}:
   Euler angle : 1.0472 rad  (60.0°)
   Euler axis  : [1.0, 0.0, 0.0]

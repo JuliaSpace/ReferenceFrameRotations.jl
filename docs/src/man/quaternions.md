@@ -388,7 +388,7 @@ julia> inv(q)   # Computes the multiplicative inverse of the quaternion.
 Quaternion{Float64}:
   + 0.0333333 - 0.0666667⋅i - 0.1⋅j - 0.133333⋅k
 
-julia> inv(q)*q
+julia> inv(q) * q
 Quaternion{Float64}:
   + 1.0 + 0.0⋅i + 5.55112e-17⋅j + 0.0⋅k
 
@@ -413,7 +413,7 @@ julia> vect(q)  # Returns the vectorial / imaginary part of the quaternion.
 
 !!! note
 
-    The operation `a/q` is equal to `a*inv(q)` if `a` is a scalar.
+    The operation `a / q` is equal to `a * inv(q)` if `a` is a scalar.
 
 ### Converting reference frames using quaternions
 

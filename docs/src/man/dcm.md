@@ -25,7 +25,7 @@ with the reference frame ``b`` is:
 In **ReferenceFrameRotations.jl**, a DCM is a ``3 \times 3`` static matrix:
 
 ```julia
-DCM{T} = SMatrix{3,3,T,9}
+DCM{T} = SMatrix{3, 3, T, 9}
 ```
 
 which means that `DCM` is immutable.
@@ -125,7 +125,7 @@ julia> orthonormalize(D)
  0.0  1.0  0.0
  0.0  0.0  1.0
 
-julia> D = DCM(1,1,2,2,3,3,4,4,5);
+julia> D = DCM(1, 1, 2, 2, 3, 3, 4, 4, 5);
 
 julia> Dn = orthonormalize(D)
 3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
@@ -133,7 +133,7 @@ julia> Dn = orthonormalize(D)
  0.408248   0.86164   -0.301511
  0.816497  -0.492366  -0.301511
 
-julia> Dn*Dn'
+julia> Dn * Dn'
 3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
   1.0          -2.87528e-16  -8.47673e-16
  -2.87528e-16   1.0           3.31283e-16
