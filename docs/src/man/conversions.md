@@ -206,7 +206,7 @@ Quaternion{Float64}:
 Euler angles can be converted to DCMs using the following functions:
 
 ```julia
-function angle_to_dcm(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
+function angle_to_dcm(θ₁::Number[, θ₂::Number[, θ₃::Number]], rot_seq::Symbol = :ZYX)
 function angle_to_dcm(Θ::EulerAngles)
 ```
 
@@ -226,20 +226,27 @@ julia> dcm = angle_to_dcm(angles)
   0.866025     0.353553   0.353553
 ```
 
-Suppose the user desires to obtain the DCM that rotates the coordinate system by
-a specific angle about only one axis. In that case, it is better to use the
-following function due to improved accuracy in some cases:
+Suppose the user desires to obtain the DCM that rotates the coordinate system
+about only one or two axes. In that case, it is better to use the following
+functions due to improved accuracy in some cases:
 
 ```
-function angle_to_dcm(θ::Number, axis::Symbol)
+function angle_to_dcm(θ₁::Number, rot_seq::Symbol)
+function angle_to_dcm(θ₁::Number, θ₂::Number, rot_seq::Symbol)
 ```
 
 ```jldoctest
-julia> angle_to_dcm(-pi / 4, 0, 0, :ZYZ)
+julia> angle_to_dcm(-pi / 4, :Z)
 3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
- 0.707107  -0.707107  -0.0
- 0.707107   0.707107   0.0
- 0.0       -0.0        1.0
+ 0.707107  -0.707107  0.0
+ 0.707107   0.707107  0.0
+ 0.0        0.0       1.0
+
+julia> angle_to_dcm(-pi / 4, pi / 7, :XY)
+3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+ 0.900969  -0.306802  -0.306802
+ 0.0        0.707107  -0.707107
+ 0.433884   0.637081   0.637081
 ```
 
 ## Euler Angles to Euler Angles
@@ -309,7 +316,7 @@ EulerAngleAxis{Float64}:
 Euler angles can be converted to quaternions using the following functions:
 
 ```julia
-function angle_to_quat(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
+function angle_to_quat(θ₁::Number[, θ₂::Number[, θ₃::Number]], rot_seq::Symbol = :ZYX)
 function angle_to_quat(Θ::EulerAngles)
 ```
 
@@ -326,17 +333,22 @@ Quaternion{Float64}:
 ```
 
 Suppose the user desires to obtain the quaternion that rotates the coordinate
-system by a specific angle about only one axis. In that case, it is better to
-use the following function due to improved accuracy in some cases:
+system about only one or two axes. In that case, it is better to use the
+following functions due to improved accuracy in some cases:
 
 ```
-function angle_to_quat(θ::Number, axis::Symbol)
+function angle_to_quat(θ₁::Number, rot_seq::Symbol)
+function angle_to_quat(θ₁::Number, θ₂::Number, rot_seq::Symbol)
 ```
 
 ```jldoctest
 julia> angle_to_quat(-pi / 4, :Z)
 Quaternion{Float64}:
   + 0.92388 + 0.0⋅i + 0.0⋅j - 0.382683⋅k
+
+julia> angle_to_quat(-pi / 4, pi / 7, :XY)
+Quaternion{Float64}:
+  + 0.900716 - 0.373089⋅i + 0.205583⋅j - 0.0851551⋅k
 ```
 
 ## Small Euler Angles to Direction Cosine Matrices

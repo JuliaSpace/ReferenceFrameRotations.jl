@@ -11,7 +11,7 @@ end
 Multiple rotations represented can be composed using the function:
 
 ```julia
-compose_rotation(R1,R2,R3,R4...)
+compose_rotation(R1, R2, R3, R4...)
 ```
 
 in which `R1`, `R2`, `R3`, ..., must be of the same type. This method returns
