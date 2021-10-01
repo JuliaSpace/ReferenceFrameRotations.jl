@@ -37,7 +37,7 @@ then `Ai = I`.
 
 ```jldoctest
 julia> angle_to_dcm(pi / 2, :X)
-3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
+3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
  1.0   0.0          0.0
  0.0   6.12323e-17  1.0
  0.0  -1.0          6.12323e-17
