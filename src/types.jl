@@ -31,7 +31,7 @@ julia> DCM([1 0 0; 0 -1 0; 0 0 -1])
  0   0  -1
 ```
 """
-DCM{T} = SMatrix{3,3,T,9}
+DCM{T} = SMatrix{3, 3, T, 9}
 
 """
     EulerAngles{T}

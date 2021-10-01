@@ -190,7 +190,7 @@ Quaternion{Int64}:
 end
 
 @inline +(u::UniformScaling, q::Quaternion) = Quaternion(u.λ + q.q0, q.q1, q.q2, q.q3)
-@inline +(q::Quaternion, u::UniformScaling) = u+q
+@inline +(q::Quaternion, u::UniformScaling) = u + q
 
 # Operation: -
 # ==============================================================================
