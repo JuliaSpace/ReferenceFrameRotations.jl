@@ -262,6 +262,8 @@ end
 end
 
 @testset "Euler angles => DCM (Errors)" begin
+    @test_throws ArgumentError angle_to_dcm(1, :V)
+    @test_throws ArgumentError angle_to_dcm(1, 2, :ZZ)
     @test_throws ArgumentError angle_to_dcm(1, 2, 3, :ZZY)
 end
 

@@ -266,6 +266,8 @@ end
 end
 
 @testset "Euler angles => Quaternion (Errors)" begin
+    @test_throws ArgumentError angle_to_quat(1, :V)
+    @test_throws ArgumentError angle_to_quat(1, 2, :ZZ)
     @test_throws ArgumentError angle_to_quat(1, 2, 3, :ZZY)
 end
 
