@@ -3,7 +3,7 @@
 # Description
 # ==============================================================================
 #
-#   Conversion methods between different rotation types.
+#   Julia API functions to implement conversions between representations.
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 

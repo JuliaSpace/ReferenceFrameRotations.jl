@@ -20,7 +20,6 @@ export I
 ################################################################################
 
 include("types.jl")
-include("conversions.jl")
 
 ################################################################################
 #                                  Constants
@@ -61,6 +60,7 @@ include("./conversions/angle_to_rot.jl")
 include("./conversions/angleaxis_to_angle.jl")
 include("./conversions/angleaxis_to_dcm.jl")
 include("./conversions/angleaxis_to_quat.jl")
+include("./conversions/api.jl")
 include("./conversions/dcm_to_angle.jl")
 include("./conversions/dcm_to_angleaxis.jl")
 include("./conversions/dcm_to_quat.jl")
