@@ -118,7 +118,7 @@ julia> a = 60.0 * pi / 180;
 julia> v = [sqrt(3) / 3, sqrt(3) / 3, sqrt(3)/3];
 
 julia> angleaxis_to_dcm(a, v)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
   0.666667   0.666667  -0.333333
  -0.333333   0.666667   0.666667
   0.666667  -0.333333   0.666667
@@ -126,7 +126,7 @@ julia> angleaxis_to_dcm(a, v)
 julia> angleaxis = EulerAngleAxis(a, v);
 
 julia> angleaxis_to_dcm(angleaxis)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
   0.666667   0.666667  -0.333333
  -0.333333   0.666667   0.666667
   0.666667  -0.333333   0.666667
@@ -212,7 +212,7 @@ function angle_to_dcm(Θ::EulerAngles)
 
 ```jldoctest
 julia> dcm = angle_to_dcm(pi / 2, pi / 4, pi / 3, :ZYX)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
   4.32978e-17  0.707107  -0.707107
  -0.5          0.612372   0.612372
   0.866025     0.353553   0.353553
@@ -220,7 +220,7 @@ julia> dcm = angle_to_dcm(pi / 2, pi / 4, pi / 3, :ZYX)
 julia> angles = EulerAngles(pi / 2, pi / 4, pi / 3, :ZYX);
 
 julia> dcm = angle_to_dcm(angles)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
   4.32978e-17  0.707107  -0.707107
  -0.5          0.612372   0.612372
   0.866025     0.353553   0.353553
@@ -237,13 +237,13 @@ function angle_to_dcm(θ₁::Number, θ₂::Number, rot_seq::Symbol)
 
 ```jldoctest
 julia> angle_to_dcm(-pi / 4, :Z)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
  0.707107  -0.707107  0.0
  0.707107   0.707107  0.0
  0.0        0.0       1.0
 
 julia> angle_to_dcm(-pi / 4, pi / 7, :XY)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
  0.900969  -0.306802  -0.306802
  0.0        0.707107  -0.707107
  0.433884   0.637081   0.637081
@@ -364,13 +364,13 @@ is `true`.
 
 ```jldoctest
 julia> dcm = smallangle_to_dcm(0.001, -0.002, +0.003)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
   0.999994     0.00299799   0.00200298
  -0.00299998   0.999995     0.000993989
  -0.00199999  -0.000999991  0.999998
 
 julia> dcm = smallangle_to_dcm(0.001, -0.002, +0.003; normalize = false)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
   1.0     0.003  0.002
  -0.003   1.0    0.001
  -0.002  -0.001  1.0
@@ -405,7 +405,7 @@ function quat_to_dcm(q::Quaternion)
 julia> q = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);
 
 julia> dcm = quat_to_dcm(q)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
  1.0   0.0       0.0
  0.0   0.707107  0.707107
  0.0  -0.707107  0.707107

@@ -47,7 +47,7 @@ julia> D1 = angle_to_dcm(pi / 3, pi / 4, pi / 5, :ZYX);
 julia> D2 = angle_to_dcm(-pi / 5, -pi / 4, -pi / 3, :XYZ);
 
 julia> compose_rotation(D1, D2)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
  1.0          1.08801e-17  3.54837e-17
  1.08801e-17  1.0          2.88714e-17
  3.54837e-17  2.88714e-17  1.0

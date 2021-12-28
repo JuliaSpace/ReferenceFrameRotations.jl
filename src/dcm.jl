@@ -9,6 +9,36 @@
 
 export ddcm, orthonormalize
 
+################################################################################
+#                                     API
+################################################################################
+
+# StaticArray.jl API
+# ==============================================================================
+
+@inline Base.@propagate_inbounds function getindex(dcm::DCM, i::Int)
+    return dcm.data[i]
+end
+
+function Tuple(dcm::DCM)
+    return dcm.data
+end
+
+function similar_type(::Type{A}, ::Type{T}, s::Size{(3,3)}) where {A<:DCM, T}
+    return DCM{T}
+end
+
+# Julia API
+# ==============================================================================
+
+function summary(io::IO, ::DCM{T}) where T
+    print(io, "DCM{" * string(T) * "}")
+end
+
+################################################################################
+#                                Normalization
+################################################################################
+
 """
     orthonormalize(dcm::DCM)
 
@@ -45,7 +75,7 @@ function orthonormalize(dcm::DCM)
     enj₃ = enj₃ - (en₂ ⋅ enj₃) * en₂
     en₃  = enj₃ / norm(enj₃)
 
-    return hcat(en₁, en₂, en₃)
+    return DCM(hcat(en₁, en₂, en₃))
 end
 
 ################################################################################

@@ -26,13 +26,13 @@ If `T` is `DCM`, then the resulting matrix will be orthonormalized using the
 
 ```jldoctest
 julia> dcm = smallangle_to_rot(+0.01, -0.01, +0.01)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
   0.9999     0.00989903  0.010098
  -0.009999   0.999901    0.00989802
  -0.009999  -0.009998    0.9999
 
 julia> dcm = smallangle_to_rot(+0.01, -0.01, +0.01; normalize = false)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
   1.0    0.01  0.01
  -0.01   1.0   0.01
  -0.01  -0.01  1.0

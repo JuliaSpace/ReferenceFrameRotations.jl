@@ -12,26 +12,45 @@ export DCM, EulerAngles, EulerAngleAxis, Quaternion
 """
     DCM{T}
 
-The Direction Cosine Matrix (DCM) of type `T` is a `SMatrix{3,3,T,9}`, which is
-a 3x3 static matrix of type `T`.
+Direction Cosine Matrix (DCM) of type `T`, which is a 3x3 static matrix of type
+`T`.
 
 # Examples
 
 ```julia-repl
 julia> DCM(1.0I)
-3×3 SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
  1.0  0.0  0.0
  0.0  1.0  0.0
  0.0  0.0  1.0
 
 julia> DCM([1 0 0; 0 -1 0; 0 0 -1])
-3×3 SMatrix{3, 3, Int64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Int64}:
  1   0   0
  0  -1   0
  0   0  -1
 ```
 """
-DCM{T} = SMatrix{3, 3, T, 9}
+struct DCM{T} <: StaticMatrix{3, 3, T}
+    data::NTuple{9, T}
+
+    function DCM(x::NTuple{9, T}) where T
+        return new{T}(x)
+    end
+
+    function DCM(x::NTuple{9, Any})
+        T = StaticArrays.promote_tuple_eltype(x)
+        return new{T}(StaticArrays.convert_ntuple(T, x))
+    end
+
+    function DCM{T}(x::NTuple{9, T}) where T
+        return new{T}(x)
+    end
+
+    function DCM{T}(x::NTuple{9, Any}) where T
+        return new{T}(StaticArrays.convert_ntuple(T, x))
+    end
+end
 
 """
     EulerAngles{T}

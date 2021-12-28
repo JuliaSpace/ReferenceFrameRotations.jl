@@ -20,7 +20,7 @@ Convert the quaternion `q` to a Direction Cosine Matrix (DCM).
 julia> q = Quaternion(cosd(45/2), sind(45/2), 0, 0);
 
 julia> quat_to_dcm(q)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
  1.0   0.0       0.0
  0.0   0.707107  0.707107
  0.0  -0.707107  0.707107

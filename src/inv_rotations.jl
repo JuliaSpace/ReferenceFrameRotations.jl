@@ -41,7 +41,7 @@ The output will have the same type as `R`.
 julia> D = angle_to_dcm(pi / 3, pi / 4, pi / 5, :ZYX);
 
 julia> inv_rotation(D)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
   0.353553  -0.492816  0.795068
   0.612372   0.764452  0.201527
  -0.707107   0.415627  0.572061

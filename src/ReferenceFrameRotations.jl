@@ -2,14 +2,16 @@ module ReferenceFrameRotations
 
 import Base: +, -, *, /, \, ≈, ==
 import Base: conj, convert, copy, display, eltype, firstindex, getindex, imag
-import Base: inv, iterate, lastindex, ndims, one, real, setindex!, show
-import Base: zero, zeros
+import Base: inv, iterate, lastindex, ndims, one, rand, real, setindex!, show
+import Base: summary, zero, zeros
 import Base: Broadcast.broadcastable
 import LinearAlgebra: norm
+import StaticArrays: similar_type
 
 using Crayons
 using LinearAlgebra
 using Printf
+using Random
 using StaticArrays
 
 # Re-export `I` from LinearAlgebra.
@@ -48,6 +50,7 @@ include("angleaxis.jl")
 include("compose_rotations.jl")
 include("dcm.jl")
 include("inv_rotations.jl")
+include("random.jl")
 include("quaternion.jl")
 
 include("deprecations.jl")

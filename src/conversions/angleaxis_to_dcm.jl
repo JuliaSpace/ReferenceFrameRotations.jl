@@ -30,7 +30,7 @@ julia> v = [1, 1, 1];
 julia> v /= norm(v);
 
 julia> angleaxis_to_dcm(pi / 2, v)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
   0.333333   0.910684  -0.244017
  -0.244017   0.333333   0.910684
   0.910684  -0.244017   0.333333
@@ -38,7 +38,7 @@ julia> angleaxis_to_dcm(pi / 2, v)
 julia> ea = EulerAngleAxis(pi / 2, v);
 
 julia> angleaxis_to_dcm(ea)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
   0.333333   0.910684  -0.244017
  -0.244017   0.333333   0.910684
   0.910684  -0.244017   0.333333

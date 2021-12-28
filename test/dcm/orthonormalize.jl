@@ -23,12 +23,16 @@
         angle_to_dcm(ang_y, :Y) *
         angle_to_dcm(ang_z, :Z)
 
-    D1 = hcat(D[:, 1]*α, D[:, 2],   D[:, 3])
-    D2 = hcat(D[:, 1],   D[:, 2]*α, D[:, 3])
-    D3 = hcat(D[:, 1],   D[:, 2],   D[:, 3]*α)
-    D4 = hcat(D[:, 1]*α, D[:, 2]*α, D[:, 3])
-    D5 = hcat(D[:, 1],   D[:, 2]*α, D[:, 3]*α)
-    D6 = hcat(D[:, 1]*α, D[:, 2],   D[:, 3]*α)
+    v₁ = D[:, 1]
+    v₂ = D[:, 2]
+    v₃ = D[:, 3]
+
+    D1 = DCM(hcat(v₁ * α, v₂,     v₃    ))
+    D2 = DCM(hcat(v₁,     v₂ * α, v₃    ))
+    D3 = DCM(hcat(v₁,     v₂,     v₃ * α))
+    D4 = DCM(hcat(v₁ * α, v₂ * α, v₃    ))
+    D5 = DCM(hcat(v₁,     v₂ * α, v₃ * α))
+    D6 = DCM(hcat(v₁ * α, v₂,     v₃ * α))
 
     @test norm(D - orthonormalize(D1)) ≈ 0 atol=1e-15
     @test norm(D - orthonormalize(D2)) ≈ 0 atol=1e-15
@@ -52,12 +56,16 @@ end
         angle_to_dcm(ang_y, :Y) *
         angle_to_dcm(ang_z, :Z)
 
-    D1 = hcat(D[:, 1]*α, D[:, 2],   D[:, 3])
-    D2 = hcat(D[:, 1],   D[:, 2]*α, D[:, 3])
-    D3 = hcat(D[:, 1],   D[:, 2],   D[:, 3]*α)
-    D4 = hcat(D[:, 1]*α, D[:, 2]*α, D[:, 3])
-    D5 = hcat(D[:, 1],   D[:, 2]*α, D[:, 3]*α)
-    D6 = hcat(D[:, 1]*α, D[:, 2],   D[:, 3]*α)
+    v₁ = D[:, 1]
+    v₂ = D[:, 2]
+    v₃ = D[:, 3]
+
+    D1 = DCM(hcat(v₁ * α, v₂,     v₃    ))
+    D2 = DCM(hcat(v₁,     v₂ * α, v₃    ))
+    D3 = DCM(hcat(v₁,     v₂,     v₃ * α))
+    D4 = DCM(hcat(v₁ * α, v₂ * α, v₃    ))
+    D5 = DCM(hcat(v₁,     v₂ * α, v₃ * α))
+    D6 = DCM(hcat(v₁ * α, v₂,     v₃ * α))
 
     @test norm(D - orthonormalize(D1)) ≈ 0 atol=1e-5
     @test norm(D - orthonormalize(D2)) ≈ 0 atol=1e-5

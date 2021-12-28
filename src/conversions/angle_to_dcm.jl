@@ -37,25 +37,25 @@ then `Ai = I`.
 
 ```jldoctest
 julia> angle_to_dcm(pi / 2, :X)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
  1.0   0.0          0.0
  0.0   6.12323e-17  1.0
  0.0  -1.0          6.12323e-17
 
 julia> angle_to_dcm(pi / 5, pi / 7, :YZ)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
   0.728899  0.433884  -0.529576
  -0.351019  0.900969   0.25503
   0.587785  0.0        0.809017
 
 julia> angle_to_dcm(pi / 5, pi / 7, 0, :YZY)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
   0.728899  0.433884  -0.529576
  -0.351019  0.900969   0.25503
   0.587785  0.0        0.809017
 
 julia> dcm = angle_to_dcm(pi / 2, pi / 3, pi / 4, :ZYX)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
   3.06162e-17  0.5       -0.866025
  -0.707107     0.612372   0.353553
   0.707107     0.612372   0.353553
