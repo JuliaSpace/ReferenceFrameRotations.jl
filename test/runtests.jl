@@ -119,6 +119,7 @@ end
 println("")
 
 @time @addverbose @testset "Conversions" begin
+    include("conversions.jl")
     include("./conversions/angle_to_angle.jl")
     include("./conversions/angle_to_angleaxis.jl")
     include("./conversions/angle_to_dcm.jl")
