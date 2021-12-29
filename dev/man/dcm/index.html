@@ -4,47 +4,47 @@
     a_{21} &amp; a_{22} &amp; a_{23} \\
     a_{31} &amp; a_{32} &amp; a_{33}
     \end{matrix}\right]\]</p><p>In <strong>ReferenceFrameRotations.jl</strong>, a DCM is a <span>$3 \times 3$</span> static matrix:</p><pre><code class="language-julia hljs">DCM{T} = SMatrix{3, 3, T, 9}</code></pre><p>which means that <code>DCM</code> is immutable.</p><h2 id="Initialization"><a class="docs-heading-anchor" href="#Initialization">Initialization</a><a id="Initialization-1"></a><a class="docs-heading-anchor-permalink" href="#Initialization" title="Permalink"></a></h2><p>Usually, a DCM is initialized by converting a more &quot;visual&quot; rotation representation, such as the Euler angles (see <a href="../conversions/#Conversions">Conversions</a>). However, it can be initialized by the following methods:</p><ul><li>Identity DCM.</li></ul><pre><code class="language-julia-repl hljs">julia&gt; DCM(I)  # Create a Boolean DCM, this can be used to save space.
-3×3 StaticArrays.SMatrix{3, 3, Bool, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Bool}:
  1  0  0
  0  1  0
  0  0  1
 
 julia&gt; DCM(Int64(1)I)  # Create an Integer DCM.
-3×3 StaticArrays.SMatrix{3, 3, Int64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Int64}:
  1  0  0
  0  1  0
  0  0  1
 
 julia&gt; DCM(1.f0I) # Create a Float32 DCM.
-3×3 StaticArrays.SMatrix{3, 3, Float32, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float32}:
  1.0  0.0  0.0
  0.0  1.0  0.0
  0.0  0.0  1.0
 
 julia&gt; DCM(1.0I)  # Create a Float64 DCM.
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
  1.0  0.0  0.0
  0.0  1.0  0.0
  0.0  0.0  1.0</code></pre><ul><li>User-defined DCM.</li></ul><pre><code class="language-julia-repl hljs">julia&gt; DCM([-1 0 0; 0 -1 0; 0 0 1])
-3×3 StaticArrays.SMatrix{3, 3, Int64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Int64}:
  -1   0  0
   0  -1  0
   0   0  1
 
 julia&gt; DCM([-1.f0 0.f0 0.f0; 0.f0 -1.f0 0.f0; 0.f0 0.f0 1.f0])
-3×3 StaticArrays.SMatrix{3, 3, Float32, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float32}:
  -1.0   0.0  0.0
   0.0  -1.0  0.0
   0.0   0.0  1.0
 
 julia&gt; DCM([-1.0 0.0 0.0; 0.0 -1.0 0.0; 0.0 0.0 1.0])
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
  -1.0   0.0  0.0
   0.0  -1.0  0.0
-  0.0   0.0  1.0</code></pre><div class="admonition is-info"><header class="admonition-header">Note</header><div class="admonition-body"><p>The type of the DCM will depend on the type of the input.</p></div></div><div class="admonition is-warning"><header class="admonition-header">Warning</header><div class="admonition-body"><p>This initialization method <strong>will not</strong> verify if the input data is indeed a DCM.</p></div></div><h2 id="Operations"><a class="docs-heading-anchor" href="#Operations">Operations</a><a id="Operations-1"></a><a class="docs-heading-anchor-permalink" href="#Operations" title="Permalink"></a></h2><p>Since a DCM is an Static Matrix (<code>SMatrix</code>), then all the operations available for general matrices in Julia are also available for DCMs.</p><h3 id="Orthonomalization"><a class="docs-heading-anchor" href="#Orthonomalization">Orthonomalization</a><a id="Orthonomalization-1"></a><a class="docs-heading-anchor-permalink" href="#Orthonomalization" title="Permalink"></a></h3><p>A DCM can be orthonormalized using the Gram-Schmidt algorithm by the function:</p><pre><code class="language-julia hljs">function orthonormalize(dcm::DCM)</code></pre><pre><code class="language-julia-repl hljs">julia&gt; D = DCM([2 0 0; 0 2 0; 0 0 2]);
+  0.0   0.0  1.0</code></pre><div class="admonition is-info"><header class="admonition-header">Note</header><div class="admonition-body"><p>The type of the DCM will depend on the type of the input.</p></div></div><div class="admonition is-warning"><header class="admonition-header">Warning</header><div class="admonition-body"><p>This initialization method <strong>will not</strong> verify if the input data is indeed a DCM.</p></div></div><h2 id="Operations"><a class="docs-heading-anchor" href="#Operations">Operations</a><a id="Operations-1"></a><a class="docs-heading-anchor-permalink" href="#Operations" title="Permalink"></a></h2><p>Since a DCM is a static matrix (<code>&lt;: StaticMatrix</code>), then all the operations available for general matrices in Julia are also available for DCMs.</p><h3 id="Orthonomalization"><a class="docs-heading-anchor" href="#Orthonomalization">Orthonomalization</a><a id="Orthonomalization-1"></a><a class="docs-heading-anchor-permalink" href="#Orthonomalization" title="Permalink"></a></h3><p>A DCM can be orthonormalized using the Gram-Schmidt algorithm by the function:</p><pre><code class="language-julia hljs">function orthonormalize(dcm::DCM)</code></pre><pre><code class="language-julia-repl hljs">julia&gt; D = DCM([2 0 0; 0 2 0; 0 0 2]);
 
 julia&gt; orthonormalize(D)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
  1.0  0.0  0.0
  0.0  1.0  0.0
  0.0  0.0  1.0
@@ -52,7 +52,7 @@ julia&gt; orthonormalize(D)
 julia&gt; D = DCM(3.0f0I);
 
 julia&gt; orthonormalize(D)
-3×3 StaticArrays.SMatrix{3, 3, Float32, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float32}:
  1.0  0.0  0.0
  0.0  1.0  0.0
  0.0  0.0  1.0
@@ -60,13 +60,13 @@ julia&gt; orthonormalize(D)
 julia&gt; D = DCM(1, 1, 2, 2, 3, 3, 4, 4, 5);
 
 julia&gt; Dn = orthonormalize(D)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
  0.408248   0.123091   0.904534
  0.408248   0.86164   -0.301511
  0.816497  -0.492366  -0.301511
 
 julia&gt; Dn * Dn&#39;
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
   1.0          -2.87528e-16  -8.47673e-16
- -2.87528e-16   1.0           3.31283e-16
- -9.03184e-16   3.31283e-16   1.0</code></pre><div class="admonition is-warning"><header class="admonition-header">Warning</header><div class="admonition-body"><p>This function does not check if the columns of the input matrix span a three-dimensional space. If not, then the returned matrix should have <code>NaN</code>. Notice, however, that such input matrix is not a valid direction cosine matrix.</p></div></div></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../">« Home</a><a class="docs-footer-nextpage" href="../euler_angle_axis/">Euler Angle and Axis »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.10 on <span class="colophon-date" title="Tuesday 28 December 2021 13:46">Tuesday 28 December 2021</span>. Using Julia version 1.7.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+ -2.87528e-16   1.0           3.4516e-16
+ -9.03184e-16   3.31283e-16   1.0</code></pre><div class="admonition is-warning"><header class="admonition-header">Warning</header><div class="admonition-body"><p>This function does not check if the columns of the input matrix span a three-dimensional space. If not, then the returned matrix should have <code>NaN</code>. Notice, however, that such input matrix is not a valid direction cosine matrix.</p></div></div></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../">« Home</a><a class="docs-footer-nextpage" href="../euler_angle_axis/">Euler Angle and Axis »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.10 on <span class="colophon-date" title="Wednesday 29 December 2021 18:01">Wednesday 29 December 2021</span>. Using Julia version 1.7.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

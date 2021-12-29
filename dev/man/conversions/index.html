@@ -42,7 +42,7 @@ function angleaxis_to_dcm(ea::EulerAngleAxis)</code></pre><pre><code class="lang
 julia&gt; v = [sqrt(3) / 3, sqrt(3) / 3, sqrt(3)/3];
 
 julia&gt; angleaxis_to_dcm(a, v)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
   0.666667   0.666667  -0.333333
  -0.333333   0.666667   0.666667
   0.666667  -0.333333   0.666667
@@ -50,7 +50,7 @@ julia&gt; angleaxis_to_dcm(a, v)
 julia&gt; angleaxis = EulerAngleAxis(a, v);
 
 julia&gt; angleaxis_to_dcm(angleaxis)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
   0.666667   0.666667  -0.333333
  -0.333333   0.666667   0.666667
   0.666667  -0.333333   0.666667</code></pre><h2 id="Euler-Angle-and-Axis-to-Euler-Angles"><a class="docs-heading-anchor" href="#Euler-Angle-and-Axis-to-Euler-Angles">Euler Angle and Axis to Euler Angles</a><a id="Euler-Angle-and-Axis-to-Euler-Angles-1"></a><a class="docs-heading-anchor-permalink" href="#Euler-Angle-and-Axis-to-Euler-Angles" title="Permalink"></a></h2><p>An Euler angle and axis representaion can be converto to Euler angles using these two methods:</p><pre><code class="language-julia hljs">function angleaxis_to_angle(θ::Number, v::AbstractVector, rot_seq::Symbol)
@@ -98,7 +98,7 @@ julia&gt; angleaxis_to_quat(angleaxis)
 Quaternion{Float64}:
   + 0.866025 + 0.288675⋅i + 0.288675⋅j + 0.288675⋅k</code></pre><h2 id="Euler-Angles-to-Direction-Cosine-Matrices"><a class="docs-heading-anchor" href="#Euler-Angles-to-Direction-Cosine-Matrices">Euler Angles to Direction Cosine Matrices</a><a id="Euler-Angles-to-Direction-Cosine-Matrices-1"></a><a class="docs-heading-anchor-permalink" href="#Euler-Angles-to-Direction-Cosine-Matrices" title="Permalink"></a></h2><p>Euler angles can be converted to DCMs using the following functions:</p><pre><code class="language-julia hljs">function angle_to_dcm(θ₁::Number[, θ₂::Number[, θ₃::Number]], rot_seq::Symbol = :ZYX)
 function angle_to_dcm(Θ::EulerAngles)</code></pre><pre><code class="language-julia-repl hljs">julia&gt; dcm = angle_to_dcm(pi / 2, pi / 4, pi / 3, :ZYX)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
   4.32978e-17  0.707107  -0.707107
  -0.5          0.612372   0.612372
   0.866025     0.353553   0.353553
@@ -106,18 +106,18 @@ function angle_to_dcm(Θ::EulerAngles)</code></pre><pre><code class="language-ju
 julia&gt; angles = EulerAngles(pi / 2, pi / 4, pi / 3, :ZYX);
 
 julia&gt; dcm = angle_to_dcm(angles)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
   4.32978e-17  0.707107  -0.707107
  -0.5          0.612372   0.612372
   0.866025     0.353553   0.353553</code></pre><p>Suppose the user desires to obtain the DCM that rotates the coordinate system about only one or two axes. In that case, it is better to use the following functions due to improved accuracy in some cases:</p><pre><code class="nohighlight hljs">function angle_to_dcm(θ₁::Number, rot_seq::Symbol)
 function angle_to_dcm(θ₁::Number, θ₂::Number, rot_seq::Symbol)</code></pre><pre><code class="language-julia-repl hljs">julia&gt; angle_to_dcm(-pi / 4, :Z)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
  0.707107  -0.707107  0.0
  0.707107   0.707107  0.0
  0.0        0.0       1.0
 
 julia&gt; angle_to_dcm(-pi / 4, pi / 7, :XY)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
  0.900969  -0.306802  -0.306802
  0.0        0.707107  -0.707107
  0.433884   0.637081   0.637081</code></pre><h2 id="Euler-Angles-to-Euler-Angles"><a class="docs-heading-anchor" href="#Euler-Angles-to-Euler-Angles">Euler Angles to Euler Angles</a><a id="Euler-Angles-to-Euler-Angles-1"></a><a class="docs-heading-anchor-permalink" href="#Euler-Angles-to-Euler-Angles" title="Permalink"></a></h2><p>It is possible to change the rotation sequence of a set of Euler angles using the following functions:</p><pre><code class="language-julia hljs">function angle_to_angle(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq_orig::Symbol, rot_seq_dest::Symbol)
@@ -171,13 +171,13 @@ Quaternion{Float64}:
 julia&gt; angle_to_quat(-pi / 4, pi / 7, :XY)
 Quaternion{Float64}:
   + 0.900716 - 0.373089⋅i + 0.205583⋅j - 0.0851551⋅k</code></pre><h2 id="Small-Euler-Angles-to-Direction-Cosine-Matrices"><a class="docs-heading-anchor" href="#Small-Euler-Angles-to-Direction-Cosine-Matrices">Small Euler Angles to Direction Cosine Matrices</a><a id="Small-Euler-Angles-to-Direction-Cosine-Matrices-1"></a><a class="docs-heading-anchor-permalink" href="#Small-Euler-Angles-to-Direction-Cosine-Matrices" title="Permalink"></a></h2><p>Small Euler angles can be converted to DCMs using the following function:</p><pre><code class="language-julia hljs">function smallangle_to_dcm(θx::Number, θy::Number, θz::Number; normalize = true)</code></pre><p>in which the resulting matrix will be orthonormalized if the keyword <code>normalize</code> is <code>true</code>.</p><pre><code class="language-julia-repl hljs">julia&gt; dcm = smallangle_to_dcm(0.001, -0.002, +0.003)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
   0.999994     0.00299799   0.00200298
  -0.00299998   0.999995     0.000993989
  -0.00199999  -0.000999991  0.999998
 
 julia&gt; dcm = smallangle_to_dcm(0.001, -0.002, +0.003; normalize = false)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
   1.0     0.003  0.002
  -0.003   1.0    0.001
  -0.002  -0.001  1.0</code></pre><h2 id="Small-Euler-Angles-to-Quaternions"><a class="docs-heading-anchor" href="#Small-Euler-Angles-to-Quaternions">Small Euler Angles to Quaternions</a><a id="Small-Euler-Angles-to-Quaternions-1"></a><a class="docs-heading-anchor-permalink" href="#Small-Euler-Angles-to-Quaternions" title="Permalink"></a></h2><p>Small Euler angles can be converted to quaternions using the following function:</p><pre><code class="language-julia hljs">function smallangle_to_quat(θx::Number, θy::Number, θz::Number)</code></pre><pre><code class="language-julia-repl hljs">julia&gt; q = smallangle_to_quat(0.001, -0.002, +0.003)
@@ -185,7 +185,7 @@ Quaternion{Float64}:
   + 0.999998 + 0.000499999⋅i - 0.000999998⋅j + 0.0015⋅k</code></pre><div class="admonition is-info"><header class="admonition-header">Note</header><div class="admonition-body"><p>The computed quaternion <strong>is</strong> normalized.</p></div></div><h2 id="Quaternions-to-Direction-Cosine-Matrices"><a class="docs-heading-anchor" href="#Quaternions-to-Direction-Cosine-Matrices">Quaternions to Direction Cosine Matrices</a><a id="Quaternions-to-Direction-Cosine-Matrices-1"></a><a class="docs-heading-anchor-permalink" href="#Quaternions-to-Direction-Cosine-Matrices" title="Permalink"></a></h2><p>A quaternion can be converted to DCM using the following method:</p><pre><code class="language-julia hljs">function quat_to_dcm(q::Quaternion)</code></pre><pre><code class="language-julia-repl hljs">julia&gt; q = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);
 
 julia&gt; dcm = quat_to_dcm(q)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
  1.0   0.0       0.0
  0.0   0.707107  0.707107
  0.0  -0.707107  0.707107</code></pre><h2 id="Quaternions-to-Euler-Angle-and-Axis"><a class="docs-heading-anchor" href="#Quaternions-to-Euler-Angle-and-Axis">Quaternions to Euler Angle and Axis</a><a id="Quaternions-to-Euler-Angle-and-Axis-1"></a><a class="docs-heading-anchor-permalink" href="#Quaternions-to-Euler-Angle-and-Axis" title="Permalink"></a></h2><p>A quaternion can be converted to Euler Angle and Axis representation using the following function:</p><pre><code class="language-julia hljs">function quat_to_angleaxis(q::Quaternion)</code></pre><pre><code class="language-julia-repl hljs">julia&gt; v = [sqrt(3) / 3, sqrt(3) / 3, sqrt(3) / 3];
@@ -203,4 +203,4 @@ julia&gt; quat_to_angle(q, :XYZ)
 EulerAngles{Float64}:
   R(X) :  0.785398 rad  ( 45.0°)
   R(Y) :  0.0      rad  ( 0.0°)
-  R(Z) :  0.0      rad  ( 0.0°)</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../quaternions/">« Quaternions</a><a class="docs-footer-nextpage" href="../kinematics/">Kinematics »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.10 on <span class="colophon-date" title="Tuesday 28 December 2021 13:46">Tuesday 28 December 2021</span>. Using Julia version 1.7.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+  R(Z) :  0.0      rad  ( 0.0°)</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../quaternions/">« Quaternions</a><a class="docs-footer-nextpage" href="../kinematics/">Kinematics »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.10 on <span class="colophon-date" title="Wednesday 29 December 2021 18:01">Wednesday 29 December 2021</span>. Using Julia version 1.7.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
