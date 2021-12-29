@@ -59,12 +59,10 @@ end
     )
 
     aa = rand(MersenneTwister(1986), EulerAngleAxis)
-    @test aa.a ≈ aa_exp.a atol = 1e-15
-    @test aa.v ≈ aa_exp.v atol = 1e-15
+    @test aa ≈ aa_exp atol = 1e-15
 
     aa = rand(MersenneTwister(1986), EulerAngleAxis{Float64})
-    @test aa.a ≈ aa_exp.a atol = 1e-15
-    @test aa.v ≈ aa_exp.v atol = 1e-15
+    @test aa ≈ aa_exp atol = 1e-15
 end
 
 @testset "Euler angle and axis (Float32)" begin
@@ -78,8 +76,7 @@ end
     )
 
     aa = rand(MersenneTwister(1986), EulerAngleAxis{Float32})
-    @test aa.a ≈ aa_exp.a atol = 1e-15
-    @test aa.v ≈ aa_exp.v atol = 1e-15
+    @test aa ≈ aa_exp atol = 1e-15
 end
 
 @testset "Euler angles (Float64)" begin
@@ -91,16 +88,10 @@ end
     )
 
     ea = rand(MersenneTwister(1986), EulerAngles)
-    @test ea.a1 ≈ ea_exp.a1 atol = 1e-15
-    @test ea.a2 ≈ ea_exp.a2 atol = 1e-15
-    @test ea.a3 ≈ ea_exp.a3 atol = 1e-15
-    @test ea.rot_seq == ea_exp.rot_seq
+    @test ea ≈ ea_exp atol = 1e-15
 
     ea = rand(MersenneTwister(1986), EulerAngles{Float64})
-    @test ea.a1 ≈ ea_exp.a1 atol = 1e-15
-    @test ea.a2 ≈ ea_exp.a2 atol = 1e-15
-    @test ea.a3 ≈ ea_exp.a3 atol = 1e-15
-    @test ea.rot_seq == ea_exp.rot_seq
+    @test ea ≈ ea_exp atol = 1e-15
 end
 
 @testset "Euler angles (Float32)" begin
@@ -112,16 +103,10 @@ end
     )
 
     ea = rand(MersenneTwister(1986), EulerAngles)
-    @test ea.a1 ≈ ea_exp.a1 atol = 1e-15
-    @test ea.a2 ≈ ea_exp.a2 atol = 1e-15
-    @test ea.a3 ≈ ea_exp.a3 atol = 1e-15
-    @test ea.rot_seq == ea_exp.rot_seq
+    @test ea ≈ ea_exp atol = 1e-15
 
     ea = rand(MersenneTwister(1986), EulerAngles{Float64})
-    @test ea.a1 ≈ ea_exp.a1 atol = 1e-15
-    @test ea.a2 ≈ ea_exp.a2 atol = 1e-15
-    @test ea.a3 ≈ ea_exp.a3 atol = 1e-15
-    @test ea.rot_seq == ea_exp.rot_seq
+    @test ea ≈ ea_exp atol = 1e-15
 end
 
 @testset "Quaternion (Float64)" begin
