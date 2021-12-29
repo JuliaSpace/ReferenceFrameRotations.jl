@@ -1,6 +1,7 @@
 using Test
 using ReferenceFrameRotations
 using LinearAlgebra
+using Random
 using StaticArrays
 
 import Base: isapprox
@@ -144,5 +145,10 @@ println("")
 
 @time @addverbose @testset "Invert rotations" begin
     include("./inv_rotations.jl")
+end
+println("")
+
+@time @addverbose @testset "Random rotations" begin
+    include("./random.jl")
 end
 println("")
