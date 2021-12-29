@@ -179,3 +179,10 @@ function show(io::IO, mime::MIME"text/plain", av::EulerAngleAxis{T}) where T
 
     return nothing
 end
+
+################################################################################
+#                                  Julia API
+################################################################################
+
+Base.eltype(::Type{EulerAngleAxis{T}}) where T = T
+

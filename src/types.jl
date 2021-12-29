@@ -112,8 +112,6 @@ function EulerAngles(
     return EulerAngles(T(a1), T(a2), T(a3), rot_seq)
 end
 
-eltype(::EulerAngles{T}) where T = T
-
 """
     EulerAngleAxis{T}
 
@@ -157,8 +155,6 @@ function EulerAngleAxis(a::T1, v::AbstractVector{T2}) where {T1,T2}
 
     return EulerAngleAxis(T(a), SVector{3, T}(v))
 end
-
-eltype(::EulerAngleAxis{T}) where T = T
 
 """
     Quaternion{T}

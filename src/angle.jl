@@ -165,3 +165,10 @@ function show(io::IO, mime::MIME"text/plain", Θ::EulerAngles{T}) where T
 
     return nothing
 end
+
+################################################################################
+#                                  Julia API
+################################################################################
+
+Base.eltype(::Type{EulerAngles{T}}) where T = T
+
