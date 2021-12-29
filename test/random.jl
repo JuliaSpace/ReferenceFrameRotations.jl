@@ -48,6 +48,40 @@ end
     @test D ≈ D_exp atol = 1e-15
 end
 
+@testset "Euler angle and axis (Float64)" begin
+    aa_exp = EulerAngleAxis(
+        3.0732832539795845,
+        @SVector [
+             0.7668495688612252,
+            -0.13482690249452656,
+             0.6275057331220841
+        ]
+    )
+
+    aa = rand(MersenneTwister(1986), EulerAngleAxis)
+    @test aa.a ≈ aa_exp.a atol = 1e-15
+    @test aa.v ≈ aa_exp.v atol = 1e-15
+
+    aa = rand(MersenneTwister(1986), EulerAngleAxis{Float64})
+    @test aa.a ≈ aa_exp.a atol = 1e-15
+    @test aa.v ≈ aa_exp.v atol = 1e-15
+end
+
+@testset "Euler angle and axis (Float32)" begin
+    aa_exp = EulerAngleAxis(
+        1.6446829f0,
+        @SVector [
+            -0.9557738f0,
+             0.2756822f0,
+             0.102449425f0
+        ]
+    )
+
+    aa = rand(MersenneTwister(1986), EulerAngleAxis{Float32})
+    @test aa.a ≈ aa_exp.a atol = 1e-15
+    @test aa.v ≈ aa_exp.v atol = 1e-15
+end
+
 @testset "Euler angles (Float64)" begin
     ea_exp = EulerAngles(
         2.5852880822263606,

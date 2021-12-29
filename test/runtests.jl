@@ -93,6 +93,7 @@ macro addverbose(expr)
 end
 
 @time @addverbose @testset "Direction cosine matrices" begin
+    include("./dcm/misc.jl")
     include("./dcm/kinematics.jl")
     include("./dcm/orthonormalize.jl")
 end
