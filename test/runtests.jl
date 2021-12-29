@@ -75,43 +75,26 @@ function isapprox(x::EulerAngles, y::EulerAngles; keys...)
     return a1 && a2 && a3 && r
 end
 
-# Add `verbose = true` option to testsets if Julia version is 1.6 or higher.
-macro addverbose(expr)
-    if VERSION ≥ v"1.6.0"
-        if (expr.head == :macrocall) &&
-            (expr.args[1] == Symbol("@testset")) &&
-            (length(expr.args) ≥ 4)
-            expr.args = vcat(
-                expr.args[1:3],
-                Expr(:(=), :verbose, true),
-                expr.args[4:end]
-            )
-        end
-    end
-
-    return expr
-end
-
-@time @addverbose @testset "Direction cosine matrices" begin
+@time @testset "Direction cosine matrices" verbose = true begin
     include("./dcm/misc.jl")
     include("./dcm/kinematics.jl")
     include("./dcm/orthonormalize.jl")
 end
 println("")
 
-@time @addverbose @testset "Euler angle and axis" begin
+@time @testset "Euler angle and axis" verbose = true begin
     include("./angleaxis/functions.jl")
     include("./angleaxis/operations.jl")
 end
 println("")
 
-@time @addverbose @testset "Euler angles" begin
+@time @testset "Euler angles" verbose = true begin
     include("./angle/functions.jl")
     include("./angle/operations.jl")
 end
 println("")
 
-@time @addverbose @testset "Quaternions" begin
+@time @testset "Quaternions" verbose = true begin
     include("./quaternion/constructors.jl")
     include("./quaternion/functions.jl")
     include("./quaternion/julia_api.jl")
@@ -120,7 +103,7 @@ println("")
 end
 println("")
 
-@time @addverbose @testset "Conversions" begin
+@time @testset "Conversions" verbose = true begin
     include("./conversions/angle_to_angle.jl")
     include("./conversions/angle_to_angleaxis.jl")
     include("./conversions/angle_to_dcm.jl")
@@ -139,17 +122,17 @@ println("")
 end
 println("")
 
-@time @addverbose @testset "Compose rotations" begin
+@time @testset "Compose rotations" verbose = true begin
     include("./compose_rotations.jl")
 end
 println("")
 
-@time @addverbose @testset "Invert rotations" begin
+@time @testset "Invert rotations" verbose = true begin
     include("./inv_rotations.jl")
 end
 println("")
 
-@time @addverbose @testset "Random rotations" begin
+@time @testset "Random rotations" verbose = true begin
     include("./random.jl")
 end
 println("")
