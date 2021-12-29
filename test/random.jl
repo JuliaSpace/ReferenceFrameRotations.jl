@@ -96,16 +96,13 @@ end
 
 @testset "Euler angles (Float32)" begin
     ea_exp = EulerAngles(
-        2.5852880822263606,
-        3.1861195131389626,
-        2.9299487570635576,
+        0.29179642f0,
+        5.512145f0,
+        4.3565836f0,
         :YXY
     )
 
-    ea = rand(MersenneTwister(1986), EulerAngles)
-    @test ea ≈ ea_exp atol = 1e-15
-
-    ea = rand(MersenneTwister(1986), EulerAngles{Float64})
+    ea = rand(MersenneTwister(1986), EulerAngles{Float32})
     @test ea ≈ ea_exp atol = 1e-15
 end
 
