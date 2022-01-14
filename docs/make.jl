@@ -26,6 +26,7 @@ makedocs(
         "Kinematics" => "man/kinematics.md",
         "Composing rotations" => "man/composing_rotations.md",
         "Inverting rotations" => "man/inv_rotations.md",
+        "Random rotations" => "man/random.md",
         "Library" => "lib/library.md",
     ],
 )
