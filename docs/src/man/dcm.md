@@ -22,13 +22,8 @@ with the reference frame ``b`` is:
     \end{matrix}\right]
 ```
 
-In **ReferenceFrameRotations.jl**, a DCM is a ``3 \times 3`` static matrix:
-
-```julia
-DCM{T} = SMatrix{3, 3, T, 9}
-```
-
-which means that `DCM` is immutable.
+In **ReferenceFrameRotations.jl**, a DCM is a ``3 \times 3`` static matrix,
+*i.e.* it is immutable.
 
 ## Initialization
 
