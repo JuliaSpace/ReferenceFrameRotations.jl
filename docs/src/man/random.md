@@ -5,7 +5,7 @@ Sometimes it is necessary to generate random rotations. For example, if you are
 testing a stochastic system numerically, you need to perform a Monte Carlo
 simulation sampling the initial conditions. **ReferenceFrameRotations.jl**
 defines `rand` function for all rotation representations, which samples a random
-rotation.
+rotation uniformly in SO(3).
 
 ```julia
 julia> rand(Quaternion)
