@@ -99,6 +99,71 @@ end
     @test D_api === D_exp
 end
 
+# Conversion to Euler angle and axis
+# ------------------------------------------------------------------------------
+
+@testset "Julia conversion API: To Euler angle and axis (Float64)" begin
+    T = Float64
+
+    # DCMs
+    # ==========================================================================
+
+    dcm = rand(DCM{T})
+    av_exp = dcm_to_angleaxis(dcm)
+    av_api = convert(EulerAngleAxis, dcm)
+
+    @test av_exp === av_api
+
+    # Euler angles
+    # ==========================================================================
+
+    ea = rand(EulerAngles{T})
+    av_exp = angle_to_angleaxis(ea)
+    av_api = convert(EulerAngleAxis, ea)
+
+    @test av_exp === av_api
+
+    # Quaternions
+    # ==========================================================================
+
+    q = rand(Quaternion{T})
+    av_exp = quat_to_angleaxis(q)
+    av_api = convert(EulerAngleAxis, q)
+
+    @test av_exp === av_api
+end
+
+@testset "Julia conversion API: To Euler angle and axis (Float32)" begin
+    T = Float32
+
+    # DCMs
+    # ==========================================================================
+
+    dcm = rand(DCM{T})
+    av_exp = dcm_to_angleaxis(dcm)
+    av_api = convert(EulerAngleAxis, dcm)
+
+    @test av_exp === av_api
+
+    # Euler angles
+    # ==========================================================================
+
+    ea = rand(EulerAngles{T})
+    av_exp = angle_to_angleaxis(ea)
+    av_api = convert(EulerAngleAxis, ea)
+
+    @test av_exp === av_api
+
+    # Quaternions
+    # ==========================================================================
+
+    q = rand(Quaternion{T})
+    av_exp = quat_to_angleaxis(q)
+    av_api = convert(EulerAngleAxis, q)
+
+    @test av_exp === av_api
+end
+
 # Conversion to quaternion
 # ------------------------------------------------------------------------------
 
