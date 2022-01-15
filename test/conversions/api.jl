@@ -139,10 +139,14 @@ end
         # ======================================================================
 
         ea = rand(EulerAngles{T})
-        ea_exp = angle_to_angle(ea, :ZYX)
         ea_api = convert(EulerAngles, ea)
-        @test ea_api === ea_exp
+        @test ea_api === ea
         @test eltype(ea_api) === T
+
+        # In a previous version, there was a bug in which this code was changing
+        # the rotation sequence to `:ZYX`.
+        vea = EulerAngles[ea]
+        @test vea[1] === ea
 
         # Euler angle and axis
         # ======================================================================

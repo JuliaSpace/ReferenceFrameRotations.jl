@@ -34,7 +34,6 @@ function Base.convert(::Type{<:_EulerAngleConversion{R}}, a::Quaternion) where R
 end
 
 Base.convert(::Type{<:EulerAngles}, a::DCM)            = dcm_to_angle(a, :ZYX)
-Base.convert(::Type{<:EulerAngles}, a::EulerAngles)    = angle_to_angle(a, :ZYX)
 Base.convert(::Type{<:EulerAngles}, a::EulerAngleAxis) = angleaxis_to_angle(a, :ZYX)
 Base.convert(::Type{<:EulerAngles}, a::Quaternion)     = quat_to_angle(a, :ZYX)
 
