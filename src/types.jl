@@ -113,6 +113,19 @@ function EulerAngles(
 end
 
 """
+    struct _EulerAngleConversion{R}
+
+This private structure is used only to enable the rotation conversion to Euler
+angles using the Julia API.
+"""
+struct _EulerAngleConversion{R}
+end
+
+function EulerAngles(rot_seq::Symbol)
+    return _EulerAngleConversion{rot_seq}
+end
+
+"""
     EulerAngleAxis{T}
 
 The definition of Euler Angle and Axis to represent a 3D rotation.

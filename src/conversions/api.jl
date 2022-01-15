@@ -14,6 +14,30 @@ Base.convert(::Type{<:DCM}, a::EulerAngles)    = angle_to_dcm(a)
 Base.convert(::Type{<:DCM}, a::Quaternion)     = quat_to_dcm(a)
 Base.convert(::Type{<:DCM}, a::EulerAngleAxis) = angleaxis_to_dcm(a)
 
+# Conversion to Euler angles
+# ==============================================================================
+
+function Base.convert(::Type{<:_EulerAngleConversion{R}}, a::DCM) where R
+    return dcm_to_angle(a, R)
+end
+
+function Base.convert(::Type{<:_EulerAngleConversion{R}}, a::EulerAngles) where R
+    return angle_to_angle(a, R)
+end
+
+function Base.convert(::Type{<:_EulerAngleConversion{R}}, a::EulerAngleAxis) where R
+    return angleaxis_to_angle(a, R)
+end
+
+function Base.convert(::Type{<:_EulerAngleConversion{R}}, a::Quaternion) where R
+    return quat_to_angle(a, R)
+end
+
+Base.convert(::Type{<:EulerAngles}, a::DCM)            = dcm_to_angle(a, :ZYX)
+Base.convert(::Type{<:EulerAngles}, a::EulerAngles)    = angle_to_angle(a, :ZYX)
+Base.convert(::Type{<:EulerAngles}, a::EulerAngleAxis) = angleaxis_to_angle(a, :ZYX)
+Base.convert(::Type{<:EulerAngles}, a::Quaternion)     = quat_to_angle(a, :ZYX)
+
 # Conversions to Euler angle and axis
 # ==============================================================================
 
