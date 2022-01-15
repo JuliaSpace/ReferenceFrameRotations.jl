@@ -68,3 +68,40 @@ julia> compose_rotation(q1, q2)
 Quaternion{Float64}:
   + 1.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
 ```
+
+## Operator ∘
+
+The rotations can also be composed using the operator `∘`, which can be entered
+by typing `\circ` and hitting `TAB` in REPL. In this case, the composition order
+is the same as those used by DCMs, *i.e.*, the first rotation is the rightmost
+one.
+
+```julia
+R = R5 ∘ R4 ∘ R3 ∘ R2 ∘ R1
+```
+
+The advantage of using `∘` lies when composing rotations represented by
+different entities. In this case, they will be automatically converted by the
+type of the left object.
+
+```jldoctest
+julia> D = angle_to_dcm(0.5, 0, 0, :ZYX)
+DCM{Float64}:
+  0.877583  0.479426  -0.0
+ -0.479426  0.877583   0.0
+  0.0       0.0        1.0
+
+julia> q = angle_to_quat(0.3, 0, 0, :ZXY)
+Quaternion{Float64}:
+  + 0.988771 + 0.0⋅i + 0.0⋅j + 0.149438⋅k
+
+julia> D ∘ q
+DCM{Float64}:
+  0.696707  0.717356  0.0
+ -0.717356  0.696707  0.0
+  0.0       0.0       1.0
+
+julia> q ∘ D
+Quaternion{Float64}:
+  + 0.921061 + 0.0⋅i + 0.0⋅j + 0.389418⋅k
+```

@@ -206,3 +206,60 @@ end
     @test    (q1*q2*q3)[:]  ≈  compose_rotation(q1,q2,q3)[:]
     @test (q1*q2*q3*q4)[:]  ≈  compose_rotation(q1,q2,q3,q4)[:]
 end
+
+# Operator ∘
+# ----------
+
+@testset "Operator ∘ (Float64)" begin
+    for T in (Float32, Float64)
+        D  = rand(DCM{T})
+        ea = rand(EulerAngles{T})
+        av = rand(EulerAngleAxis{T})
+        q  = rand(Quaternion{T})
+
+        D_ea = convert(DCM, ea)
+        D_av = convert(DCM, av)
+        D_q  = convert(DCM, q)
+
+        # DCM
+        # ======================================================================
+
+        R = D ∘ ea ∘ av ∘ q
+        R_exp = D * D_ea * D_av * D_q
+        @test R ≈ R_exp
+
+        # Euler angle and axis
+        # ======================================================================
+
+        R = av ∘ D ∘ ea ∘ q
+        R_exp = convert(EulerAngleAxis, D_av * D * D_ea * D_q)
+        @test R ≈ R_exp
+
+        # Euler angles
+        # ======================================================================
+
+        R = ea ∘ D ∘ av ∘ q
+        R_exp = convert(EulerAngles(R.rot_seq), D_ea * D * D_av * D_q)
+
+        # When converting to Euler angles, we normalize the angles. We need to
+        # make the same with the composition for the sake of testing.
+        R = convert(EulerAngles, R)
+
+        @test R ≈ R_exp
+
+        # Quaternion
+        # ======================================================================
+
+        R = q ∘ ea ∘ av ∘ D
+        R_exp = convert(Quaternion, D_q * D_ea * D_av * D)
+
+        # When converting to quaternion, we make sure that the real part is
+        # always positive. Hence, we need to do the same with the composition
+        # for the sake of testing.
+        if R.q0 < 0
+            R = -R
+        end
+
+        @test R ≈ R_exp
+    end
+end

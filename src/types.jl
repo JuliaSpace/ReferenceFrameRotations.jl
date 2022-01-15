@@ -200,3 +200,13 @@ struct Quaternion{T}
     q2::T
     q3::T
 end
+
+# Union of all rotation representation
+# ==============================================================================
+
+T_ROT = Union{
+    DCM,
+    EulerAngles,
+    EulerAngleAxis,
+    Quaternion
+}

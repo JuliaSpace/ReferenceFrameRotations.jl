@@ -1,6 +1,6 @@
 module ReferenceFrameRotations
 
-import Base: +, -, *, /, \, ≈, ==
+import Base: +, -, *, /, \, ≈, ==, ∘
 import Base: conj, convert, copy, display, eltype, firstindex, getindex, imag
 import Base: inv, iterate, lastindex, ndims, one, rand, real, setindex!, show
 import Base: summary, zero, zeros
