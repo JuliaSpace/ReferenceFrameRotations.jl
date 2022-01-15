@@ -223,8 +223,8 @@ end
     @test eltype(q) === Int
 end
 
-# Functions: getindex, length
-# ---------------------------
+# Functions: getindex, length, setindex!
+# --------------------------------------
 
 @testset "General functions of quaternions: iterable object API" begin
     q = Quaternion{Float64}(randn(), randn(), randn(), randn())
@@ -236,6 +236,24 @@ end
 
     @test_throws BoundsError q[0]
     @test_throws BoundsError q[5]
+
+    v = zeros(10)
+
+    v[4:7] = q
+
+    @test v[1]  == 0
+    @test v[2]  == 0
+    @test v[3]  == 0
+    @test v[4]  == q.q0
+    @test v[5]  == q.q1
+    @test v[6]  == q.q2
+    @test v[7]  == q.q3
+    @test v[8]  == 0
+    @test v[9]  == 0
+    @test v[10] == 0
+
+    @test firstindex(q) === 1
+    @test lastindex(q) === 4
 end
 
 # Functions: show
