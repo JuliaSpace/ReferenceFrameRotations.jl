@@ -455,3 +455,100 @@ EulerAngles{Float64}:
   R(Y) :  0.0      rad  ( 0.0°)
   R(Z) :  0.0      rad  ( 0.0°)
 ```
+
+# Julia API
+
+All the rotation representations can be converted using the Julia API function
+`convert`:
+
+```jldoctest
+julia> dcm = angle_to_dcm(pi / 4, pi / 7, pi / 5)
+DCM{Float64}:
+  0.637081   0.637081  -0.433884
+ -0.391728   0.752395   0.529576
+  0.663835  -0.167419   0.728899
+
+julia> convert(Quaternion, dcm)
+Quaternion{Float64}:
+  + 0.882946 + 0.197349⋅i + 0.310811⋅j + 0.2913⋅k
+
+julia> convert(EulerAngleAxis, dcm)
+EulerAngleAxis{Float64}:
+  Euler angle : 0.977391 rad  (56.0004°)
+  Euler axis  : [0.420362, 0.662041, 0.620481]
+
+julia> q = Quaternion(cos(pi / 4), 0, sin(pi / 4), 0)
+Quaternion{Float64}:
+  + 0.707107 + 0.0⋅i + 0.707107⋅j + 0.0⋅k
+
+julia> convert(DCM, q)
+DCM{Float64}:
+ 2.22045e-16  0.0  -1.0
+ 0.0          1.0   0.0
+ 1.0          0.0   2.22045e-16
+```
+
+If it is desired to convert to `EulerAngles`, then one should use the help
+function `EulerAngles(rot_seq)`, where `rot_seq` is a symbol specifying the
+rotation sequence. If `EulerAngles` is used, then it defaults to `ZYX` rotation
+sequence:
+
+```jldoctest
+julia> dcm = angle_to_dcm(pi / 4, pi / 7, pi / 5)
+DCM{Float64}:
+  0.637081   0.637081  -0.433884
+ -0.391728   0.752395   0.529576
+  0.663835  -0.167419   0.728899
+
+julia> convert(EulerAngles, dcm)
+EulerAngles{Float64}:
+  R(Z) :  0.785398 rad  ( 45.0°)
+  R(Y) :  0.448799 rad  ( 25.7143°)
+  R(X) :  0.628319 rad  ( 36.0°)
+
+julia> convert(EulerAngles(:YXY), dcm)
+EulerAngles{Float64}:
+  R(Y) : -0.636877 rad  (-36.4903°)
+  R(X) :  0.719106 rad  ( 41.2017°)
+  R(Y) :  1.31382  rad  ( 75.2761°)
+
+julia> convert(EulerAngles(:XYX), dcm)
+EulerAngles{Float64}:
+  R(X) :  0.972902 rad  ( 55.7432°)
+  R(Y) :  0.880091 rad  ( 50.4255°)
+  R(X) : -0.533107 rad  (-30.5448°)
+```
+
+Supporting this API enables us to perform interesting conversions like:
+
+```jldoctest
+julia> v = [
+           Quaternion(cos(pi / 5), sin(pi / 5), 0, 0),
+           angle_to_dcm(pi / 5, pi / 10, 1),
+           EulerAngleAxis(0.54, [sqrt(2)/2, sqrt(2)/2, 0])
+       ]
+3-element Vector{Any}:
+ Quaternion{Float64}: + 0.809017 + 0.587785⋅i + 0.0⋅j + 0.0⋅k
+ [0.7694208842938134 0.5590169943749475 -0.3090169943749474; -0.10721398096693543 0.5899548616836684 0.8002864633748501; 0.6296798115691402 -0.5826261761848704 0.5138580287651915]
+ EulerAngleAxis{Float64}: θ = 0.54 rad, v = [0.707107, 0.707107, 0.0]
+
+julia> v = Quaternion[
+           Quaternion(cos(pi / 5), sin(pi / 5), 0, 0),
+           angle_to_dcm(pi / 5, pi / 10, 1),
+           EulerAngleAxis(0.54, [sqrt(2)/2, sqrt(2)/2, 0])
+       ]
+3-element Vector{Quaternion}:
+ Quaternion{Float64}: + 0.809017 + 0.587785⋅i + 0.0⋅j + 0.0⋅k
+ Quaternion{Float64}: + 0.847531 + 0.407924⋅i + 0.276892⋅j + 0.196521⋅k
+ Quaternion{Float64}: + 0.963771 + 0.188608⋅i + 0.188608⋅j + 0.0⋅k
+
+julia> v = EulerAngleAxis[
+           Quaternion(cos(pi / 5), sin(pi / 5), 0, 0),
+           angle_to_dcm(pi / 5, pi / 10, 1),
+           EulerAngleAxis(0.54, [sqrt(2)/2, sqrt(2)/2, 0])
+       ]
+3-element Vector{EulerAngleAxis}:
+ EulerAngleAxis{Float64}: θ = 1.25664 rad, v = [1.0, 0.0, 0.0]
+ EulerAngleAxis{Float64}: θ = 1.11896 rad, v = [0.768586, 0.521703, 0.370273]
+ EulerAngleAxis{Float64}: θ = 0.54 rad, v = [0.707107, 0.707107, 0.0]
+```
