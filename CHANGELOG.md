@@ -20,7 +20,9 @@ Version 3.0.0
 - ![Feature][badge-feature] The operator `∘` can now be used to compose
   rotations. In this case, if two different representations are used, the one in
   the right is converted to the same type to the one in the left.
-- ![Enhancement][badge-enhancement] The test coverage was improved, reaching
+- ![Feature][badge-feature] A new constant called `ReferenceFrameRotation` is
+  now exported as a union of all the supported rotations.
+  ![Enhancement][badge-enhancement] The test coverage was improved, reaching
   almost 100% of coverage.
 
 Version 2.0.0
