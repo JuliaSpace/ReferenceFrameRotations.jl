@@ -25,50 +25,58 @@
         testset = [
             # ZYX
             (_rand_ang(T), _rand_ang2(T), _rand_ang(T), :Z, :Y, :X, :none)
-            (_rand_ang(T), T(+π / 2)    , _rand_ang(T), :Z, :Y, :X, :sub)
-            (_rand_ang(T), T(-π / 2)    , _rand_ang(T), :Z, :Y, :X, :sum)
+            (_rand_ang(T), +T(π / 2)    , _rand_ang(T), :Z, :Y, :X, :sub)
+            (_rand_ang(T), -T(π / 2)    , _rand_ang(T), :Z, :Y, :X, :sum)
             # XYX
             (_rand_ang(T), _rand_ang3(T), _rand_ang(T), :X, :Y, :X, :none)
             (_rand_ang(T), T(0)         , _rand_ang(T), :X, :Y, :X, :sum)
-            (_rand_ang(T), T(+π)        , _rand_ang(T), :X, :Y, :X, :sub)
-            (_rand_ang(T), T(-π)        , _rand_ang(T), :X, :Y, :X, :sub)
+            (_rand_ang(T), +T(π)        , _rand_ang(T), :X, :Y, :X, :sub)
+            (_rand_ang(T), -T(π)        , _rand_ang(T), :X, :Y, :X, :sub)
             # XYZ
             (_rand_ang(T), _rand_ang2(T), _rand_ang(T), :X, :Y, :Z, :none)
-            (_rand_ang(T), T(+π / 2)    , _rand_ang(T), :X, :Y, :Z, :sum)
-            (_rand_ang(T), T(-π / 2)    , _rand_ang(T), :X, :Y, :Z, :sub)
+            (_rand_ang(T), +T(π / 2)    , _rand_ang(T), :X, :Y, :Z, :sum)
+            (_rand_ang(T), -T(π / 2)    , _rand_ang(T), :X, :Y, :Z, :sub)
             # XZX
             (_rand_ang(T), _rand_ang3(T), _rand_ang(T), :X, :Z, :X, :none)
             (_rand_ang(T), T(0)         , _rand_ang(T), :X, :Z, :X, :sum)
-            (_rand_ang(T), T(+π)        , _rand_ang(T), :X, :Z, :X, :sub)
-            (_rand_ang(T), T(-π)        , _rand_ang(T), :X, :Z, :X, :sub)
+            (_rand_ang(T), +T(π)        , _rand_ang(T), :X, :Z, :X, :sub)
+            (_rand_ang(T), -T(π)        , _rand_ang(T), :X, :Z, :X, :sub)
+            # XZY
+            (_rand_ang(T), _rand_ang2(T), _rand_ang(T), :X, :Z, :Y, :none)
+            (_rand_ang(T), +T(π / 2)    , _rand_ang(T), :X, :Z, :Y, :sub)
+            (_rand_ang(T), -T(π / 2)    , _rand_ang(T), :X, :Z, :Y, :sum)
             # YXY
             (_rand_ang(T), _rand_ang3(T), _rand_ang(T), :Y, :X, :Y, :none)
             (_rand_ang(T), T(0)         , _rand_ang(T), :Y, :X, :Y, :sum)
-            (_rand_ang(T), T(+π)        , _rand_ang(T), :Y, :X, :Y, :sub)
-            (_rand_ang(T), T(-π)        , _rand_ang(T), :Y, :X, :Y, :sub)
+            (_rand_ang(T), +T(π)        , _rand_ang(T), :Y, :X, :Y, :sub)
+            (_rand_ang(T), -T(π)        , _rand_ang(T), :Y, :X, :Y, :sub)
             # YXZ
             (_rand_ang(T), _rand_ang2(T), _rand_ang(T), :Y, :X, :Z, :none)
-            (_rand_ang(T), T(+π / 2)    , _rand_ang(T), :Y, :X, :Z, :sub)
-            (_rand_ang(T), T(-π / 2)    , _rand_ang(T), :Y, :X, :Z, :sum)
+            (_rand_ang(T), +T(π / 2)    , _rand_ang(T), :Y, :X, :Z, :sub)
+            (_rand_ang(T), -T(π / 2)    , _rand_ang(T), :Y, :X, :Z, :sum)
+            # YZX
+            (_rand_ang(T), _rand_ang2(T), _rand_ang(T), :Y, :Z, :X, :none)
+            (_rand_ang(T), +T(π / 2)    , _rand_ang(T), :Y, :Z, :X, :sum)
+            (_rand_ang(T), -T(π / 2)    , _rand_ang(T), :Y, :Z, :X, :sub)
             # YZY
             (_rand_ang(T), _rand_ang3(T), _rand_ang(T), :Y, :Z, :Y, :none)
             (_rand_ang(T), T(0)         , _rand_ang(T), :Y, :Z, :Y, :sum)
-            (_rand_ang(T), T(+π)        , _rand_ang(T), :Y, :Z, :Y, :sub)
-            (_rand_ang(T), T(-π)        , _rand_ang(T), :Y, :Z, :Y, :sub)
+            (_rand_ang(T), +T(π)        , _rand_ang(T), :Y, :Z, :Y, :sub)
+            (_rand_ang(T), -T(π)        , _rand_ang(T), :Y, :Z, :Y, :sub)
             # ZXY
             (_rand_ang(T), _rand_ang2(T), _rand_ang(T), :Z, :X, :Y, :none)
-            (_rand_ang(T), T(+π / 2)    , _rand_ang(T), :Z, :X, :Y, :sum)
-            (_rand_ang(T), T(-π / 2)    , _rand_ang(T), :Z, :X, :Y, :sub)
+            (_rand_ang(T), +T(π / 2)    , _rand_ang(T), :Z, :X, :Y, :sum)
+            (_rand_ang(T), -T(π / 2)    , _rand_ang(T), :Z, :X, :Y, :sub)
             # ZXZ
             (_rand_ang(T), _rand_ang3(T), _rand_ang(T), :Z, :X, :Z, :none)
             (_rand_ang(T), T(0)         , _rand_ang(T), :Z, :X, :Z, :sum)
-            (_rand_ang(T), T(+π)        , _rand_ang(T), :Z, :X, :Z, :sub)
-            (_rand_ang(T), T(-π)        , _rand_ang(T), :Z, :X, :Z, :sub)
+            (_rand_ang(T), +T(π)        , _rand_ang(T), :Z, :X, :Z, :sub)
+            (_rand_ang(T), -T(π)        , _rand_ang(T), :Z, :X, :Z, :sub)
             # ZYZ
             (_rand_ang(T), _rand_ang3(T), _rand_ang(T), :Z, :Y, :Z, :none)
             (_rand_ang(T), T(0)         , _rand_ang(T), :Z, :Y, :Z, :sum)
-            (_rand_ang(T), T(+π)        , _rand_ang(T), :Z, :Y, :Z, :sub)
-            (_rand_ang(T), T(-π)        , _rand_ang(T), :Z, :Y, :Z, :sub)
+            (_rand_ang(T), +T(π)        , _rand_ang(T), :Z, :Y, :Z, :sub)
+            (_rand_ang(T), -T(π)        , _rand_ang(T), :Z, :Y, :Z, :sub)
         ]
 
         for test in testset
