@@ -81,18 +81,18 @@ Quaternion{Float64}:
 ```
 """
 @inline compose_rotation(D::DCM) = D
-@inline compose_rotation(D::DCM, Ds::DCM...) = compose_rotation(Ds...)*D
+@inline compose_rotation(D::DCM, Ds::DCM...) = compose_rotation(Ds...) * D
 
 @inline compose_rotation(ea::EulerAngleAxis) = ea
 @inline function compose_rotation(ea::EulerAngleAxis, eas::EulerAngleAxis...)
-    return compose_rotation(eas...)*ea
+    return compose_rotation(eas...) * ea
 end
 
 @inline compose_rotation(Θ::EulerAngles) = Θ
-@inline compose_rotation(Θ::EulerAngles, Θs::EulerAngles...) = compose_rotation(Θs...)*Θ
+@inline compose_rotation(Θ::EulerAngles, Θs::EulerAngles...) = compose_rotation(Θs...) * Θ
 
 @inline compose_rotation(q::Quaternion) = q
-@inline compose_rotation(q::Quaternion, qs::Quaternion...) = q*compose_rotation(qs...)
+@inline compose_rotation(q::Quaternion, qs::Quaternion...) = q * compose_rotation(qs...)
 
 # This algorithm was proposed by @Per in
 #
