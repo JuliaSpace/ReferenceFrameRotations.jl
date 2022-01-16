@@ -1,6 +1,28 @@
 ReferenceFrameRotations.jl Changelog
 ====================================
 
+Version 3.0.0
+-------------
+
+- ![BREAKING][badge-breaking] Julia 1.0 is not supported anymore.
+- ![BREAKING][badge-breaking] `DCM` is now a custom type derived from
+  `StaticMatrix`. Since it was previously a `SMatrix{3, 3, T, 9}`, then this
+  modification must be considered breaking. However, all the API was implemented
+  so that everything is supposed to continue working besides some initialization
+  functions. (Issue [#21][gh-issue-21]).
+- ![Bugfix][badge-bugfix] The function `eltype` was not returning the correct
+  value for `EulerAngles` and `EulerAngleAxis`.
+- ![Feature][badge-feature] The Julia conversion API `convert` is now supported
+  to convert between any of the supported representations. (Issue
+  [#18][gh-issue-18]) (PR [#19][gh-pr-19])
+- ![Feature][badge-feature] A random rotation can now be sampled using `rand`.
+  This feature is supported for all representations.
+- ![Feature][badge-feature] The operator `∘` can now be used to compose
+  rotations. In this case, if two different representations are used, the one in
+  the right is converted to the same type to the one in the left.
+- ![Enhancement][badge-enhancement] The test coverage was improved, reaching
+  almost 100% of coverage.
+
 Version 2.0.0
 -------------
 
@@ -267,3 +289,8 @@ Version 0.1.0
 [badge-enhancement]: https://img.shields.io/badge/Enhancement-blue.svg
 [badge-bugfix]: https://img.shields.io/badge/Bugfix-purple.svg
 [badge-info]: https://img.shields.io/badge/Info-gray.svg
+
+[gh-issue-18]: https://github.com/JuliaSpace/ReferenceFrameRotations.jl/issues/18
+[gh-issue-21]: https://github.com/JuliaSpace/ReferenceFrameRotations.jl/issues/21
+
+[gh-pr-19]: https://github.com/JuliaSpace/ReferenceFrameRotations.jl/pull/19
