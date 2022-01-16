@@ -7,7 +7,7 @@
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-export DCM, EulerAngles, EulerAngleAxis, Quaternion
+export DCM, EulerAngles, EulerAngleAxis, Quaternion, ReferenceFrameRotation
 
 """
     DCM{T}
@@ -201,12 +201,15 @@ struct Quaternion{T}
     q3::T
 end
 
-# Union of all rotation representation
-# ==============================================================================
+"""
+    ReferenceFramerotation
 
-T_ROT = Union{
+A `Union` of all supported rotation types.
+"""
+const ReferenceFrameRotation = Union{
     DCM,
     EulerAngles,
     EulerAngleAxis,
     Quaternion
 }
+

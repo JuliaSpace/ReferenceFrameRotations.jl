@@ -101,7 +101,10 @@ end
 # Operator: ∘
 # ==============================================================================
 
-function ∘(R2::T1, R1::T2) where {T1<:T_ROT, T2<:T_ROT}
+function ∘(R2::T1, R1::T2) where {
+    T1<:ReferenceFrameRotation,
+    T2<:ReferenceFrameRotation
+}
     R1c = convert(T1, R1)
     return compose_rotation(R1c, R2)
 end
