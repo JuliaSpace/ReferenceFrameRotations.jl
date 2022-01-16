@@ -121,7 +121,7 @@ end
 
         R = av ∘ D ∘ ea ∘ q
         R_exp = convert(EulerAngleAxis, D_av * D * D_ea * D_q)
-        @test R ≈ R_exp atol = 10√(eps(T))
+        @test R ≈ R_exp atol = 10 * √(eps(T))
 
         # Euler angles
         # ======================================================================
@@ -133,7 +133,7 @@ end
         # make the same with the composition for the sake of testing.
         R = convert(EulerAngles, R)
 
-        @test R ≈ R_exp atol = 10√(eps(T))
+        @test R ≈ R_exp atol = 10 * √(eps(T))
 
         # Quaternion
         # ======================================================================

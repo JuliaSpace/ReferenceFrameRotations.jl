@@ -22,7 +22,7 @@
         wba_a = @SVector randn(T, 3)
 
         # Propagate the initial DCM using the sampled velocity vector.
-        Δ   = 1f-7
+        Δ   = T(1e-7)
         Dba = Dba₀
         num = 20_000
 
@@ -35,7 +35,7 @@
         # In the end, the vector aligned with `wba_a` must not change.
         v₀ = Dba₀ * wba_a
         v₁ = Dba * wba_a
-        @test v₁ ≈ v₀ atol = 100√(eps(T))
+        @test v₁ ≈ v₀ atol = 100 * √(eps(T))
         @test eltype(v₀) === T
         @test eltype(v₁) === T
 
@@ -54,7 +54,7 @@
         # Estimate θ based on the angular velocity.
         θest = mod(norm(wba_a) * Δ * num, T(2π))
         θest > pi && (θest = T(2π) - θest)
-        @test θ ≈ θest atol = 100√(eps(T))
+        @test θ ≈ θest atol = 100 * √(eps(T))
     end
 end
 

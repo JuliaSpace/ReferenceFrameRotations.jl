@@ -25,7 +25,7 @@
 
         av3 =  av1 * av1 * av1 * av1 * av1 * av1 * av3
         @test eltype(av3) === T
-        @test av3.a ≈ deg2rad(0) atol = 10√(eps(T))
+        @test av3.a ≈ deg2rad(0) atol = 10 * √(eps(T))
         @test av3.v ≈ [0, 0, 0] atol = √(eps(T))
     end
 end

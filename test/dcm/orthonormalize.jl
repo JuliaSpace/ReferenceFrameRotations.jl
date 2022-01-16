@@ -29,12 +29,12 @@
         D5 = DCM(hcat(v₁,     v₂ * α, v₃ * α))
         D6 = DCM(hcat(v₁ * α, v₂,     v₃ * α))
 
-        @test norm(D - orthonormalize(D1)) ≈ 0 atol = 10eps(T)
-        @test norm(D - orthonormalize(D2)) ≈ 0 atol = 10eps(T)
-        @test norm(D - orthonormalize(D3)) ≈ 0 atol = 10eps(T)
-        @test norm(D - orthonormalize(D4)) ≈ 0 atol = 10eps(T)
-        @test norm(D - orthonormalize(D5)) ≈ 0 atol = 10eps(T)
-        @test norm(D - orthonormalize(D6)) ≈ 0 atol = 10eps(T)
+        @test norm(D - orthonormalize(D1)) ≈ 0 atol = 10 * eps(T)
+        @test norm(D - orthonormalize(D2)) ≈ 0 atol = 10 * eps(T)
+        @test norm(D - orthonormalize(D3)) ≈ 0 atol = 10 * eps(T)
+        @test norm(D - orthonormalize(D4)) ≈ 0 atol = 10 * eps(T)
+        @test norm(D - orthonormalize(D5)) ≈ 0 atol = 10 * eps(T)
+        @test norm(D - orthonormalize(D6)) ≈ 0 atol = 10 * eps(T)
 
         Do = orthonormalize(D1)
         @test eltype(Do) === T
