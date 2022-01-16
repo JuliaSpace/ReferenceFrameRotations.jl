@@ -94,23 +94,23 @@
 
             # Compare the representations considering the singularities.
             if c == :none
-                @test ea.a1 ≈ a₁
-                @test ea.a2 ≈ a₂
-                @test ea.a3 ≈ a₃
+                @test ea.a1 ≈ a₁ atol = 50 * eps(T)
+                @test ea.a2 ≈ a₂ atol = 50 * eps(T)
+                @test ea.a3 ≈ a₃ atol = 50 * eps(T)
             elseif c == :sum
                 # Treat the singularity when a₂ is ±π.
                 abs(a₂) ≈ π && (a₂ = sign(ea.a2) * π)
 
-                @test ea.a1 ≈ _norm_ang(a₁ + a₃)
-                @test ea.a2 ≈ a₂
-                @test ea.a3 ≈ 0
+                @test ea.a1 ≈ _norm_ang(a₁ + a₃) atol = 50 * eps(T)
+                @test ea.a2 ≈ a₂ atol = 50 * eps(T)
+                @test ea.a3 ≈ 0 atol = 50 * eps(T)
             elseif c == :sub
                 # Treat the singularity when a₂ is ±π.
                 abs(a₂) ≈ π && (a₂ = sign(ea.a2) * π)
 
-                @test ea.a1 ≈ _norm_ang(a₁ - a₃)
-                @test ea.a2 ≈ a₂
-                @test ea.a3 ≈ 0
+                @test ea.a1 ≈ _norm_ang(a₁ - a₃) atol = 50 * eps(T)
+                @test ea.a2 ≈ a₂ atol = 50 * eps(T)
+                @test ea.a3 ≈ 0 atol = 50 * eps(T)
             end
         end
     end
