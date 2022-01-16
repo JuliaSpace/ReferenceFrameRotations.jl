@@ -14,68 +14,33 @@
 # --------------
 
 @testset "General functions of Euler angles: inv" begin
-    # Float64
-    # ==========================================================================
+    for T in (Float32, Float64)
+        for rot_seq in valid_rot_seqs
+            ea = rand(EulerAngles{T})
+            iea = inv(ea)
+            @test eltype(iea) === T
 
-    T = Float64
+            if ea.rot_seq == :XYZ
+                inv_rot_seq = :ZYX
+            elseif ea.rot_seq == :XZY
+                inv_rot_seq = :YZX
+            elseif ea.rot_seq == :YXZ
+                inv_rot_seq = :ZXY
+            elseif ea.rot_seq == :YZX
+                inv_rot_seq = :XZY
+            elseif ea.rot_seq == :ZXY
+                inv_rot_seq = :YXZ
+            elseif ea.rot_seq == :ZYX
+                inv_rot_seq = :XYZ
+            else
+                inv_rot_seq = ea.rot_seq
+            end
 
-    for rot_seq in valid_rot_seqs
-        ea = EulerAngles(_rand_ang(T), _rand_ang(T), _rand_ang(T), rot_seq)
-        iea = inv(ea)
-        @test eltype(iea) === T
-
-        if ea.rot_seq == :XYZ
-            inv_rot_seq = :ZYX
-        elseif ea.rot_seq == :XZY
-            inv_rot_seq = :YZX
-        elseif ea.rot_seq == :YXZ
-            inv_rot_seq = :ZXY
-        elseif ea.rot_seq == :YZX
-            inv_rot_seq = :XZY
-        elseif ea.rot_seq == :ZXY
-            inv_rot_seq = :YXZ
-        elseif ea.rot_seq == :ZYX
-            inv_rot_seq = :XYZ
-        else
-            inv_rot_seq = ea.rot_seq
+            @test iea.a1 ≈ -ea.a3
+            @test iea.a2 ≈ -ea.a2
+            @test iea.a3 ≈ -ea.a1
+            @test iea.rot_seq == inv_rot_seq
         end
-
-        @test iea.a1 ≈ -ea.a3
-        @test iea.a2 ≈ -ea.a2
-        @test iea.a3 ≈ -ea.a1
-        @test iea.rot_seq == inv_rot_seq
-    end
-
-    # Float32
-    # ==========================================================================
-
-    T = Float32
-
-    for rot_seq in valid_rot_seqs
-        ea = EulerAngles(_rand_ang(T), _rand_ang(T), _rand_ang(T), rot_seq)
-        iea = inv(ea)
-        @test eltype(iea) === T
-
-        if ea.rot_seq == :XYZ
-            inv_rot_seq = :ZYX
-        elseif ea.rot_seq == :XZY
-            inv_rot_seq = :YZX
-        elseif ea.rot_seq == :YXZ
-            inv_rot_seq = :ZXY
-        elseif ea.rot_seq == :YZX
-            inv_rot_seq = :XZY
-        elseif ea.rot_seq == :ZXY
-            inv_rot_seq = :YXZ
-        elseif ea.rot_seq == :ZYX
-            inv_rot_seq = :XYZ
-        else
-            inv_rot_seq = ea.rot_seq
-        end
-
-        @test iea.a1 ≈ -ea.a3
-        @test iea.a2 ≈ -ea.a2
-        @test iea.a3 ≈ -ea.a1
-        @test iea.rot_seq == inv_rot_seq
     end
 end
 

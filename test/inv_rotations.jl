@@ -13,118 +13,54 @@
 # Functions: inv_rotation
 # -----------------------
 
-@testset "Invert rotations (Float64)" begin
-    T = Float64
+@testset "Invert rotations" begin
+    for T in (Float32, Float64)
+        # DCM
+        # ======================================================================
 
-    # DCM
-    # ==========================================================================
+        # Create a random DCM.
+        D = rand(DCM{T})
 
-    # Create a random DCM.
-    D = angle_to_dcm(_rand_ang(T), :Z) *
-        angle_to_dcm(_rand_ang(T), :Y) *
-        angle_to_dcm(_rand_ang(T), :X)
+        Di = inv_rotation(D)
+        @test eltype(Di) === T
 
-    Di = inv_rotation(D)
-    @test eltype(Di) === T
+        Die = inv(D)
+        @test Di ≈ Die
 
-    Die = inv(D)
-    @test Di ≈ Die
+        # Quaternion
+        # ======================================================================
 
-    # Quaternion
-    # ==========================================================================
+        # Create a random quaternion.
+        q = rand(Quaternion{T})
 
-    # Create a random quaternion.
-    q = Quaternion(_rand_ang(T), _rand_ang(T), _rand_ang(T), _rand_ang(T))
-    q = q / norm(q)
+        qi = inv_rotation(q)
+        @test eltype(qi) === T
 
-    qi = inv_rotation(q)
-    @test eltype(qi) === T
+        qie = inv(q)
+        @test qi ≈ qie
 
-    qie = inv(q)
-    @test qi ≈ qie
+        # Euler angle and axis
+        # ======================================================================
 
-    # Euler angle and axis
-    # ==========================================================================
+        # Create a random Euler angle and axis.
+        av = rand(EulerAngleAxis{T})
 
-    # Create a random Euler angle and axis.
-    v = @SVector rand(T, 3)
-    a = _rand_ang(T)
-    av = EulerAngleAxis(a, v)
+        avi = inv_rotation(av)
+        @test eltype(avi) === T
 
-    avi = inv_rotation(av)
-    @test eltype(avi) === T
+        avie = inv(av)
+        @test avi ≈ avie
 
-    avie = inv(av)
-    @test avi ≈ avie
+        # Euler angles
+        # ======================================================================
 
-    # Euler angles
-    # ==========================================================================
+        # Create random Euler angles.
+        ea = rand(EulerAngles{T})
 
-    # Create random Euler angles.
-    ea = EulerAngles(_rand_ang(T), _rand_ang(T), _rand_ang(T), rand(valid_rot_seqs))
+        eai = inv_rotation(ea)
+        @test eltype(eai) === T
 
-    eai = inv_rotation(ea)
-    @test eltype(eai) === T
-
-    eaie = inv(ea)
-    @test eai ≈ eaie
+        eaie = inv(ea)
+        @test eai ≈ eaie
+    end
 end
-
-@testset "Invert rotations (Float32)" begin
-    T = Float32
-
-    # DCM
-    # ==========================================================================
-
-    # Create a random DCM.
-    D = angle_to_dcm(_rand_ang(T), :Z) *
-        angle_to_dcm(_rand_ang(T), :Y) *
-        angle_to_dcm(_rand_ang(T), :X)
-
-    Di = inv_rotation(D)
-    @test eltype(Di) === T
-
-    Die = inv(D)
-    @test Di ≈ Die
-
-    # Quaternion
-    # ==========================================================================
-
-    # Create a random quaternion.
-    q = Quaternion(_rand_ang(T), _rand_ang(T), _rand_ang(T), _rand_ang(T))
-    q = q / norm(q)
-
-    qi = inv_rotation(q)
-    @test eltype(qi) === T
-
-    qie = inv(q)
-    @test qi ≈ qie
-
-    # Euler angle and axis
-    # ==========================================================================
-
-    # Create a random Euler angle and axis.
-    v = @SVector rand(T, 3)
-    a = _rand_ang(T)
-    av = EulerAngleAxis(a, v)
-
-    avi = inv_rotation(av)
-    @test eltype(avi) === T
-
-    avie = inv(av)
-    @test avi ≈ avie
-
-    # Euler angles
-    # ==========================================================================
-
-    # Create random Euler angles.
-    ea = EulerAngles(_rand_ang(T), _rand_ang(T), _rand_ang(T), rand(valid_rot_seqs))
-
-    eai = inv_rotation(ea)
-    @test eltype(eai) === T
-
-    eaie = inv(ea)
-    @test eai ≈ eaie
-end
-
-

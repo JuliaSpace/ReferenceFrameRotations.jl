@@ -14,35 +14,19 @@
 # --------------
 
 @testset "General functions of Euler angle and axis: inv" begin
-    # Float64
-    # ==========================================================================
-    T = Float64
-    av = EulerAngleAxis(deg2rad(T(20)), T[sqrt(2) / 2, 0, sqrt(2) / 2])
-    iav = inv(av)
-    @test eltype(iav) === T
-    @test iav.a ≈ deg2rad(T(20))
-    @test iav.v ≈ T[-sqrt(2) / 2, 0, -sqrt(2)/2]
+    for T in (Float32, Float64)
+        av = EulerAngleAxis(deg2rad(T(20)), T[sqrt(2) / 2, 0, sqrt(2) / 2])
+        iav = inv(av)
+        @test eltype(iav) === T
+        @test iav.a ≈ deg2rad(T(20))
+        @test iav.v ≈ T[-sqrt(2) / 2, 0, -sqrt(2)/2]
 
-    av = EulerAngleAxis(deg2rad(T(-20)), T[sqrt(2) / 2, 0, sqrt(2) / 2])
-    iav = inv(av)
-    @test eltype(iav) === T
-    @test iav.a ≈ deg2rad(T(20))
-    @test iav.v ≈ T[sqrt(2) / 2, 0, sqrt(2)/2]
-
-    # Float32
-    # ==========================================================================
-    T = Float32
-    av = EulerAngleAxis(deg2rad(T(20)), T[sqrt(2) / 2, 0, sqrt(2) / 2])
-    iav = inv(av)
-    @test eltype(iav) === T
-    @test iav.a ≈ deg2rad(T(20))
-    @test iav.v ≈ T[-sqrt(2) / 2, 0, -sqrt(2)/2]
-
-    av = EulerAngleAxis(deg2rad(T(-20)), T[sqrt(2) / 2, 0, sqrt(2) / 2])
-    iav = inv(av)
-    @test eltype(iav) === T
-    @test iav.a ≈ deg2rad(T(20))
-    @test iav.v ≈ T[sqrt(2) / 2, 0, sqrt(2)/2]
+        av = EulerAngleAxis(deg2rad(T(-20)), T[sqrt(2) / 2, 0, sqrt(2) / 2])
+        iav = inv(av)
+        @test eltype(iav) === T
+        @test iav.a ≈ deg2rad(T(20))
+        @test iav.v ≈ T[sqrt(2) / 2, 0, sqrt(2)/2]
+    end
 end
 
 # Functions: show
