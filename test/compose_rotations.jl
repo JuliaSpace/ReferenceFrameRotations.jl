@@ -210,7 +210,7 @@ end
 # Operator ∘
 # ----------
 
-@testset "Operator ∘ (Float64)" begin
+@testset "Operator ∘" begin
     for T in (Float32, Float64)
         D  = rand(DCM{T})
         ea = rand(EulerAngles{T})
@@ -226,14 +226,14 @@ end
 
         R = D ∘ ea ∘ av ∘ q
         R_exp = D * D_ea * D_av * D_q
-        @test R ≈ R_exp
+        @test R ≈ R_exp atol = √(eps(T))
 
         # Euler angle and axis
         # ======================================================================
 
         R = av ∘ D ∘ ea ∘ q
         R_exp = convert(EulerAngleAxis, D_av * D * D_ea * D_q)
-        @test R ≈ R_exp
+        @test R ≈ R_exp atol = √(eps(T))
 
         # Euler angles
         # ======================================================================
@@ -245,7 +245,7 @@ end
         # make the same with the composition for the sake of testing.
         R = convert(EulerAngles, R)
 
-        @test R ≈ R_exp
+        @test R ≈ R_exp atol = √(eps(T))
 
         # Quaternion
         # ======================================================================
@@ -260,6 +260,6 @@ end
             R = -R
         end
 
-        @test R ≈ R_exp
+        @test R ≈ R_exp atol = √(eps(T))
     end
 end
