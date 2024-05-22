@@ -550,7 +550,7 @@ Quaternion{Float64}:
   + 0.258819 + 0.0⋅i + 0.965926⋅j + 0.0⋅k
 
 julia> imag(q)
-3-element StaticArrays.SVector{3, Float64} with indices SOneTo(3):
+3-element StaticArraysCore.SVector{3, Float64} with indices SOneTo(3):
  0.0
  0.9659258262890683
  0.0
@@ -653,7 +653,7 @@ Quaternion{Float64}:
   + 0.258819 + 0.0⋅i + 0.965926⋅j + 0.0⋅k
 
 julia> vect(q)
-3-element StaticArrays.SVector{3, Float64} with indices SOneTo(3):
+3-element StaticArraysCore.SVector{3, Float64} with indices SOneTo(3):
  0.0
  0.9659258262890683
  0.0

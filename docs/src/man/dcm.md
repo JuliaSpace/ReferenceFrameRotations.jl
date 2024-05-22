@@ -1,18 +1,18 @@
-Direction Cosine Matrices
-=========================
+# Direction Cosine Matrices
 
 ```@meta
 CurrentModule = ReferenceFrameRotations
-DocTestSetup = quote
-    using ReferenceFrameRotations
-end
 ```
 
-Direction cosine matrices, or DCMs, are ``3 \times 3`` matrices that represent a
-coordinate transformation between two orthonormal reference frames. Let those
-frames be right-handed, then it can be shown that this transformation is always
-a rotation. Thus, a DCM that rotates the reference frame ``a`` into alignment
-with the reference frame ``b`` is:
+```@setup dcm
+using LinearAlgebra
+using ReferenceFrameRotations
+```
+
+Direction cosine matrices, or DCMs, are ``3 \times 3`` matrices that represent a coordinate
+transformation between two orthonormal reference frames. Let those frames be right-handed,
+then it can be shown that this transformation is always a rotation. Thus, a DCM that rotates
+the reference frame ``a`` into alignment with the reference frame ``b`` is:
 
 ```math
 \mathbf{D}_{ba} = \left[\begin{matrix}
@@ -22,63 +22,35 @@ with the reference frame ``b`` is:
     \end{matrix}\right]
 ```
 
-In **ReferenceFrameRotations.jl**, a DCM is a ``3 \times 3`` static matrix,
-*i.e.* it is immutable.
+In **ReferenceFrameRotations.jl**, a DCM is a ``3 \times 3`` static matrix, *i.e.* it is
+immutable.
 
 ## Initialization
 
-Usually, a DCM is initialized by converting a more "visual" rotation
-representation, such as the Euler angles (see [Conversions](@ref)). However, it
-can be initialized by the following methods:
+Usually, a DCM is initialized by converting a more "visual" rotation representation, such as
+the Euler angles (see [Conversions](@ref)). However, it can be initialized by the following
+methods:
 
 * Identity DCM.
 
-```jldoctest
-julia> DCM(I)  # Create a Boolean DCM, this can be used to save space.
-DCM{Bool}:
- 1  0  0
- 0  1  0
- 0  0  1
+```@repl dcm
+DCM(I)  # Create a Boolean DCM, this can be used to save space.
 
-julia> DCM(Int64(1)I)  # Create an Integer DCM.
-DCM{Int64}:
- 1  0  0
- 0  1  0
- 0  0  1
+DCM(Int64(1)I)  # Create an Integer DCM.
 
-julia> DCM(1.f0I) # Create a Float32 DCM.
-DCM{Float32}:
- 1.0  0.0  0.0
- 0.0  1.0  0.0
- 0.0  0.0  1.0
+DCM(1.f0I) # Create a Float32 DCM.
 
-julia> DCM(1.0I)  # Create a Float64 DCM.
-DCM{Float64}:
- 1.0  0.0  0.0
- 0.0  1.0  0.0
- 0.0  0.0  1.0
+DCM(1.0I)  # Create a Float64 DCM.
 ```
 
 * User-defined DCM.
 
-```jldoctest
-julia> DCM([-1 0 0; 0 -1 0; 0 0 1])
-DCM{Int64}:
- -1   0  0
-  0  -1  0
-  0   0  1
+```@repl dcm
+DCM([-1 0 0; 0 -1 0; 0 0 1])
 
-julia> DCM([-1.f0 0.f0 0.f0; 0.f0 -1.f0 0.f0; 0.f0 0.f0 1.f0])
-DCM{Float32}:
- -1.0   0.0  0.0
-  0.0  -1.0  0.0
-  0.0   0.0  1.0
+DCM([-1.f0 0.f0 0.f0; 0.f0 -1.f0 0.f0; 0.f0 0.f0 1.f0])
 
-julia> DCM([-1.0 0.0 0.0; 0.0 -1.0 0.0; 0.0 0.0 1.0])
-DCM{Float64}:
- -1.0   0.0  0.0
-  0.0  -1.0  0.0
-  0.0   0.0  1.0
+DCM([-1.0 0.0 0.0; 0.0 -1.0 0.0; 0.0 0.0 1.0])
 ```
 
 !!! note
@@ -87,13 +59,12 @@ DCM{Float64}:
 
 !!! warning
 
-    This initialization method **will not** verify if the input data is indeed a
-    DCM.
+    This initialization method **will not** verify if the input data is indeed a DCM.
 
 ## Operations
 
-Since a DCM is a static matrix (`<: StaticMatrix`), then all the operations
-available for general matrices in Julia are also available for DCMs.
+Since a DCM is a static matrix (`<: StaticMatrix`), then all the operations available for
+general matrices in Julia are also available for DCMs.
 
 ### Orthonomalization
 
@@ -103,41 +74,24 @@ A DCM can be orthonormalized using the Gram-Schmidt algorithm by the function:
 function orthonormalize(dcm::DCM)
 ```
 
-```jldoctest
-julia> D = DCM([2 0 0; 0 2 0; 0 0 2]);
+```@repl dcm
+D = DCM([2 0 0; 0 2 0; 0 0 2])
 
-julia> orthonormalize(D)
-DCM{Float64}:
- 1.0  0.0  0.0
- 0.0  1.0  0.0
- 0.0  0.0  1.0
+orthonormalize(D)
 
-julia> D = DCM(3.0f0I);
+D = DCM(3.0f0I);
 
-julia> orthonormalize(D)
-DCM{Float32}:
- 1.0  0.0  0.0
- 0.0  1.0  0.0
- 0.0  0.0  1.0
+orthonormalize(D)
 
-julia> D = DCM(1, 1, 2, 2, 3, 3, 4, 4, 5);
+D = DCM(1, 1, 2, 2, 3, 3, 4, 4, 5);
 
-julia> Dn = orthonormalize(D)
-DCM{Float64}:
- 0.408248   0.123091   0.904534
- 0.408248   0.86164   -0.301511
- 0.816497  -0.492366  -0.301511
+Dn = orthonormalize(D)
 
-julia> Dn * Dn'
-DCM{Float64}:
-  1.0          -2.87528e-16  -8.47673e-16
- -2.87528e-16   1.0           3.4516e-16
- -9.03184e-16   3.31283e-16   1.0
+Dn * Dn'
 ```
 
 !!! warning
 
-    This function does not check if the columns of the input matrix span a
-    three-dimensional space. If not, then the returned matrix should have `NaN`.
-    Notice, however, that such input matrix is not a valid direction cosine
-    matrix.
+    This function does not check if the columns of the input matrix span a three-dimensional
+    space. If not, then the returned matrix should have `NaN`. Notice, however, that such
+    input matrix is not a valid direction cosine matrix.

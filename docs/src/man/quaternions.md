@@ -1,19 +1,20 @@
-Quaternion
-==========
+# Quaternion
 
 ```@meta
 CurrentModule = ReferenceFrameRotations
-DocTestSetup = quote
-    using ReferenceFrameRotations
-end
 ```
 
-Quaternions are hypercomplex number with 4 dimensions that can be used to
-represent 3D rotations. In this package, a quaternion ``\mathbf{q}`` is
-represented by
+```@setup quaternions
+using ReferenceFrameRotations
+```
+
+Quaternions are hypercomplex number with 4 dimensions that can be used to represent 3D
+rotations. In this package, a quaternion ``\mathbf{q}`` is represented by
 
 ```math
-\mathbf{q} = q_0 + q_1 \cdot \mathbf{i} + q_2 \cdot \mathbf{j} + q_3 \cdot \mathbf{k} = r + \mathbf{v}
+\mathbf{q} =
+  q_0 + q_1 \cdot \mathbf{i} + q_2 \cdot \mathbf{j} + q_3 \cdot \mathbf{k} =
+  r + \mathbf{v}
 ```
 
 using the following immutable structure:
@@ -31,103 +32,72 @@ end
 
 There are several ways to create a quaternion.
 
-* Provide all the elements:
-```jldoctest
-julia> q = Quaternion(1.0, 0.0, 0.0, 0.0)
-Quaternion{Float64}:
-  + 1.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
+- Provide all the elements:
+
+```@repl quaternions
+q = Quaternion(1.0, 0.0, 0.0, 0.0)
 ```
 
-* Provide the real and imaginary parts as separated numbers:
+- Provide the real and imaginary parts as separated numbers:
 
-```jldoctest
-julia> r = sqrt(2) / 2;
+```@repl quaternions
+r = sqrt(2) / 2
 
-julia> v = [sqrt(2) / 2, 0, 0];
+v = [sqrt(2) / 2, 0, 0]
 
-julia> q = Quaternion(r,v)
-Quaternion{Float64}:
-  + 0.707107 + 0.707107⋅i + 0.0⋅j + 0.0⋅k
+q = Quaternion(r,v)
 ```
 
-* Provide the real and imaginary parts as one single vector:
+- Provide the real and imaginary parts as one single vector:
 
-```jldoctest
-julia> v = [1., 2., 3., 4.];
+```@repl quaternions
+v = [1., 2., 3., 4.]
 
-julia> q = Quaternion(v)
-Quaternion{Float64}:
-  + 1.0 + 2.0⋅i + 3.0⋅j + 4.0⋅k
+q = Quaternion(v)
 ```
 
-* Provide just the imaginary part, in this case the real part will be 0:
+- Provide just the imaginary part, in this case the real part will be 0:
 
-```jldoctest
-julia> v = [1., 0., 0.];
+```@repl quaternions
+v = [1., 0., 0.]
 
-julia> q = Quaternion(v)
-Quaternion{Float64}:
-  + 0.0 + 1.0⋅i + 0.0⋅j + 0.0⋅k
+q = Quaternion(v)
 ```
 
-* Create an identity quaternion:
+- Create an identity quaternion:
 
-```jldoctest
-julia> q = Quaternion{Float64}(I)  # Creates an identity quaternion of type `Float64`.
-Quaternion{Float64}:
-  + 1.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
+```@repl quaternions
+q = Quaternion{Float64}(I)  # Creates an identity quaternion of type `Float64`.
 
-julia> q = Quaternion(1.0I)  # Creates an identity quaternion of type `Float64`.
-Quaternion{Float64}:
-  + 1.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
+q = Quaternion(1.0I)  # Creates an identity quaternion of type `Float64`.
 
-julia> q = Quaternion{Float32}(I)  # Creates an identity quaternion of type `Float32`.
-Quaternion{Float32}:
-  + 1.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
+q = Quaternion{Float32}(I)  # Creates an identity quaternion of type `Float32`.
 
-julia> q = Quaternion(1.0f0I)  # Creates an identity quaternion of type `Float32`.
-Quaternion{Float32}:
-  + 1.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
+q = Quaternion(1.0f0I)  # Creates an identity quaternion of type `Float32`.
 
-julia> a = Quaternion(I,q)  # Creates an identity quaternion with the same type of `q`.
-Quaternion{Float32}:
-  + 1.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
+a = Quaternion(I,q)  # Creates an identity quaternion with the same type of `q`.
 
-julia> q = Quaternion(I)
-Quaternion{Bool}:
-  + true + false⋅i + false⋅j + false⋅k
+q = Quaternion(I)
 ```
 
-* Create an additive identity quaternion using the `zero` function:
+- Create an additive identity quaternion using the `zero` function:
 
-```jldoctest
-julia> q = zero(Quaternion)
-Quaternion{Float64}:
-  + 0.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
+```@repl quaternions
+q = zero(Quaternion)
 
-julia> q = zero(Quaternion{Float32})
-Quaternion{Float32}:
-  + 0.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
+q = zero(Quaternion{Float32})
 
-julia> a = zero(q)
-Quaternion{Float32}:
-  + 0.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
+a = zero(q)
 ```
 
-* Create an multiplicative identity quaternion using the `one` function:
+- Create an multiplicative identity quaternion using the `one` function:
 
-```jldoctest
-julia> q = one(Quaternion)
-Quaternion{Float64}:
-  + 1.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
+```@repl quaternions
+q = one(Quaternion)
 
-julia> q = one(Quaternion{Float32})
-Quaternion{Float32}:
-  + 1.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
+q = one(Quaternion{Float32})
 
-julia> a = one(q)
-Quaternion{Float32}:
-  + 1.0 + 0.0⋅i + 0.0⋅j + 0.0⋅k
+a = one(q)
 ```
 
 !!! note
@@ -154,30 +124,29 @@ Quaternion{Float32}:
 
 !!! warning
 
-    Since the type `Quaternion` is **immutable**, its components cannot
-    be changed individually after the creation. Hence, the following operation
-    will lead to an error:
+    Since the type `Quaternion` is **immutable**, its components cannot be changed
+    individually after the creation. Hence, the following operation will lead to an error:
 
     ```julia
     q.q0 = 1.0  # This is not defined and will not work.
     ```
 
-    If you want to modify a single value for the quaternion, then you need to
-    create another one:
+    If you want to modify a single value for the quaternion, you need to create another
+    one:
 
     ```julia
     q = Quaternion(1.0, q.q1, q.q2, q.q3)
     ```
 
-    This can be annoying sometimes, but using an immutable type provided a huge
-    performance boost for the algorithm.
+    This can be annoying sometimes, but using an immutable type provided a huge performance
+    boost for the algorithm.
 
 ## Operations
 
 ### Sum, subtraction, and scalar multiplication
 
-The sum between quaternions, the subtraction between quaternions, and the
-multiplication between a quaternion and a scalar are defined as usual:
+The sum between quaternions, the subtraction between quaternions, and the multiplication
+between a quaternion and a scalar are defined as usual:
 
 ```math
 \begin{aligned}
@@ -196,32 +165,22 @@ multiplication between a quaternion and a scalar are defined as usual:
 \end{aligned}
 ```
 
-```jldoctest
-julia> q1 = Quaternion(1.0, 1.0, 0.0, 0.0);
+```@repl quaternions
+q1 = Quaternion(1.0, 1.0, 0.0, 0.0)
 
-julia> q2 = Quaternion(1.0, 2.0, 3.0, 4.0);
+q2 = Quaternion(1.0, 2.0, 3.0, 4.0)
 
-julia> q1 + q2
-Quaternion{Float64}:
-  + 2.0 + 3.0⋅i + 3.0⋅j + 4.0⋅k
+q1 + q2
 
-julia> q1 - q2
-Quaternion{Float64}:
-  + 0.0 - 1.0⋅i - 3.0⋅j - 4.0⋅k
+q1 - q2
 
-julia> q1 = Quaternion(1.0, 2.0, 3.0, 4.0);
+q1 = Quaternion(1.0, 2.0, 3.0, 4.0)
 
-julia> q1 * 3
-Quaternion{Float64}:
-  + 3.0 + 6.0⋅i + 9.0⋅j + 12.0⋅k
+q1 * 3
 
-julia> 4 * q1
-Quaternion{Float64}:
-  + 4.0 + 8.0⋅i + 12.0⋅j + 16.0⋅k
+4 * q1
 
-julia> 5q1
-Quaternion{Float64}:
-  + 5.0 + 10.0⋅i + 15.0⋅j + 20.0⋅k
+5q1
 ```
 
 ### Multiplication between quaternions
@@ -230,51 +189,47 @@ The multiplication between quaternions is defined using the Hamilton product:
 
 ```math
 \begin{aligned}
-  \mathbf{q}_1 &= r_1 + \mathbf{v}_1~, \\
-  \mathbf{q}_2 &= r_2 + \mathbf{v}_2~, \\
+  \mathbf{q}_1 &= r_1 + \mathbf{v}_1\ , \\
+  \mathbf{q}_2 &= r_2 + \mathbf{v}_2\ , \\
   \mathbf{q}_1 \cdot \mathbf{q}_2 &= r_1 \cdot r_2 -
                                      \mathbf{v}_1 \cdot \mathbf{v}_2 +
                                      r_1 \cdot \mathbf{v}_2 +
                                      r_2 \cdot \mathbf{v}_1 +
-                                     \mathbf{v}_1 \times \mathbf{v}_2~.
+                                     \mathbf{v}_1 \times \mathbf{v}_2\ .
 \end{aligned}
 ```
 
-```jldoctest
-julia> q1 = Quaternion(cosd(15), sind(15), 0.0, 0.0);
+```@repl quaternions
+q1 = Quaternion(cosd(15), sind(15), 0.0, 0.0)
 
-julia> q2 = Quaternion(cosd(30), sind(30), 0.0, 0.0);
+q2 = Quaternion(cosd(30), sind(30), 0.0, 0.0)
 
-julia> q1 * q2
-Quaternion{Float64}:
-  + 0.707107 + 0.707107⋅i + 0.0⋅j + 0.0⋅k
+q1 * q2
 ```
 
-If a quaternion ``\mathbf{q}`` is multiplied by a vector ``\mathbf{v}``, then
-the vector is converted to a quaternion with real part 0, ``\mathbf{q}_v =
-0 + \mathbf{v}``, and the quaternion multiplication is performed as usual:
+If a quaternion ``\mathbf{q}`` is multiplied by a vector ``\mathbf{v}``, then the vector is
+converted to a quaternion with real part 0, ``\mathbf{q}_v = 0 + \mathbf{v}``, and the
+quaternion multiplication is performed as usual:
 
 ```math
 \begin{aligned}
-\mathbf{q}   &= r + \mathbf{w}~, \\
-\mathbf{q}_v &= 0 + \mathbf{v}~, \\
-\mathbf{q} \cdot \mathbf{v} \triangleq \mathbf{q} \cdot \mathbf{q}_v &= - \mathbf{w} \cdot \mathbf{v} + r \cdot \mathbf{v} + \mathbf{w} \times \mathbf{v}~, \\
-\mathbf{v} \cdot \mathbf{q} \triangleq \mathbf{q}_v \cdot \mathbf{q} &= - \mathbf{v} \cdot \mathbf{w} + r \cdot \mathbf{v} + \mathbf{v} \times \mathbf{w}~.
+\mathbf{q}   &= r + \mathbf{w}\ , \\
+\mathbf{q}_v &= 0 + \mathbf{v}\ , \\
+\mathbf{q} \cdot \mathbf{v} \triangleq \mathbf{q} \cdot \mathbf{q}_v &=
+  - \mathbf{w} \cdot \mathbf{v} + r \cdot \mathbf{v} + \mathbf{w} \times \mathbf{v}\ , \\
+\mathbf{v} \cdot \mathbf{q} \triangleq \mathbf{q}_v \cdot \mathbf{q} &=
+  - \mathbf{v} \cdot \mathbf{w} + r \cdot \mathbf{v} + \mathbf{v} \times \mathbf{w}\ .
 \end{aligned}
 ```
 
-```jldoctest
-julia> q1 = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);
+```@repl quaternions
+q1 = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0)
 
-julia> v = [0; 1; 0];
+v = [0; 1; 0]
 
-julia> v * q1
-Quaternion{Float64}:
-  + 0.0 + 0.0⋅i + 0.92388⋅j - 0.382683⋅k
+v * q1
 
-julia> q1 * v
-Quaternion{Float64}:
-  - 0.0 + 0.0⋅i + 0.92388⋅j + 0.382683⋅k
+q1 * v
 ```
 
 ### Division between quaternions
@@ -309,106 +264,78 @@ Notice that, in this case, one gets:
     The exponentiation operator is not defined for quaternions. Hence, `q^(-1)`
     or `q^2` will throw an error.
 
-The right division (`/`) between two quaternions ``\mathbf{q}_1`` and
-``\mathbf{q}_2`` is defined as the following Hamilton product:
+The right division (`/`) between two quaternions ``\mathbf{q}_1`` and ``\mathbf{q}_2`` is
+defined as the following Hamilton product:
 
 ```math
-\mathbf{q}_1~/~\mathbf{q}_2 = \mathbf{q}_1 \cdot \mathbf{q}_2^{-1}~.
+\mathbf{q}_1\ /\ \mathbf{q}_2 = \mathbf{q}_1 \cdot \mathbf{q}_2^{-1}\ .
 ```
 
-The left division (`\`) between two quaternions ``\mathbf{q}_1`` and
-``\mathbf{q}_2`` is defined as the following Hamilton product:
+The left division (`\`) between two quaternions ``\mathbf{q}_1`` and ``\mathbf{q}_2`` is
+defined as the following Hamilton product:
 
 ```math
-\mathbf{q}_1~\backslash~\mathbf{q}_2 = \mathbf{q}_1^{-1} \cdot \mathbf{q}_2~.
+\mathbf{q}_1\ \backslash\ \mathbf{q}_2 = \mathbf{q}_1^{-1} \cdot \mathbf{q}_2\ .
 ```
 
-```jldoctest
-julia> q1 = Quaternion(cosd(45 + 22.5), sind(45 + 22.5), 0.0, 0.0);
+```@repl quaternions
+q1 = Quaternion(cosd(45 + 22.5), sind(45 + 22.5), 0.0, 0.0)
 
-julia> q2 = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);
+q2 = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0)
 
-julia> q1 / q2
-Quaternion{Float64}:
-  + 0.707107 + 0.707107⋅i + 0.0⋅j + 0.0⋅k
+q1 / q2
 
-julia> q1 \ q2
-Quaternion{Float64}:
-  + 0.707107 - 0.707107⋅i + 0.0⋅j + 0.0⋅k
+q1 \ q2
 
-julia> q1 \ q2 * q1 / q2
-Quaternion{Float64}:
-  + 1.0 + 5.55112e-17⋅i + 0.0⋅j + 0.0⋅k
+q1 \ q2 * q1 / q2
 ```
 
-If a division operation (right-division or left-division) is performed between a
-vector ``\mathbf{v}`` and a quaternion, then the vector ``\mathbf{v}`` is
-converted to a quaternion real part 0, ``\mathbf{q}_v = 0 + \mathbf{v}``, and
-the division operation is performed as defined earlier.
+If a division operation (right-division or left-division) is performed between a vector
+``\mathbf{v}`` and a quaternion, then the vector ``\mathbf{v}`` is converted to a quaternion
+real part 0, ``\mathbf{q}_v = 0 + \mathbf{v}``, and the division operation is performed as
+defined earlier.
 
 ```math
 \begin{aligned}
-  \mathbf{v}~/~\mathbf{q}          &\triangleq \mathbf{q}_v      \cdot \mathbf{q}^{-1}   \\
-  \mathbf{v}~\backslash~\mathbf{q} &\triangleq \mathbf{q}_v^{-1} \cdot \mathbf{q}        \\
-  \mathbf{q}~/~\mathbf{v}          &\triangleq \mathbf{q}        \cdot \mathbf{q}_v^{-1} \\
-  \mathbf{q}~\backslash~\mathbf{v} &\triangleq \mathbf{q}^{-1}   \cdot \mathbf{q}_v
+  \mathbf{v}\ /\ \mathbf{q}          &\triangleq \mathbf{q}_v      \cdot \mathbf{q}^{-1}   \\
+  \mathbf{v}\ \backslash\ \mathbf{q} &\triangleq \mathbf{q}_v^{-1} \cdot \mathbf{q}        \\
+  \mathbf{q}\ /\ \mathbf{v}          &\triangleq \mathbf{q}        \cdot \mathbf{q}_v^{-1} \\
+  \mathbf{q}\ \backslash\ \mathbf{v} &\triangleq \mathbf{q}^{-1}   \cdot \mathbf{q}_v
 \end{aligned}
 ```
 
-```jldoctest
-julia> q1 = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);
+```@repl quaternions
+q1 = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0)
 
-julia> v  = [0; 1; 0];
+v  = [0; 1; 0]
 
-julia> q1 \ v
-Quaternion{Float64}:
-  + 0.0 + 0.0⋅i + 0.92388⋅j - 0.382683⋅k
+q1 \ v
 
-julia> v \ q1
-Quaternion{Float64}:
-  + 0.0 + 0.0⋅i - 0.92388⋅j + 0.382683⋅k
+v \ q1
 ```
 
 ### Other operations
 
 There are also the following functions available:
 
-```jldoctest
-julia> q = Quaternion(1.0, 2.0, 3.0, 4.0);
+```@repl quaternions
+q = Quaternion(1.0, 2.0, 3.0, 4.0)
 
-julia> conj(q)  # Returns the complex conjugate of the quaternion.
-Quaternion{Float64}:
-  + 1.0 - 2.0⋅i - 3.0⋅j - 4.0⋅k
+conj(q)  # Returns the complex conjugate of the quaternion.
 
-julia> copy(q)  # Creates a copy of the quaternion.
-Quaternion{Float64}:
-  + 1.0 + 2.0⋅i + 3.0⋅j + 4.0⋅k
+copy(q)  # Creates a copy of the quaternion.
 
-julia> inv(q)   # Computes the multiplicative inverse of the quaternion.
-Quaternion{Float64}:
-  + 0.0333333 - 0.0666667⋅i - 0.1⋅j - 0.133333⋅k
+inv(q)   # Computes the multiplicative inverse of the quaternion.
 
-julia> inv(q) * q
-Quaternion{Float64}:
-  + 1.0 + 0.0⋅i + 5.55112e-17⋅j + 0.0⋅k
+inv(q) * q
 
-julia> imag(q)  # Returns the vectorial / imaginary part of the quaternion.
-3-element StaticArrays.SVector{3, Float64} with indices SOneTo(3):
- 2.0
- 3.0
- 4.0
+imag(q)  # Returns the vectorial / imaginary part of the quaternion.
 
-julia> norm(q)  # Computes the norm of the quaternion.
-5.477225575051661
+norm(q)  # Computes the norm of the quaternion.
 
-julia> real(q)  # Returns the real part of the quaternion.
-1.0
+real(q)  # Returns the real part of the quaternion.
 
-julia> vect(q)  # Returns the vectorial / imaginary part of the quaternion.
-3-element StaticArrays.SVector{3, Float64} with indices SOneTo(3):
- 2.0
- 3.0
- 4.0
+vect(q)  # Returns the vectorial / imaginary part of the quaternion.
 ```
 
 !!! note
@@ -417,44 +344,40 @@ julia> vect(q)  # Returns the vectorial / imaginary part of the quaternion.
 
 ### Converting reference frames using quaternions
 
-Given the reference frames **A** and **B**, let ``\mathbf{w}`` be a unitary
-vector in which a rotation about it of an angle ``\theta`` aligns the reference
-frame **A** with the reference frame **B** (in this case, ``\mathbf{w}`` is
-aligned with the Euler Axis and ``\theta`` is the Euler angle). Construct the
-following quaternion:
+Given the reference frames **A** and **B**, let ``\mathbf{w}`` be a unitary vector in which
+a rotation about it of an angle ``\theta`` aligns the reference frame **A** with the
+reference frame **B** (in this case, ``\mathbf{w}`` is aligned with the Euler Axis and
+``\theta`` is the Euler angle). Construct the following quaternion:
 
 ```math
-\mathbf{q}_{ba} = \cos\left(\frac{\theta}{2}\right) + \sin\left(\frac{\theta}{2}\right) \cdot \mathbf{w}~.
+\mathbf{q}_{ba} =
+  \cos\left(\frac{\theta}{2}\right) +
+  \sin\left(\frac{\theta}{2}\right) \cdot \mathbf{w}\ .
 ```
 
-Then, a vector ``\mathbf{v}`` represented in reference frame **A**
-(``\mathbf{v}_a``) can be represented in reference frame **B** using:
+Then, a vector ``\mathbf{v}`` represented in reference frame **A** (``\mathbf{v}_a``) can be
+represented in reference frame **B** using:
 
 ```math
-\mathbf{v}_b = \texttt{vect}\left(\mathbf{q}_{ba}^{-1} \cdot \mathbf{v}_a \cdot \mathbf{q}_{ba}\right)~.
+\mathbf{v}_b =
+  \texttt{vect}\left(\mathbf{q}_{ba}^{-1} \cdot \mathbf{v}_a \cdot \mathbf{q}_{ba}\right)\ .
 ```
 
 Hence:
 
 ```julia
-julia> qBA = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0);
+qBA = Quaternion(cosd(22.5), sind(22.5), 0.0, 0.0)
 
-julia> vA  = [0, 1, 0];
+vA  = [0, 1, 0]
 
-julia> vB  = vect(qBA \ vA * qBA); # Equivalent to: vect(inv(qBA)*vA*qBA);
+vB  = vect(qBA \ vA * qBA) # Equivalent to: vect(inv(qBA)*vA*qBA)
 
-julia> vB
-3-element StaticArrays.SVector{3, Float64} with indices SOneTo(3):
-  0.0
-  0.7071067811865475
- -0.7071067811865476
+vB
 ```
 
 !!! note
 
-    A `SArray` is returned instead of the usual `Array`. This is a static vector
-    created by the package
-    [**StaticArrays**](https://github.com/JuliaArrays/StaticArrays.jl).
-    Generally, you can treat this vector as any other one. The only downside is
-    that you cannot modify individual components because it is immutable.
-
+    A `SArray` is returned instead of the usual `Array`. This is a static vector created by
+    the package [**StaticArrays**](https://github.com/JuliaArrays/StaticArrays.jl).
+    Generally, you can treat this vector as any other one. The only downside is that you
+    cannot modify individual components because it is immutable.
