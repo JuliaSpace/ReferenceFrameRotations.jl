@@ -2,8 +2,8 @@
 
 [![Build status](https://github.com/JuliaSpace/ReferenceFrameRotations.jl/workflows/CI/badge.svg)](https://github.com/JuliaSpace/ReferenceFrameRotations.jl/actions)
 [![codecov](https://codecov.io/gh/JuliaSpace/ReferenceFrameRotations.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/JuliaSpace/ReferenceFrameRotations.jl)
-[![](https://img.shields.io/badge/docs-stable-blue.svg)][docs-stable-url]
-[![](https://img.shields.io/badge/docs-dev-blue.svg)][docs-dev-url]
+[![docs-stable](https://img.shields.io/badge/docs-stable-blue.svg)][docs-stable-url]
+[![docs-dev](https://img.shields.io/badge/docs-dev-blue.svg)][docs-dev-url]
 [![Code Style: Blue](https://img.shields.io/badge/code%20style-blue-4495d1.svg)](https://github.com/invenia/BlueStyle)
 [![DOI](https://zenodo.org/badge/21912776.svg)](https://zenodo.org/doi/10.5281/zenodo.11244782)
 
@@ -26,4 +26,3 @@ See the [package documentation][docs-stable-url].
 
 [docs-dev-url]: https://juliaspace.github.io/ReferenceFrameRotations.jl/dev
 [docs-stable-url]: https://juliaspace.github.io/ReferenceFrameRotations.jl/stable
-
