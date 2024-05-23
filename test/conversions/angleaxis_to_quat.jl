@@ -1,19 +1,14 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Desription ##############################################################################
 #
-# Desription
-# ==============================================================================
+# Tests related to conversion from Euler angle and axis to quaternion.
 #
-#   Tests related to conversion from Euler angle and axis to quaternion.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-# File: ./src/conversions/angleaxis_to_quat.jl
-# ============================================
+# == File: ./src/conversions/angleaxis_to_quat.jl ==========================================
 
-# Functions: angleaxis_to_quat
-# ----------------------------
+# -- Functions: angleaxis_to_quat ----------------------------------------------------------
 
-@testset "Euler angle and axis => Quaternion" begin
+@testset "Euler Angle and Axis => Quaternion" begin
     for T in (Float32, Float64)
         # Sample a random Euler angle and axis.
         v = @SVector randn(T, 3)

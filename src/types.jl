@@ -1,19 +1,15 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Description #############################################################################
 #
-# Description
-# ==============================================================================
+# Definition of types and structures.
 #
-#   Definition of types and structures.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
 export DCM, EulerAngles, EulerAngleAxis, Quaternion, ReferenceFrameRotation
 
 """
     DCM{T}
 
-Direction Cosine Matrix (DCM) of type `T`, which is a 3x3 static matrix of type
-`T`.
+Direction Cosine Matrix (DCM) of type `T`, which is a 3x3 static matrix of type `T`.
 
 # Examples
 
@@ -55,8 +51,8 @@ end
 """
     EulerAngles{T}
 
-The definition of Euler Angles, which is composed of three angles `a1`, `a2`,
-and `a3` together with a rotation sequence `rot_seq`.
+The definition of Euler Angles, which is composed of three angles `a1`, `a2`, and `a3`
+together with a rotation sequence `rot_seq`.
 
 # Fields
 
@@ -66,9 +62,10 @@ and `a3` together with a rotation sequence `rot_seq`.
 - `rot_seq::Symbol`: Rotation sequence.
 
 !!! info
-    `rot_seq` is provided by a symbol with three characters, each one indicating
-    the rotation axis of the corresponding angle, *e.g.* `:ZYX`. The valid
-    values for `rot_seq` are:
+
+    `rot_seq` is provided by a symbol with three characters, each one indicating the
+    rotation axis of the corresponding angle, *e.g.* `:ZYX`. The valid values for `rot_seq`
+    are:
 
     - `:XYX`, `:XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`,
         `:ZXZ`, `:ZYX`, and `ZYZ`.
@@ -77,8 +74,8 @@ and `a3` together with a rotation sequence `rot_seq`.
 
     EulerAngles(a1::T1, a2::T2, a3::T3, rot_seq::Symbol = :ZYX) where {T1, T2, T3}
 
-Create a new instance of `EulerAngles` with the angles `a1`, `a2`, and `a3` and
-the rotation sequence `rot_seq`.
+Create a new instance of `EulerAngles` with the angles `a1`, `a2`, and `a3` and the rotation
+sequence `rot_seq`.
 
 The type will be inferred from `T1`, `T2`, and `T3`.
 
@@ -115,8 +112,8 @@ end
 """
     struct _EulerAngleConversion{R}
 
-This private structure is used only to enable the rotation conversion to Euler
-angles using the Julia API.
+This private structure is used only to enable the rotation conversion to Euler angles using
+the Julia API.
 """
 struct _EulerAngleConversion{R}
 end
@@ -139,8 +136,7 @@ The definition of Euler Angle and Axis to represent a 3D rotation.
 
     EulerAngleAxis(a::T1, v::AbstractVector{T2}) where {T1,T2}
 
-Create an Euler Angle and Axis representation structure with angle `a` [rad] and
-vector `v`.
+Create an Euler Angle and Axis representation structure with angle `a` [rad] and vector `v`.
 
 The vector `v` will not be normalized.
 
@@ -182,6 +178,7 @@ The definition of the quaternion.
 - `q3::T`: Z component of the quaternion imaginary part.
 
 !!! note
+
     The quaternion `q` in this structure is represented by:
 
         q = q0 + q1.i + q2.j + q3.k

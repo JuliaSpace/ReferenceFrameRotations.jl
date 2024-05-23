@@ -1,16 +1,13 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Description #############################################################################
 #
-# Description
-# ==============================================================================
+# Functions related to the conversion from quaternion to DCM.
 #
-#   Functions related to the conversion from quaternion to DCM.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
 export quat_to_dcm
 
 """
-    quat_to_dcm(q::Quaternion)
+    quat_to_dcm(q::Quaternion) -> DCM
 
 Convert the quaternion `q` to a Direction Cosine Matrix (DCM).
 

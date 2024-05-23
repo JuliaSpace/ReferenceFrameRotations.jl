@@ -1,19 +1,14 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Desription ##############################################################################
 #
-# Desription
-# ==============================================================================
+# Tests related to the kinematics of quaternions.
 #
-#   Tests related to the kinematics of quaternions.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-# File: ./src/quaternion.jl
-# =========================
+# == File: ./src/quaternion.jl =============================================================
 
-# Functions: dquat
-# ----------------
+# -- Functions: dquat ----------------------------------------------------------------------
 
-@testset "Kinematics of quaternions" begin
+@testset "Kinematics of Quaternions" begin
     for T in (Float32, Float64)
         # Create a random quaternion.
         qba₀ = rand(Quaternion{T})
@@ -39,8 +34,8 @@
         @test eltype(v₀) === T
         @test eltype(v₁) === T
 
-        # In the end, a vector perpendicular to `wba_a` must rotate the angle
-        # compatible with the angular velocity and time of integration.
+        # In the end, a vector perpendicular to `wba_a` must rotate the angle compatible
+        # with the angular velocity and time of integration.
         aux   = @SVector randn(T , 3)
         aux   = aux / norm(aux)
         vr_a  = wba_a × aux
@@ -58,7 +53,7 @@
     end
 end
 
-@testset "Kinematics of quaternions (Errors)" begin
+@testset "Kinematics of Quaternions (Errors)" begin
     @test_throws ArgumentError dquat(Quaternion(I), [1, 2])
     @test_throws ArgumentError dquat(Quaternion(I), [1, 2, 3, 4])
 end

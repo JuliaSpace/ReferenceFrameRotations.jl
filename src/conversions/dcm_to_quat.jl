@@ -1,16 +1,13 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Description #############################################################################
 #
-# Description
-# ==============================================================================
+# Functions related to the conversion from DCM to quaternion.
 #
-#   Functions related to the conversion from DCM to quaternion.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
 export dcm_to_quat
 
 """
-    dcm_to_quat(dcm::DCM)
+    dcm_to_quat(dcm::DCM) -> Quaternion
 
 Convert the `dcm` to a quaternion.
 
@@ -19,9 +16,9 @@ The type of the quaternion will be automatically selected by the constructor
 
 # Remarks
 
-By convention, the real part of the quaternion will always be positive.
-Moreover, the function does not check if `dcm` is a valid direction cosine
-matrix. This must be handle by the user.
+By convention, the real part of the quaternion will always be positive. Moreover, the
+function does not check if `dcm` is a valid direction cosine matrix. This must be handle by
+the user.
 
 This algorithm was obtained from **[1]**.
 

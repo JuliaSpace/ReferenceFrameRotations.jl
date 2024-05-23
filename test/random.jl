@@ -1,14 +1,10 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Desription ##############################################################################
 #
-# Desription
-# ==============================================================================
+# Tests related to the generation of random rotation representations.
 #
-#   Tests related to the generation of random rotation representations.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-# File: ./src/random.jl
-# =====================
+# == File: ./src/random.jl =================================================================
 
 @testset "DCM (Float64)" begin
     D_exp = DCM(
@@ -48,7 +44,7 @@ end
     @test D ≈ D_exp atol = 1e-15
 end
 
-@testset "Euler angle and axis (Float64)" begin
+@testset "Euler Angle and Axis (Float64)" begin
     aa_exp = EulerAngleAxis(
         3.0732832539795845,
         @SVector [
@@ -65,7 +61,7 @@ end
     @test aa ≈ aa_exp atol = 1e-15
 end
 
-@testset "Euler angle and axis (Float32)" begin
+@testset "Euler Angle and Axis (Float32)" begin
     aa_exp = EulerAngleAxis(
         1.6446829f0,
         @SVector [
@@ -79,7 +75,7 @@ end
     @test aa ≈ aa_exp atol = 1e-15
 end
 
-@testset "Euler angles (Float64)" begin
+@testset "Euler Angles (Float64)" begin
     ea_exp = EulerAngles(
         2.5852880822263606,
         3.1861195131389626,
@@ -94,7 +90,7 @@ end
     @test ea ≈ ea_exp atol = 1e-15
 end
 
-@testset "Euler angles (Float32)" begin
+@testset "Euler Angles (Float32)" begin
     ea_exp = EulerAngles(
         0.29179642f0,
         5.512145f0,

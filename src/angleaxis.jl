@@ -1,18 +1,15 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Description #############################################################################
 #
-# Description
-# ==============================================================================
+# Functions related to the Euler angle and axis.
 #
-#   Functions related to the Euler angle and axis.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-################################################################################
-#                                  Operations
-################################################################################
+############################################################################################
+#                                        Operations                                        #
+############################################################################################
 
 """
-    *(av₂::EulerAngleAxis{T1}, av₁::EulerAngleAxis{T2}) where {T1,T2}
+    *(av₂::EulerAngleAxis{T1}, av₁::EulerAngleAxis{T2}) where {T1, T2} -> EulerAngleAxis{T3}
 
 Compute the composed rotation of `av₁ -> av₂`.
 
@@ -22,6 +19,10 @@ range `[0, π] rad`.
 
 Notice that the vector representing the axis in `av₁` and `av₂` must be unitary.
 This function neither verifies this nor normalizes the vector.
+
+!!! note
+
+    The output type `T3` is obtained by promoting `T1` and `T2` to a float.
 
 # Examples
 
@@ -80,12 +81,11 @@ function *(av₂::EulerAngleAxis{T1}, av₁::EulerAngleAxis{T2}) where {T1, T2}
 end
 
 """
-    inv(av::EulerAngleAxis)
+    inv(av::EulerAngleAxis) -> EulerAngleAxis
 
 Compute the inverse rotation of the Euler angle and axis `av`.
 
-The Euler angle returned by this function will always be in the interval `[0, π]
-rad`.
+The Euler angle returned by this function will always be in the interval `[0, π]` rad.
 
 # Examples
 
@@ -126,9 +126,9 @@ EulerAngleAxis{Float64}:
     return EulerAngleAxis(θ, s * av.v)
 end
 
-################################################################################
-#                                      IO
-################################################################################
+############################################################################################
+#                                            IO                                            #
+############################################################################################
 
 function show(io::IO, av::EulerAngleAxis{T}) where T
     # Get if `io` request a compact printing, defaulting to true.
@@ -180,9 +180,9 @@ function show(io::IO, mime::MIME"text/plain", av::EulerAngleAxis{T}) where T
     return nothing
 end
 
-################################################################################
-#                                  Julia API
-################################################################################
+############################################################################################
+#                                        Julia API                                         #
+############################################################################################
 
 Base.eltype(::Type{EulerAngleAxis{T}}) where T = T
 

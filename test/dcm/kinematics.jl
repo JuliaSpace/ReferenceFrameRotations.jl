@@ -1,17 +1,12 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Desription ##############################################################################
 #
-# Desription
-# ==============================================================================
+# Tests related to the kinematics of DCMs.
 #
-#   Tests related to the kinematics of DCMs.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-# File: ./src/dcm.jl
-# ==================
+# == File: ./src/dcm.jl ====================================================================
 
-# Functions: ddcm
-# ---------------
+# -- Functions: ddcm -----------------------------------------------------------------------
 
 @testset "Kinematics of DCMs" begin
     for T in (Float32, Float64)
@@ -39,8 +34,8 @@
         @test eltype(v₀) === T
         @test eltype(v₁) === T
 
-        # In the end, a vector perpendicular to `wba_a` must rotate the angle
-        # compatible with the angular velocity and time of integration.
+        # In the end, a vector perpendicular to `wba_a` must rotate the angle compatible
+        # with the angular velocity and time of integration.
         aux   = @SVector randn(T, 3)
         aux   = aux / norm(aux)
         vr_a  = wba_a × aux

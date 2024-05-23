@@ -1,37 +1,33 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Description #############################################################################
 #
-# Description
-# ==============================================================================
+# Functions related to the conversion from Euler angles to DCM.
 #
-#   Functions related to the conversion from Euler angles to DCM.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
 export angle_to_dcm
 
 """
-    angle_to_dcm(θ₁::Number[, θ₂::Number[, θ₃::Number]], rot_seq::Symbol = :ZYX)
-    angle_to_dcm(Θ::EulerAngles)
+    angle_to_dcm(θ₁::Number[, θ₂::Number[, θ₃::Number]], rot_seq::Symbol = :ZYX) -> DCM
+    angle_to_dcm(Θ::EulerAngles) -> DCM
 
-Create a direction cosine matrix that perform a set of rotations (`θ₁`, `θ₂`,
-`θ₃`) about the coordinate axes specified in `rot_seq`.
+Create a direction cosine matrix that perform a set of rotations (`θ₁`, `θ₂`, `θ₃`) about
+the coordinate axes specified in `rot_seq`.
 
-The input values of the origin Euler angles can also be passed inside the
-structure `Θ` (see [`EulerAngles`](@ref)).
+The input values of the origin Euler angles can also be passed inside the structure `Θ` (see
+[`EulerAngles`](@ref)).
 
-The rotation sequence is defined by a `Symbol` specifing the rotation axes. The
-possible values depends on the number of rotations as follows:
+The rotation sequence is defined by a `Symbol` specifing the rotation axes. The possible
+values depends on the number of rotations as follows:
 
 - **1 rotation** (`θ₁`): `:X`, `:Y`, or `:Z`.
 - **2 rotations** (`θ₁`, `θ₂`): `:XY`, `:XZ`, `:YX`, `:YZ`, `:ZX`, or `:ZY`.
-- **3 rotations** (`θ₁`, `θ₂`, `θ₃`): `:XYX`, `XYZ`, `:XZX`, `:XZY`, `:YXY`,
-    `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`, `:ZYX`, or `:ZYZ`
+- **3 rotations** (`θ₁`, `θ₂`, `θ₃`): `:XYX`, `XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`,
+    `:YZY`, `:ZXY`, `:ZXZ`, `:ZYX`, or `:ZYZ`
 
 # Remarks
 
-This function assigns `dcm = A3 * A2 * A1` in which `Ai` is the DCM related with
-the *i*-th rotation, `i Є [1,2,3]`. If the *i*-th rotation is not specified,
-then `Ai = I`.
+This function assigns `dcm = A3 * A2 * A1` in which `Ai` is the DCM related with the _i_-th
+rotation, `i ∈ [1,2,3]`. If the _i_-th rotation is not specified, then `Ai = I`.
 
 # Example
 
@@ -87,11 +83,7 @@ function angle_to_dcm(θ::Number, rot_seq::Symbol)
     end
 end
 
-function angle_to_dcm(
-    θ₁::T1,
-    θ₂::T2,
-    rot_seq::Symbol
-) where {T1<:Number, T2<:Number}
+function angle_to_dcm(θ₁::T1, θ₂::T2, rot_seq::Symbol) where {T1<:Number, T2<:Number}
     T = promote_type(T1, T2)
 
     # Compute the sines and cosines.

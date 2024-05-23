@@ -1,22 +1,16 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Desription ##############################################################################
 #
-# Desription
-# ==============================================================================
+# Tests related to the API function to compose rotations.
 #
-#   Tests related to the API function to compose rotations.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-# File: ./src/compose_rotations.jl
-# ================================
+# == File: ./src/compose_rotations.jl ======================================================
 
-# Functions: compose_rotations
-# ----------------------------
+# -- Functions: compose_rotations ----------------------------------------------------------
 
 @testset "Compose rotations" begin
     for T in (Float32, Float64)
-        # DCMs
-        # ======================================================================
+        # == DCMs ==========================================================================
 
         # Sample 4 DCMs.
         D1 = rand(DCM{T})
@@ -30,8 +24,7 @@
         @test      D3 * D2 * D1  ≈  compose_rotation(D1,D2,D3)
         @test D4 * D3 * D2 * D1  ≈  compose_rotation(D1,D2,D3,D4)
 
-        # Euler angle and axis
-        # ==========================================================================
+        # == Euler Angle and Axis ==========================================================
 
         # Sample 4 Euler angle and axis.
         ea1 = rand(EulerAngleAxis{T})
@@ -54,8 +47,7 @@
         @test ear2  ≈  eac2
         @test ear3  ≈  eac3
 
-        # Euler angles
-        # ==========================================================================
+        # == Euler Angles ==================================================================
 
         # Sample 4 Euler angles.
         Θ1 = rand(EulerAngles{T})
@@ -78,8 +70,7 @@
         @test Θr2  ≈  Θc2
         @test Θr3  ≈  Θc3
 
-        # Quaternions
-        # ==========================================================================
+        # == Quaternions ===================================================================
 
         # Sample 4 quaternions.
         q1 = rand(Quaternion{T})
@@ -95,8 +86,7 @@
     end
 end
 
-# Operator ∘
-# ----------
+# -- Operator ∘ ----------------------------------------------------------------------------
 
 @testset "Operator ∘" begin
     for T in (Float32, Float64)
@@ -109,41 +99,36 @@ end
         D_av = convert(DCM, av)
         D_q  = convert(DCM, q)
 
-        # DCM
-        # ======================================================================
+        # == DCM ===========================================================================
 
         R = D ∘ ea ∘ av ∘ q
         R_exp = D * D_ea * D_av * D_q
         @test R ≈ R_exp atol = √(eps(T))
 
-        # Euler angle and axis
-        # ======================================================================
+        # == Euler Angle and Axis ==========================================================
 
         R = av ∘ D ∘ ea ∘ q
         R_exp = convert(EulerAngleAxis, D_av * D * D_ea * D_q)
         @test R ≈ R_exp atol = 100 * √(eps(T))
 
-        # Euler angles
-        # ======================================================================
+        # == Euler Angles ==================================================================
 
         R = ea ∘ D ∘ av ∘ q
         R_exp = convert(EulerAngles(R.rot_seq), D_ea * D * D_av * D_q)
 
-        # When converting to Euler angles, we normalize the angles. We need to
-        # make the same with the composition for the sake of testing.
+        # When converting to Euler angles, we normalize the angles. We need to make the same
+        # with the composition for the sake of testing.
         R = convert(EulerAngles, R)
 
         @test R ≈ R_exp atol = 100 * √(eps(T))
 
-        # Quaternion
-        # ======================================================================
+        # == Quaternion ====================================================================
 
         R = q ∘ ea ∘ av ∘ D
         R_exp = convert(Quaternion, D_q * D_ea * D_av * D)
 
-        # When converting to quaternion, we make sure that the real part is
-        # always positive. Hence, we need to do the same with the composition
-        # for the sake of testing.
+        # When converting to quaternion, we make sure that the real part is always positive.
+        # Hence, we need to do the same with the composition for the sake of testing.
         if R.q0 < 0
             R = -R
         end

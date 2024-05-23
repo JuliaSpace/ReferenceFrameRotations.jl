@@ -1,16 +1,13 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Description #############################################################################
 #
-# Description
-# ==============================================================================
+# Functions related to the conversion from DCM to Euler angle and axis.
 #
-#   Functions related to the conversion from DCM to Euler angle and axis.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
 export dcm_to_angleaxis
 
 """
-    dcm_to_angleaxis(dcm::DCM{T}) where T<:Number
+    dcm_to_angleaxis(dcm::DCM{T}) where T<:Number -> EulerAngleAxis
 
 Convert the `dcm` to an Euler angle and axis representation.
 

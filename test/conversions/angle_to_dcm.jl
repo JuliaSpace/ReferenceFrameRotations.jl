@@ -1,28 +1,21 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Desription ##############################################################################
 #
-# Desription
-# ==============================================================================
+# Tests related to conversion from Euler angles to direction cosine matrices.
 #
-#   Tests related to conversion from Euler angles to direction cosine matrices.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-# File: ./src/conversions/angle_to_dcm.jl
-# =======================================
+# == File: ./src/conversions/angle_to_dcm.jl ===============================================
 
-# Functions: angle_to_dcm
-# -----------------------
+# -- Functions: angle_to_dcm ---------------------------------------------------------------
 
 @testset "Angle about an axis => DCM" begin
     for T in (Float32, Float64)
         # Sample an angle to use in all rotations.
         ang = _rand_ang(T)
 
-        # Rotations
-        # =========
+        # == Rotations =====================================================================
 
-        # X Axis
-        # ------
+        # -- X Axis ------------------------------------------------------------------------
 
         # Create a DCM that rotates about X axis.
         dcm = angle_to_dcm(ang, :X)
@@ -41,8 +34,7 @@
         # Test the angle between the two representations.
         @test abs(sin(ang) - sin_ang) ≈ 0 atol = √(eps(T))
 
-        # Y Axis
-        # ------
+        # -- Y Axis ------------------------------------------------------------------------
 
         # Create a DCM that rotates about Y axis.
         dcm = angle_to_dcm(ang, :Y)
@@ -61,8 +53,7 @@
         # Test the angle between the two representations.
         @test abs(sin(ang) - sin_ang) ≈ 0 atol = √(eps(T))
 
-        # Z Axis
-        # ------
+        # -- Z Axis ------------------------------------------------------------------------
 
         # Create a DCM that rotates about Z axis.
         dcm = angle_to_dcm(ang, :Z)
@@ -83,14 +74,13 @@
     end
 end
 
-@testset "Angle about an axis => DCM (Errors)" begin
+@testset "Angle About an Axis => DCM (Errors)" begin
     @test_throws ArgumentError angle_to_dcm(0, :A)
 end
 
 @testset "Euler angles => DCM" begin
     for T in (Float32, Float64)
-        # Two rotations
-        # ======================================================================
+        # == Two rotations =================================================================
 
         for rot_seq in valid_rot_seqs_2angles
             # Sample Euler angles.
@@ -111,8 +101,7 @@ end
             @test D ≈ De
         end
 
-        # Three rotations
-        # ======================================================================
+        # == Three rotations ===============================================================
 
         for rot_seq in valid_rot_seqs
             # Sample Euler angles.
@@ -135,7 +124,7 @@ end
     end
 end
 
-@testset "Euler angles => DCM (Promotion)" begin
+@testset "Euler Angles => DCM (Promotion)" begin
     # Check if promotion is working as intended.
     dcm = angle_to_dcm(Int64(1), 0.0f0, Float64(0))
     @test eltype(dcm) === Float64
@@ -147,16 +136,15 @@ end
     @test eltype(dcm) === Float16
 end
 
-@testset "Euler angles => DCM (Errors)" begin
+@testset "Euler Angles => DCM (Errors)" begin
     @test_throws ArgumentError angle_to_dcm(1, :V)
     @test_throws ArgumentError angle_to_dcm(1, 2, :ZZ)
     @test_throws ArgumentError angle_to_dcm(1, 2, 3, :ZZY)
 end
 
-# Functions: smallangle_to_dcm
-# ----------------------------
+# -- Functions: smallangle_to_dcm ----------------------------------------------------------
 
-@testset "Small Euler angles => DCM" begin
+@testset "Small Euler Angles => DCM" begin
     for T in (Float32, Float64)
         # Sample three small angles.
         θx = _rand_ang(T) * T(0.001)
@@ -184,7 +172,7 @@ end
     end
 end
 
-@testset "Small Euler angles => DCM (Promotion)" begin
+@testset "Small Euler Angles => DCM (Promotion)" begin
     # Check if promotion is working as intended.
     dcm = smallangle_to_dcm(Int64(1), 0.0f0, Float64(0))
     @test eltype(dcm) === Float64

@@ -1,17 +1,12 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Desription ##############################################################################
 #
-# Desription
-# ==============================================================================
+# Tests related to the support of Julia API (iterators, broadcast, etc.).
 #
-#   Tests related to the support of Julia API (iterators, broadcast, etc.).
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-# File: ./src/quaternion.jl
-# =========================
+# == File: ./src/quaternion.jl =============================================================
 
-# Broadcast
-# ---------
+# -- Broadcast -----------------------------------------------------------------------------
 
 @testset "Broadcast" begin
     function quat_bcast!(v::AbstractVector, q::Quaternion)
@@ -23,8 +18,7 @@
     precompile(quat_bcast!, (Vector{Float64}, Quaternion{Float64}))
     precompile(quat_bcast!, (Vector{Float32}, Quaternion{Float32}))
 
-    # Float64, Float32
-    # --------------------------------------------------------------------------
+    # -- Float64, Float32 ------------------------------------------------------------------
 
     for T in (Float32, Float64)
         q = Quaternion{T}(randn(), randn(), randn(), randn())
@@ -66,8 +60,7 @@ end
     precompile(quat_setindex!, (Vector{Float64}, Quaternion{Float64}))
     precompile(quat_setindex!, (Vector{Float32}, Quaternion{Float32}))
 
-    # Float64, Float32
-    # --------------------------------------------------------------------------
+    # -- Float64, Float32 ------------------------------------------------------------------
 
     for T in (Float32, Float64)
         q = Quaternion{T}(randn(), randn(), randn(), randn())
@@ -84,7 +77,7 @@ end
     end
 end
 
-@testset "Other API functions" begin
+@testset "Other API Functions" begin
     q = Quaternion(1.0, 2.0, 3.0, 4.0)
 
     @test q[end] === 4.0

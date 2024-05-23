@@ -1,19 +1,14 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Desription ##############################################################################
 #
-# Desription
-# ==============================================================================
+# Tests related to the general functions using Euler angle and axis.
 #
-#   Tests related to the general functions using Euler angle and axis.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-# File: ./src/angleaxis.jl
-# ========================
+# == File: ./src/angleaxis.jl ==============================================================
 
-# Functions: inv
-# --------------
+# -- Functions: inv ------------------------------------------------------------------------
 
-@testset "General functions of Euler angle and axis: inv" begin
+@testset "General Functions of Euler Angle and Axis: inv" begin
     for T in (Float32, Float64)
         av = EulerAngleAxis(deg2rad(T(20)), T[sqrt(2) / 2, 0, sqrt(2) / 2])
         iav = inv(av)
@@ -29,10 +24,9 @@
     end
 end
 
-# Functions: show
-# ---------------
+# -- Functions: show -----------------------------------------------------------------------
 
-@testset "General functions of Euler angle and axis: show" begin
+@testset "General Functions of Euler Angle and Axis: show" begin
     buf = IOBuffer()
     io = IOContext(buf)
     av = EulerAngleAxis(π / 3, [sqrt(3) / 3, -sqrt(3) / 3, sqrt(3) / 3])

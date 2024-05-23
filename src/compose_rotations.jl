@@ -1,23 +1,20 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Description #############################################################################
 #
-# Description
-# ==============================================================================
+# Generic function to compose rotations.
 #
-#   Generic function to compose rotations.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
 export compose_rotation
 
-################################################################################
-#                              Compose Rotations
-################################################################################
+############################################################################################
+#                                    Compose Rotations                                     #
+############################################################################################
 
 """
-    compose_rotation(R1, [, R2, R3, R4, R5, ...])
+    compose_rotation(R1::T, [, R2::T, R3::T, R4::T, R5::T, ...]) -> T
 
-Compute a composed rotation using the rotations `R1`, `R2`, `R3`, `R4`, ..., in
-the following order:
+Compute a composed rotation using the rotations `R1`, `R2`, `R3`, `R4`, ..., in the
+following order:
 
      First rotation
      |
@@ -34,8 +31,7 @@ The rotations can be described by:
 - A set of Euler angles ([`EulerAngles`](@ref)); or
 - A quaternion ([`Quaternion`](@ref)).
 
-Notice, however, that all rotations **must be** of the same type (DCM or
-quaternion).
+Notice, however, that all rotations **must be** of the same type (DCM or quaternion).
 
 The output will have the same type as the inputs.
 
@@ -98,13 +94,9 @@ end
 #
 #   https://discourse.julialang.org/t/improve-the-performance-of-multiplication-of-an-arbitrary-number-of-matrices/10835/24
 
-# Operator: ∘
-# ==============================================================================
+# == Operator: ∘ ===========================================================================
 
-function ∘(R2::T1, R1::T2) where {
-    T1<:ReferenceFrameRotation,
-    T2<:ReferenceFrameRotation
-}
+function ∘(R2::T1, R1::T2) where {T1<:ReferenceFrameRotation, T2<:ReferenceFrameRotation}
     R1c = convert(T1, R1)
     return compose_rotation(R1c, R2)
 end

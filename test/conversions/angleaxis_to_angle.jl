@@ -1,23 +1,18 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Desription ##############################################################################
 #
-# Desription
-# ==============================================================================
+# Tests related to conversion from Euler angle and axis to Euler angles.
 #
-#   Tests related to conversion from Euler angle and axis to Euler angles.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-# File: ./src/conversions/angleaxis_to_angle.jl
-# =============================================
+# == File: ./src/conversions/angleaxis_to_angle.jl =========================================
 
-# Functions: angleaxis_to_angle
-# -----------------------------
+# -- Functions: angleaxis_to_angle ---------------------------------------------------------
 
-@testset "Euler angle and axis => Euler angles" begin
+@testset "Euler Angle and Axis => Euler Angles" begin
     for T in (Float32, Float64)
-        # We do not need comprehensive test here because `angleaxis_to_angle` first
-        # converts an Euler angle and axis to DCM and then to Euler angles. Those
-        # two operations are already heavily tested.
+        # We do not need comprehensive test here because `angleaxis_to_angle` first converts
+        # an Euler angle and axis to DCM and then to Euler angles. Those two operations are
+        # already heavily tested.
 
         av = EulerAngleAxis(deg2rad(T(45)), T[1, 0, 0])
         ea = angleaxis_to_angle(av, :ZYX)
@@ -53,7 +48,7 @@
     end
 end
 
-@testset "Euler angle and axis => Euler angles (Errors)" begin
+@testset "Euler Angle and Axis => Euler Angles (Errors)" begin
     @test_throws ArgumentError angleaxis_to_angle(0, [1, 2], :ZYX)
     @test_throws ArgumentError angleaxis_to_angle(0, [1, 2, 3, 4], :ZYX)
 end

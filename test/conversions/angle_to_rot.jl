@@ -1,17 +1,12 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Desription ##############################################################################
 #
-# Desription
-# ==============================================================================
+# Tests related to the API that converts Euler angles to rotations.
 #
-#   Tests related to the API that converts Euler angles to rotations.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-# File: ./src/conversions/angle_to_rot.jl
-# =======================================
+# == File: ./src/conversions/angle_to_rot.jl ===============================================
 
-# Functions: angle_to_rot
-# -----------------------
+# -- Functions: angle_to_rot ---------------------------------------------------------------
 
 @testset "Angle about an axis => Rotation" begin
     for T in (Float32, Float64)
@@ -38,8 +33,7 @@ end
 
 @testset "Euler angles => Rotation (Float64)" begin
     for T in (Float32, Float64)
-        # Two rotations
-        # ======================================================================
+        # == Two rotations =================================================================
 
         for rot_seq in valid_rot_seqs_2angles
             # Sample Euler angles.
@@ -62,8 +56,7 @@ end
             @test D2 ≈ De
         end
 
-        # Three rotations
-        # ======================================================================
+        # == Three rotations ===============================================================
 
         for rot_seq in valid_rot_seqs
             # Sample Euler angles.
@@ -86,8 +79,7 @@ end
     end
 end
 
-# Functions: smallangle_to_rot
-# ----------------------------
+# -- Functions: smallangle_to_rot ----------------------------------------------------------
 
 @testset "Small Euler angles => Rotation" begin
     for T in (Float32, Float64)

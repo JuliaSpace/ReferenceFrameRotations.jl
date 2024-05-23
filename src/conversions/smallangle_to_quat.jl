@@ -1,21 +1,19 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Description #############################################################################
 #
-# Description
-# ==============================================================================
+# Functions related to the conversion from small Euler angles to quaternion.
 #
-#   Functions related to the conversion from small Euler angles to quaternion.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
 export smallangle_to_quat
 
 """
-    smallangle_to_quat(θx::Number, θy::Number, θz::Number)
+    smallangle_to_quat(θx::Number, θy::Number, θz::Number) -> Quaternion
 
-Create a quaternion from three small rotations of angles `θx`, `θy`, and `θz`
-[rad] about the axes X, Y, and Z, respectively.
+Create a quaternion from three small rotations of angles `θx`, `θy`, and `θz` [rad] about
+the axes X, Y, and Z, respectively.
 
 !!! note
+
     The quaternion is always normalized.
 
 # Example

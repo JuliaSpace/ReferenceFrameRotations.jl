@@ -1,32 +1,28 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Description #############################################################################
 #
-# Description
-# ==============================================================================
+# Functions related to the conversion from Euler angle and axis to Euler angles.
 #
-#   Functions related to the conversion from Euler angle and axis to Euler
-#   angles.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
 export angleaxis_to_angle
 
 """
-    angleaxis_to_angle(θ::Number, v::AbstractVector, rot_seq::Symbol)
-    angleaxis_to_angle(av::EulerAngleAxis, rot_seq::Symbol)
+    angleaxis_to_angle(θ::Number, v::AbstractVector, rot_seq::Symbol) -> EulerAngles
+    angleaxis_to_angle(av::EulerAngleAxis, rot_seq::Symbol) -> EulerAngles
 
-Convert the Euler angle `θ` [rad]  and Euler axis `v` to Euler angles with
-rotation sequence `rot_seq`.
+Convert the Euler angle `θ` [rad]  and Euler axis `v` to Euler angles with rotation sequence
+`rot_seq`.
 
-Those values can also be passed inside the structure `av` (see
-[`EulerAngleAxis`](@ref)).
+Those values can also be passed inside the structure `av` (see [`EulerAngleAxis`](@ref)).
 
-The rotation sequence is defined by a `:Symbol`. The possible values are:
-`:XYX`, `XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`,
-`:ZYX`, and `:ZYZ`. If no value is specified, then it defaults to `:ZYX`.
+The rotation sequence is defined by a `:Symbol`. The possible values are: `:XYX`, `XYZ`,
+`:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`, `:ZYX`, and `:ZYZ`. If no
+value is specified, it defaults to `:ZYX`.
 
 !!! warning
-    It is expected that the vector `v` is unitary. However, no verification is
-    performed inside the function. The user must handle this situation.
+
+    It is expected that the vector `v` is unitary. However, no verification is performed
+    inside the function. The user must handle this situation.
 
 # Example
 

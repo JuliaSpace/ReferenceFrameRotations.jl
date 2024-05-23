@@ -1,22 +1,17 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Desription ##############################################################################
 #
-# Desription
-# ==============================================================================
+# Tests related to the operations with Euler angles.
 #
-#   Tests related to the operations with Euler angles.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-# File: ./src/angle.jl
-# ====================
+# == File: ./src/angle.jl ==================================================================
 
-# Functions: *
-# ------------
+# -- Functions: * --------------------------------------------------------------------------
 
-@testset "Operations with Euler angles: *"  begin
-    # We do not need comprehensive test here. `*` first converts the Euler
-    # angles to quaternions, and then it performs the multiplication. At the
-    # end, it converts the quaternion back to Euler angles.
+@testset "Operations with Euler Angles: *"  begin
+    # We do not need comprehensive test here. `*` first converts the Euler angles to
+    # quaternions, and then it performs the multiplication. At the end, it converts the
+    # quaternion back to Euler angles.
 
     for T in (Float32, Float64)
         ea1 = EulerAngles(deg2rad(T(45)), 0, 0, :ZYX)

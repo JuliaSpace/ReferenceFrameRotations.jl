@@ -1,22 +1,19 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Description #############################################################################
 #
-# Description
-# ==============================================================================
+# Functions related to the conversion from small Euler angles to DCM.
 #
-#   Functions related to the conversion from small Euler angles to DCM.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
 export smallangle_to_dcm
 
 """
-    smallangle_to_dcm(θx::Number, θy::Number, θz::Number; normalize = true)
+    smallangle_to_dcm(θx::Number, θy::Number, θz::Number; normalize = true) -> DCM
 
-Create a direction cosine matrix from three small rotations of angles `θx`,
-`θy`, and `θz` [rad] about the axes X, Y, and Z, respectively.
+Create a direction cosine matrix from three small rotations of angles `θx`, `θy`, and `θz`
+[rad] about the axes X, Y, and Z, respectively.
 
-If the keyword `normalize` is `true`, then the matrix will be normalized using
-the function `orthonormalize`.
+If the keyword `normalize` is `true`, the matrix will be normalized using the function
+`orthonormalize`.
 
 # Example
 

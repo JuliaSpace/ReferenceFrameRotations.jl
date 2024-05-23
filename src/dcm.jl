@@ -1,20 +1,16 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Description #############################################################################
 #
-# Description
-# ==============================================================================
+# Functions related to the Direction Cosine Matrix (DCM).
 #
-#   Functions related to the Direction Cosine Matrix (DCM).
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
 export ddcm, orthonormalize
 
-################################################################################
-#                                     API
-################################################################################
+############################################################################################
+#                                           API                                            #
+############################################################################################
 
-# StaticArray.jl API
-# ==============================================================================
+# == StaticArray.jl API ====================================================================
 
 @inline Base.@propagate_inbounds function getindex(dcm::DCM, i::Int)
     return dcm.data[i]
@@ -28,28 +24,26 @@ function similar_type(::Type{A}, ::Type{T}, s::Size{(3,3)}) where {A<:DCM, T}
     return DCM{T}
 end
 
-# Julia API
-# ==============================================================================
+# == Julia API =============================================================================
 
 function summary(io::IO, ::DCM{T}) where T
     print(io, "DCM{" * string(T) * "}")
 end
 
-################################################################################
-#                                Normalization
-################################################################################
+############################################################################################
+#                                      Normalization                                       #
+############################################################################################
 
 """
-    orthonormalize(dcm::DCM)
+    orthonormalize(dcm::DCM) -> DCM
 
-Perform the Gram-Schmidt orthonormalization process in the `dcm` and return the
-new matrix.
+Perform the Gram-Schmidt orthonormalization process in the `dcm` and return the new matrix.
 
 !!! warning
-    This function does not check if the columns of the input matrix span a
-    three-dimensional space. If not, then the returned matrix should have `NaN`.
-    Notice, however, that such input matrix is not a valid direction cosine
-    matrix.
+
+    This function does not check if the columns of the input matrix span a three-dimensional
+    space. If not, then the returned matrix should have `NaN`. Notice, however, that such
+    input matrix is not a valid direction cosine matrix.
 
 # Example
 
@@ -78,16 +72,16 @@ function orthonormalize(dcm::DCM)
     return DCM(hcat(en₁, en₂, en₃))
 end
 
-################################################################################
-#                                  Kinematics
-################################################################################
+############################################################################################
+#                                        Kinematics                                        #
+############################################################################################
 
 """
-    ddcm(Dba::DCM, wba_b::AbstractArray)
+    ddcm(Dba::DCM, wba_b::AbstractArray) -> SMatrix{3, 3}
 
-Compute the time-derivative of the `dcm` that rotates a reference frame `a` into
-alignment with the reference frame `b` in which the angular velocity of `b` with
-respect to `a`, and represented in `b`, is `wba_b`.
+Compute the time-derivative of the `dcm` that rotates a reference frame `a` into alignment
+with the reference frame `b` in which the angular velocity of `b` with respect to `a`, and
+represented in `b`, is `wba_b`.
 
 # Example
 

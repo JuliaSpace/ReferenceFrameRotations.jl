@@ -1,23 +1,18 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Desription ##############################################################################
 #
-# Desription
-# ==============================================================================
+# Tests related to conversion from Euler angles to Euler angle and axis.
 #
-#   Tests related to conversion from Euler angles to Euler angle and axis.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-# File: ./src/conversions/angle_to_angleaxis.jl
-# =============================================
+# == File: ./src/conversions/angle_to_angleaxis.jl =========================================
 
-# Functions: angle_to_angleaxis
-# -----------------------------
+# -- Functions: angle_to_angleaxis ---------------------------------------------------------
 
 @testset "Euler angles => Euler angle and axis" begin
     for T in (Float32, Float64)
-        # We do not need comprehensive test here because `angle_to_angleaxis`
-        # first converts the Euler angles to DCM and then to Euler angle and
-        # axis. Those two operations are already heavily tested.
+        # We do not need comprehensive test here because `angle_to_angleaxis` first converts
+        # the Euler angles to DCM and then to Euler angle and axis. Those two operations are
+        # already heavily tested.
 
         ea = EulerAngles(deg2rad(T(45)), 0, 0, :XYZ)
         av = angle_to_angleaxis(ea)

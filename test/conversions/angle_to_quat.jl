@@ -1,28 +1,21 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Desription ##############################################################################
 #
-# Desription
-# ==============================================================================
+# Tests related to conversion from Euler angles to quaternion.
 #
-#   Tests related to conversion from Euler angles to quaternion.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-# File: ./src/conversions/angle_to_quat.jl
-# ========================================
+# == File: ./src/conversions/angle_to_quat.jl ==============================================
 
-# Functions: angle_to_quat
-# ------------------------
+# -- Functions: angle_to_quat --------------------------------------------------------------
 
-@testset "Angle about an axis => Quaternion" begin
+@testset "Angle About an Axis => Quaternion" begin
     for T in (Float32, Float64)
         # Sample an angle to use in all rotations.
         ang = _rand_ang(T)
 
-        # Rotations
-        # =========
+        # == Rotations =====================================================================
 
-        # X Axis
-        # ------
+        # -- X Axis ------------------------------------------------------------------------
 
         # Create a quaternion that rotates about X axis.
         q = angle_to_quat(ang, :X)
@@ -41,8 +34,7 @@
         # Test the angle between the two representations.
         @test abs(sin(ang) - sin_ang) ≈ 0 atol = √(eps(T))
 
-        # Y Axis
-        # ------
+        # -- Y Axis ------------------------------------------------------------------------
 
         # Create a quaternion that rotates about Y axis.
         q = angle_to_quat(ang, :Y)
@@ -61,8 +53,7 @@
         # Test the angle between the two representations.
         @test abs(sin(ang) - sin_ang) ≈ 0 atol = √(eps(T))
 
-        # Z Axis
-        # ------
+        # -- Z Axis ------------------------------------------------------------------------
 
         # Create a quaternion that rotates about Z axis.
         q = angle_to_quat(ang, :Z)
@@ -83,10 +74,9 @@
     end
 end
 
-@testset "Euler angles => Quaternion" begin
+@testset "Euler Angles => Quaternion" begin
     for T in (Float32, Float64)
-        # Two rotations
-        # ======================================================================
+        # == Two rotations =================================================================
 
         for rot_seq in valid_rot_seqs_2angles
             # Sample Euler angles.
@@ -107,8 +97,7 @@ end
             @test q ≈ qe
         end
 
-        # Three rotations
-        # ======================================================================
+        # == Three rotations ===============================================================
 
         for rot_seq in valid_rot_seqs
             # Sample Euler angles.
@@ -135,7 +124,7 @@ end
     end
 end
 
-@testset "Euler angles => Quaternion (Promotion)" begin
+@testset "Euler Angles => Quaternion (Promotion)" begin
     # Check if promotion is working as intended.
     quat = angle_to_quat(Int64(1), 0.0f0, Float64(0))
     @test eltype(quat) === Float64
@@ -147,16 +136,15 @@ end
     @test eltype(quat) === Float16
 end
 
-@testset "Euler angles => Quaternion (Errors)" begin
+@testset "Euler Angles => Quaternion (Errors)" begin
     @test_throws ArgumentError angle_to_quat(1, :V)
     @test_throws ArgumentError angle_to_quat(1, 2, :ZZ)
     @test_throws ArgumentError angle_to_quat(1, 2, 3, :ZZY)
 end
 
-# Functions: smallangle_to_quat
-# -----------------------------
+# -- Functions: smallangle_to_quat ---------------------------------------------------------
 
-@testset "Small Euler angles => Quaternion" begin
+@testset "Small Euler Angles => Quaternion" begin
     for T in (Float32, Float64)
         # Sample three small angles.
         θx = _rand_ang(T) * T(0.001)
@@ -174,7 +162,7 @@ end
     end
 end
 
-@testset "Small Euler angles => Quaternion (Promotion)" begin
+@testset "Small Euler Angles => Quaternion (Promotion)" begin
     # Check if promotion is working as intended.
     quat = smallangle_to_quat(Int64(1), 0.0f0, Float64(0))
     @test eltype(quat) === Float64

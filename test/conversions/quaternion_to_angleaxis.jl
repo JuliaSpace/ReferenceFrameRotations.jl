@@ -1,19 +1,14 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Desription ##############################################################################
 #
-# Desription
-# ==============================================================================
+# Tests related to conversion from quaternions to Euler angle and axis.
 #
-#   Tests related to conversion from quaternions to Euler angle and axis.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-# File: ./src/conversions/quaternion_to_angleaxis.jl
-# ==================================================
+# == File: ./src/conversions/quaternion_to_angleaxis.jl ====================================
 
-# Functions: quat_to_angleaxis
-# ----------------------------
+# -- Functions: quat_to_angleaxis ----------------------------------------------------------
 
-@testset "Quaternion => Euler angle and axis" begin
+@testset "Quaternion => Euler Angle and Axis" begin
     for T in (Float32, Float64)
         q = Quaternion(cosd(T(75 / 2)), 0, sind(T(75 / 2)), 0)
         av = quat_to_angleaxis(q)
@@ -29,7 +24,7 @@
     end
 end
 
-@testset "Quaternion => Euler angle and axis (Special cases)" begin
+@testset "Quaternion => Euler Angle and Axis (Special Cases)" begin
     for T in (Float32, Float64)
         q = Quaternion{T}(1, 0, 0, 0)
         av = quat_to_angleaxis(q)

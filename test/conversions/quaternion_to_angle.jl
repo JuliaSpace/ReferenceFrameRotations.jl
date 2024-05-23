@@ -1,23 +1,18 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Desription ##############################################################################
 #
-# Desription
-# ==============================================================================
+# Tests related to conversion from quaternions to Euler angles.
 #
-#   Tests related to conversion from quaternions to Euler angles.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-# File: ./src/conversions/quaternion_to_angle.jl
-# ==============================================
+# == File: ./src/conversions/quaternion_to_angle.jl ========================================
 
-# Functions: quat_to_angle
-# ------------------------
+# -- Functions: quat_to_angle --------------------------------------------------------------
 
-@testset "Quaternion => Euler angles" begin
+@testset "Quaternion => Euler Angles" begin
     for T in (Float32, Float64)
-        # We do not need comprehensive test here because `quat_to_angle` first
-        # converts a quaternion to DCM and then to Euler angles. Those two
-        # operations are already heavily tested.
+        # We do not need comprehensive test here because `quat_to_angle` first converts a
+        # quaternion to DCM and then to Euler angles. Those two operations are already
+        # heavily tested.
         q = Quaternion(cosd(T(45 / 2)), sind(T(45 / 2)), 0, 0)
         ea = quat_to_angle(q, :ZYX)
         @test eltype(ea) === T

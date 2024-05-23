@@ -1,36 +1,31 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Description #############################################################################
 #
-# Description
-# ==============================================================================
+# Functions related to the conversion from DCM to Euler angles.
 #
-#   Functions related to the conversion from DCM to Euler angles.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
 export dcm_to_angle
 
 """
-    dcm_to_angle(dcm::DCM, rot_seq::Symbol=:ZYX)
+    dcm_to_angle(dcm::DCM, rot_seq::Symbol=:ZYX) -> EulerAngles
 
-Convert the `dcm` to Euler Angles (see [`EulerAngles`](@ref)) given a rotation
-sequence `rot_seq`.
+Convert the `dcm` to Euler Angles (see [`EulerAngles`](@ref)) given a rotation sequence
+`rot_seq`.
 
-The rotation sequence is defined by a `:Symbol`. The possible values are:
-`:XYX`, `XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`,
-`:ZYX`, and `:ZYZ`. If no value is specified, then it defaults to `:ZYX`.
+The rotation sequence is defined by a `:Symbol`. The possible values are: `:XYX`, `XYZ`,
+`:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`, `:ZYX`, and `:ZYZ`. If no
+value is specified, it defaults to `:ZYX`.
 
 # Gimbal-lock and special cases
 
-If the rotations are about three different axes, *e.g.* `:XYZ`, `:ZYX`, etc.,
-then a second rotation of `±90˚` yields a gimbal-lock. This means that the
-rotations between the first and third axes have the same effect. In this case,
-the net rotation angle is assigned to the first rotation, and the angle of the
-third rotation is set to 0.
+If the rotations are about three different axes, *e.g.* `:XYZ`, `:ZYX`, etc., then a second
+rotation of `±90˚` yields a gimbal-lock. This means that the rotations between the first and
+third axes have the same effect. In this case, the net rotation angle is assigned to the
+first rotation, and the angle of the third rotation is set to 0.
 
-If the rotations are about two different axes, *e.g.* `:XYX`, `:YXY`, etc., then
-a rotation about the duplicated axis yields multiple representations. In this
-case, the entire angle is assigned to the first rotation and the third rotation
-is set to 0.
+If the rotations are about two different axes, *e.g.* `:XYX`, `:YXY`, etc., then a rotation
+about the duplicated axis yields multiple representations. In this case, the entire angle is
+assigned to the first rotation and the third rotation is set to 0.
 
 # Example
 
@@ -269,21 +264,20 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol=:ZYX) where T<:Number
     end
 end
 
-################################################################################
-#                              Private functions
-################################################################################
+############################################################################################
+#                                    Private Functions                                     #
+############################################################################################
 
-# This modified function computes exactly what `atan(y,x)` computes except that
-# it will neglect signed zeros. Hence:
+# This modified function computes exactly what `atan(y,x)` computes except that it will
+# neglect signed zeros. Hence:
 #
 #   _mod_atan(0.0, -0.0) = _mod_atan(-0.0, 0.0) = 0.0
 #
 # The signed zero can lead to problems when converting from DCM to Euler angles.
 _mod_atan(y::T, x::T) where T<:Number = atan(y + T(0), x + T(0))
 
-# This modified function computes the `acos(x)` if `|x| <= 1` and computes
-# `acos( sign(x) )`  if `|x| > 1` to avoid numerical errors when converting DCM
-# to  Euler Angles.
+# This modified function computes the `acos(x)` if `|x| <= 1` and computes `acos(sign(x))`
+# if `|x| > 1` to avoid numerical errors when converting DCM to  Euler Angles.
 function _mod_acos(x::T) where T<:Number
     if x > 1
         return float(T(0))
@@ -294,9 +288,8 @@ function _mod_acos(x::T) where T<:Number
     end
 end
 
-# This modified function computes the `asin(x)` if `|x| <= 1` and computes
-# `asin( sign(x) )`  if `|x| > 1` to avoid numerical errors when converting DCM
-# to  Euler Angles.
+# This modified function computes the `asin(x)` if `|x| <= 1` and computes `asin(sign(x))`
+# if `|x| > 1` to avoid numerical errors when converting DCM to  Euler Angles.
 function _mod_asin(x::T) where T<:Number
     if x > 1
         return +float(T(π / 2))

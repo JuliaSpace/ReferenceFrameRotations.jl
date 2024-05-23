@@ -1,20 +1,15 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Description #############################################################################
 #
-# Description
-# ==============================================================================
+# Functions to sample random representations of rotations.
 #
-#   Functions to sample random representations of rotations.
+## References ##############################################################################
 #
-# References
-# ==============================================================================
+# [1] K. Shoemake. Uniform random rotations. In D. Kirk, editor, Graphics Gems III, pages
+#     124-132. Academic, New York, 1992.
 #
-#   [1] K. Shoemake. Uniform random rotations. In D. Kirk, editor, Graphics Gems
-#       III, pages 124-132. Academic, New York, 1992.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-# Euler angle and axis
-# ==============================================================================
+# == Euler angle and axis ==================================================================
 
 function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where R <: EulerAngleAxis
     T = eltype(R)
@@ -25,8 +20,7 @@ function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where R <: Euler
     return quat_to_angleaxis(_rand_quat(rng, T))
 end
 
-# Euler angles
-# ==============================================================================
+# == Euler angles ==========================================================================
 
 function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where R <: EulerAngles
     T = eltype(R)
@@ -47,8 +41,7 @@ function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where R <: Euler
     return EulerAngles{T}(a₁, a₂, a₃, rot_seq)
 end
 
-# DCM
-# ==============================================================================
+# == DCM ===================================================================================
 
 function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where R <: DCM
     T = eltype(R)
@@ -59,8 +52,7 @@ function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where R <: DCM
     return quat_to_dcm(_rand_quat(rng, T))
 end
 
-# Quaternion
-# ==============================================================================
+# == Quaternion ============================================================================
 
 function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where R <: Quaternion
     T = eltype(R)
@@ -71,8 +63,9 @@ function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where R <: Quate
     return _rand_quat(rng, T)
 end
 
-#                              Private functions
-# ==============================================================================
+############################################################################################
+#                                    Private Functions                                     #
+############################################################################################
 
 @inline function _rand_quat(rng::AbstractRNG, T::DataType)
     # A random unit quaternion is sampled using the algorithm in [1].
@@ -88,12 +81,7 @@ end
     v₁ = √(1 - u₁)
     v₂ = √u₁
 
-    q = Quaternion(
-        v₁ * sin_u₂,
-        v₁ * cos_u₂,
-        v₂ * sin_u₃,
-        v₂ * cos_u₃
-    )
+    q = Quaternion(v₁ * sin_u₂, v₁ * cos_u₂, v₂ * sin_u₃, v₂ * cos_u₃)
 
     return q
 end

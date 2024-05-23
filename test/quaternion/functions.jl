@@ -1,19 +1,14 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Desription ##############################################################################
 #
-# Desription
-# ==============================================================================
+# Tests related to the general functions using quaternions.
 #
-#   Tests related to the general functions using quaternions.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-# File: ./src/quaternion.jl
-# =========================
+# == File: ./src/quaternion.jl =============================================================
 
-# Functions: conj
-# ---------------
+# -- Functions: conj -----------------------------------------------------------------------
 
-@testset "General functions of quaternions: conj" begin
+@testset "General Functions of Quaternions: conj" begin
     q = Quaternion{Int}(1, 2, 3, 4)
     qc = conj(q)
     @test qc.q0 == +1
@@ -39,10 +34,9 @@
     @test eltype(qc) === eltype(q)
 end
 
-# Functions: copy
-# ---------------
+# -- Functions: copy -----------------------------------------------------------------------
 
-@testset "General functions of quaternions: copy" begin
+@testset "General Functions of Quaternions: copy" begin
     q = Quaternion{Int}(1, 2, 3, 4)
     qc = copy(q)
     @test q === qc
@@ -59,10 +53,9 @@ end
     @test eltype(qc) === eltype(q)
 end
 
-# Functions: imag
-# ---------------
+# -- Functions: imag -----------------------------------------------------------------------
 
-@testset "General functions of quaternions: imag" begin
+@testset "General Functions of Quaternions: imag" begin
     q = Quaternion{Int}(1, 2, 3, 4)
     v = imag(q)
     @test v[1] == 2
@@ -85,10 +78,9 @@ end
     @test eltype(v) === eltype(q)
 end
 
-# Function: inv
-# -------------
+# -- Function: inv -------------------------------------------------------------------------
 
-@testset "General functions of quaternions: inv" begin
+@testset "General Functions of Quaternions: inv" begin
     q = Quaternion{Float64}(randn(), randn(), randn(), randn())
     qi = inv(q)
     norm_q² = q.q0 * q.q0 + q.q1 * q.q1 + q.q2 * q.q2 + q.q3 * q.q3
@@ -108,10 +100,9 @@ end
     @test eltype(qi) === Float32
 end
 
-# Function: norm
-# --------------
+# -- Function: norm ------------------------------------------------------------------------
 
-@testset "General functions of quaternions: norm" begin
+@testset "General Functions of Quaternions: norm" begin
     q = Quaternion{Float64}(randn(), randn(), randn(), randn())
     norm_q = norm(q)
     @test norm(q) ≈ sqrt(q.q0 * q.q0 + q.q1 * q.q1 + q.q2 * q.q2 + q.q3 * q.q3)
@@ -123,10 +114,9 @@ end
     @test norm_q isa Float32
 end
 
-# Function: real
-# --------------
+# -- Function: real ------------------------------------------------------------------------
 
-@testset "General functions of quaternions: real" begin
+@testset "General Functions of Quaternions: real" begin
     q = Quaternion{Float64}(randn(), randn(), randn(), randn())
     real_q = real(q)
     @test real_q == q.q0
@@ -143,10 +133,9 @@ end
     @test real_q isa Int
 end
 
-# Functions: vect
-# ---------------
+# -- Functions: vect -----------------------------------------------------------------------
 
-@testset "General functions of quaternions: vect" begin
+@testset "General Functions of Quaternions: vect" begin
     q = Quaternion{Int}(1, 2, 3, 4)
     v = vect(q)
     @test v[1] == 2
@@ -169,10 +158,9 @@ end
     @test eltype(v) === eltype(q)
 end
 
-# Functions: one
-# --------------
+# -- Functions: one ------------------------------------------------------------------------
 
-@testset "General functions of quaternions: one" begin
+@testset "General Functions of Quaternions: one" begin
     q = one(Quaternion)
     @test q.q0 == 1
     @test q.q1 == 0
@@ -196,10 +184,9 @@ end
     @test eltype(q) === Int
 end
 
-# Functions: zero
-# ---------------
+# -- Functions: zero -----------------------------------------------------------------------
 
-@testset "General functions of quaternions: zero" begin
+@testset "General Functions of Quaternions: zero" begin
     q = zero(Quaternion)
     @test q.q0 == 0
     @test q.q1 == 0
@@ -223,10 +210,9 @@ end
     @test eltype(q) === Int
 end
 
-# Functions: getindex, length, setindex!
-# --------------------------------------
+# -- Functions: getindex, length, setindex! ------------------------------------------------
 
-@testset "General functions of quaternions: iterable object API" begin
+@testset "General Functions of Quaternions: Iterable Object API" begin
     q = Quaternion{Float64}(randn(), randn(), randn(), randn())
     @test length(q) == 4
     @test q[1] == q.q0
@@ -256,10 +242,9 @@ end
     @test lastindex(q) === 4
 end
 
-# Functions: show
-# ---------------
+# -- Functions: show -----------------------------------------------------------------------
 
-@testset "General functions of quaternions: show" begin
+@testset "General Functions of Quaternions: show" begin
     buf = IOBuffer()
     io = IOContext(buf)
     q = Quaternion{Float64}(1, 2, exp(1), π)

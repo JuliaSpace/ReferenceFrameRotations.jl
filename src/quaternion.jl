@@ -1,17 +1,14 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Description #############################################################################
 #
-# Description
-# ==============================================================================
+# Functions related to the quaternions.
 #
-#   Functions related to the quaternions.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
 export dquat, norm, vect
 
-################################################################################
-#                                 Constructors
-################################################################################
+############################################################################################
+#                                       Constructors                                       #
+############################################################################################
 
 """
     Quaternion(q0::T0, q1::T1, q2::T2, q3::T3) where {T0, T1, T2, T3}
@@ -28,6 +25,7 @@ in which:
 - `q3` is the Z component of the quaternion vectorial part.
 
 !!! note
+
     The quaternion type is obtained by promoting `T0`, `T1`, `T2`, and `T3`.
 
 # Examples
@@ -46,18 +44,19 @@ Quaternion{Float64}:
 
     Quaternion(v::AbstractVector)
 
-If the vector `v` has 3 components, then create a quaternion in which the real
-part is `0` and the vectorial or imaginary part has the same components of the
-vector `v`. In other words:
+If the vector `v` has 3 components, then create a quaternion in which the real part is `0`
+and the vectorial or imaginary part has the same components of the vector `v`. In other
+words:
 
     q = 0 + v[1].i + v[2].j + v[3].k
 
-Otherwise, if the vector `v` has 4 components, then create a quaternion in which
-the elements match those of the input vector:
+Otherwise, if the vector `v` has 4 components, then create a quaternion in which the
+elements match those of the input vector:
 
     q = v[1] + v[2].i + v[3].j + v[4].k
 
 !!! note
+
     If the length of `v` is not 3 or 4, then an error is thrown.
 
 # Examples
@@ -81,8 +80,8 @@ Create a quaternion with real part `r` and vectorial or imaginary part `v`:
     r + v[1].i + v[2].j + v[3].k
 
 !!! note
-    The quaternion type is obtained by promoting the type of `r` and the
-    elements of `v`.
+
+    The quaternion type is obtained by promoting the type of `r` and the elements of `v`.
 
 # Examples
 
@@ -100,8 +99,8 @@ Quaternion{Float64}:
 
 Create the quaternion `u.λ + 0.i + 0.j + 0.k`.
 
-If a quaternion is passed as in the third signature, then the new quaternion
-will have the same type.
+If a quaternion is passed as in the third signature, then the new quaternion will have the
+same type.
 
 # Examples
 
@@ -146,15 +145,14 @@ Quaternion(u::UniformScaling{T}) where T = Quaternion{T}(T(u.λ), T(0), T(0), T(
 Quaternion{T}(u::UniformScaling) where T = Quaternion{T}(T(u.λ), T(0), T(0), T(0))
 Quaternion(::UniformScaling, ::Quaternion{T}) where T = Quaternion{T}(I)
 
-################################################################################
-#                                  Operations
-################################################################################
+############################################################################################
+#                                        Operations                                        #
+############################################################################################
 
-# Operation: +
-# ==============================================================================
+# == Operation: + ==========================================================================
 
 """
-    +(qa::Quaternion, qb::Quaternion)
+    +(qa::Quaternion, qb::Quaternion) -> Quaternion
 
 Compute `qa + qb`.
 
@@ -192,11 +190,10 @@ end
 @inline +(u::UniformScaling, q::Quaternion) = Quaternion(u.λ + q.q0, q.q1, q.q2, q.q3)
 @inline +(q::Quaternion, u::UniformScaling) = u + q
 
-# Operation: -
-# ==============================================================================
+# == Operation: - ==========================================================================
 
 """
-    -(q::Quaternion)
+    -(q::Quaternion) -> Quaternion
 
 Return the quaterion `-q`.
 
@@ -215,7 +212,7 @@ Quaternion{Int64}:
 @inline -(q::Quaternion) = -1 * q
 
 """
-    -(qa::Quaternion, qb::Quaternion)
+    -(qa::Quaternion, qb::Quaternion) -> Quaternion
 
 Compute `qa - qb`.
 
@@ -253,12 +250,11 @@ end
 @inline -(u::UniformScaling, q::Quaternion) = Quaternion(u.λ - q.q0, -q.q1, -q.q2, -q.q3)
 @inline -(q::Quaternion, u::UniformScaling) = (-u) + q
 
-# Operation: *
-# ==============================================================================
+# == Operation: * ==========================================================================
 
 """
-    *(λ::Number, q::Quaternion)
-    *(q::Quaternion, λ::Number)
+    *(λ::Number, q::Quaternion) -> Quaternion
+    *(q::Quaternion, λ::Number) -> Quaternion
 
 Compute `λ * q` or `q * λ`, in which `λ` is a scalar.
 
@@ -278,7 +274,7 @@ Quaternion{Int64}:
 @inline *(q::Quaternion, λ::Number) = Quaternion(λ * q.q0, λ * q.q1, λ * q.q2, λ * q.q3)
 
 """
-    *(q1::Quaternion, q2::Quaternion)
+    *(q1::Quaternion, q2::Quaternion) -> Quaternion
 
 Compute the quaternion multiplication `q1 * q2` (Hamilton product).
 
@@ -322,11 +318,11 @@ end
 @inline *(q::Quaternion, u::UniformScaling) = q * Quaternion(u)
 
 """
-    *(v::AbstractVector, q::Quaternion)
-    *(q::Quaternion, v::AbstractVector)
+    *(v::AbstractVector, q::Quaternion) -> Quaternion
+    *(q::Quaternion, v::AbstractVector) -> Quaternion
 
-Compute the multiplication `qv * q` or `q * qv` in which `qv` is a quaternion
-with real part `0` and vectorial/imaginary part `v` (Hamilton product).
+Compute the multiplication `qv * q` or `q * qv` in which `qv` is a quaternion with real part
+`0` and vectorial/imaginary part `v` (Hamilton product).
 
 # Examples
 
@@ -364,12 +360,11 @@ end
     )
 end
 
-# Operation: /
-# ==============================================================================
+# == Operation: / ==========================================================================
 
 """
-    /(λ::Number, q::Quaternion)
-    /(q::Quaternion, λ::Number)
+    /(λ::Number, q::Quaternion) -> Quaternion
+    /(q::Quaternion, λ::Number) -> Quaternion
 
 Compute the division `λ / q` or `q / λ`, in which `λ` is a scalar.
 
@@ -400,7 +395,7 @@ end
 @inline /(q::Quaternion, λ::Number) = q * (1 / λ)
 
 """
-    /(q1::Quaternion, q2::Quaternion)
+    /(q1::Quaternion, q2::Quaternion) -> Quaternion
 
 Compute `q1 * inv(q2)` (Hamilton product).
 
@@ -435,11 +430,10 @@ Quaternion{Float64}:
 @inline /(u::UniformScaling, q::Quaternion) = Quaternion(u) / q
 @inline /(q::Quaternion, u::UniformScaling) = q / Quaternion(u)
 
-# Operation: \
-# ==============================================================================
+# == Operation: \ ==========================================================================
 
 """
-    \\(q1::Quaternion, q2::Quaternion)
+    \\(q1::Quaternion, q2::Quaternion) -> Quaternion
 
 Compute `inv(q1) * q2`.
 
@@ -471,11 +465,11 @@ Quaternion{Float64}:
 @inline \(q::Quaternion, u::UniformScaling) = inv(q) * Quaternion(u)
 
 """
-    \\(v::AbstractVector, q::Quaternion)
-    \\(q::Quaternion, v::AbstractVector)
+    \\(v::AbstractVector, q::Quaternion) -> Quaternion
+    \\(q::Quaternion, v::AbstractVector) -> Quaternion
 
-Compute the division `qv \\ q` or `q \\ qv` in which `qv` is a quaternion with
-real part `0` and vectorial/imaginary part `v` (Hamilton product).
+Compute the division `qv \\ q` or `q \\ qv` in which `qv` is a quaternion with real part `0`
+and vectorial/imaginary part `v` (Hamilton product).
 
 # Examples
 
@@ -498,12 +492,12 @@ Quaternion{Float64}:
 @inline \(q::Quaternion, v::AbstractVector) = inv(q) * v
 @inline \(v::AbstractVector, q::Quaternion) = inv(Quaternion(v)) * q
 
-################################################################################
-#                                  Functions
-################################################################################
+############################################################################################
+#                                        Functions                                         #
+############################################################################################
 
 """
-    conj(q::Quaternion)
+    conj(q::Quaternion) -> Quaternion
 
 Compute the complex conjugate of the quaternion `q`:
 
@@ -526,7 +520,7 @@ Quaternion{Float64}:
 @inline conj(q::Quaternion) = Quaternion(q.q0, -q.q1, -q.q2, -q.q3)
 
 """
-    copy(q::Quaternion{T}) where T
+    copy(q::Quaternion{T}) where T -> Quaternion
 
 Create a copy of the quaternion `q`.
 """
@@ -535,10 +529,10 @@ Create a copy of the quaternion `q`.
 # Maybe it is necessary for DifferentialEquations.jl
 
 """
-    imag(q::Quaternion)
+    imag(q::Quaternion{T}) -> SVector{3, T}
 
-Return the vectorial or imaginary part of the quaternion `q` represented by a
-3 × 1 vector of type `SVector{3}`.
+Return the vectorial or imaginary part of the quaternion `q` represented by a 3 × 1 vector
+of type `SVector{3}`.
 
 See also: [`real`](@ref), [`vect`](@ref)
 
@@ -559,12 +553,12 @@ julia> imag(q)
 @inline imag(q::Quaternion) = SVector{3}(q.q1, q.q2, q.q3)
 
 """
-    inv(q::Quaternion)
+    inv(q::Quaternion) -> Quaternion
 
 Compute the inverse of the quaternion `q`:
 
     conj(q)
-    -------
+    ───────
       |q|²
 
 See also: [`conj`](@ref)
@@ -594,7 +588,7 @@ Quaternion{Float64}:
 end
 
 """
-    norm(q::Quaternion)
+    norm(q::Quaternion{T}) -> float(T)
 
 Compute the Euclidean norm of the quaternion `q`:
 
@@ -618,7 +612,7 @@ julia> norm(q)
 @inline one(q::Quaternion{T}) where T = one(Quaternion{T})
 
 """
-    real(q::Quaternion)
+    real(q::Quaternion{T}) -> T
 
 Return the real part of the quaternion `q`: `q0`.
 
@@ -638,10 +632,10 @@ julia> real(q)
 @inline real(q::Quaternion) = q.q0
 
 """
-    vect(q::Quaternion)
+    vect(q::Quaternion{T}) -> SVector{3, T}
 
-Return the vectorial or imaginary part of the quaternion `q` represented by a
-3 × 1 vector of type `SVector{3}`.
+Return the vectorial or imaginary part of the quaternion `q` represented by a 3 × 1 vector
+of type `SVector{3, T}`.
 
 See also: [`imag`](@ref), [`real`](@ref)
 
@@ -665,12 +659,12 @@ julia> vect(q)
 @inline zero(::Type{Quaternion}) = Quaternion{Float64}(0, 0, 0, 0)
 @inline zero(q::Quaternion{T}) where T = zero(Quaternion{T})
 
-################################################################################
-#                                  Julia API
-################################################################################
+############################################################################################
+#                                        Julia API                                         #
+############################################################################################
 
-# The following functions make sure that a quaternion is an iterable object.
-# This allows broadcasting without allocations.
+# The following functions make sure that a quaternion is an iterable object. This allows
+# broadcasting without allocations.
 Base.IndexStyle(::Type{<:Quaternion}) = IndexLinear()
 Base.eltype(::Type{Quaternion{T}}) where T = T
 Base.firstindex(q::Quaternion) = 1
@@ -727,8 +721,7 @@ end
     end
 end
 
-# We need to define `setindex!` with respect to vectors to allow operations such
-# as:
+# We need to define `setindex!` with respect to vectors to allow operations such as:
 #
 #     v[4:7] = q
 @inline function setindex!(v::Vector{T}, q::Quaternion, I::UnitRange) where T
@@ -743,8 +736,8 @@ end
            ≈(q1.q3, q2.q3; kwargs...)
 end
 
-# If this function is not defined, then two quaternions are equal if and only if
-# the elements and the type are equals.
+# If this function is not defined, then two quaternions are equal if and only if the
+# elements and the type are equals.
 @inline function ==(q1::Quaternion, q2::Quaternion)
     return (q1.q0 == q2.q0) &&
            (q1.q1 == q2.q1) &&
@@ -752,9 +745,9 @@ end
            (q1.q3 == q2.q3)
 end
 
-################################################################################
-#                                      IO
-################################################################################
+############################################################################################
+#                                            IO                                            #
+############################################################################################
 
 function show(io::IO, q::Quaternion{T}) where T
     # Check if the user wants compact printing, defaulting to `true`.
@@ -820,16 +813,16 @@ function show(io::IO, mime::MIME"text/plain", q::Quaternion{T}) where T
     return nothing
 end
 
-################################################################################
-#                                  Kinematics
-################################################################################
+############################################################################################
+#                                        Kinematics                                        #
+############################################################################################
 
 """
-    dquat(qba::Quaternion, wba_b::AbstractVector)
+    dquat(qba::Quaternion, wba_b::AbstractVector) -> Quaternion
 
-Compute the time-derivative of the quaternion `qba` that rotates a reference
-frame `a` into alignment to the reference frame `b` in which the angular
-velocity of `b` with respect to `a`, and represented in `b`, is `wba_b`.
+Compute the time-derivative of the quaternion `qba` that rotates a reference frame `a` into
+alignment to the reference frame `b` in which the angular velocity of `b` with respect to
+`a`, and represented in `b`, is `wba_b`.
 
 # Examples
 

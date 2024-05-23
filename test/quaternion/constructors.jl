@@ -1,19 +1,14 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Desription ##############################################################################
 #
-# Desription
-# ==============================================================================
+# Tests related to the constructors of the quaternions.
 #
-#   Tests related to the constructors of the quaternions.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-# File: ./src/quaternion.jl
-# =========================
+# == File: ./src/quaternion.jl =============================================================
 
-# Function: Quaternion
-# --------------------
+# -- Function: Quaternion ------------------------------------------------------------------
 
-@testset "Constructors of the quaternions" begin
+@testset "Constructors of the Quaternions" begin
     # Constructors with all the components as arguments.
     q = Quaternion(1, 0, 0, 0)
     @test q.q0 == 1
@@ -113,7 +108,7 @@
     @test eltype(q) === eltype(q1)
 end
 
-@testset "Constructors of the quaternions (errors)" begin
+@testset "Constructors of the Quaternions (Errors)" begin
     @test_throws ArgumentError Quaternion([1, 1])
     @test_throws ArgumentError Quaternion([1, 1, 2, 3, 4])
 end

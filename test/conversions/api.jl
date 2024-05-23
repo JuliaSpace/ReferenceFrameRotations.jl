@@ -1,24 +1,18 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Desription ##############################################################################
 #
-# Desription
-# ==============================================================================
+# Tests related to the Julia API to convert between the representations.
 #
-#   Tests related to the Julia API to convert between the representations.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-# File: ./src/conversions/api.jl
-# ==============================
+# == File: ./src/conversions/api.jl ========================================================
 
-# Conversion to DCM
-# ------------------------------------------------------------------------------
+# -- Conversion to DCM ---------------------------------------------------------------------
 
-@testset "Julia conversion API: To DCM" begin
+@testset "Julia Conversion API: To DCM" begin
     for T in (Float32, Float64)
         T = Float64
 
-        # Euler angles
-        # ======================================================================
+        # == Euler Angles ==================================================================
 
         ea = rand(EulerAngles{T})
         D_exp = angle_to_dcm(ea)
@@ -26,8 +20,7 @@
         @test D_api === D_exp
         @test eltype(D_api) === T
 
-        # Euler angle and axis
-        # ======================================================================
+        # == Euler Angle and Axis ==========================================================
 
         av = rand(EulerAngleAxis{T})
         D_exp = angleaxis_to_dcm(av)
@@ -35,8 +28,7 @@
         @test D_api === D_exp
         @test eltype(D_api) === T
 
-        # Quaternion
-        # ======================================================================
+        # == Quaternion ====================================================================
 
         q = rand(Quaternion{T})
         D_exp = quat_to_dcm(q)
@@ -46,13 +38,11 @@
     end
 end
 
-# Conversion to Euler angle and axis
-# ------------------------------------------------------------------------------
+# -- Conversion to Euler angle and axis ----------------------------------------------------
 
 @testset "Julia conversion API: To Euler angle and axis" begin
     for T in (Float32, Float64)
-        # DCMs
-        # ======================================================================
+        # == DCMs ==========================================================================
 
         dcm = rand(DCM{T})
         av_exp = dcm_to_angleaxis(dcm)
@@ -60,8 +50,7 @@ end
         @test av_exp === av_api
         @test eltype(av_api) === T
 
-        # Euler angles
-        # ======================================================================
+        # == Euler Angles ==================================================================
 
         ea = rand(EulerAngles{T})
         av_exp = angle_to_angleaxis(ea)
@@ -69,8 +58,7 @@ end
         @test av_exp === av_api
         @test eltype(av_api) === T
 
-        # Quaternion
-        # ======================================================================
+        # == Quaternion ====================================================================
 
         q = rand(Quaternion{T})
         av_exp = quat_to_angleaxis(q)
@@ -80,14 +68,12 @@ end
     end
 end
 
-# Conversion to Euler angles
-# ------------------------------------------------------------------------------
+# -- Conversion to Euler Angles ------------------------------------------------------------
 
-@testset "Julia conversion API: To Euler angles" begin
+@testset "Julia Conversion API: To Euler Angles" begin
     for rot_seq in valid_rot_seqs
         for T in (Float32, Float64)
-            # DCM
-            # ==================================================================
+            # == DCM =======================================================================
 
             dcm = rand(DCM{T})
             ea_exp = dcm_to_angle(dcm, rot_seq)
@@ -95,8 +81,7 @@ end
             @test ea_exp === ea_api
             @test eltype(ea_api) === T
 
-            # Euler angle
-            # ==================================================================
+            # == Euler Angle ===============================================================
 
             ea = rand(EulerAngles{T})
             ea_exp = angle_to_angle(ea, rot_seq)
@@ -104,8 +89,7 @@ end
             @test ea_api === ea_exp
             @test eltype(ea_api) === T
 
-            # Euler angle and axis
-            # ==================================================================
+            # == Euler Angle and Axis ======================================================
 
             av = rand(EulerAngleAxis{T})
             ea_exp = angleaxis_to_angle(av, rot_seq)
@@ -113,8 +97,7 @@ end
             @test ea_api === ea_exp
             @test eltype(ea_api) === T
 
-            # Quaternion
-            # ==================================================================
+            # == Quaternion ================================================================
 
             q = rand(Quaternion{T})
             ea_exp = quat_to_angle(q, rot_seq)
@@ -126,8 +109,7 @@ end
 
     # Conversion without specifying the rotation sequence.
     for T in (Float32, Float64)
-        # DCM
-        # ======================================================================
+        # == DCM ===========================================================================
 
         dcm = rand(DCM{T})
         ea_exp = dcm_to_angle(dcm, :ZYX)
@@ -135,21 +117,19 @@ end
         @test ea_exp === ea_api
         @test eltype(ea_api) === T
 
-        # Euler angle
-        # ======================================================================
+        # == Euler Angle ===================================================================
 
         ea = rand(EulerAngles{T})
         ea_api = convert(EulerAngles, ea)
         @test ea_api === ea
         @test eltype(ea_api) === T
 
-        # In a previous version, there was a bug in which this code was changing
-        # the rotation sequence to `:ZYX`.
+        # In a previous version, there was a bug in which this code was changing the
+        # rotation sequence to `:ZYX`.
         vea = EulerAngles[ea]
         @test vea[1] === ea
 
-        # Euler angle and axis
-        # ======================================================================
+        # == Euler Angle and Axis ==========================================================
 
         # Sample a random Euler angle and axis.
         av = rand(EulerAngleAxis{T})
@@ -158,8 +138,7 @@ end
         @test ea_api === ea_exp
         @test eltype(ea_api) === T
 
-        # Quaternion
-        # ======================================================================
+        # == Quaternion ====================================================================
 
         q = rand(Quaternion{T})
         ea_exp = quat_to_angle(q)
@@ -169,13 +148,11 @@ end
     end
 end
 
-# Conversion to quaternion
-# ------------------------------------------------------------------------------
+# -- Conversion to Quaternion --------------------------------------------------------------
 
 @testset "Julia conversion API: To Quaternion" begin
     for T in (Float32, Float64)
-        # Euler angles
-        # ======================================================================
+        # == Euler Angles ==================================================================
 
         ea = rand(EulerAngles{T})
         q_exp = angle_to_quat(ea)
@@ -183,8 +160,7 @@ end
         @test q_api === q_exp
         @test eltype(q_api) === T
 
-        # Euler angle and axis
-        # ======================================================================
+        # == Euler Angle and Axis ==========================================================
 
         # Sample a random Euler angle and axis.
         av = rand(EulerAngleAxis{T})
@@ -193,8 +169,7 @@ end
         @test q_api === q_exp
         @test eltype(q_api) === T
 
-        # DCM
-        # ======================================================================
+        # == DCM ===========================================================================
 
         D = rand(DCM{T})
         q_exp = dcm_to_quat(D)

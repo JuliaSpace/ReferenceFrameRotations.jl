@@ -1,27 +1,22 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Desription ##############################################################################
 #
-# Desription
-# ==============================================================================
+# Tests related to conversion from direction cosine matrices to Euler angles.
 #
-#   Tests related to conversion from direction cosine matrices to Euler angles.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-# File: ./src/conversions/dcm_to_angle.jl
-# =======================================
+# == File: ./src/conversions/dcm_to_angle.jl ===============================================
 
-# Functions: dcm_to_angle
-# -----------------------
+# -- Functions: dcm_to_angle ---------------------------------------------------------------
 
 @testset "DCM => Euler angles" begin
     for T in (Float32, Float64)
         # The conversion is performed by creating DCMs using the tested function
         # `angle_to_dcm`, and then converting to Euler angles.
 
-        # The test set is formed of three rotations angles, the rotation
-        # sequence, and the comparison mode. The latter is used for the cases
-        # with singularities. In those cases, we need to know if the angles a₁
-        # and a₃ must be summed or subtracted due to the singularity.
+        # The test set is formed of three rotations angles, the rotation sequence, and the
+        # comparison mode. The latter is used for the cases with singularities. In those
+        # cases, we need to know if the angles a₁ and a₃ must be summed or subtracted due to
+        # the singularity.
         testset = [
             # ZYX
             (_rand_ang(T), _rand_ang2(T), _rand_ang(T), :Z, :Y, :X, :none)
@@ -116,12 +111,12 @@
     end
 end
 
-@testset "DCM => Euler angles (errors)" begin
+@testset "DCM => Euler Angles (errors)" begin
     D = DCM(I)
     @test_throws ArgumentError dcm_to_angle(D, :XXY)
 end
 
-@testset "DCM => Euler angles (internal functions)" begin
+@testset "DCM => Euler Angles (Internal Functions)" begin
     for T in (Float32, Float64)
         a = ReferenceFrameRotations._mod_acos(T(1) + eps(T))
         @test a isa T

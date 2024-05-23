@@ -1,17 +1,12 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Desription ##############################################################################
 #
-# Desription
-# ==============================================================================
+# Tests related to conversion from quaternions to direction cosine matrices.
 #
-#   Tests related to conversion from quaternions to direction cosine matrices.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-# File: ./src/conversions/quaternion_to_dcm.jl
-# ============================================
+# == File: ./src/conversions/quaternion_to_dcm.jl ==========================================
 
-# Functions: quat_to_dcm
-# ----------------------
+# -- Functions: quat_to_dcm ----------------------------------------------------------------
 
 @testset "Quaternion => DCM" begin
     for T in (Float32, Float64)

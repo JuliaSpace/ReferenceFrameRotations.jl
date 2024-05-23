@@ -6,9 +6,9 @@ using StaticArrays
 
 import Base: isapprox
 
-################################################################################
-#                             Auxiliary functions
-################################################################################
+############################################################################################
+#                                   Auxiliary Functions                                    #
+############################################################################################
 
 # Function to uniformly sample an angle in [-π, π].
 _rand_ang(T = Float64) = -T(π) + T(2π) * rand(T)
@@ -55,8 +55,7 @@ const valid_rot_seqs = [
     :ZYZ
 ]
 
-# Define the function `isapprox` for `EulerAngleAxis` to make the comparison
-# easier.
+# Define the function `isapprox` for `EulerAngleAxis` to make the comparison easier.
 function isapprox(x::EulerAngleAxis, y::EulerAngleAxis; keys...)
     a = isapprox(x.a, y.a; keys...)
     v = isapprox(x.v, y.v; keys...)
@@ -64,8 +63,7 @@ function isapprox(x::EulerAngleAxis, y::EulerAngleAxis; keys...)
     return a && v
 end
 
-# Define the function `isapprox` for `EulerAngles` to make the comparison
-# easier.
+# Define the function `isapprox` for `EulerAngles` to make the comparison easier.
 function isapprox(x::EulerAngles, y::EulerAngles; keys...)
     a1 = isapprox(x.a1, y.a1; keys...)
     a2 = isapprox(x.a2, y.a2; keys...)
@@ -75,20 +73,20 @@ function isapprox(x::EulerAngles, y::EulerAngles; keys...)
     return a1 && a2 && a3 && r
 end
 
-@time @testset "Direction cosine matrices" verbose = true begin
+@time @testset "Direction Cosine Matrices" verbose = true begin
     include("./dcm/misc.jl")
     include("./dcm/kinematics.jl")
     include("./dcm/orthonormalize.jl")
 end
 println("")
 
-@time @testset "Euler angle and axis" verbose = true begin
+@time @testset "Euler Angle and Axis" verbose = true begin
     include("./angleaxis/functions.jl")
     include("./angleaxis/operations.jl")
 end
 println("")
 
-@time @testset "Euler angles" verbose = true begin
+@time @testset "Euler Angles" verbose = true begin
     include("./angle/functions.jl")
     include("./angle/operations.jl")
 end
@@ -122,17 +120,17 @@ println("")
 end
 println("")
 
-@time @testset "Compose rotations" verbose = true begin
+@time @testset "Compose Rotations" verbose = true begin
     include("./compose_rotations.jl")
 end
 println("")
 
-@time @testset "Invert rotations" verbose = true begin
+@time @testset "Invert Rotations" verbose = true begin
     include("./inv_rotations.jl")
 end
 println("")
 
-@time @testset "Random rotations" verbose = true begin
+@time @testset "Random Rotations" verbose = true begin
     include("./random.jl")
 end
 println("")

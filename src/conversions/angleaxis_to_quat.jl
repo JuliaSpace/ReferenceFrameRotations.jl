@@ -1,26 +1,23 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Description #############################################################################
 #
-# Description
-# ==============================================================================
+# Functions related to the conversion from Euler angle and axis to quaternion.
 #
-#   Functions related to the conversion from Euler angle and axis to quaternion.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
 export angleaxis_to_quat
 
 """
-    angleaxis_to_quat(θ::Number, v::AbstractVector)
-    angleaxis_to_quat(angleaxis::EulerAngleAxis)
+    angleaxis_to_quat(θ::Number, v::AbstractVector) -> Quaternion
+    angleaxis_to_quat(angleaxis::EulerAngleAxis) -> Quaternion
 
 Convert the Euler angle `θ` [rad] and Euler axis `v` to a quaternion.
 
-Those values can also be passed inside the structure `ea` (see
-[`EulerAngleAxis`](@ref)).
+Those values can also be passed inside the structure `ea` (see [`EulerAngleAxis`](@ref)).
 
 !!! warning
-    It is expected that the vector `v` is unitary. However, no verification is
-    performed inside the function. The user must handle this situation.
+
+    It is expected that the vector `v` is unitary. However, no verification is performed
+    inside the function. The user must handle this situation.
 
 # Example
 

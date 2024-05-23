@@ -1,19 +1,14 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Desription ##############################################################################
 #
-# Desription
-# ==============================================================================
+# Tests related to the operations with quaternions.
 #
-#   Tests related to the operations with quaternions.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-# File: ./src/quaternion.jl
-# =========================
+# == File: ./src/quaternion.jl =============================================================
 
-# Functions: +
-# ------------
+# -- Functions: + --------------------------------------------------------------------------
 
-@testset "Operations with quaternions: +"  begin
+@testset "Operations With Quaternions: +"  begin
     q1 = Quaternion(1, 0, 0, 0)
     q2 = Quaternion(0, cosd(60), 0, sind(60))
     q3 = q1 + q2
@@ -50,10 +45,9 @@
     @test eltype(q3) === promote_type(eltype(q1), eltype(1.0))
 end
 
-# Functions: -
-# ------------
+# -- Functions: - --------------------------------------------------------------------------
 
-@testset "Operations with quaternions: -"  begin
+@testset "Operations With Quaternions: -"  begin
     q1 = Quaternion(1, 2, 3, 4)
     q2 = -q1
     @test q2.q0 == -1
@@ -98,10 +92,9 @@ end
     @test eltype(q3) === promote_type(eltype(q1), eltype(1.0))
 end
 
-# Functions: *
-# ------------
+# -- Functions: * --------------------------------------------------------------------------
 
-@testset "Operations with quaternions: *" begin
+@testset "Operations With Quaternions: *" begin
     # Scalar multiplication.
     q1 = Quaternion(1, 0, 0, 0)
 
@@ -176,10 +169,9 @@ end
     @test q2 === q3
 end
 
-# Functions: /
-# ------------
+# -- Functions: / --------------------------------------------------------------------------
 
-@testset "Operations with quaternions: /" begin
+@testset "Operations With Quaternions: /" begin
     # Scalar division.
     q1 = Quaternion(2, 0, 0, 0)
     q2 = q1 / 2
@@ -233,10 +225,9 @@ end
     @test eltype(q3) === promote_type(Int, Float32)
 end
 
-# Functions: \
-# ------------
+# -- Functions: \ --------------------------------------------------------------------------
 
-@testset "Operations with quaternions: \\" begin
+@testset "Operations With Quaternions: \\" begin
     # Quaternion division (Hamilton product).
     q1 = Quaternion{Float64}(randn(), randn(), randn(), randn())
     q2 = Quaternion{Float64}(randn(), randn(), randn(), randn())

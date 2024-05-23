@@ -1,26 +1,23 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Description #############################################################################
 #
-# Description
-# ==============================================================================
+# Functions related to the conversion from Euler angle and axis to DCM.
 #
-#   Functions related to the conversion from Euler angle and axis to DCM.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
 export angleaxis_to_dcm
 
 """
-    angleaxis_to_dcm(a::Number, v::AbstractVector)
-    angleaxis_to_dcm(av::EulerAngleAxis)
+    angleaxis_to_dcm(a::Number, v::AbstractVector) -> DCM
+    angleaxis_to_dcm(av::EulerAngleAxis) -> DCM
 
 Convert the Euler angle `a` [rad] and Euler axis `v` to a DCM.
 
-Those values can also be passed inside the structure `ea` (see
-[`EulerAngleAxis`](@ref)).
+Those values can also be passed inside the structure `ea` (see [`EulerAngleAxis`](@ref)).
 
 !!! warning
-    It is expected that the vector `v` is unitary. However, no verification is
-    performed inside the function. The user must handle this situation.
+
+    It is expected that the vector `v` is unitary. However, no verification is performed
+    inside the function. The user must handle this situation.
 
 # Example
 

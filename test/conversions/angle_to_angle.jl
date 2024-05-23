@@ -1,23 +1,18 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Desription ##############################################################################
 #
-# Desription
-# ==============================================================================
+# Tests related to conversion between Euler angles.
 #
-#   Tests related to conversion between Euler angles.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-# File: ./src/conversions/angle_to_angle.jl
-# =========================================
+# == File: ./src/conversions/angle_to_angle.jl =============================================
 
-# Functions: angle_to_angle
-# -------------------------
+# -- Functions: angle_to_angle -------------------------------------------------------------
 
 @testset "Euler angles => Euler angles" begin
     for T in (Float32, Float64)
-        # We do not need comprehensive test here because `angle_to_angle` first
-        # converts the Euler angles to DCM and then back to Euler angles. Those
-        # two operations are already heavily tested.
+        # We do not need comprehensive test here because `angle_to_angle` first converts the
+        # Euler angles to DCM and then back to Euler angles. Those two operations are
+        # already heavily tested.
 
         ea1 = EulerAngles(deg2rad(T(45)), 0, 0, :XYZ)
         ea2 = angle_to_angle(ea1, :ZYX)

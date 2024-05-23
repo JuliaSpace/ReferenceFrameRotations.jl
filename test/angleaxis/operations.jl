@@ -1,19 +1,14 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Desription ##############################################################################
 #
-# Desription
-# ==============================================================================
+# Tests related to the operations with Euler angle and axis.
 #
-#   Tests related to the operations with Euler angle and axis.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-# File: ./src/angleaxis.jl
-# ========================
+# == File: ./src/angleaxis.jl ==============================================================
 
-# Functions: *
-# ------------
+# -- Functions: * --------------------------------------------------------------------------
 
-@testset "Operations with Euler angle and axis: *"  begin
+@testset "Operations with Euler Angle and Axis: *"  begin
     for T in (Float32, Float64)
         av1 = EulerAngleAxis(deg2rad(T(45)), T[sqrt(2) / 2, sqrt(2) / 2, 0])
         av2 = EulerAngleAxis(deg2rad(T(45)), T[sqrt(2) / 2, sqrt(2) / 2, 0])

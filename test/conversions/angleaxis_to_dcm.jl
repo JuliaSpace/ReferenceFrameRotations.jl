@@ -1,19 +1,14 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Desription ##############################################################################
 #
-# Desription
-# ==============================================================================
+# Tests related to conversion from Euler angle and axis to DCM.
 #
-#   Tests related to conversion from Euler angle and axis to DCM.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-# File: ./src/conversions/angleaxis_to_dcm.jl
-# ===========================================
+# == File: ./src/conversions/angleaxis_to_dcm.jl ===========================================
 
-# Functions: angleaxis_to_dcm
-# ---------------------------
+# -- Functions: angleaxis_to_dcm -----------------------------------------------------------
 
-@testset "Euler angle and axis => DCM" begin
+@testset "Euler Angle and Axis => DCM" begin
     for T in (Float32, Float64)
         # Sample a random Euler angle and axis.
         v = @SVector randn(T, 3)
@@ -38,7 +33,7 @@
     end
 end
 
-@testset "Euler angle and axis => DCM (Errors)" begin
+@testset "Euler Angle and Axis => DCM (Errors)" begin
     @test_throws ArgumentError angleaxis_to_dcm(0, [1, 2])
     @test_throws ArgumentError angleaxis_to_dcm(0, [1, 2, 3, 4])
 end

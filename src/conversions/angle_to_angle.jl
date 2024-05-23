@@ -1,28 +1,23 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Description #############################################################################
 #
-# Description
-# ==============================================================================
+# Functions related to the conversion between Euler angles.
 #
-#   Functions related to the conversion between Euler angles.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
 export angle_to_angle
 
 """
-    angle_to_angle(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq_orig::Symbol, rot_seq_dest::Symbol)
-    angle_to_angle(Θ::EulerAngles, rot_seq_dest::Symbol)
+    angle_to_angle(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq_orig::Symbol, rot_seq_dest::Symbol) -> EulerAngles
+    angle_to_angle(Θ::EulerAngles, rot_seq_dest::Symbol) -> EulerAngles
 
 Convert the Euler angles `θ₁`, `θ₂`, and `θ₃` [rad] with the rotation sequence
-`rot_seq_orig` to a new set of Euler angles with rotation sequence
-`rot_seq_dest`.
+`rot_seq_orig` to a new set of Euler angles with rotation sequence `rot_seq_dest`.
 
-The input values of the origin Euler angles can also be passed inside the
-structure `Θ` (see [`EulerAngles`](@ref)).
+The input values of the origin Euler angles can also be passed inside the structure `Θ` (see
+[`EulerAngles`](@ref)).
 
-The rotation sequence is defined by a `:Symbol`. The possible values are:
-`:XYX`, `XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`,
-`:ZYX`, and `:ZYZ`.
+The rotation sequence is defined by a `:Symbol`. The possible values are: `:XYX`, `XYZ`,
+`:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`, `:ZYX`, and `:ZYZ`.
 
 # Example
 

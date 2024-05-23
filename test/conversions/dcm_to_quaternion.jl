@@ -1,23 +1,18 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Desription ##############################################################################
 #
-# Desription
-# ==============================================================================
+# Tests related to conversion from direction cosine matrices to quaternion.
 #
-#   Tests related to conversion from direction cosine matrices to quaternion.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-# File: ./src/conversions/dcm_to_quaternion.jl
-# ============================================
+# == File: ./src/conversions/dcm_to_quaternion.jl ==========================================
 
-# Functions: dcm_to_quat
-# ----------------------
+# -- Functions: dcm_to_quat ----------------------------------------------------------------
 
 @testset "DCM => Quaternion" begin
     for T in (Float32, Float64)
-        # The conversion between DCM and quaternion is tested by observing if
-        # the rotation of a vector is consistent in both representations. In the
-        # testset, we add all the special cases in the conversion.
+        # The conversion between DCM and quaternion is tested by observing if the rotation
+        # of a vector is consistent in both representations. In the testset, we add all the
+        # special cases in the conversion.
         testset = [
             (_rand_ang(T), _rand_ang2(T), _rand_ang(T), :Z, :Y, :X)
             (T(-0.3),      T(+0.5),       T(+π),        :Z, :Y, :X)

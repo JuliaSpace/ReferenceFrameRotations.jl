@@ -1,18 +1,15 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Description #############################################################################
 #
-# Description
-# ==============================================================================
+# Functions related to the Euler angles.
 #
-#   Functions related to the Euler angles.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-################################################################################
-#                                  Operations
-################################################################################
+############################################################################################
+#                                        Operations                                        #
+############################################################################################
 
 """
-    *(Θ₂::EulerAngles, Θ₁::EulerAngles)
+    *(Θ₂::EulerAngles, Θ₁::EulerAngles) -> EulerAngles
 
 Compute the composed rotation of `Θ₁ -> Θ₂`.
 
@@ -51,13 +48,12 @@ EulerAngles{Float64}:
 end
 
 """
-    inv(Θ::EulerAngles)
+    inv(Θ::EulerAngles) -> EulerAngles
 
 Return the Euler angles that represent the inverse rotation of `Θ`.
 
-The rotation sequence of the result will be the inverse of the input. Hence, if
-the input rotation sequence is, for example, `:XYZ`, then the result will be
-represented using `:ZYX`.
+The rotation sequence of the result will be the inverse of the input. Hence, if the input
+rotation sequence is, for example, `:XYZ`, then the result will be represented using `:ZYX`.
 
 # Examples
 
@@ -97,9 +93,9 @@ function inv(Θ::EulerAngles)
     return EulerAngles(-Θ.a3, -Θ.a2, -Θ.a1, inv_rot_seq)
 end
 
-################################################################################
-#                                      IO
-################################################################################
+############################################################################################
+#                                            IO                                            #
+############################################################################################
 
 function show(io::IO, Θ::EulerAngles{T}) where T
     # Get if `io` request a compact printing, defaulting to true.
@@ -166,9 +162,9 @@ function show(io::IO, mime::MIME"text/plain", Θ::EulerAngles{T}) where T
     return nothing
 end
 
-################################################################################
-#                                  Julia API
-################################################################################
+############################################################################################
+#                                        Julia API                                         #
+############################################################################################
 
 Base.eltype(::Type{EulerAngles{T}}) where T = T
 

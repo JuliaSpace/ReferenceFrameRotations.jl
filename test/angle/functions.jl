@@ -1,19 +1,14 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Desription ##############################################################################
 #
-# Desription
-# ==============================================================================
+# Tests related to the general functions using Euler angles.
 #
-#   Tests related to the general functions using Euler angles.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-# File: ./src/angle.jl
-# ====================
+# == File: ./src/angle.jl ==================================================================
 
-# Functions: inv
-# --------------
+# -- Functions: inv ------------------------------------------------------------------------
 
-@testset "General functions of Euler angles: inv" begin
+@testset "General Functions of Euler Angles: inv" begin
     for T in (Float32, Float64)
         for rot_seq in valid_rot_seqs
             ea = rand(EulerAngles{T})
@@ -44,10 +39,9 @@
     end
 end
 
-# Functions: show
-# ---------------
+# -- Functions: show -----------------------------------------------------------------------
 
-@testset "General functions of Euler angles: show" begin
+@testset "General Functions of Euler Angles: show" begin
     buf = IOBuffer()
     io = IOContext(buf)
     ea = EulerAngles(π / 3, π / 6,  2 / 3 * π, :ZYX)

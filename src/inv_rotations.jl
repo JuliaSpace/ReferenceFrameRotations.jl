@@ -1,20 +1,17 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Description #############################################################################
 #
-# Description
-# ==============================================================================
+# Generic function to inverse rotations.
 #
-#   Generic function to inverse rotations.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
 export inv_rotation
 
-################################################################################
-#                              Inverse Rotations
-################################################################################
+############################################################################################
+#                                    Inverse Rotations                                     #
+############################################################################################
 
 """
-    inv_rotation(R)
+    inv_rotation(R::T) -> T
 
 Compute the inverse rotation of `R`, which can be:
 
@@ -26,14 +23,16 @@ Compute the inverse rotation of `R`, which can be:
 The output will have the same type as `R`.
 
 !!! note
-    If `R` is a DCM, than its transpose is computed instead of its inverse to
-    reduce the computational burden. The both are equal if the DCM has unit
-    norm. This must be verified by the user.
+
+    If `R` is a DCM, than its transpose is computed instead of its inverse to reduce the
+    computational burden. The both are equal if the DCM has unit norm. This must be verified
+    by the user.
 
 !!! note
-    If `R` is a quaternion, than its conjugate is computed instead of its
-    inverse to reduce the computational burden. The both are equal if the
-    quaternion has unit norm. This must be verified by the used.
+
+    If `R` is a quaternion, than its conjugate is computed instead of its inverse to reduce
+    the computational burden. The both are equal if the quaternion has unit norm. This must
+    be verified by the used.
 
 # Example
 

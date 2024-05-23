@@ -1,20 +1,14 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Desription ##############################################################################
 #
-# Desription
-# ==============================================================================
+# Tests related to conversion from direction cosine matrices to Euler angle and axis.
 #
-#   Tests related to conversion from direction cosine matrices to Euler angle
-#   and axis.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-# File: ./src/conversions/dcm_to_angleaxis.jl
-# ===========================================
+# == File: ./src/conversions/dcm_to_angleaxis.jl ===========================================
 
-# Functions: dcm_to_angleaxis
-# ---------------------------
+# -- Functions: dcm_to_angleaxis -----------------------------------------------------------
 
-@testset "DCM => Euler angle and axis" begin
+@testset "DCM => Euler Angle and Axis" begin
     for T in (Float32, Float64)
         # Create a random DCM.
         D = rand(DCM{T})
@@ -23,8 +17,8 @@
         av = dcm_to_angleaxis(D)
         @test eltype(av) === T
 
-        # Check if the rotation expressed by D is consistent, which is performed in
-        # two steps:
+        # Check if the rotation expressed by D is consistent, which is performed in two
+        # steps:
         #
         #   1. A vector aligned with `v` does not change.
         #   2. A vector perpendicular to `v` is rotated by `a`.
@@ -49,7 +43,7 @@
     end
 end
 
-@testset "DCM => Euler angle and axis (Special cases)" begin
+@testset "DCM => Euler Angle and Axis (Special Cases)" begin
     for T in (Float32, Float64)
         D = DCM(T(1) * I)
         av = dcm_to_angleaxis(D)

@@ -1,26 +1,22 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Description #############################################################################
 #
-# Description
-# ==============================================================================
+# Functions related to the conversion from quaternion to Euler angle and axis.
 #
-#   Functions related to the conversion from quaternion to Euler angle and axis.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
 export quat_to_angleaxis
 
 """
-    quat_to_angleaxis(q::Quaternion{T}) where T
+    quat_to_angleaxis(q::Quaternion{T}) where T -> EulerAngleAxis
 
 Convert the quaternion `q` to a Euler angle and axis representation (see
-[`EulerAngleAxis`](@ref)). By convention, the Euler angle will be kept between
-`[0, π] rad`.
+[`EulerAngleAxis`](@ref)). By convention, the Euler angle will be kept between `[0, π]` rad.
 
 # Remarks
 
-This function will not fail if the quaternion norm is not 1. However, the
-meaning of the results will not be defined, because the input quaternion does
-not represent a 3D rotation. The user must handle such situations.
+This function will not fail if the quaternion norm is not 1. However, the meaning of the
+results will not be defined, because the input quaternion does not represent a 3D rotation.
+The user must handle such situations.
 
 # Examples
 
