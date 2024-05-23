@@ -1,6 +1,11 @@
 ReferenceFrameRotations.jl Changelog
 ====================================
 
+Version 3.0.2
+-------------
+
+- ![Enhancement][badge-enhancement] Improve some docstrings.
+
 Version 3.0.1
 -------------
 
