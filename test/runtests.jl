@@ -6,6 +6,8 @@ using StaticArrays
 
 import Base: isapprox
 
+using DifferentiationInterface, Zygote
+
 ############################################################################################
 #                                   Auxiliary Functions                                    #
 ############################################################################################
@@ -132,5 +134,9 @@ println("")
 
 @time @testset "Random Rotations" verbose = true begin
     include("./random.jl")
+end
+
+@time @testset "Test DCM Differentiation" begin
+    include("differentiability/dcm.jl")
 end
 println("")
