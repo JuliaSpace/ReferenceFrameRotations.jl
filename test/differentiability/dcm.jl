@@ -11,4 +11,10 @@
     @test f == expected_f
     @test ad == expected_jac
 
+    data_tuple = (data...,)
+
+    ad_jac = reduce(hcat, Zygote.jacobian(DCM, data_tuple...))
+
+    @test ad_jac == expected_jac
+
 end
