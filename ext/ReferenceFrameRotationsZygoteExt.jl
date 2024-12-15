@@ -7,23 +7,15 @@ using Zygote.ChainRulesCore: ChainRulesCore
 import Zygote.ChainRulesCore: Tangent, NoTangent, ProjectTo
 
 function ChainRulesCore.rrule(
-    ::Type{<:DCM}, data::AbstractVector
+    ::Type{<:DCM}, data::NTuple{9, T} where {T}
 )
     y = DCM(data)
 
     function DCM_pullback(Δ::AbstractMatrix)
-        return (NoTangent(), Δ)
+        return (NoTangent(), Tuple(Δ))
     end
 
     return y, DCM_pullback
-end
-
-function ChainRulesCore.rrule(::Type{<:DCM}, data::NTuple{9, T}) where {T}
-    # Forward pass: construct the DCM from the data tuple
-    project_data = ProjectTo(data)
-    pullback(Δ) = (NoTangent(), project_data(vec(Δ)))
-
-    return DCM(data), pullback
 end
 
 end
