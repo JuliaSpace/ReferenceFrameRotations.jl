@@ -43,7 +43,7 @@ function ChainRulesCore.rrule(
     ::Type{<:DCM}, data::T
 ) where {T <: AbstractMatrix}
 
-    y = DCM(data)
+    y = DCM(SMatrix{3, 3}(data))
 
     function DCM_pullback(Δ)
         return (NoTangent(), T(Δ))
