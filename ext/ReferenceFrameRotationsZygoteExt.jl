@@ -26,7 +26,7 @@ function ChainRulesCore.rrule(
     y = DCM(data)
 
     function DCM_pullback(Δ)
-        return (NoTangent(), SMatrix{3,3,T}(Δ))
+        return (NoTangent(), Matrix(Δ))
     end
 
     return y, DCM_pullback
@@ -39,7 +39,7 @@ function ChainRulesCore.rrule(
     y = DCM(data)
 
     function DCM_pullback(Δ)
-        return (NoTangent(), MMatrix{3,3,T}(Δ))
+        return (NoTangent(), Matrix(Δ))
     end
 
     return y, DCM_pullback
