@@ -11,8 +11,20 @@ function ChainRulesCore.rrule(
 )
     y = DCM(data)
 
-    function DCM_pullback(Δ)
+    function DCM_pullback(Δ::AbstractMatrix)
         return (NoTangent(), Tuple(Δ))
+    end
+
+    return y, DCM_pullback
+end
+
+function ChainRulesCore.rrule(
+    ::Type{<:DCM}, data::AbstractMatrix{T} where {T}
+)
+    y = DCM(Tuple(data))
+
+    function DCM_pullback(Δ::AbstractMatrix)
+        return (NoTangent(), Δ)
     end
 
     return y, DCM_pullback
