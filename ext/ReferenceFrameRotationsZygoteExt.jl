@@ -19,8 +19,8 @@ function ChainRulesCore.rrule(
 end
 
 function ChainRulesCore.rrule(
-    ::Type{<:DCM}, data::T where {T<:AbstractMatrix}
-)
+    ::Type{<:DCM}, data::T 
+) where {T<:AbstractMatrix}
     y = DCM(data)
 
     function DCM_pullback(Δ::AbstractMatrix)
