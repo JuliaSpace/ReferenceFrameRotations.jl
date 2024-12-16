@@ -18,32 +18,38 @@ function ChainRulesCore.rrule(
     return y, DCM_pullback
 end
 
-"""
-Convert Δ back to the same type as the primal input matrix.
-This is a helper function.
-"""
-function restore_type(primal::AbstractMatrix{T}, Δ::DCM{T}) where {T}
-    # If the primal was a plain Matrix:
-    if primal isa Matrix
-        return Matrix(Δ)
+
+function ChainRulesCore.rrule(
+    ::Type{<:DCM}, data::SMatrix{3,3,T}
+) where {T}
+
+    y = DCM(data)
+
+    function DCM_pullback(Δ)
+        return (NoTangent(), SMatrix{3,3,T}(Δ))
     end
-    # If the primal was an SMatrix:
-    if primal isa SMatrix{3,3,T}
-        return SMatrix{3,3,T}(Δ)
-    end
-    # If the primal was an MMatrix:
-    if primal isa MMatrix{3,3,T}
-        return MMatrix{3,3,T}(Δ)
-    end
-    # Fallback: just return a Matrix
-    return Matrix(Δ)
+
+    return y, DCM_pullback
 end
 
 function ChainRulesCore.rrule(
-    ::Type{<:DCM}, data::AbstractMatrix{T}
+    ::Type{<:DCM}, data::MMatrix{3,3,T}
 ) where {T}
 
-    y = DCM(SMatrix{3, 3}(data))
+    y = DCM(data)
+
+    function DCM_pullback(Δ)
+        return (NoTangent(), MMatrix{3,3,T}(Δ))
+    end
+
+    return y, DCM_pullback
+end
+
+function ChainRulesCore.rrule(
+    ::Type{<:DCM}, data::Matrix{3,3,T}
+) where {T}
+
+    y = DCM(data)
 
     function DCM_pullback(Δ)
         return (NoTangent(), Matrix(Δ))
