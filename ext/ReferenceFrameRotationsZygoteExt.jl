@@ -40,13 +40,13 @@ function restore_type(primal::AbstractMatrix{T}, Δ::DCM{T}) where {T}
 end
 
 function ChainRulesCore.rrule(
-    ::Type{<:DCM}, data::T
-) where {T <: AbstractMatrix}
+    ::Type{<:DCM}, data::AbstractMatrix{T}
+) where {T}
 
     y = DCM(SMatrix{3, 3}(data))
 
     function DCM_pullback(Δ)
-        return (NoTangent(), T(Δ))
+        return (NoTangent(), Matrix(Δ))
     end
 
     return y, DCM_pullback
