@@ -18,4 +18,17 @@ function ChainRulesCore.rrule(
     return y, DCM_pullback
 end
 
+function ChainRulesCore.rrule(
+    ::Type{<:DCM}, data::T where {T<:AbstractArray}
+)
+    y = DCM(data)
+
+    function DCM_pullback(Δ::DCM)
+        return (NoTangent(), T(Δ))
+    end
+
+    return y, DCM_pullback
+end
+
+
 end
