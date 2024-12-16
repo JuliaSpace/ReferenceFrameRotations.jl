@@ -46,7 +46,7 @@ function ChainRulesCore.rrule(
 end
 
 function ChainRulesCore.rrule(
-    ::Type{<:DCM}, data::Matrix{3,3,T}
+    ::Type{<:DCM}, data::Matrix{T}
 ) where {T}
 
     y = DCM(data)
