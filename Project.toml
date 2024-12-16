@@ -21,6 +21,7 @@ ReferenceFrameRotationsZygoteExt = "Zygote"
 [compat]
 Crayons = "4.0"
 DifferentiationInterface = "0.6"
+FiniteDiff = "2.26"
 LinearAlgebra = "1.6"
 Printf = "1.6"
 Random = "1.6"
@@ -31,7 +32,8 @@ julia = "1.6"
 
 [extras]
 DifferentiationInterface = "a0c0ee7d-e4b9-4e03-894e-1c5f64a51d63"
+FiniteDiff = "6a86dc24-6348-571c-b903-95158fe2bd41"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Test", "Zygote", "DifferentiationInterface"]
+test = ["Test", "Zygote", "DifferentiationInterface", "FiniteDiff"]
