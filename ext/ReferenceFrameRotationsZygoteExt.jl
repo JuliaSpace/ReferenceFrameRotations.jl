@@ -9,17 +9,10 @@ import Zygote.ChainRulesCore: Tangent, NoTangent, ProjectTo
 function ChainRulesCore.rrule(
     ::Type{<:DCM}, data::NTuple{9, T} 
 ) where {T}
+
     y = DCM(data)
 
-    function DCM_pullback(Δ::MMatrix{3, 3, T})
-        return (NoTangent(), Tuple(Δ))
-    end
-
-    function DCM_pullback(Δ::SMatrix{3, 3, T})
-        return (NoTangent(), Tuple(Δ))
-    end
-
-    function DCM_pullback(Δ::Matrix{T})
+    function DCM_pullback(Δ)
         return (NoTangent(), Tuple(Δ))
     end
 
