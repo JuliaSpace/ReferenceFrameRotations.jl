@@ -58,9 +58,7 @@ julia> orthonormalize(D)
 ```
 """
 function orthonormalize(dcm::DCM)
-    e₁ = dcm[1:3, 1]
-    e₂ = dcm[1:3, 2]
-    e₃ = dcm[1:3, 3]
+    e₁, e₂, e₃ = eachcol(dcm)
 
     en₁  = e₁ / norm(e₁)
     enj₂ = e₂ - (en₁ ⋅ e₂) * en₁
