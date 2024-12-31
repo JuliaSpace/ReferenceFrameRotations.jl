@@ -20,15 +20,15 @@ function ChainRulesCore.rrule(
 end
 
 function ChainRulesCore.rrule(
-    ::Type{DCM{T}}, mat::StaticMatrix{3,3,T}
+    ::Type{DCM}, mat::AbstractMatrix{T}
 ) where {T}
 
     y = DCM(mat)
 
-    function pullback(Δ::DCM{T})
+    function pullback(Δ)
         return (NoTangent(), Δ)
     end
-    
+
     return y, pullback
 end
 
