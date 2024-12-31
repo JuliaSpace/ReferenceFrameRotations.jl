@@ -57,26 +57,26 @@ DCM{Float64}:
   0.707107     0.612372   0.353553
 ```
 """
-function angle_to_dcm(θ::Number, rot_seq::Symbol)
+function angle_to_dcm(θ::T, rot_seq::Symbol) where {T<:Number}
     sa, ca = sincos(θ)
 
     if rot_seq == :X
         return DCM(
-            1,   0,   0,
-            0, +ca, +sa,
-            0, -sa, +ca
+            T(1), T(0), T(0),
+            T(0), +ca,  +sa,
+            T(0), -sa,  +ca
         )'
     elseif rot_seq == :Y
         return DCM(
-            +ca, 0, -sa,
-              0, 1,   0,
-            +sa, 0, +ca
+            +ca,  T(0), -sa,
+            T(0), T(1), T(0),
+            +sa,  T(0), +ca
         )'
     elseif rot_seq == :Z
         return DCM(
-            +ca, +sa, 0,
-            -sa, +ca, 0,
-              0,   0, 1
+            +ca,  +sa,  T(0),
+            -sa,  +ca,  T(0),
+            T(0), T(0), T(1)
         )'
     else
         throw(ArgumentError("rot_seq must be :X, :Y, or :Z"))
