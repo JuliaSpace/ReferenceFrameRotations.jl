@@ -19,4 +19,17 @@ function ChainRulesCore.rrule(
     return y, DCM_pullback
 end
 
+function ChainRulesCore.rrule(
+    ::Type{DCM{T}}, mat::StaticMatrix{3,3,T}
+) where {T}
+
+    y = DCM(mat)
+
+    function pullback(Δ::DCM{T})
+        return (NoTangent(), Δ)
+    end
+    
+    return y, pullback
+end
+
 end
