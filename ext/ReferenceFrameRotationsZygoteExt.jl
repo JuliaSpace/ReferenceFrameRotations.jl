@@ -29,7 +29,7 @@ function ChainRulesCore.rrule(
         
         jac = ForwardDiff.jacobian(orthonormalize, dcm)
 
-        return (NoTangent(), vcat(Δ...)' * jac)
+        return (NoTangent(), reshape(vcat(Δ...)' * jac, 3, 3))
     end
 
     return y, orthonormalize_pullback
