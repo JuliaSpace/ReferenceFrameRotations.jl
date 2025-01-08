@@ -1,10 +1,10 @@
 module ReferenceFrameRotationsZygoteExt
 
 using ReferenceFrameRotations
-using StaticArrays
+using ForwardDiff
 
 using Zygote.ChainRulesCore: ChainRulesCore
-import Zygote.ChainRulesCore: Tangent, NoTangent, ProjectTo
+import Zygote.ChainRulesCore: NoTangent
 
 function ChainRulesCore.rrule(
     ::Type{<:DCM}, data::NTuple{9, T} 
@@ -17,6 +17,22 @@ function ChainRulesCore.rrule(
     end
 
     return y, DCM_pullback
+end
+
+function ChainRulesCore.rrule(
+    ::typeof(orthonormalize), dcm::DCM
+)
+
+    y = orthonormalize(dcm)
+
+    function orthonormalize_pullback(Δ)
+        
+        jac = ForwardDiff.jacobian(orthonormalize, dcm)
+
+        return (NoTangent(), vcat(Δ...)' * jac)
+    end
+
+    return y, orthonormalize_pullback
 end
 
 end
