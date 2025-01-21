@@ -135,6 +135,7 @@ println("")
 @time @testset "Random Rotations" verbose = true begin
     include("./random.jl")
 end
+println("")
 
 @time @testset "Test DCM Differentiation" begin
     include("differentiability/dcm.jl")
