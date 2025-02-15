@@ -12,17 +12,32 @@ Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 
+[weakdeps]
+ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
+Zygote = "e88e6eb3-aa80-5325-afca-941959d7151f"
+
+[extensions]
+ReferenceFrameRotationsZygoteExt = ["ForwardDiff", "Zygote"]
+
 [compat]
 Crayons = "4.0"
+DifferentiationInterface = "0.6"
+FiniteDiff = "2.26"
+ForwardDiff = "0.10"
 LinearAlgebra = "1.6"
+Mooncake = "0.4"
 Printf = "1.6"
 Random = "1.6"
 StaticArrays = "1"
 Test = "1.6"
-julia = "1.6"
+Zygote = "0.6"
+julia = "1.10, 1.11"
 
 [extras]
+DifferentiationInterface = "a0c0ee7d-e4b9-4e03-894e-1c5f64a51d63"
+FiniteDiff = "6a86dc24-6348-571c-b903-95158fe2bd41"
+Mooncake = "da2b9cff-9c12-43a0-ae48-6db2b0edb7d6"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Test"]
+test = ["Test", "DifferentiationInterface", "FiniteDiff", "Mooncake", "Zygote"]

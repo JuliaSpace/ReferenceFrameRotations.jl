@@ -35,16 +35,20 @@ DCM{Float64}:
     θx::T1,
     θy::T2,
     θz::T3;
-    normalize = true
+    normalize::Bool = true
 ) where {T1<:Number, T2<:Number, T3<:Number}
     # Since we might orthonormalize `D`, we need to get the float to avoid type
     # instabilities.
-    T = float(promote_type(T1, T2, T3))
+    T = promote_type(T1, T2, T3)
 
-    D = DCM{T}(
-          1, +θz, -θy,
-        -θz,   1, +θx,
-        +θy, -θx,   1
+    θx = T(θx)
+    θy = T(θy)
+    θz = T(θz)
+
+    D = DCM(
+        T(1), +θz, -θy,
+        -θz, T(1), +θx,
+        +θy, -θx, T(1)
     )'
 
     if normalize
@@ -52,4 +56,13 @@ DCM{Float64}:
     else
         return D
     end
+end
+
+@inline function smallangle_to_dcm(
+    θx::Integer,
+    θy::Integer,
+    θz::Integer;
+    normalize::Bool = true
+) 
+    return smallangle_to_dcm(float(θx), float(θy), float(θz); normalize = normalize)
 end
