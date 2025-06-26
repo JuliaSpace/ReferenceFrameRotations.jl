@@ -3,7 +3,7 @@ uuid = "74f56ac7-18b3-5285-802d-d4bd4f104033"
 license = "MIT"
 desc = "3D rotations of coordinate frames"
 authors = ["Ronan Arraes Jardim Chagas <ronisbr@gmail.com>"]
-version = "3.1.0"
+version = "3.0.2"
 
 [deps]
 Crayons = "a8cc5b0e-0ffa-5ad4-8c14-923d3ee1735f"
@@ -32,7 +32,7 @@ StableRNGs = "1"
 StaticArrays = "1"
 Test = "1.6"
 Zygote = "0.6"
-julia = "1.10"
+julia = "1.10, 1.11"
 
 [extras]
 DifferentiationInterface = "a0c0ee7d-e4b9-4e03-894e-1c5f64a51d63"
