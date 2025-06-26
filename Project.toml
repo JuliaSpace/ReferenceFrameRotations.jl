@@ -32,7 +32,7 @@ StableRNGs = "1"
 StaticArrays = "1"
 Test = "1.6"
 Zygote = "0.6"
-julia = "1.10, 1.11"
+julia = "1.10"
 
 [extras]
 DifferentiationInterface = "a0c0ee7d-e4b9-4e03-894e-1c5f64a51d63"
