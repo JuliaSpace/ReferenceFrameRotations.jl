@@ -1,6 +1,13 @@
 ReferenceFrameRotations.jl Changelog
 ====================================
 
+Version 3.1.0
+-------------
+
+- ![Feature][badge-feature] The package now has a Zygote extension allowing for
+  differentiation of DCMs. (PR [#28][gh-pr-28])
+- ![Deprecation][badge-deprecation] We dropped support for Julia 1.6.
+
 Version 3.0.2
 -------------
 
@@ -306,3 +313,4 @@ Version 0.1.0
 [gh-issue-21]: https://github.com/JuliaSpace/ReferenceFrameRotations.jl/issues/21
 
 [gh-pr-19]: https://github.com/JuliaSpace/ReferenceFrameRotations.jl/pull/19
+[gh-pr-28]: https://github.com/JuliaSpace/ReferenceFrameRotations.jl/pull/28
