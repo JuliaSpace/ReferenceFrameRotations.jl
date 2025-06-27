@@ -23,7 +23,7 @@ ReferenceFrameRotationsZygoteExt = ["ForwardDiff", "Zygote"]
 Crayons = "4.0"
 DifferentiationInterface = "0.6"
 FiniteDiff = "2.26"
-ForwardDiff = "0.10"
+ForwardDiff = "0.10, 1"
 LinearAlgebra = "1.6"
 Mooncake = "0.4"
 Printf = "1.6"
@@ -31,7 +31,7 @@ Random = "1.6"
 StableRNGs = "1"
 StaticArrays = "1"
 Test = "1.6"
-Zygote = "0.6"
+Zygote = "0.6, 0.7"
 julia = "1.10"
 
 [extras]
