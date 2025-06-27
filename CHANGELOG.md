@@ -1,6 +1,12 @@
 ReferenceFrameRotations.jl Changelog
 ====================================
 
+Verison 3.1.1
+-------------
+
+- ![Bugfix][badge-bugfix] Some compat bounds were not correctly set. (Issue
+  [#32][gh-issue-32])
+
 Version 3.1.0
 -------------
 
@@ -311,6 +317,7 @@ Version 0.1.0
 
 [gh-issue-18]: https://github.com/JuliaSpace/ReferenceFrameRotations.jl/issues/18
 [gh-issue-21]: https://github.com/JuliaSpace/ReferenceFrameRotations.jl/issues/21
+[gh-issue-32]: https://github.com/JuliaSpace/ReferenceFrameRotations.jl/issues/32
 
 [gh-pr-19]: https://github.com/JuliaSpace/ReferenceFrameRotations.jl/pull/19
 [gh-pr-28]: https://github.com/JuliaSpace/ReferenceFrameRotations.jl/pull/28
