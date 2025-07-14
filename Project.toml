@@ -21,11 +21,8 @@ ReferenceFrameRotationsZygoteExt = ["ForwardDiff", "Zygote"]
 
 [compat]
 Crayons = "4.0"
-DifferentiationInterface = "0.6"
-FiniteDiff = "2.26"
 ForwardDiff = "0.10, 1"
 LinearAlgebra = "1.6"
-Mooncake = "0.4"
 Printf = "1.6"
 Random = "1.6"
 StableRNGs = "1"
@@ -37,9 +34,8 @@ julia = "1.10"
 [extras]
 DifferentiationInterface = "a0c0ee7d-e4b9-4e03-894e-1c5f64a51d63"
 FiniteDiff = "6a86dc24-6348-571c-b903-95158fe2bd41"
-Mooncake = "da2b9cff-9c12-43a0-ae48-6db2b0edb7d6"
 StableRNGs = "860ef19b-820b-49d6-a774-d7a799459cd3"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Test", "DifferentiationInterface", "FiniteDiff", "Mooncake", "StableRNGs", "Zygote"]
+test = ["Test", "DifferentiationInterface", "FiniteDiff", "StableRNGs", "Zygote"]

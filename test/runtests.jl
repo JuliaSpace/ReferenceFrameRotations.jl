@@ -6,7 +6,7 @@ using StaticArrays
 
 import Base: isapprox
 
-using DifferentiationInterface, FiniteDiff, Mooncake, Zygote
+using DifferentiationInterface, FiniteDiff, Zygote
 
 ############################################################################################
 #                                   Auxiliary Functions                                    #
