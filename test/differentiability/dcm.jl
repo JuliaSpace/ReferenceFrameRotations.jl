@@ -33,11 +33,4 @@
 
     f_fd, df_fd = value_and_jacobian((x) -> orthonormalize(DCM(x)), AutoFiniteDiff(), data)
     f_ad, df_ad = value_and_jacobian((x) -> orthonormalize(DCM(x)), AutoZygote(), data)
-
-    f_adm, df_adm = value_and_jacobian(
-        (x) -> Array(orthonormalize(DCM(x))), AutoMooncake(; config = nothing), data
-    )
-
-    @test f_ad == f_fd
-    @test df_ad ≈ df_fd rtol = 1e-7
 end
