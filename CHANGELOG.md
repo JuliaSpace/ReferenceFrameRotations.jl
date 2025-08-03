@@ -1,6 +1,13 @@
 ReferenceFrameRotations.jl Changelog
 ====================================
 
+Version 3.1.2
+-------------
+
+- ![Bugfix][badge-bugfix] Fix CI in nightly. (PR [#34][gh-pr-34])
+- ![Enhancement][badge-enhancement] The Zygote extension was modified to handle thunks. (PR
+  [#35][gh-pr-35])
+
 Verison 3.1.1
 -------------
 
@@ -321,3 +328,5 @@ Version 0.1.0
 
 [gh-pr-19]: https://github.com/JuliaSpace/ReferenceFrameRotations.jl/pull/19
 [gh-pr-28]: https://github.com/JuliaSpace/ReferenceFrameRotations.jl/pull/28
+[gh-pr-34]: https://github.com/JuliaSpace/ReferenceFrameRotations.jl/pull/34
+[gh-pr-35]: https://github.com/JuliaSpace/ReferenceFrameRotations.jl/pull/35
