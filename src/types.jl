@@ -4,7 +4,7 @@
 #
 ############################################################################################
 
-export DCM, EulerAngles, EulerAngleAxis, Quaternion, ReferenceFrameRotation
+export DCM, EulerAngles, EulerAngleAxis, Quaternion, CRP, MRP, ReferenceFrameRotation
 
 """
     DCM{T}
@@ -199,6 +199,62 @@ struct Quaternion{T}
 end
 
 """
+    CRP{T}
+
+The definition of Classical Rodrigues Parameters (CRP).
+
+# Fields
+
+- `q1::T`: First component of the CRP.
+- `q2::T`: Second component of the CRP.
+- `q3::T`: Third component of the CRP.
+
+# Constructor
+
+    CRP(q1::T1, q2::T2, q3::T3) where {T1, T2, T3}
+
+Create a new instance of `CRP` with coordinates `q1`, `q2`, and `q3`.
+"""
+struct CRP{T}
+    q1::T
+    q2::T
+    q3::T
+end
+
+function CRP(q1::T1, q2::T2, q3::T3) where {T1, T2, T3}
+    T = promote_type(T1, T2, T3)
+    return CRP{T}(T(q1), T(q2), T(q3))
+end
+
+"""
+    MRP{T}
+
+The definition of Modified Rodrigues Parameters (MRP).
+
+# Fields
+
+- `q1::T`: First component of the MRP.
+- `q2::T`: Second component of the MRP.
+- `q3::T`: Third component of the MRP.
+
+# Constructor
+
+    MRP(q1::T1, q2::T2, q3::T3) where {T1, T2, T3}
+
+Create a new instance of `MRP` with coordinates `q1`, `q2`, and `q3`.
+"""
+struct MRP{T}
+    q1::T
+    q2::T
+    q3::T
+end
+
+function MRP(q1::T1, q2::T2, q3::T3) where {T1, T2, T3}
+    T = promote_type(T1, T2, T3)
+    return MRP{T}(T(q1), T(q2), T(q3))
+end
+
+"""
     ReferenceFramerotation
 
 A `Union` of all supported rotation types.
@@ -207,6 +263,8 @@ const ReferenceFrameRotation = Union{
     DCM,
     EulerAngles,
     EulerAngleAxis,
-    Quaternion
+    Quaternion,
+    CRP,
+    MRP
 }
 
