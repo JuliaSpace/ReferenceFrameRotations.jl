@@ -1,10 +1,10 @@
 export dcm_to_mrp
 
 """
-    dcm_to_mrp(dcm::DCM)
+    dcm_to_mrp(dcm::DCM) -> MRP
 
 Convert DCM `dcm` to MRP.
 """
 function dcm_to_mrp(dcm::DCM)
-    error("Conversion from DCM to MRP not implemented yet.")
+    return quat_to_mrp(dcm_to_quat(dcm))
 end

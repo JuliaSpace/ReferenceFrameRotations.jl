@@ -17,8 +17,10 @@ Compute the inverse rotation of `R`, which can be:
 
 - A direction cosine matrix (`DCM`);
 - An Euler angle and axis (`EulerAngleAxis`);
-- A set of Euler anlges (`EulerAngles`); or
-- A quaternion (`Quaternion`).
+- A set of Euler anlges (`EulerAngles`);
+- A quaternion (`Quaternion`);
+- A classical rotation parameter (`CRP`); or
+- A modified rotation parameter (`MRP`).
 
 The output will have the same type as `R`.
 
@@ -71,3 +73,5 @@ Quaternion{Float64}:
 @inline inv_rotation(ea::EulerAngleAxis) = inv(ea)
 @inline inv_rotation(Θ::EulerAngles) = inv(Θ)
 @inline inv_rotation(q::Quaternion) = conj(q)
+@inline inv_rotation(q::CRP) = inv(q)
+@inline inv_rotation(s::MRP) = inv(s)

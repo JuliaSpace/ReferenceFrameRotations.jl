@@ -63,6 +63,28 @@ function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where R <: Quate
     return _rand_quat(rng, T)
 end
 
+# == CRP ===================================================================================
+
+function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where R <: CRP
+    T = eltype(R)
+    if T == Any
+        T = Float64
+    end
+
+    return quat_to_crp(_rand_quat(rng, T))
+end
+
+# == MRP ===================================================================================
+
+function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where R <: MRP
+    T = eltype(R)
+    if T == Any
+        T = Float64
+    end
+
+    return quat_to_mrp(_rand_quat(rng, T))
+end
+
 ############################################################################################
 #                                    Private Functions                                     #
 ############################################################################################

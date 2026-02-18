@@ -129,3 +129,92 @@ function Base.show(io::IO, mime::MIME"text/plain", m::MRP{T}) where T
     print(io, "MRP{$(T)}: ")
     print(io, m.q1, ", ", m.q2, ", ", m.q3)
 end
+
+############################################################################################
+#                                        Operations                                        #
+############################################################################################
+
+# == Operation: + ==========================================================================
+
+@inline +(m1::MRP, m2::MRP) = MRP(m1.q1 + m2.q1, m1.q2 + m2.q2, m1.q3 + m2.q3)
+
+# == Operation: - ==========================================================================
+
+@inline -(m::MRP) = MRP(-m.q1, -m.q2, -m.q3)
+@inline -(m1::MRP, m2::MRP) = MRP(m1.q1 - m2.q1, m1.q2 - m2.q2, m1.q3 - m2.q3)
+
+# == Operation: * ==========================================================================
+
+@inline *(λ::Number, m::MRP) = MRP(λ * m.q1, λ * m.q2, λ * m.q3)
+@inline *(m::MRP, λ::Number) = MRP(m.q1 * λ, m.q2 * λ, m.q3 * λ)
+
+"""
+    *(m1::MRP, m2::MRP) -> MRP
+
+Compute the composition of two MRPs `m1` and `m2`.
+
+    M3 = M2 * M1
+
+which means that `M3` acts as `M1` followed by `M2`.
+"""
+function Base.:*(m1::MRP, m2::MRP)
+    # Direct formula for MRP composition (Attitude Addition).
+    # [FN(m)] = [FB(m2)][BN(m1)]
+    # m = ((1 - |m1|^2)m2 + (1 - |m2|^2)m1 - 2(m2 x m1)) / (1 + |m1|^2|m2|^2 - 2(m1 . m2))
+
+    s1_sq = m1.q1^2 + m1.q2^2 + m1.q3^2
+    s2_sq = m2.q1^2 + m2.q2^2 + m2.q3^2
+    
+    dot_prod = m1.q1 * m2.q1 + m1.q2 * m2.q2 + m1.q3 * m2.q3
+    
+    denom = 1 + s1_sq * s2_sq - 2 * dot_prod
+    
+    # Using cross product inline for performance
+    cross_1 = m2.q2 * m1.q3 - m2.q3 * m1.q2
+    cross_2 = m2.q3 * m1.q1 - m2.q1 * m1.q3
+    cross_3 = m2.q1 * m1.q2 - m2.q2 * m1.q1
+    
+    term1_fac = 1 - s1_sq
+    term2_fac = 1 - s2_sq
+    
+    q1 = (term1_fac * m2.q1 + term2_fac * m1.q1 + 2 * cross_1) / denom
+    q2 = (term1_fac * m2.q2 + term2_fac * m1.q2 + 2 * cross_2) / denom
+    q3 = (term1_fac * m2.q3 + term2_fac * m1.q3 + 2 * cross_3) / denom
+    
+    return MRP(q1, q2, q3)
+end
+
+# == Operation: / ==========================================================================
+
+@inline /(m::MRP, λ::Number) = MRP(m.q1 / λ, m.q2 / λ, m.q3 / λ)
+@inline /(m1::MRP, m2::MRP) = m1 * inv(m2)
+
+# == Operation: \ ==========================================================================
+
+@inline \(m1::MRP, m2::MRP) = inv(m1) * m2
+
+############################################################################################
+#                                        Functions                                         #
+############################################################################################
+
+"""
+    inv(m::MRP) -> MRP
+
+Compute the inverse of the MRP `m`.
+"""
+@inline inv(m::MRP) = -m
+
+"""
+    norm(m::MRP) -> Number
+
+Compute the Euclidean norm of the MRP `m`.
+"""
+@inline norm(m::MRP) = √(m.q1^2 + m.q2^2 + m.q3^2)
+
+@inline one(::Type{MRP{T}}) where T = MRP{T}(T(0), T(0), T(0))
+@inline one(::Type{MRP}) = MRP{Float64}(0, 0, 0)
+@inline one(m::MRP{T}) where T = one(MRP{T})
+
+@inline zero(::Type{MRP{T}}) where T = MRP{T}(T(0), T(0), T(0))
+@inline zero(::Type{MRP}) = MRP{Float64}(0, 0, 0)
+@inline zero(m::MRP{T}) where T = zero(MRP{T})

@@ -90,6 +90,12 @@ end
 @inline compose_rotation(q::Quaternion) = q
 @inline compose_rotation(q::Quaternion, qs::Quaternion...) = q * compose_rotation(qs...)
 
+@inline compose_rotation(c::CRP) = c
+@inline compose_rotation(c::CRP, cs::CRP...) = compose_rotation(cs...) * c
+
+@inline compose_rotation(m::MRP) = m
+@inline compose_rotation(m::MRP, ms::MRP...) = compose_rotation(ms...) * m
+
 # This algorithm was proposed by @Per in
 #
 #   https://discourse.julialang.org/t/improve-the-performance-of-multiplication-of-an-arbitrary-number-of-matrices/10835/24
