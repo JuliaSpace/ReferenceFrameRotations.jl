@@ -54,6 +54,7 @@ include("random.jl")
 include("quaternion.jl")
 include("crp.jl")
 include("mrp.jl")
+include("shadow_rotation.jl")
 
 include("deprecations.jl")
 

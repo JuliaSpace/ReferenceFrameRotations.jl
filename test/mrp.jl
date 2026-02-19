@@ -204,6 +204,21 @@ end
     @test m \ I == inv(m)
 end
 
+@testset "MRP Shadow Rotation" begin
+    m = MRP(0.1, 0.2, 0.3)
+    m_shadow = shadow_rotation(m)
+    
+    # Check if the shadow rotation is indeed the shadow
+    @test norm(m_shadow) > 1.0
+    @test isapprox(norm(m_shadow), 1/norm(m); atol=1e-12)
+    
+    # Check if they represent the same rotation
+    dcm = mrp_to_dcm(m)
+    dcm_shadow = mrp_to_dcm(m_shadow)
+    
+    @test maximum(abs.(dcm - dcm_shadow)) < 1e-12
+end
+
 @testset "MRP Random" begin
     Random.seed!(123)
     m = rand(MRP)

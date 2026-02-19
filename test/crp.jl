@@ -203,6 +203,13 @@ end
     @test c \ I == inv(c)
 end
 
+@testset "CRP Shadow Rotation" begin
+    c = CRP(1.0, 2.0, 3.0)
+    c_shadow = shadow_rotation(c)
+    
+    @test c == c_shadow
+end
+
 @testset "CRP Random" begin
     Random.seed!(123)
     c = rand(CRP)
