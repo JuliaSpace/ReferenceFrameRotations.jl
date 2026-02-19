@@ -183,6 +183,25 @@ end
     
     @test zero(MRP) == MRP(0.0, 0.0, 0.0)
     @test zero(m) == MRP(0.0, 0.0, 0.0)
+    
+    # copy
+    m_copy = copy(m)
+    @test m_copy == m
+    
+    # vect
+    v = vect(m)
+    @test v isa SVector{3, Float64}
+    @test v[1] == m.q1
+    @test v[2] == m.q2
+    @test v[3] == m.q3
+    
+    # UniformScaling
+    @test I * m == m
+    @test m * I == m
+    @test I / m == inv(m)
+    @test m / I == m
+    @test I \ m == m
+    @test m \ I == inv(m)
 end
 
 @testset "MRP Random" begin

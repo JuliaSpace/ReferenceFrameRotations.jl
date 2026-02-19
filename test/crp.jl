@@ -182,6 +182,25 @@ end
     
     @test zero(CRP) == CRP(0.0, 0.0, 0.0)
     @test zero(c) == CRP(0.0, 0.0, 0.0)
+    
+    # copy
+    c_copy = copy(c)
+    @test c_copy == c
+    
+    # vect
+    v = vect(c)
+    @test v isa SVector{3, Float64}
+    @test v[1] == c.q1
+    @test v[2] == c.q2
+    @test v[3] == c.q3
+    
+    # UniformScaling
+    @test I * c == c
+    @test c * I == c
+    @test I / c == inv(c)
+    @test c / I == c
+    @test I \ c == c
+    @test c \ I == inv(c)
 end
 
 @testset "CRP Random" begin

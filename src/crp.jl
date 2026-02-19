@@ -208,3 +208,28 @@ Compute the Euclidean norm of the CRP `c`.
 @inline zero(::Type{CRP{T}}) where T = CRP{T}(T(0), T(0), T(0))
 @inline zero(::Type{CRP}) = CRP{Float64}(0, 0, 0)
 @inline zero(c::CRP{T}) where T = zero(CRP{T})
+
+"""
+    copy(c::CRP) -> CRP
+
+Create a copy of the CRP `c`.
+"""
+@inline copy(c::CRP{T}) where T = CRP{T}(c.q1, c.q2, c.q3)
+
+"""
+    vect(c::CRP) -> SVector{3, T}
+
+Return the vector definition of the CRP `c`:
+    
+    [q1, q2, q3]
+"""
+@inline vect(c::CRP) = SVector{3}(c.q1, c.q2, c.q3)
+
+# == UniformScaling ========================================================================
+
+@inline *(u::UniformScaling, c::CRP) = CRP(u) * c
+@inline *(c::CRP, u::UniformScaling) = c * CRP(u)
+@inline /(u::UniformScaling, c::CRP) = CRP(u) / c
+@inline /(c::CRP, u::UniformScaling) = c / CRP(u)
+@inline \(u::UniformScaling, c::CRP) = CRP(u) \ c
+@inline \(c::CRP, u::UniformScaling) = c \ CRP(u)

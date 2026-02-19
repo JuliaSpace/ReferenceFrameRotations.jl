@@ -218,3 +218,28 @@ Compute the Euclidean norm of the MRP `m`.
 @inline zero(::Type{MRP{T}}) where T = MRP{T}(T(0), T(0), T(0))
 @inline zero(::Type{MRP}) = MRP{Float64}(0, 0, 0)
 @inline zero(m::MRP{T}) where T = zero(MRP{T})
+
+"""
+    copy(m::MRP) -> MRP
+
+Create a copy of the MRP `m`.
+"""
+@inline copy(m::MRP{T}) where T = MRP{T}(m.q1, m.q2, m.q3)
+
+"""
+    vect(m::MRP) -> SVector{3, T}
+
+Return the vector definition of the MRP `m`:
+    
+    [q1, q2, q3]
+"""
+@inline vect(m::MRP) = SVector{3}(m.q1, m.q2, m.q3)
+
+# == UniformScaling ========================================================================
+
+@inline *(u::UniformScaling, m::MRP) = MRP(u) * m
+@inline *(m::MRP, u::UniformScaling) = m * MRP(u)
+@inline /(u::UniformScaling, m::MRP) = MRP(u) / m
+@inline /(m::MRP, u::UniformScaling) = m / MRP(u)
+@inline \(u::UniformScaling, m::MRP) = MRP(u) \ m
+@inline \(m::MRP, u::UniformScaling) = m \ MRP(u)
