@@ -227,3 +227,48 @@ end
     m_float32 = rand(MRP{Float32})
     @test m_float32 isa MRP{Float32}
 end
+
+@testset "MRP Kinematics" begin
+    # Test analytical derivative against numerical derivative
+    for T in (Float64,)
+        # We need a seed to ensure reproducibility
+        Random.seed!(123)
+        
+        m = rand(MRP{T})
+        w = @SVector randn(T, 3)
+        
+        dm = dmrp(m, w)
+        
+        dt = 1e-8
+        
+        # Use DCM mapping for propagation to avoid circular dependency if we were to use dmrp for integration,
+        # but here we want to verify dmrp.
+        D = mrp_to_dcm(m)
+        
+        # In the existing tests (kinematics.jl), they use:
+        # dDba = ddcm(Dba, Dba * wba_a)
+        # Dba  = Dba + dDba * Δ
+        # Dba  = orthonormalize(Dba)
+        
+        dD = ddcm(D, w) # w is in body frame? Make sure. ddcm says wba_b. dmrp says wba_b. Matches.
+        D_next = D + dD * dt
+        D_next = orthonormalize(D_next)
+        
+        m_next = dcm_to_mrp(D_next)
+        
+        # Check if we switched to the shadow set (norm > 1 or just large jump)
+        # If m_next is far from m, try shadow
+        if norm(m_next - m) > 0.1
+             m_next = shadow_rotation(m_next)
+        end
+        
+        dm_num = (m_next - m) / dt
+        
+        # Check alignment
+        @test isapprox(dm, dm_num[:]; rtol = 1e-4, atol=1e-6)
+    end
+end
+
+
+
+

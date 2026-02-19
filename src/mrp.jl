@@ -4,6 +4,8 @@
 #
 ############################################################################################
 
+export dmrp
+
 ############################################################################################
 #                                       Constructors                                       #
 ############################################################################################
@@ -100,6 +102,60 @@ end
     return isapprox(m1.q1, m2.q1; kwargs...) &&
            isapprox(m1.q2, m2.q2; kwargs...) &&
            isapprox(m1.q3, m2.q3; kwargs...)
+end
+
+############################################################################################
+#                                        Kinematics                                        #
+############################################################################################
+
+"""
+    dmrp(m::MRP, wba_b::AbstractArray) -> SVector{3}
+
+Compute the time-derivative of the MRP `m` that rotates a reference frame `a` into alignment
+with the reference frame `b` in which the angular velocity of `b` with respect to `a`, and
+represented in `b`, is `wba_b`.
+
+# Example
+
+```julia-repl
+julia> m = MRP(0.0, 0.0, 0.0)
+
+julia> dmrp(m, [1.0, 0.0, 0.0])
+3-element StaticArrays.SVector{3, Float64} with indices SOneTo(3):
+ 0.25
+ 0.0
+ 0.0
+```
+"""
+function dmrp(m::MRP, wba_b::AbstractArray)
+    # Check the dimensions.
+    if length(wba_b) != 3
+        throw(ArgumentError("The angular velocity vector must have three components."))
+    end
+
+    # Auxiliary variables.
+    s2 = m.q1^2 + m.q2^2 + m.q3^2
+    w  = wba_b
+
+    # Term 1: (1 - s^2) * w
+    term1 = (1 - s2) * w
+
+    # Term 2: 2 * (s x w)
+    # s x w = [s2*w3 - s3*w2; s3*w1 - s1*w3; s1*w2 - s2*w1]
+    # We use the explicit cross product for speed.
+    term2_1 = 2 * (m.q2 * w[3] - m.q3 * w[2])
+    term2_2 = 2 * (m.q3 * w[1] - m.q1 * w[3])
+    term2_3 = 2 * (m.q1 * w[2] - m.q2 * w[1])
+
+    # Term 3: 2 * (s . w) * s
+    s_dot_w = m.q1 * w[1] + m.q2 * w[2] + m.q3 * w[3]
+    term3   = 2 * s_dot_w * vect(m)
+
+    return SVector{3}(
+        0.25 * (term1[1] + term2_1 + term3[1]),
+        0.25 * (term1[2] + term2_2 + term3[2]),
+        0.25 * (term1[3] + term2_3 + term3[3])
+    )
 end
 
 ############################################################################################

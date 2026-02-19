@@ -218,3 +218,34 @@ end
     c_float32 = rand(CRP{Float32})
     @test c_float32 isa CRP{Float32}
 end
+
+@testset "CRP Kinematics" begin
+    # Test analytical derivative against numerical derivative
+    for T in (Float64,)
+        # We need a seed to ensure reproducibility
+        Random.seed!(123)
+        
+        c = rand(CRP{T})
+        w = @SVector randn(T, 3)
+        
+        dc = dcrp(c, w)
+        
+        dt = 1e-8
+        
+        # Use DCM to propagate
+        D = crp_to_dcm(c)
+        dD = ddcm(D, w)
+        D_next = D + dD * dt
+        D_next = orthonormalize(D_next)
+        
+        c_next = dcm_to_crp(D_next)
+        
+        dc_num = (c_next - c) / dt
+        
+        # Check alignment
+        @test isapprox(dc, dc_num[:]; rtol = 1e-4, atol=1e-6)
+    end
+end
+
+
+

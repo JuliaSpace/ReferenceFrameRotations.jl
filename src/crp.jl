@@ -4,6 +4,8 @@
 #
 ############################################################################################
 
+export dcrp
+
 ############################################################################################
 #                                       Constructors                                       #
 ############################################################################################
@@ -100,6 +102,58 @@ end
     return isapprox(c1.q1, c2.q1; kwargs...) &&
            isapprox(c1.q2, c2.q2; kwargs...) &&
            isapprox(c1.q3, c2.q3; kwargs...)
+end
+
+############################################################################################
+#                                        Kinematics                                        #
+############################################################################################
+
+"""
+    dcrp(c::CRP, wba_b::AbstractArray) -> SVector{3}
+
+Compute the time-derivative of the CRP `c` that rotates a reference frame `a` into alignment
+with the reference frame `b` in which the angular velocity of `b` with respect to `a`, and
+represented in `b`, is `wba_b`.
+
+# Example
+
+```julia-repl
+julia> c = CRP(0.0, 0.0, 0.0)
+
+julia> dcrp(c, [1.0, 0.0, 0.0])
+3-element StaticArrays.SVector{3, Float64} with indices SOneTo(3):
+ 0.5
+ 0.0
+ 0.0
+```
+"""
+function dcrp(c::CRP, wba_b::AbstractArray)
+    # Check the dimensions.
+    if length(wba_b) != 3
+        throw(ArgumentError("The angular velocity vector must have three components."))
+    end
+
+    # Auxiliary variables.
+    w = wba_b
+
+    # Term 1: w
+    # (Just w)
+
+    # Term 2: c x w
+    # c x w = [c2*w3 - c3*w2; c3*w1 - c1*w3; c1*w2 - c2*w1]
+    term2_1 = c.q2 * w[3] - c.q3 * w[2]
+    term2_2 = c.q3 * w[1] - c.q1 * w[3]
+    term2_3 = c.q1 * w[2] - c.q2 * w[1]
+
+    # Term 3: (c . w) * c
+    c_dot_w = c.q1 * w[1] + c.q2 * w[2] + c.q3 * w[3]
+    term3   = c_dot_w * vect(c)
+
+    return SVector{3}(
+        0.5 * (w[1] + term2_1 + term3[1]),
+        0.5 * (w[2] + term2_2 + term3[2]),
+        0.5 * (w[3] + term2_3 + term3[3])
+    )
 end
 
 ############################################################################################
