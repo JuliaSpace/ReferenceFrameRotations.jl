@@ -2,6 +2,12 @@
 #
 # Functions related to the Classical Rodrigues Parameters (CRP).
 #
+## References ##############################################################################
+#
+# [1] Schaub, H.; Junkins, J. L (1996). Stereographic Orientation Parameters for Attitude
+#     Dynamics: A Generalization of the Rodrigues Parameters. In: Journal of the
+#     Astronautical Sciences, Vol. 44, No. 1, pp. 1 -- 19.
+#
 ############################################################################################
 
 export dcrp
@@ -17,14 +23,12 @@ Create a `CRP` from the vector `v`.
 """
 function CRP(v::AbstractVector)
     # The vector must have 3 components.
-    if length(v) != 3
-        throw(ArgumentError("The input vector must have 3 components."))
-    end
+    length(v) != 3 && throw(ArgumentError("The input vector must have 3 components."))
 
-    return CRP(v[1], v[2], v[3])
+    return CRP(v[begin], v[begin + 1], v[begin + 2])
 end
 
-CRP(I::UniformScaling) = CRP(0, 0, 0)
+CRP(::UniformScaling{T}) where T = CRP(zero(T), zero(T), zero(T))
 
 ############################################################################################
 #                                        Julia API                                         #
@@ -93,9 +97,7 @@ end
 end
 
 @inline function Base.:(==)(c1::CRP, c2::CRP)
-    return (c1.q1 == c2.q1) &&
-           (c1.q2 == c2.q2) &&
-           (c1.q3 == c2.q3)
+    return (c1.q1 == c2.q1) && (c1.q2 == c2.q2) && (c1.q3 == c2.q3)
 end
 
 @inline function Base.isapprox(c1::CRP, c2::CRP; kwargs...)
@@ -109,50 +111,59 @@ end
 ############################################################################################
 
 """
-    dcrp(c::CRP, wba_b::AbstractArray) -> SVector{3}
+    dcrp(c::CRP, wba_b::AbstractVector) -> CRP
 
 Compute the time-derivative of the CRP `c` that rotates a reference frame `a` into alignment
 with the reference frame `b` in which the angular velocity of `b` with respect to `a`, and
-represented in `b`, is `wba_b`.
+represented in `b`, is `wba_b` **[1]**.
 
 # Example
 
 ```julia-repl
 julia> c = CRP(0.0, 0.0, 0.0)
+CRP{Float64}:
+  X : + 0.0
+  Y : + 0.0
+  Z : + 0.0
 
 julia> dcrp(c, [1.0, 0.0, 0.0])
-3-element StaticArrays.SVector{3, Float64} with indices SOneTo(3):
- 0.5
- 0.0
- 0.0
+CRP{Float64}:
+  X : + 0.5
+  Y : + 0.0
+  Z : + 0.0
 ```
+
+# References
+
+- **[1]** Schaub, H.; Junkins, J. L (1996). *Stereographic Orientation Parameters for
+    Attitude Dynamics: A Generalization of the Rodrigues Parameters*. In: **Journal of the
+    Astronautical Sciences**, Vol. 44, No. 1, pp. 1 -- 19.
 """
-function dcrp(c::CRP, wba_b::AbstractArray)
+function dcrp(c::CRP, wba_b::AbstractVector)
     # Check the dimensions.
-    if length(wba_b) != 3
+    length(wba_b) != 3 &&
         throw(ArgumentError("The angular velocity vector must have three components."))
-    end
 
     # Auxiliary variables.
-    w = wba_b
+    w₁ = wba_b[begin]
+    w₂ = wba_b[begin + 1]
+    w₃ = wba_b[begin + 2]
 
-    # Term 1: w
-    # (Just w)
+    # Equation [1]:
+    #
+    #     dcrp    w + c × w + (c ⋅ w) c
+    #     ──── = ───────────────────────
+    #      dt              2
 
-    # Term 2: c x w
-    # c x w = [c2*w3 - c3*w2; c3*w1 - c1*w3; c1*w2 - c2*w1]
-    term2_1 = c.q2 * w[3] - c.q3 * w[2]
-    term2_2 = c.q3 * w[1] - c.q1 * w[3]
-    term2_3 = c.q1 * w[2] - c.q2 * w[1]
+    k₂_₁    = c.q2 * w₃ - c.q3 * w₂
+    k₂_₂    = c.q3 * w₁ - c.q1 * w₃
+    k₂_₃    = c.q1 * w₂ - c.q2 * w₁
+    c_dot_w = c.q1 * w₁ + c.q2 * w₂ + c.q3 * w₃
 
-    # Term 3: (c . w) * c
-    c_dot_w = c.q1 * w[1] + c.q2 * w[2] + c.q3 * w[3]
-    term3   = c_dot_w * vect(c)
-
-    return SVector{3}(
-        0.5 * (w[1] + term2_1 + term3[1]),
-        0.5 * (w[2] + term2_2 + term3[2]),
-        0.5 * (w[3] + term2_3 + term3[3])
+    return CRP(
+        (w₁ + k₂_₁ + c_dot_w * c.q1) / 2,
+        (w₂ + k₂_₂ + c_dot_w * c.q2) / 2,
+        (w₃ + k₂_₃ + c_dot_w * c.q3) / 2
     )
 end
 
@@ -160,17 +171,22 @@ end
 #                                            IO                                            #
 ############################################################################################
 
-function Base.show(io::IO, c::CRP{T}) where T
+function show(io::IO, c::CRP{T}) where T
     # Check if the user wants compact printing, defaulting to `true`.
     compact_printing = get(io, :compact, true)::Bool
 
+    # Get the absolute values using `print`.
+    c₀ = sprint(print, abs(c.q1), context = :compact => compact_printing)
+    c₁ = sprint(print, abs(c.q2), context = :compact => compact_printing)
+    c₂ = sprint(print, abs(c.q3), context = :compact => compact_printing)
+
     print(io, "CRP{$(T)}: ")
-    print(io, c.q1, ", ", c.q2, ", ", c.q3)
+    print(io, "[", c₀, ", ", c₁, ", ", c₂, "]")
 
     return nothing
 end
 
-function Base.show(io::IO, mime::MIME"text/plain", c::CRP{T}) where T
+function show(io::IO, ::MIME"text/plain", c::CRP{T}) where T
     # Check if the user wants colors.
     color = get(io, :color, false)::Bool
 
@@ -180,8 +196,29 @@ function Base.show(io::IO, mime::MIME"text/plain", c::CRP{T}) where T
     # Assemble the context.
     context = IOContext(io, :color => color, :compact => compact_printing)
 
-    print(io, "CRP{$(T)}: ")
-    print(context, c.q1, ", ", c.q2, ", ", c.q3)
+    b = color ? string(_b) : ""
+    d = color ? string(_d) : ""
+
+    # Check if the user wants compact printing, defaulting to `true`.
+    compact_printing = get(io, :compact, true)::Bool
+
+    # Get the absolute values using `print`.
+    ac₁ = sprint(print, abs(c.q1), context = context)
+    ac₂ = sprint(print, abs(c.q2), context = context)
+    ac₃ = sprint(print, abs(c.q3), context = context)
+
+    # Get the signs.
+    sc₁ = signbit(c.q1) ? "-" : "+"
+    sc₂ = signbit(c.q2) ? "-" : "+"
+    sc₃ = signbit(c.q3) ? "-" : "+"
+
+    # Assemble the context.
+    println(io, "CRP{$(T)}:")
+    println(io, "  ", b, "X : ", d, sc₁, " ", ac₁)
+    println(io, "  ", b, "Y : ", d, sc₂, " ", ac₂)
+    print(  io, "  ", b, "Z : ", d, sc₃, " ", ac₃)
+
+    return nothing
 end
 
 ############################################################################################
@@ -214,10 +251,10 @@ which means that `C3` acts as `C1` followed by `C2`.
 function Base.:*(c1::CRP, c2::CRP)
     norm_c1_c2 = c1.q1 * c2.q1 + c1.q2 * c2.q2 + c1.q3 * c2.q3
 
-    if isapprox(norm_c1_c2, 1; atol = 1e-15)
-        # TODO: Return a specific error?
-        throw(ArgumentError("The composition of these CRPs results in a specific singularity (180 degrees rotation)."))
-    end
+    # TODO: Return a specific error?
+    isapprox(norm_c1_c2, 1; atol = 1e-15) && throw(
+        ArgumentError("The composition of these CRPs results in a specific singularity (180° rotation).")
+    )
 
     denom = 1 - norm_c1_c2
 
@@ -261,7 +298,7 @@ Compute the Euclidean norm of the CRP `c`.
 
 @inline zero(::Type{CRP{T}}) where T = CRP{T}(T(0), T(0), T(0))
 @inline zero(::Type{CRP}) = CRP{Float64}(0, 0, 0)
-@inline zero(c::CRP{T}) where T = zero(CRP{T})
+@inline zero(::CRP{T}) where T = zero(CRP{T})
 
 """
     copy(c::CRP) -> CRP
