@@ -17,7 +17,7 @@ Compute the inverse rotation of `R`, which can be:
 
 - A direction cosine matrix (`DCM`);
 - An Euler angle and axis (`EulerAngleAxis`);
-- A set of Euler anlges (`EulerAngles`);
+- A set of Euler angles (`EulerAngles`);
 - A quaternion (`Quaternion`);
 - A classical Rodrigues parameter (`CRP`); or
 - A modified Rodrigues parameter (`MRP`).
@@ -34,7 +34,7 @@ The output will have the same type as `R`.
 
     If `R` is a quaternion, than its conjugate is computed instead of its inverse to reduce
     the computational burden. The both are equal if the quaternion has unit norm. This must
-    be verified by the used.
+    be verified by the user.
 
 # Example
 

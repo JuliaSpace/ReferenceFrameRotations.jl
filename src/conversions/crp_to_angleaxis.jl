@@ -1,3 +1,9 @@
+## Description #############################################################################
+#
+# Functions related to the conversion from CRP to Euler angle and axis.
+#
+############################################################################################
+
 export crp_to_angleaxis
 
 """

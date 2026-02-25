@@ -255,7 +255,7 @@ function MRP(q1::T1, q2::T2, q3::T3) where {T1, T2, T3}
 end
 
 """
-    ReferenceFramerotation
+    ReferenceFrameRotation
 
 A `Union` of all supported rotation types.
 """

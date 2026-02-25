@@ -220,7 +220,7 @@ function Base.:*(c1::CRP, c2::CRP)
     end
 
     denom = 1 - norm_c1_c2
-    
+
     return CRP(
         (c1.q1 + c2.q1 - c1.q2 * c2.q3 + c1.q3 * c2.q2) / denom,
         (c1.q2 + c2.q2 - c1.q3 * c2.q1 + c1.q1 * c2.q3) / denom,
@@ -274,7 +274,7 @@ Create a copy of the CRP `c`.
     vect(c::CRP) -> SVector{3, T}
 
 Return the vector definition of the CRP `c`:
-    
+
     [q1, q2, q3]
 """
 @inline vect(c::CRP) = SVector{3}(c.q1, c.q2, c.q3)

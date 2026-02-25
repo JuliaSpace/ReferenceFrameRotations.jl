@@ -1,3 +1,9 @@
+## Description #############################################################################
+#
+# Functions related to the conversion from MRP to Euler angle and axis.
+#
+############################################################################################
+
 export mrp_to_angleaxis
 
 """

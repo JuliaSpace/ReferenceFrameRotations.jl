@@ -220,23 +220,23 @@ function Base.:*(m1::MRP, m2::MRP)
 
     s1_sq = m1.q1^2 + m1.q2^2 + m1.q3^2
     s2_sq = m2.q1^2 + m2.q2^2 + m2.q3^2
-    
+
     dot_prod = m1.q1 * m2.q1 + m1.q2 * m2.q2 + m1.q3 * m2.q3
-    
+
     denom = 1 + s1_sq * s2_sq - 2 * dot_prod
-    
+
     # Using cross product inline for performance
     cross_1 = m2.q2 * m1.q3 - m2.q3 * m1.q2
     cross_2 = m2.q3 * m1.q1 - m2.q1 * m1.q3
     cross_3 = m2.q1 * m1.q2 - m2.q2 * m1.q1
-    
+
     term1_fac = 1 - s1_sq
     term2_fac = 1 - s2_sq
-    
+
     q1 = (term1_fac * m2.q1 + term2_fac * m1.q1 + 2 * cross_1) / denom
     q2 = (term1_fac * m2.q2 + term2_fac * m1.q2 + 2 * cross_2) / denom
     q3 = (term1_fac * m2.q3 + term2_fac * m1.q3 + 2 * cross_3) / denom
-    
+
     return MRP(q1, q2, q3)
 end
 
@@ -286,7 +286,7 @@ Create a copy of the MRP `m`.
     vect(m::MRP) -> SVector{3, T}
 
 Return the vector definition of the MRP `m`:
-    
+
     [q1, q2, q3]
 """
 @inline vect(m::MRP) = SVector{3}(m.q1, m.q2, m.q3)
