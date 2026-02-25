@@ -103,6 +103,16 @@ println("")
 end
 println("")
 
+@time @testset "CRP" verbose = true begin
+    include("crp.jl")
+end
+println("")
+
+@time @testset "MRP" verbose = true begin
+    include("mrp.jl")
+end
+println("")
+
 @time @testset "Conversions" verbose = true begin
     include("./conversions/angle_to_angle.jl")
     include("./conversions/angle_to_angleaxis.jl")
