@@ -19,8 +19,8 @@ Compute the inverse rotation of `R`, which can be:
 - An Euler angle and axis (`EulerAngleAxis`);
 - A set of Euler anlges (`EulerAngles`);
 - A quaternion (`Quaternion`);
-- A classical rotation parameter (`CRP`); or
-- A modified rotation parameter (`MRP`).
+- A classical Rodrigues parameter (`CRP`); or
+- A modified Rodrigues parameter (`MRP`).
 
 The output will have the same type as `R`.
 
