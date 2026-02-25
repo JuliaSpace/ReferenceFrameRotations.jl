@@ -2,6 +2,12 @@
 #
 # Functions related to the Modified Rodrigues Parameters (MRP).
 #
+## References ##############################################################################
+#
+# [1] Schaub, H.; Junkins, J. L (1996). Stereographic Orientation Parameters for Attitude
+#     Dynamics: A Generalization of the Rodrigues Parameters. In: Journal of the
+#     Astronautical Sciences, Vol. 44, No. 1, pp. 1 -- 19.
+#
 ############################################################################################
 
 export dmrp
@@ -17,14 +23,12 @@ Create a `MRP` from the vector `v`.
 """
 function MRP(v::AbstractVector)
     # The vector must have 3 components.
-    if length(v) != 3
-        throw(ArgumentError("The input vector must have 3 components."))
-    end
+    length(v) != 3 && throw(ArgumentError("The input vector must have 3 components."))
 
-    return MRP(v[1], v[2], v[3])
+    return MRP(v[begin], v[begin + 1], v[begin + 2])
 end
 
-MRP(I::UniformScaling) = MRP(0, 0, 0)
+MRP(::UniformScaling{T}) where T = MRP(zero(T), zero(T), zero(T))
 
 ############################################################################################
 #                                        Julia API                                         #
@@ -93,9 +97,7 @@ end
 end
 
 @inline function Base.:(==)(m1::MRP, m2::MRP)
-    return (m1.q1 == m2.q1) &&
-           (m1.q2 == m2.q2) &&
-           (m1.q3 == m2.q3)
+    return (m1.q1 == m2.q1) && (m1.q2 == m2.q2) && (m1.q3 == m2.q3)
 end
 
 @inline function Base.isapprox(m1::MRP, m2::MRP; kwargs...)
@@ -109,52 +111,60 @@ end
 ############################################################################################
 
 """
-    dmrp(m::MRP, wba_b::AbstractArray) -> SVector{3}
+    dmrp(m::MRP, wba_b::AbstractVector) -> MRP
 
 Compute the time-derivative of the MRP `m` that rotates a reference frame `a` into alignment
 with the reference frame `b` in which the angular velocity of `b` with respect to `a`, and
-represented in `b`, is `wba_b`.
+represented in `b`, is `wba_b` **[1]**.
 
 # Example
 
 ```julia-repl
 julia> m = MRP(0.0, 0.0, 0.0)
+MRP{Float64}:
+  X : + 0.0
+  Y : + 0.0
+  Z : + 0.0
 
 julia> dmrp(m, [1.0, 0.0, 0.0])
-3-element StaticArrays.SVector{3, Float64} with indices SOneTo(3):
- 0.25
- 0.0
- 0.0
+MRP{Float64}:
+  X : + 0.25
+  Y : + 0.0
+  Z : + 0.0
 ```
+
+# References
+
+- **[1]** Schaub, H.; Junkins, J. L (1996). *Stereographic Orientation Parameters for
+    Attitude Dynamics: A Generalization of the Rodrigues Parameters*. In: **Journal of the
+    Astronautical Sciences**, Vol. 44, No. 1, pp. 1 -- 19.
 """
-function dmrp(m::MRP, wba_b::AbstractArray)
+function dmrp(m::MRP, wba_b::AbstractVector)
     # Check the dimensions.
-    if length(wba_b) != 3
+    length(wba_b) != 3 &&
         throw(ArgumentError("The angular velocity vector must have three components."))
-    end
 
     # Auxiliary variables.
-    s2 = m.q1^2 + m.q2^2 + m.q3^2
-    w  = wba_b
+    w₁ = wba_b[begin]
+    w₂ = wba_b[begin + 1]
+    w₃ = wba_b[begin + 2]
 
-    # Term 1: (1 - s^2) * w
-    term1 = (1 - s2) * w
+    # Equation [1]:
+    #
+    #     dmrp    (1 - s²) w + 2 (s × w) + 2 (s ⋅ w) s
+    #     ──── = ───────────────────────────────────────
+    #      dt                   4
 
-    # Term 2: 2 * (s x w)
-    # s x w = [s2*w3 - s3*w2; s3*w1 - s1*w3; s1*w2 - s2*w1]
-    # We use the explicit cross product for speed.
-    term2_1 = 2 * (m.q2 * w[3] - m.q3 * w[2])
-    term2_2 = 2 * (m.q3 * w[1] - m.q1 * w[3])
-    term2_3 = 2 * (m.q1 * w[2] - m.q2 * w[1])
+    k₁       = 1 - (m.q1^2 + m.q2^2 + m.q3^2)
+    k₂_₁     = m.q2 * w₃ - m.q3 * w₂
+    k₂_₂     = m.q3 * w₁ - m.q1 * w₃
+    k₂_₃     = m.q1 * w₂ - m.q2 * w₁
+    ds_dot_w = 2 * (m.q1 * w₁ + m.q2 * w₂ + m.q3 * w₃)
 
-    # Term 3: 2 * (s . w) * s
-    s_dot_w = m.q1 * w[1] + m.q2 * w[2] + m.q3 * w[3]
-    term3   = 2 * s_dot_w * vect(m)
-
-    return SVector{3}(
-        0.25 * (term1[1] + term2_1 + term3[1]),
-        0.25 * (term1[2] + term2_2 + term3[2]),
-        0.25 * (term1[3] + term2_3 + term3[3])
+    return MRP(
+        (k₁ * w₁ + 2k₂_₁ + ds_dot_w * m.q1) / 4,
+        (k₁ * w₂ + 2k₂_₂ + ds_dot_w * m.q2) / 4,
+        (k₁ * w₃ + 2k₂_₃ + ds_dot_w * m.q3) / 4
     )
 end
 
@@ -162,17 +172,22 @@ end
 #                                            IO                                            #
 ############################################################################################
 
-function Base.show(io::IO, m::MRP{T}) where T
+function show(io::IO, m::MRP{T}) where T
     # Check if the user wants compact printing, defaulting to `true`.
     compact_printing = get(io, :compact, true)::Bool
 
+    # Get the absolute values using `print`.
+    m₀ = sprint(print, abs(m.q1), context = :compact => compact_printing)
+    m₁ = sprint(print, abs(m.q2), context = :compact => compact_printing)
+    m₂ = sprint(print, abs(m.q3), context = :compact => compact_printing)
+
     print(io, "MRP{$(T)}: ")
-    print(io, m.q1, ", ", m.q2, ", ", m.q3)
+    print(io, "[", m₀, ", ", m₁, ", ", m₂, "]")
 
     return nothing
 end
 
-function Base.show(io::IO, mime::MIME"text/plain", m::MRP{T}) where T
+function show(io::IO, ::MIME"text/plain", m::MRP{T}) where T
     # Check if the user wants colors.
     color = get(io, :color, false)::Bool
 
@@ -182,8 +197,29 @@ function Base.show(io::IO, mime::MIME"text/plain", m::MRP{T}) where T
     # Assemble the context.
     context = IOContext(io, :color => color, :compact => compact_printing)
 
-    print(io, "MRP{$(T)}: ")
-    print(io, m.q1, ", ", m.q2, ", ", m.q3)
+    b = color ? string(_b) : ""
+    d = color ? string(_d) : ""
+
+    # Check if the user wants compact printing, defaulting to `true`.
+    compact_printing = get(io, :compact, true)::Bool
+
+    # Get the absolute values using `print`.
+    am₁ = sprint(print, abs(m.q1), context = context)
+    am₂ = sprint(print, abs(m.q2), context = context)
+    am₃ = sprint(print, abs(m.q3), context = context)
+
+    # Get the signs.
+    sm₁ = signbit(m.q1) ? "-" : "+"
+    sm₂ = signbit(m.q2) ? "-" : "+"
+    sm₃ = signbit(m.q3) ? "-" : "+"
+
+    # Assemble the context.
+    println(io, "MRP{$(T)}:")
+    println(io, "  ", b, "X : ", d, sm₁, " ", am₁)
+    println(io, "  ", b, "Y : ", d, sm₂, " ", am₂)
+    print(  io, "  ", b, "Z : ", d, sm₃, " ", am₃)
+
+    return nothing
 end
 
 ############################################################################################
@@ -215,27 +251,34 @@ which means that `M3` acts as `M1` followed by `M2`.
 """
 function Base.:*(m1::MRP, m2::MRP)
     # Direct formula for MRP composition (Attitude Addition).
-    # [FN(m)] = [FB(m2)][BN(m1)]
-    # m = ((1 - |m1|^2)m2 + (1 - |m2|^2)m1 - 2(m2 x m1)) / (1 + |m1|^2|m2|^2 - 2(m1 . m2))
+    #
+    #     a        b      a
+    #   m₃   =  m₂   ⋅ m₃
+    #     c        c      b
+    #
+    #    a     (1 - |m1|²) m2 + (1 - |m2|²) m1 - 2(m2 x m1)
+    #  m₃   = ──────────────────────────────────────────────
+    #    c            1 + |m1|² |m2|² - 2(m1 ⋅ m2)
+    #
 
-    s1_sq = m1.q1^2 + m1.q2^2 + m1.q3^2
-    s2_sq = m2.q1^2 + m2.q2^2 + m2.q3^2
+    norm_m1² = m1.q1^2 + m1.q2^2 + m1.q3^2
+    norm_m2² = m2.q1^2 + m2.q2^2 + m2.q3^2
 
     dot_prod = m1.q1 * m2.q1 + m1.q2 * m2.q2 + m1.q3 * m2.q3
 
-    denom = 1 + s1_sq * s2_sq - 2 * dot_prod
+    denom = 1 + norm_m1² * norm_m2² - 2 * dot_prod
 
     # Using cross product inline for performance
-    cross_1 = m2.q2 * m1.q3 - m2.q3 * m1.q2
-    cross_2 = m2.q3 * m1.q1 - m2.q1 * m1.q3
-    cross_3 = m2.q1 * m1.q2 - m2.q2 * m1.q1
+    m1_x_m2₁ = m2.q2 * m1.q3 - m2.q3 * m1.q2
+    m1_x_m2₂ = m2.q3 * m1.q1 - m2.q1 * m1.q3
+    m1_x_m2₃ = m2.q1 * m1.q2 - m2.q2 * m1.q1
 
-    term1_fac = 1 - s1_sq
-    term2_fac = 1 - s2_sq
+    k₁_m1 = 1 - norm_m1²
+    k₁_m2 = 1 - norm_m2² 
 
-    q1 = (term1_fac * m2.q1 + term2_fac * m1.q1 + 2 * cross_1) / denom
-    q2 = (term1_fac * m2.q2 + term2_fac * m1.q2 + 2 * cross_2) / denom
-    q3 = (term1_fac * m2.q3 + term2_fac * m1.q3 + 2 * cross_3) / denom
+    q1 = (k₁_m1 * m2.q1 + k₁_m2 * m1.q1 + 2 * m1_x_m2₁) / denom
+    q2 = (k₁_m1 * m2.q2 + k₁_m2 * m1.q2 + 2 * m1_x_m2₂) / denom
+    q3 = (k₁_m1 * m2.q3 + k₁_m2 * m1.q3 + 2 * m1_x_m2₃) / denom
 
     return MRP(q1, q2, q3)
 end
@@ -273,7 +316,7 @@ Compute the Euclidean norm of the MRP `m`.
 
 @inline zero(::Type{MRP{T}}) where T = MRP{T}(T(0), T(0), T(0))
 @inline zero(::Type{MRP}) = MRP{Float64}(0, 0, 0)
-@inline zero(m::MRP{T}) where T = zero(MRP{T})
+@inline zero(::MRP{T}) where T = zero(MRP{T})
 
 """
     copy(m::MRP) -> MRP
