@@ -28,10 +28,12 @@ The rotations can be described by:
 
 - A direction cosine matrix ([`DCM`](@ref));
 - An Euler angle and axis ([`EulerAngleAxis`](@ref));
-- A set of Euler angles ([`EulerAngles`](@ref)); or
-- A quaternion ([`Quaternion`](@ref)).
+- A set of Euler angles ([`EulerAngles`](@ref));
+- A quaternion ([`Quaternion`](@ref));
+- Classical Rodrigues parameters ([`CRP`](@ref)); or
+- Modified Rodrigues parameters ([`MRP`](@ref)).
 
-Notice, however, that all rotations **must be** of the same type (DCM or quaternion).
+Notice, however, that all rotations **must be** of the same type.
 
 The output will have the same type as the inputs.
 
