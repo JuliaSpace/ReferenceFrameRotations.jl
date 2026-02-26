@@ -9,21 +9,41 @@ export crp_to_dcm
 """
     crp_to_dcm(c::CRP) -> DCM
 
-Convert CRP `c` to a Direction Cosine Matrix (DCM).
+Convert the CRP `c` to a Direction Cosine Matrix (DCM).
+
+# Examples
+
+```jldoctest
+julia> c = CRP(0.5, 0, 0)
+CRP{Float64}:
+  X : + 0.5
+  Y : + 0.0
+  Z : + 0.0
+
+julia> crp_to_dcm(c)
+DCM{Float64}:
+ 1.0   0.0  0.0
+ 0.0   0.6  0.8
+ 0.0  -0.8  0.6
+```
 """
 function crp_to_dcm(c::CRP)
-    q = c
-    q_sq = q.q1^2 + q.q2^2 + q.q3^2
-    denom = 1 + q_sq
+    c₁  = c.q1
+    c₂  = c.q2
+    c₃  = c.q3
+    c₁² = c₁^2
+    c₂² = c₂^2
+    c₃² = c₃^2
+    d   = 1 + (c₁² + c₂² + c₃²)
 
     # Auxiliary variables to reduce computational burden.
-    q1q2 = q.q1 * q.q2
-    q1q3 = q.q1 * q.q3
-    q2q3 = q.q2 * q.q3
+    c₁c₂ = c₁ * c₂
+    c₁c₃ = c₁ * c₃
+    c₂c₃ = c₂ * c₃
 
     return DCM(
-        (1 + q.q1^2 - q.q2^2 - q.q3^2) / denom,  2 * (q1q2 + q.q3) / denom,              2 * (q1q3 - q.q2) / denom,
-        2 * (q1q2 - q.q3) / denom,               (1 - q.q1^2 + q.q2^2 - q.q3^2) / denom, 2 * (q2q3 + q.q1) / denom,
-        2 * (q1q3 + q.q2) / denom,               2 * (q2q3 - q.q1) / denom,              (1 - q.q1^2 - q.q2^2 + q.q3^2) / denom
+        (1 + c₁² - c₂² - c₃²) / d,     2 * (c₁c₂ + c₃) / d,       2 * (c₁c₃ - c₂) / d,
+           2 * (c₁c₂ - c₃) / d,    (1 - c₁² + c₂² - c₃²) / d,     2 * (c₂c₃ + c₁) / d,
+           2 * (c₁c₃ + c₂) / d,        2 * (c₂c₃ - c₁) / d,   (1 - c₁² - c₂² + c₃²) / d
     )'
 end

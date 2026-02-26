@@ -9,11 +9,31 @@ export crp_to_quat
 """
     crp_to_quat(c::CRP) -> Quaternion
 
-Convert CRP `c` to a Quaternion.
+Convert CRP `c` to a quaternion.
+
+# Remarks
+
+By convention, the real part of the quaternion will always be positive. Moreover, the
+function does not check if `dcm` is a valid direction cosine matrix. This must be handle by
+the user.
+
+# Example
+
+```jldoctest
+julia> c = CRP(0.5, 0, 0)
+CRP{Float64}:
+  X : + 0.5
+  Y : + 0.0
+  Z : + 0.0
+
+julia> crp_to_quat(c)
+Quaternion{Float64}:
+  + 0.894427 + 0.447214⋅i + 0.0⋅j + 0.0⋅k
+```
 """
 function crp_to_quat(c::CRP)
-    q_sq = c.q1^2 + c.q2^2 + c.q3^2
-    β0 = 1 / sqrt(1 + q_sq)
+    norm_q² = c.q1^2 + c.q2^2 + c.q3^2
+    β₀      = 1 / √(1 + norm_q²)
 
-    return Quaternion(β0, c.q1 * β0, c.q2 * β0, c.q3 * β0)
+    return Quaternion(β₀, c.q1 * β₀, c.q2 * β₀, c.q3 * β₀)
 end
