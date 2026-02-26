@@ -8,14 +8,14 @@ CurrentModule = ReferenceFrameRotations
 using ReferenceFrameRotations
 ```
 
-A rotation represented by direction cosine matrix or quaternion can be inverted using the
-function:
+A rotation represented by DCM, Euler angle and axis, Euler angles, quaternion, CRP, or MRP
+can be inverted using the function:
 
 ```julia
 inv_rotation(R)
 ```
 
-in which `R` must be a DCM or a Quaternion.
+in which `R` must be one of the supported rotation types.
 
 !!! note
 
@@ -26,6 +26,9 @@ in which `R` must be a DCM or a Quaternion.
     If `R` is a Quaternion, then the conjugate quaternion will be returned. Hence, the user
     must ensure that the input quaternion is normalized (have unit norm). Otherwise, the
     result will not be the inverse quaternion of the input.
+
+    For Euler angle and axis, Euler angles, CRP, and MRP, the type-specific `inv` method is
+    used.
 
     These behaviors were selected to alleviate the computational burden.
 
@@ -41,4 +44,16 @@ q1 = angle_to_quat(0.5, 0.5, 0.5, :XYZ)
 q2 = inv_rotation(q1)
 
 q2 * q1
+
+c1 = angle_to_crp(0.5, 0.2, -0.1, :XYZ)
+
+c2 = inv_rotation(c1)
+
+c2 * c1
+
+m1 = angle_to_mrp(0.5, 0.2, -0.1, :XYZ)
+
+m2 = inv_rotation(m1)
+
+m2 * m1
 ```

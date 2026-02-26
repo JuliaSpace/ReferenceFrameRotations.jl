@@ -18,9 +18,11 @@ makedocs(
     authors = "Ronan Arraes Jardim Chagas",
     pages = [
         "Home" => "index.md",
+        "Classical Rodrigues Parameters" => "man/crp.md",
         "Direction Cosine Matrices" => "man/dcm.md",
         "Euler Angle and Axis" => "man/euler_angle_axis.md",
         "Euler Angles" => "man/euler_angles.md",
+        "Modified Rodrigues Parameters" => "man/mrp.md",
         "Quaternions" => "man/quaternions.md",
         "Conversions" => "man/conversions.md",
         "Kinematics" => "man/kinematics.md",

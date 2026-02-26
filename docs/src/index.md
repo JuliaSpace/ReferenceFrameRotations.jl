@@ -25,18 +25,19 @@ julia> Pkg.add("ReferenceFrameRotations")
 
 This packages supports the following representations of 3D rotations:
 
+* **Classical Rodrigues Parameters (CRP)**;
+* **Direction Cosine Matrices (DCMs)**;
 * **Euler Angle and Axis**;
 * **Euler Angles**;
-* **Direction Cosine Matrices (DCMs)**;
+* **Modified Rodrigues Parameters (MRP)**; and
 * **Quaternions**.
 
-However, composing rotations is only currently supported for DCMs and
-Quaternions.
+All of those representations support rotation composition and inversion in this package.
 
 ## Roadmap
 
-This package will be continuously enhanced. Next steps will be to add other
-representations of 3D rotations such as Rodrigues parameters, etc.
+This package will be continuously enhanced. Next steps will include API improvements,
+performance optimizations, and additional utilities for supported representations.
 
 ## Manual outline
 
@@ -46,6 +47,8 @@ Pages = [
     "man/euler_angle_axis.md",
     "man/euler_angles.md",
     "man/quaternions.md",
+    "man/crp.md",
+    "man/mrp.md",
     "man/conversions.md",
     "man/kinematics.md",
     "man/composing_rotations.md",

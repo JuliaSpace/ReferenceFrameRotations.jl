@@ -21,4 +21,8 @@ rand(DCM)
 rand(EulerAngles)
 
 rand(EulerAngleAxis)
+
+rand(CRP)
+
+rand(MRP)
 ```

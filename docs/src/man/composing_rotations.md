@@ -17,9 +17,23 @@ compose_rotation(R1, R2, R3, R4...)
 in which `R1`, `R2`, `R3`, ..., must be of the same type. This method returns the following
 rotation:
 
+```text
+ First rotation
+ |
+ |
+R1 => R2 => R3 => R4 => ...
+       |
+       |
+       Second rotation
+```
+
+Hence, `compose_rotation(R1, R2)` means the rotation `R1` is applied first, followed by
+`R2`.
+
 ![Composing rotations](../assets/Fig_Composing_Rotations.png)
 
-Currently, this method supports DCMs, Euler angle and axis, Euler angles, and Quaternions.
+Currently, this method supports DCMs, Euler angle and axis, Euler angles, Quaternions,
+Classical Rodrigues Parameters (CRP), and Modified Rodrigues Parameters (MRP).
 
 ```@repl composing_rotations
 D1 = angle_to_dcm(0.5, 0.5, 0.5, :XYZ)
@@ -45,6 +59,18 @@ q1 = angle_to_quat(0.5, 0.5, 0.5, :XYZ)
 q2 = angle_to_quat(-0.5, -0.5, -0.5, :ZYX)
 
 compose_rotation(q1, q2)
+
+c1 = angle_to_crp(0.2, 0.1, -0.1, :ZYX)
+
+c2 = angle_to_crp(-0.1, 0.1, 0.2, :XYZ)
+
+compose_rotation(c1, c2)
+
+m1 = angle_to_mrp(0.2, 0.1, -0.1, :ZYX)
+
+m2 = angle_to_mrp(-0.1, 0.1, 0.2, :XYZ)
+
+compose_rotation(m1, m2)
 ```
 
 ## Operator ∘
