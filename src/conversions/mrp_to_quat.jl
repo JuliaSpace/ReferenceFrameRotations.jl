@@ -21,8 +21,14 @@ the user.
 
 ```jldoctest
 julia> m = MRP(0.5, 0, 0)
+MRP{Float64}:
+  X : + 0.5
+  Y : + 0.0
+  Z : + 0.0
 
-julia> mrp_to_quat(c)
+julia> mrp_to_quat(m)
+Quaternion{Float64}:
+  + 0.6 + 0.8⋅i + 0.0⋅j + 0.0⋅k
 ```
 """
 function mrp_to_quat(m::MRP)
