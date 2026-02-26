@@ -10,60 +10,87 @@ export mrp_to_dcm
     mrp_to_dcm(m::MRP) -> DCM
 
 Convert MRP `m` to a Direction Cosine Matrix (DCM).
+
+# Examples
+
+```jldoctest
+julia> m = MRP(0.5, 0, 0)
+MRP{Float64}:
+  X : + 0.5
+  Y : + 0.0
+  Z : + 0.0
+
+julia> mrp_to_dcm(m)
+DCM{Float64}:
+ 1.0   0.0    0.0
+ 0.0  -0.28   0.96
+ 0.0  -0.96  -0.28
+```
 """
 function mrp_to_dcm(m::MRP)
-    # Direct formula from the provided image:
-    # [C] = [I] + (8 [skew(m)]^2 - 4(1 - |m|^2)[skew(m)]) / (1 + |m|^2)^2
+    # Equation:
+    #               8 (mˣ)² - 4(1 - |m|²) mˣ
+    #   DCM = I₃ + ──────────────────────────
+    #                     (1 + |m|²)²
+    #
 
-    s_sq = m.q1^2 + m.q2^2 + m.q3^2
-    denom = (1 + s_sq)^2
+    m₁  = m.q1
+    m₂  = m.q2
+    m₃  = m.q3
 
-    fac1 = 8 / denom
-    fac2 = 4 * (1 - s_sq) / denom
+    m₁² = m₁^2
+    m₂² = m₂^2
+    m₃² = m₃^2
 
-    # Skew symmetric matrix components
-    # [ 0  -q3  q2]
-    # [ q3  0  -q1]
-    # [-q2  q1  0 ]
+    norm_m² = m₁² + m₂² + m₃²
 
-    # Precompute skew terms
-    sk_12 = -m.q3
-    sk_13 = m.q2
-    sk_21 = m.q3
-    sk_23 = -m.q1
-    sk_31 = -m.q2
-    sk_32 = m.q1
+    k₂  = (1 - norm_m²)
+    d   = (1 + norm_m²)^2
 
-    # Skew^2 terms
-    # Row 1
-    # sk2_11 = sk_12 * sk_21 + sk_13 * sk_31 = -q3*q3 + q2*(-q2) = -q3^2 - q2^2
-    # sk2_12 = sk_13 * sk_32 = q2 * q1
-    # sk2_13 = sk_12 * sk_23 = -q3 * -q1 = q1q3
+    # Skew symmetric matrix components.
+    #
+    #        ┌            ┐
+    #        │ 0  -m₃  m₂ │
+    #   mˣ = │ m₃  0  -m₁ │
+    #        │ m₂  m₁  0  │
+    #        └            ┘
 
-    sk2_11 = -m.q3^2 - m.q2^2
-    sk2_12 = m.q1 * m.q2
-    sk2_13 = m.q1 * m.q3
+    mˣ₁₂  = -m₃
+    mˣ₁₃  =  m₂
+    mˣ₂₁  =  m₃
+    mˣ₂₃  = -m₁
+    mˣ₃₁  = -m₂
+    mˣ₃₂  =  m₁
 
-    sk2_21 = sk2_12
-    sk2_22 = -m.q3^2 - m.q1^2
-    sk2_23 = m.q2 * m.q3
+    # Squared skew symmetric matrix components.
+    #
+    #   mˣ² = mˣ ⋅ mˣ
+    #
 
-    sk2_31 = sk2_13
-    sk2_32 = sk2_23
-    sk2_33 = -m.q2^2 - m.q1^2
+    mˣ²₁₁ = -m₃² - m₂²
+    mˣ²₁₂ = m₁ * m₂
+    mˣ²₁₃ = m₁ * m₃
+
+    mˣ²₂₁ = mˣ²₁₂
+    mˣ²₂₂ = -m₃² - m₁²
+    mˣ²₂₃ = m₂ * m₃
+
+    mˣ²₃₁ = mˣ²₁₃
+    mˣ²₃₂ = mˣ²₂₃
+    mˣ²₃₃ = -m₂² - m₁²
 
     # Combine
-    d11 = 1 + fac1 * sk2_11
-    d12 = fac1 * sk2_12 - fac2 * sk_12
-    d13 = fac1 * sk2_13 - fac2 * sk_13
+    d₁₁ = 1 + 8mˣ²₁₁ / d
+    d₁₂ = (8mˣ²₁₂ - 4k₂ * mˣ₁₂) / d
+    d₁₃ = (8mˣ²₁₃ - 4k₂ * mˣ₁₃) / d
 
-    d21 = fac1 * sk2_21 - fac2 * sk_21
-    d22 = 1 + fac1 * sk2_22
-    d23 = fac1 * sk2_23 - fac2 * sk_23
+    d₂₁ = (8mˣ²₂₁ - 4k₂ * mˣ₂₁) / d
+    d₂₂ = 1 + 8mˣ²₂₂ / d
+    d₂₃ = (8mˣ²₂₃ - 4k₂ * mˣ₂₃) / d
 
-    d31 = fac1 * sk2_31 - fac2 * sk_31
-    d32 = fac1 * sk2_32 - fac2 * sk_32
-    d33 = 1 + fac1 * sk2_33
+    d₃₁ = (8mˣ²₃₁ - 4k₂ * mˣ₃₁) / d
+    d₃₂ = (8mˣ²₃₂ - 4k₂ * mˣ₃₂) / d
+    d₃₃ = 1 + 8mˣ²₃₃ / d
 
-    return DCM(d11, d12, d13, d21, d22, d23, d31, d32, d33)'
+    return DCM(d₁₁, d₁₂, d₁₃, d₂₁, d₂₂, d₂₃, d₃₁, d₃₂, d₃₃)'
 end

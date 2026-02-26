@@ -9,14 +9,31 @@ export mrp_to_quat
 """
     mrp_to_quat(m::MRP) -> Quaternion
 
-Convert MRP `m` to a Quaternion.
+Convert MRP `m` to a quaternion.
+
+# Remarks
+
+By convention, the real part of the quaternion will always be positive. Moreover, the
+function does not check if `dcm` is a valid direction cosine matrix. This must be handle by
+the user.
+
+# Example
+
+```jldoctest
+julia> m = MRP(0.5, 0, 0)
+
+julia> mrp_to_quat(c)
+```
 """
 function mrp_to_quat(m::MRP)
-    s_sq = m.q1^2 + m.q2^2 + m.q3^2
-    denom = 1 + s_sq
+    m₁ = m.q1
+    m₂ = m.q2
+    m₃ = m.q3
 
-    β0 = (1 - s_sq) / denom
-    f = 2 / denom
+    norm_q² = m₁^2 + m₂^2 + m₃^2
+    d       = 1 + norm_q²
+    β₀      = (1 - norm_q²) / d
+    f       = 2 / d
 
-    return Quaternion(β0, f * m.q1, f * m.q2, f * m.q3)
+    return Quaternion(β₀, f * m₁, f * m₂, f * m₃)
 end
