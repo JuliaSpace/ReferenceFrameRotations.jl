@@ -53,5 +53,27 @@
 
         eaie = inv(ea)
         @test eai ≈ eaie
+
+        # == Classical Rodrigues Parameters (CRP) ==========================================
+
+        # Create random CRP.
+        c = rand(CRP{T})
+
+        ci = inv_rotation(c)
+        @test eltype(ci) === T
+
+        cie = inv(c)
+        @test ci ≈ cie
+
+        # == Modified Rodrigues Parameters (MRP) ===========================================
+
+        # Create random MRP.
+        m = rand(MRP{T})
+
+        mi = inv_rotation(m)
+        @test eltype(mi) === T
+
+        mie = inv(m)
+        @test mi ≈ mie
     end
 end
