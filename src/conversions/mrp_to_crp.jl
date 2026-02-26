@@ -14,6 +14,17 @@ Convert MRP `m` to CRP.
 # Examples
 
 ```jldoctest
+julia> m = MRP(0.5, 0, 0)
+MRP{Float64}:
+  X : + 0.5
+  Y : + 0.0
+  Z : + 0.0
+
+julia> mrp_to_crp(m)
+CRP{Float64}:
+  X : + 1.33333
+  Y : + 0.0
+  Z : + 0.0
 ```
 """
 function mrp_to_crp(m::MRP)
