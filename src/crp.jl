@@ -151,9 +151,9 @@ function dcrp(c::CRP, wba_b::AbstractVector)
 
     # Equation [1]:
     #
-    #     dcrp    w + c × w + (c ⋅ w) c
-    #     ──── = ───────────────────────
-    #      dt              2
+    #     dcrp    w + crp × w + (crp ⋅ w) crp
+    #     ──── = ─────────────────────────────
+    #      dt                 2
 
     k₂_₁    = c.q2 * w₃ - c.q3 * w₂
     k₂_₂    = c.q3 * w₁ - c.q1 * w₃

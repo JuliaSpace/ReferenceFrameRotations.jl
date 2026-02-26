@@ -151,9 +151,9 @@ function dmrp(m::MRP, wba_b::AbstractVector)
 
     # Equation [1]:
     #
-    #     dmrp    (1 - s²) w + 2 (s × w) + 2 (s ⋅ w) s
-    #     ──── = ───────────────────────────────────────
-    #      dt                   4
+    #     dmrp    (1 - mrp²) w + 2 (mrp × w) + 2 (mrp ⋅ w) mrp
+    #     ──── = ──────────────────────────────────────────────
+    #      dt                       4
 
     k₁       = 1 - (m.q1^2 + m.q2^2 + m.q3^2)
     k₂_₁     = m.q2 * w₃ - m.q3 * w₂
