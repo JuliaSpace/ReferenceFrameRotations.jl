@@ -39,7 +39,7 @@ The output will have the same type as the inputs.
 
 # Example
 
-```jldoctest
+```julia-repl
 julia> D1 = angle_to_dcm(pi / 3, pi / 4, pi / 5, :ZYX);
 
 julia> D2 = angle_to_dcm(-pi / 5, -pi / 4, -pi / 3, :XYZ);
