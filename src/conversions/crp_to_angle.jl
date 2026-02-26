@@ -32,7 +32,7 @@ EulerAngles{Float64}:
   R(Z) :  0.0      rad  ( 0.0°)
 ```
 """
-function crp_to_angle(c::CRP, rot_seq::Symbol)
+function crp_to_angle(c::CRP, rot_seq::Symbol = :ZYX)
     dcm = crp_to_dcm(c)
     return dcm_to_angle(dcm, rot_seq)
 end
