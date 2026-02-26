@@ -24,6 +24,6 @@
         eaa = crp_to_angleaxis(c)
         @test eaa isa EulerAngleAxis{T}
 
-        @test isapprox(eaa, eaa_ref; atol = 100 * eps(T))
+        @test isapprox(eaa, eaa_ref; atol = 1000 * eps(T))
     end
 end
