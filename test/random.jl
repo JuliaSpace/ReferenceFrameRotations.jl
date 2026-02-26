@@ -136,3 +136,53 @@ end
     q = rand(StableRNG(1986), Quaternion{Float32})
     @test q ≈ q_exp atol = 1e-15
 end
+
+@testset "CRP (Float64)" begin
+    c_exp = CRP(
+         -1.8520630312725974,
+        -24.266971356535347,
+         -4.418926089538365
+    )
+
+    c = rand(StableRNG(1986), CRP)
+    @test c ≈ c_exp atol = 1e-15
+
+    c = rand(StableRNG(1986), CRP{Float64})
+    @test c ≈ c_exp atol = 1e-15
+end
+
+@testset "CRP (Float32)" begin
+    c_exp = CRP(
+         0.049937766f0,
+         0.7139188f0,
+        -0.5100343f0
+    )
+
+    c = rand(StableRNG(1986), CRP{Float32})
+    @test c ≈ c_exp atol = 1e-15
+end
+
+@testset "MRP (Float64)" begin
+    m_exp = MRP(
+        -0.07190895825384126,
+        -0.9421993748372708,
+        -0.17157103529089043
+    )
+
+    m = rand(StableRNG(1986), MRP)
+    @test m ≈ m_exp atol = 1e-15
+
+    m = rand(StableRNG(1986), MRP{Float64})
+    @test m ≈ m_exp atol = 1e-15
+end
+
+@testset "MRP (Float32)" begin
+    m_exp = MRP(
+         0.021420741f0,
+         0.30623457f0,
+        -0.21877857f0
+    )
+
+    m = rand(StableRNG(1986), MRP{Float32})
+    @test m ≈ m_exp atol = 1e-15
+end
