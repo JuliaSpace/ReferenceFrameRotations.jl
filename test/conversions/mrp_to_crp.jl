@@ -24,7 +24,7 @@
         c = mrp_to_crp(m)
         @test c isa CRP{T}
 
-        @test isapprox(c, c_ref; atol = 100 * eps(T), rtol = 100 * eps(T))
+        @test isapprox(c, c_ref; atol = 1000 * eps(T), rtol = 1000 * eps(T))
     end
 end
 

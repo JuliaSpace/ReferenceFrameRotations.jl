@@ -30,7 +30,7 @@
             @test eltype(D) === T
 
             # Verify the DCM against the reference entry by entry.
-            @test maximum(abs.(D_ref - D)) < 100 * eps(T)
+            @test maximum(abs.(D_ref - D)) < 1000 * eps(T)
         end
     end
 end

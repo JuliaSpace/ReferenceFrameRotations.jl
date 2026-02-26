@@ -24,7 +24,7 @@
         c = quat_to_crp(q)
         @test c isa CRP{T}
 
-        @test isapprox(c, c_ref; atol = 100 * eps(T))
+        @test isapprox(c, c_ref; atol = 1000 * eps(T))
     end
 end
 

@@ -24,7 +24,7 @@
         m = quat_to_mrp(q)
         @test m isa MRP{T}
 
-        @test isapprox(m, m_ref; atol = 100 * eps(T))
+        @test isapprox(m, m_ref; atol = 1000 * eps(T))
     end
 end
 

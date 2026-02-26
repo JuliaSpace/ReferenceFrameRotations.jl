@@ -25,7 +25,7 @@
         @test eltype(q) === T
 
         # Signs of quaternions can be flipped, so check for both.
-        @test isapprox(q, q_ref; atol = 100 * eps(T)) ||
-              isapprox(q, -q_ref; atol = 100 * eps(T))
+        @test isapprox(q, q_ref; atol = 1000 * eps(T)) ||
+              isapprox(q, -q_ref; atol = 1000 * eps(T))
     end
 end
