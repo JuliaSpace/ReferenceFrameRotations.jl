@@ -35,6 +35,22 @@
         D_api = convert(DCM, q)
         @test D_api === D_exp
         @test eltype(D_api) === T
+
+        # == Classical Rodrigues Parameters (CRP) ==========================================
+
+        c = rand(CRP{T})
+        D_exp = crp_to_dcm(c)
+        D_api = convert(DCM, c)
+        @test D_api === D_exp
+        @test eltype(D_api) === T
+
+        # == Modified Rodrigues Parameters (MRP) ===========================================
+
+        m = rand(MRP{T})
+        D_exp = mrp_to_dcm(m)
+        D_api = convert(DCM, m)
+        @test D_api === D_exp
+        @test eltype(D_api) === T
     end
 end
 
@@ -63,6 +79,22 @@ end
         q = rand(Quaternion{T})
         av_exp = quat_to_angleaxis(q)
         av_api = convert(EulerAngleAxis, q)
+        @test av_exp === av_api
+        @test eltype(av_api) === T
+
+        # == Classical Rodrigues Parameters (CRP) ==========================================
+
+        c = rand(CRP{T})
+        av_exp = crp_to_angleaxis(c)
+        av_api = convert(EulerAngleAxis, c)
+        @test av_exp === av_api
+        @test eltype(av_api) === T
+
+        # == Modified Rodrigues Parameters (MRP) ===========================================
+
+        m = rand(MRP{T})
+        av_exp = mrp_to_angleaxis(m)
+        av_api = convert(EulerAngleAxis, m)
         @test av_exp === av_api
         @test eltype(av_api) === T
     end
@@ -102,6 +134,22 @@ end
             q = rand(Quaternion{T})
             ea_exp = quat_to_angle(q, rot_seq)
             ea_api = convert(EulerAngles(rot_seq), q)
+            @test ea_exp === ea_api
+            @test eltype(ea_api) === T
+
+            # == Classical Rodrigues Parameters (CRP) ======================================
+
+            c = rand(CRP{T})
+            ea_exp = crp_to_angle(c, rot_seq)
+            ea_api = convert(EulerAngles(rot_seq), c)
+            @test ea_exp === ea_api
+            @test eltype(ea_api) === T
+
+            # == Modified Rodrigues Parameters (MRP) =======================================
+
+            m = rand(MRP{T})
+            ea_exp = mrp_to_angle(m, rot_seq)
+            ea_api = convert(EulerAngles(rot_seq), m)
             @test ea_exp === ea_api
             @test eltype(ea_api) === T
         end
@@ -145,6 +193,22 @@ end
         ea_api = convert(EulerAngles, q)
         @test ea_exp === ea_api
         @test eltype(ea_api) === T
+
+        # == Classical Rodrigues Parameters (CRP) ==========================================
+
+        c = rand(CRP{T})
+        ea_exp = crp_to_angle(c)
+        ea_api = convert(EulerAngles, c)
+        @test ea_exp === ea_api
+        @test eltype(ea_api) === T
+
+        # == Modified Rodrigues Parameters (MRP) ===========================================
+
+        m = rand(MRP{T})
+        ea_exp = mrp_to_angle(m)
+        ea_api = convert(EulerAngles, m)
+        @test ea_exp === ea_api
+        @test eltype(ea_api) === T
     end
 end
 
@@ -174,6 +238,22 @@ end
         D = rand(DCM{T})
         q_exp = dcm_to_quat(D)
         q_api = convert(Quaternion, D)
+        @test q_api === q_exp
+        @test eltype(q_api) === T
+
+        # == Classical Rodrigues Parameters (CRP) ==========================================
+
+        c = rand(CRP{T})
+        q_exp = crp_to_quat(c)
+        q_api = convert(Quaternion, c)
+        @test q_api === q_exp
+        @test eltype(q_api) === T
+
+        # == Modified Rodrigues Parameters (MRP) ===========================================
+
+        m = rand(MRP{T})
+        q_exp = mrp_to_quat(m)
+        q_api = convert(Quaternion, m)
         @test q_api === q_exp
         @test eltype(q_api) === T
     end
