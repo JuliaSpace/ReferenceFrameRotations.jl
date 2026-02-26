@@ -225,3 +225,40 @@ end
         @test isapprox(dc, dc_num; rtol = 1e-4, atol = 1e-6)
     end
 end
+
+# -- Functions: getindex, length, setindex! ------------------------------------------------
+
+@testset "General Functions of CRP: Iterable Object API" begin
+    c = CRP(randn(), randn(), randn())
+    @test length(c) == 3
+    @test c[1] == c.q1
+    @test c[2] == c.q2
+    @test c[3] == c.q3
+
+    @test_throws BoundsError c[0]
+    @test_throws BoundsError c[4]
+
+    v = zeros(10)
+
+    v[4:6] = c
+
+    @test v[1]  == 0
+    @test v[2]  == 0
+    @test v[3]  == 0
+    @test v[4]  == c.q1
+    @test v[5]  == c.q2
+    @test v[6]  == c.q3
+    @test v[7]  == 0
+    @test v[8]  == 0
+    @test v[9]  == 0
+    @test v[10] == 0
+
+    @test firstindex(c) === 1
+    @test lastindex(c) === 3
+
+    v = c[:]
+
+    @test v[1] == c.q1
+    @test v[2] == c.q2
+    @test v[3] == c.q3
+end

@@ -238,3 +238,40 @@ end
         @test isapprox(dm, dm_num; rtol = 1e-4, atol = 1e-6)
     end
 end
+
+# -- Functions: getindex, length, setindex! ------------------------------------------------
+
+@testset "General Functions of MRP: Iterable Object API" begin
+    m = MRP(randn(), randn(), randn())
+    @test length(m) == 3
+    @test m[1] == m.q1
+    @test m[2] == m.q2
+    @test m[3] == m.q3
+
+    @test_throws BoundsError m[0]
+    @test_throws BoundsError m[4]
+
+    v = zeros(10)
+
+    v[4:6] = m
+
+    @test v[1]  == 0
+    @test v[2]  == 0
+    @test v[3]  == 0
+    @test v[4]  == m.q1
+    @test v[5]  == m.q2
+    @test v[6]  == m.q3
+    @test v[7]  == 0
+    @test v[8]  == 0
+    @test v[9]  == 0
+    @test v[10] == 0
+
+    @test firstindex(m) === 1
+    @test lastindex(m) === 3
+
+    v = m[:]
+
+    @test v[1] == m.q1
+    @test v[2] == m.q2
+    @test v[3] == m.q3
+end
