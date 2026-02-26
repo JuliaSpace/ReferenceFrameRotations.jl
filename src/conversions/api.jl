@@ -64,7 +64,7 @@ Base.convert(::Type{<:Quaternion}, a::MRP)            = mrp_to_quat(a)
 
 Base.convert(::Type{<:CRP}, a::DCM)            = dcm_to_crp(a)
 Base.convert(::Type{<:CRP}, a::Quaternion)     = quat_to_crp(a)
-Base.convert(::Type{<:CRP}, a::EulerAngles)    = dcm_to_crp(angle_to_dcm(a))
+Base.convert(::Type{<:CRP}, a::EulerAngles)    = angle_to_crp(a)
 Base.convert(::Type{<:CRP}, a::EulerAngleAxis) = dcm_to_crp(angleaxis_to_dcm(a))
 Base.convert(::Type{<:CRP}, a::MRP)            = dcm_to_crp(mrp_to_dcm(a))
 
@@ -72,6 +72,6 @@ Base.convert(::Type{<:CRP}, a::MRP)            = dcm_to_crp(mrp_to_dcm(a))
 
 Base.convert(::Type{<:MRP}, a::DCM)            = dcm_to_mrp(a)
 Base.convert(::Type{<:MRP}, a::Quaternion)     = quat_to_mrp(a)
-Base.convert(::Type{<:MRP}, a::EulerAngles)    = dcm_to_mrp(angle_to_dcm(a))
+Base.convert(::Type{<:MRP}, a::EulerAngles)    = angle_to_mrp(a)
 Base.convert(::Type{<:MRP}, a::EulerAngleAxis) = dcm_to_mrp(angleaxis_to_dcm(a))
 Base.convert(::Type{<:MRP}, a::CRP)            = dcm_to_mrp(crp_to_dcm(a))
