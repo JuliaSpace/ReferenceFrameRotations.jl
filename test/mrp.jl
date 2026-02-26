@@ -15,6 +15,18 @@
     @test m.q3 == 3.0
     @test eltype(m) == Float64
 
+    m = MRP(1.0, 2, 3)
+    @test m.q1 == 1.0
+    @test m.q2 == 2.0
+    @test m.q3 == 3.0
+    @test eltype(m) == Float64
+
+    m = MRP(1.0f0, 2, 3)
+    @test m.q1 == 1.0
+    @test m.q2 == 2.0
+    @test m.q3 == 3.0
+    @test eltype(m) == Float32
+
     m = MRP(1, 2, 3)
     @test m.q1 == 1
     @test m.q2 == 2

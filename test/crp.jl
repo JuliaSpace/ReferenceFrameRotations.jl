@@ -15,6 +15,18 @@
     @test c.q3 == 3.0
     @test eltype(c) == Float64
 
+    c = CRP(1.0, 2, 3)
+    @test c.q1 == 1.0
+    @test c.q2 == 2.0
+    @test c.q3 == 3.0
+    @test eltype(c) == Float64
+
+    c = CRP(1.0f0, 2, 3)
+    @test c.q1 == 1.0
+    @test c.q2 == 2.0
+    @test c.q3 == 3.0
+    @test eltype(c) == Float32
+
     c = CRP(1, 2, 3)
     @test c.q1 == 1
     @test c.q2 == 2
