@@ -32,8 +32,12 @@ Quaternion{Float64}:
 ```
 """
 function crp_to_quat(c::CRP)
-    norm_q² = c.q1^2 + c.q2^2 + c.q3^2
-    β₀      = 1 / √(1 + norm_q²)
+    c₁ = c.q1
+    c₂ = c.q2
+    c₃ = c.q3
 
-    return Quaternion(β₀, c.q1 * β₀, c.q2 * β₀, c.q3 * β₀)
+    norm_q² = c₁^2 + c₂^2 + c₃^2
+    β₀ = 1 / √(1 + norm_q²)
+
+    return Quaternion(β₀, c₁ * β₀, c₂ * β₀, c₃ * β₀)
 end
