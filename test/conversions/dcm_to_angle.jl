@@ -153,8 +153,11 @@ end
         x = prevfloat(one(T))
         D₁ = angle_to_dcm(T(0.37), asin(x), T(-0.81), :ZYX)
         D₂ = angle_to_dcm(T(0.37), acos(x), T(-0.81), :XYX)
-        @test angle_to_dcm(dcm_to_angle(D₁, :ZYX)) ≈ D₁ atol = 100 * eps(T)
-        @test angle_to_dcm(dcm_to_angle(D₂, :XYX)) ≈ D₂ atol = 100 * eps(T)
+        # Inverting a sine/cosine one ULP from ±1 is ill-conditioned: the
+        # resulting angle error is O(√eps), so use a scale-aware tolerance.
+        atol = 10 * sqrt(eps(T))
+        @test angle_to_dcm(dcm_to_angle(D₁, :ZYX)) ≈ D₁ atol = atol
+        @test angle_to_dcm(dcm_to_angle(D₂, :XYX)) ≈ D₂ atol = atol
 
         # One-ULP excursions are clamped by the same private helpers used by
         # singular branches.
