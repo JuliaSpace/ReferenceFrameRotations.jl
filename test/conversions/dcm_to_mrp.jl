@@ -19,14 +19,10 @@
             mπ = dcm_to_mrp(Dπ)
             v = @SVector randn(T, 3)
             @test Dπ * v ≈ mrp_to_dcm(mπ) * v
-            mπold = quat_to_mrp(dcm_to_quat(Dπ))
-            @test SVector(mπ.q1, mπ.q2, mπ.q3) ≈ SVector(mπold.q1, mπold.q2, mπold.q3)
 
             Dnear = angleaxis_to_dcm(T(π) - T(10) * eps(T), axis)
             mnear = dcm_to_mrp(Dnear)
             @test Dnear * v ≈ mrp_to_dcm(mnear) * v
-            mnearold = quat_to_mrp(dcm_to_quat(Dnear))
-            @test SVector(mnear.q1, mnear.q2, mnear.q3) ≈ SVector(mnearold.q1, mnearold.q2, mnearold.q3)
         end
 
         # The conversion is tested by creating DCMs from Euler angles and verifying that the

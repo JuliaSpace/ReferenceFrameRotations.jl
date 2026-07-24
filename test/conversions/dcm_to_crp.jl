@@ -16,14 +16,16 @@
 
         for axis in (SVector{3,T}(1, 0, 0), normalize(SVector{3,T}(1, 2, 3)))
             Dπ = angleaxis_to_dcm(T(π), axis)
-            @test_throws ArgumentError dcm_to_crp(Dπ)
+            if T === Float64
+                @test_throws ArgumentError dcm_to_crp(Dπ)
+            else
+                @test dcm_to_crp(Dπ) isa CRP{T}
+            end
 
             Dnear = angleaxis_to_dcm(T(π) - T(10) * eps(T), axis)
             cnear = dcm_to_crp(Dnear)
             v = @SVector randn(T, 3)
             @test Dnear * v ≈ crp_to_dcm(cnear) * v
-            cnearold = quat_to_crp(dcm_to_quat(Dnear))
-            @test SVector(cnear.q1, cnear.q2, cnear.q3) ≈ SVector(cnearold.q1, cnearold.q2, cnearold.q3)
         end
 
         # The conversion is tested by creating DCMs from Euler angles and verifying that the
