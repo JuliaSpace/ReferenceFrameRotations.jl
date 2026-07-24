@@ -109,7 +109,7 @@ end
 
             dcm = rand(DCM{T})
             ea_exp = dcm_to_angle(dcm, rot_seq)
-            ea_api = convert(EulerAngles(rot_seq), dcm)
+            ea_api = @inferred convert(EulerAngles(rot_seq), dcm)
             @test ea_exp === ea_api
             @test eltype(ea_api) === T
 
@@ -117,7 +117,7 @@ end
 
             ea = rand(EulerAngles{T})
             ea_exp = angle_to_angle(ea, rot_seq)
-            ea_api = convert(EulerAngles(rot_seq), ea)
+            ea_api = @inferred convert(EulerAngles(rot_seq), ea)
             @test ea_api === ea_exp
             @test eltype(ea_api) === T
 
@@ -125,7 +125,7 @@ end
 
             av = rand(EulerAngleAxis{T})
             ea_exp = angleaxis_to_angle(av, rot_seq)
-            ea_api = convert(EulerAngles(rot_seq), av)
+            ea_api = @inferred convert(EulerAngles(rot_seq), av)
             @test ea_api === ea_exp
             @test eltype(ea_api) === T
 
@@ -133,7 +133,7 @@ end
 
             q = rand(Quaternion{T})
             ea_exp = quat_to_angle(q, rot_seq)
-            ea_api = convert(EulerAngles(rot_seq), q)
+            ea_api = @inferred convert(EulerAngles(rot_seq), q)
             @test ea_exp === ea_api
             @test eltype(ea_api) === T
 
@@ -141,7 +141,7 @@ end
 
             c = rand(CRP{T})
             ea_exp = crp_to_angle(c, rot_seq)
-            ea_api = convert(EulerAngles(rot_seq), c)
+            ea_api = @inferred convert(EulerAngles(rot_seq), c)
             @test ea_exp === ea_api
             @test eltype(ea_api) === T
 
@@ -149,7 +149,7 @@ end
 
             m = rand(MRP{T})
             ea_exp = mrp_to_angle(m, rot_seq)
-            ea_api = convert(EulerAngles(rot_seq), m)
+            ea_api = @inferred convert(EulerAngles(rot_seq), m)
             @test ea_exp === ea_api
             @test eltype(ea_api) === T
         end
@@ -210,6 +210,8 @@ end
         @test ea_exp === ea_api
         @test eltype(ea_api) === T
     end
+
+    @test_throws ArgumentError convert(EulerAngles(:invalid), rand(DCM))
 end
 
 # -- Conversion to Quaternion --------------------------------------------------------------
