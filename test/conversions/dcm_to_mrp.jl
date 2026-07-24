@@ -10,6 +10,25 @@
 
 @testset "DCM => MRP" begin
     for T in (Float32, Float64)
+        # Identity and rotations at and near the π branch cut.
+        D = DCM{T}((1, 0, 0, 0, 1, 0, 0, 0, 1))
+        @test dcm_to_mrp(D) == MRP(T(0), T(0), T(0))
+
+        for axis in (SVector{3,T}(1, 0, 0), normalize(SVector{3,T}(1, 2, 3)))
+            Dπ = angleaxis_to_dcm(T(π), axis)
+            mπ = dcm_to_mrp(Dπ)
+            v = @SVector randn(T, 3)
+            @test Dπ * v ≈ mrp_to_dcm(mπ) * v
+            mπold = quat_to_mrp(dcm_to_quat(Dπ))
+            @test (mπ.q1, mπ.q2, mπ.q3) ≈ (mπold.q1, mπold.q2, mπold.q3)
+
+            Dnear = angleaxis_to_dcm(T(π) - T(10) * eps(T), axis)
+            mnear = dcm_to_mrp(Dnear)
+            @test Dnear * v ≈ mrp_to_dcm(mnear) * v
+            mnearold = quat_to_mrp(dcm_to_quat(Dnear))
+            @test (mnear.q1, mnear.q2, mnear.q3) ≈ (mnearold.q1, mnearold.q2, mnearold.q3)
+        end
+
         # The conversion is tested by creating DCMs from Euler angles and verifying that the
         # resulting MRP represents the same rotation.
         testset = [
