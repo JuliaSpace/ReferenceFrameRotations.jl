@@ -1,6 +1,18 @@
 ReferenceFrameRotations.jl Changelog
 ====================================
 
+Version 3.3.0
+-------------
+
+- ![Enhancement][badge-enhancement] Eliminate intermediate construction in DCM
+  orthonormalization.
+- ![Enhancement][badge-enhancement] Improve inference for fixed Euler-sequence
+  conversions.
+- ![Enhancement][badge-enhancement] Add benchmarks and allocation/inference performance
+  contracts.
+- ![Bugfix][badge-bugfix] Harden DCM-to-Euler conversion near singularities.
+- ![Info][badge-info] Strengthen inverse-rotation property coverage.
+
 Version 3.2.0
 -------------
 
@@ -14,7 +26,7 @@ Version 3.1.2
 - ![Enhancement][badge-enhancement] The Zygote extension was modified to handle thunks. (PR
   [#35][gh-pr-35])
 
-Verison 3.1.1
+Version 3.1.1
 -------------
 
 - ![Bugfix][badge-bugfix] Some compat bounds were not correctly set. (Issue
@@ -321,12 +333,12 @@ Version 0.1.0
       was renamed to **ReferenceFrameRotations** to be submitted to julia
       METADATA repo.
 
-[badge-breaking]: https://img.shields.io/badge/BREAKING-red.svg
-[badge-deprecation]: https://img.shields.io/badge/Deprecation-orange.svg
-[badge-feature]: https://img.shields.io/badge/Feature-green.svg
-[badge-enhancement]: https://img.shields.io/badge/Enhancement-blue.svg
-[badge-bugfix]: https://img.shields.io/badge/Bugfix-purple.svg
-[badge-info]: https://img.shields.io/badge/Info-gray.svg
+[badge-breaking]: https://img.shields.io/badge/Breaking-DC2626?style=flat-square
+[badge-deprecation]: https://img.shields.io/badge/Deprecation-D97706?style=flat-square
+[badge-feature]: https://img.shields.io/badge/Feature-16A34A?style=flat-square
+[badge-enhancement]: https://img.shields.io/badge/Enhancement-0284C7?style=flat-square
+[badge-bugfix]: https://img.shields.io/badge/Bugfix-DB2777?style=flat-square
+[badge-info]: https://img.shields.io/badge/Info-475569?style=flat-square
 
 [gh-issue-18]: https://github.com/JuliaSpace/ReferenceFrameRotations.jl/issues/18
 [gh-issue-21]: https://github.com/JuliaSpace/ReferenceFrameRotations.jl/issues/21
