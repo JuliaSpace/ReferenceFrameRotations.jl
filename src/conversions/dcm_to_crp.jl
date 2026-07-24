@@ -56,7 +56,7 @@ Convert DCM `dcm` to CRP.
 function dcm_to_crp(dcm::DCM)
     q0, q1, q2, q3 = _dcm_to_quat_components(dcm)
 
-    if isapprox(q0, 0; atol = 1e-15)
+    if isapprox(q0, zero(q0); atol = eps(one(q0)))
         throw(ArgumentError("The quaternion represents a rotation of 180 degrees, which is a singularity for CRP."))
     end
 

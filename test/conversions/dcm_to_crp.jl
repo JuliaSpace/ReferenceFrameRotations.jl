@@ -23,7 +23,7 @@
             v = @SVector randn(T, 3)
             @test Dnear * v ≈ crp_to_dcm(cnear) * v
             cnearold = quat_to_crp(dcm_to_quat(Dnear))
-            @test (cnear.q1, cnear.q2, cnear.q3) ≈ (cnearold.q1, cnearold.q2, cnearold.q3)
+            @test SVector(cnear.q1, cnear.q2, cnear.q3) ≈ SVector(cnearold.q1, cnearold.q2, cnearold.q3)
         end
 
         # The conversion is tested by creating DCMs from Euler angles and verifying that the
