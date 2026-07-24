@@ -135,3 +135,30 @@ end
         @test a == T(-π / 2)
     end
 end
+
+@testset "DCM => Euler angles (floating-point boundaries)" begin
+    # At a singularity, compare the rotations instead of a particular Euler-angle
+    # representation, since the first and third angles are not independently defined.
+    for T in (Float32, Float64)
+        for rot_seq in (:ZYX, :XYZ, :XZY, :YXZ, :YZX, :ZXY)
+            for sign in (-one(T), one(T))
+                D = angle_to_dcm(T(0.37), sign * T(π / 2), T(-0.81), rot_seq)
+                ea = dcm_to_angle(D, rot_seq)
+                @test angle_to_dcm(ea) ≈ D atol = 100 * eps(T)
+            end
+        end
+
+        # The adjacent representable value below one must remain on the regular
+        # side of the inverse trigonometric functions without producing NaN.
+        x = prevfloat(one(T))
+        D₁ = angle_to_dcm(T(0.37), asin(x), T(-0.81), :ZYX)
+        D₂ = angle_to_dcm(T(0.37), acos(x), T(-0.81), :XYX)
+        @test angle_to_dcm(dcm_to_angle(D₁, :ZYX)) ≈ D₁ atol = 100 * eps(T)
+        @test angle_to_dcm(dcm_to_angle(D₂, :XYX)) ≈ D₂ atol = 100 * eps(T)
+
+        # One-ULP excursions are clamped by the same private helpers used by
+        # singular branches.
+        @test isfinite(ReferenceFrameRotations._mod_asin(one(T) + eps(T)))
+        @test isfinite(ReferenceFrameRotations._mod_acos(-one(T) - eps(T)))
+    end
+end
