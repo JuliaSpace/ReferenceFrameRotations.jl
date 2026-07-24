@@ -10,70 +10,40 @@
 
 @testset "Invert rotations" begin
     for T in (Float32, Float64)
-        # == DCM ===========================================================================
+        D = angle_to_dcm(T(0.4), T(-0.7), T(1.1), :ZYX)
+        rotations = (
+            D,
+            convert(EulerAngleAxis, D),
+            convert(EulerAngles, D),
+            convert(Quaternion, D),
+            convert(CRP, D),
+            convert(MRP, D),
+        )
+        I_D = DCM(T(1) * I)
 
-        # Create a random DCM.
-        D = rand(DCM{T})
+        for R in rotations
+            Ri = inv_rotation(R)
+            @test eltype(Ri) === T
 
-        Di = inv_rotation(D)
-        @test eltype(Di) === T
+            Rd = R isa DCM ? R : convert(DCM, R)
+            Rid = Ri isa DCM ? Ri : convert(DCM, Ri)
+            @test Rid * Rd ≈ I_D atol = 100 * sqrt(eps(T))
+            @test Rd * Rid ≈ I_D atol = 100 * sqrt(eps(T))
+        end
 
-        Die = inv(D)
-        @test Di ≈ Die
-
-        # == Quaternion ====================================================================
-
-        # Create a random quaternion.
-        q = rand(Quaternion{T})
-
-        qi = inv_rotation(q)
-        @test eltype(qi) === T
-
-        qie = inv(q)
-        @test qi ≈ qie
-
-        # == Euler Angle and Axis ==========================================================
-
-        # Create a random Euler angle and axis.
-        av = rand(EulerAngleAxis{T})
-
-        avi = inv_rotation(av)
-        @test eltype(avi) === T
-
-        avie = inv(av)
-        @test avi ≈ avie
-
-        # == Euler Angles ==================================================================
-
-        # Create random Euler angles.
-        ea = rand(EulerAngles{T})
-
-        eai = inv_rotation(ea)
-        @test eltype(eai) === T
-
-        eaie = inv(ea)
-        @test eai ≈ eaie
-
-        # == Classical Rodrigues Parameters (CRP) ==========================================
-
-        # Create random CRP.
-        c = rand(CRP{T})
-
-        ci = inv_rotation(c)
-        @test eltype(ci) === T
-
-        cie = inv(c)
-        @test ci ≈ cie
-
-        # == Modified Rodrigues Parameters (MRP) ===========================================
-
-        # Create random MRP.
-        m = rand(MRP{T})
-
-        mi = inv_rotation(m)
-        @test eltype(mi) === T
-
-        mie = inv(m)
-        @test mi ≈ mie
+        # Euler-angle singularities must still produce a genuine inverse
+        # rotation, even though their angle representation is not unique.
+        singular_rotations = (
+            EulerAngles(T(0.3), +T(π / 2), T(-0.8), :ZYX),
+            EulerAngles(T(0.3), -T(π / 2), T(-0.8), :ZYX),
+            EulerAngles(T(0.3), T(0), T(-0.8), :XYX),
+            EulerAngles(T(0.3), T(π), T(-0.8), :XYX),
+        )
+        for R in singular_rotations
+            Rd = convert(DCM, R)
+            Rid = convert(DCM, inv_rotation(R))
+            @test Rid * Rd ≈ I_D atol = 100 * sqrt(eps(T))
+            @test Rd * Rid ≈ I_D atol = 100 * sqrt(eps(T))
+        end
     end
 end
