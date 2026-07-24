@@ -56,11 +56,13 @@ DCM{Float64}:
     v₂ = T(v[2])
     v₃ = T(v[3])
 
+    #! format: off
     return DCM(
         cθ + v₁ * v₁ * aux,      v₁ * v₂ * aux + v₃ * sθ, v₁ * v₃ * aux - v₂ * sθ,
         v₁ * v₂ * aux - v₃ * sθ, cθ + v₂ * v₂ * aux,      v₂ * v₃ * aux + v₁ * sθ,
         v₁ * v₃ * aux + v₂ * sθ, v₂ * v₃ * aux - v₁ * sθ, cθ + v₃ * v₃ * aux
     )'
+    #! format: off
 end
 
 @inline angleaxis_to_dcm(av::EulerAngleAxis) = angleaxis_to_dcm(av.a, av.v)

@@ -874,10 +874,12 @@ function dquat(qba::Quaternion, wba_b::AbstractVector)
     #   dq = --- (wba_b) . q
     #         2
 
+    #! format: off
     return Quaternion(
                           - w[1] / 2 * qba.q1 - w[2] / 2 * qba.q2 - w[3] / 2 * qba.q3,
         w[1] / 2 * qba.q0                     + w[3] / 2 * qba.q2 - w[2] / 2 * qba.q3,
         w[2] / 2 * qba.q0 - w[3] / 2 * qba.q1                     + w[1] / 2 * qba.q3,
         w[3] / 2 * qba.q0 + w[2] / 2 * qba.q1 - w[1] / 2 * qba.q2
     )
+    #! format: on
 end

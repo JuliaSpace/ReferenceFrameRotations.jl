@@ -69,11 +69,13 @@ function orthonormalize(dcm::DCM)
     enj₃ = enj₃ - (en₂ ⋅ enj₃) * en₂
     en₃  = enj₃ / norm(enj₃)
 
+    #! format: off
     return DCM(
         en₁[1], en₁[2], en₁[3],
         en₂[1], en₂[2], en₂[3],
         en₃[1], en₃[2], en₃[3]
     )
+    #! format: on
 end
 
 ############################################################################################
@@ -108,11 +110,13 @@ function ddcm(Dba::DCM, wba_b::AbstractArray)
         throw(ArgumentError("The angular velocity vector must have three components."))
     end
 
+    #! format: off
     wx = SMatrix{3, 3}(
           0  , -w[3], +w[2],
         +w[3],   0  , -w[1],
         -w[2], +w[1],   0,
     )'
+    #! format: on
 
     # Return the time-derivative.
     return -wx * Dba

@@ -41,9 +41,11 @@ function crp_to_dcm(c::CRP)
     c₁c₃ = c₁ * c₃
     c₂c₃ = c₂ * c₃
 
+    #! format: off
     return DCM(
         (1 + c₁² - c₂² - c₃²) / d,     2 * (c₁c₂ + c₃) / d,       2 * (c₁c₃ - c₂) / d,
            2 * (c₁c₂ - c₃) / d,    (1 - c₁² + c₂² - c₃²) / d,     2 * (c₂c₃ + c₁) / d,
            2 * (c₁c₃ + c₂) / d,        2 * (c₂c₃ - c₁) / d,   (1 - c₁² - c₂² + c₃²) / d
     )'
+    #! format: on
 end

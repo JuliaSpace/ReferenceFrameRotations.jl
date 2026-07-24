@@ -111,11 +111,14 @@ end
         @test av.a ≈ 2.4188584057763776
         @test av.v ≈ [0.6546536707079772, -0.37796447300922736, -0.6546536707079772]
 
+        #! format: off
         D = DCM(
             T(-1 / 3), T(-2 / 3), T(-1 / 3),
             T(-1 / 3), T(-1 / 3), T(+2 / 3),
             T(-2 / 3), T(+2 / 3), T(-1 / 3)
         )'
+        #! format: on
+
         av = dcm_to_angleaxis(D)
         @test eltype(av) === T
         @test av.a ≈ T(π)

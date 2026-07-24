@@ -60,6 +60,7 @@ DCM{Float64}:
 function angle_to_dcm(θ::T, rot_seq::Symbol) where {T <: Number}
     sa, ca = sincos(θ)
 
+    #! format: off
     if rot_seq == :X
         return DCM(
             T(1), T(0), T(0),
@@ -81,6 +82,7 @@ function angle_to_dcm(θ::T, rot_seq::Symbol) where {T <: Number}
     else
         throw(ArgumentError("rot_seq must be :X, :Y, or :Z"))
     end
+    #! format: on
 end
 
 function angle_to_dcm(θ₁::T1, θ₂::T2, rot_seq::Symbol) where {T1 <: Number, T2 <: Number}
@@ -90,6 +92,7 @@ function angle_to_dcm(θ₁::T1, θ₂::T2, rot_seq::Symbol) where {T1 <: Number
     s₁, c₁ = sincos(T(θ₁))
     s₂, c₂ = sincos(T(θ₂))
 
+    #! format: off
     if rot_seq == :XY
         return DCM(
               c₂,  s₁ * s₂, -c₁ * s₂,
@@ -129,6 +132,7 @@ function angle_to_dcm(θ₁::T1, θ₂::T2, rot_seq::Symbol) where {T1 <: Number
     else
         throw(ArgumentError("The rotation sequence :$rot_seq is not valid."))
     end
+    #! format: on
 end
 
 function angle_to_dcm(
@@ -141,6 +145,7 @@ function angle_to_dcm(
     s₂, c₂ = sincos(T(θ₂))
     s₃, c₃ = sincos(T(θ₃))
 
+    #! format: off
     if rot_seq == :ZYX
         return DCM(
                  c₂ * c₁,                c₂ * s₁,             -s₂ ,
@@ -217,6 +222,7 @@ function angle_to_dcm(
     else
         throw(ArgumentError("The rotation sequence :$rot_seq is not valid."))
     end
+    #! format: on
 end
 
 angle_to_dcm(Θ::EulerAngles) = angle_to_dcm(Θ.a1, Θ.a2, Θ.a3, Θ.rot_seq)

@@ -42,11 +42,13 @@ DCM{Float64}:
     θy = T(θy)
     θz = T(θz)
 
+    #! format: off
     D = DCM(
         T(1), +θz, -θy,
         -θz, T(1), +θx,
         +θy, -θx, T(1)
     )'
+    #! format: on
 
     if normalize
         return orthonormalize(D)
