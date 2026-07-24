@@ -80,24 +80,40 @@ Quaternion{Float64}:
 ```
 """
 @inline compose_rotation(D::DCM) = D
-@inline compose_rotation(D::DCM, Ds::DCM...) = compose_rotation(Ds...) * D
+@inline compose_rotation(D::DCM, Ds::DCM...) = _compose_rotation_left((D, Ds...))
 
 @inline compose_rotation(ea::EulerAngleAxis) = ea
-@inline function compose_rotation(ea::EulerAngleAxis, eas::EulerAngleAxis...)
-    return compose_rotation(eas...) * ea
-end
+@inline compose_rotation(ea::EulerAngleAxis, eas::EulerAngleAxis...) =
+    _compose_rotation_left((ea, eas...))
 
 @inline compose_rotation(Θ::EulerAngles) = Θ
-@inline compose_rotation(Θ::EulerAngles, Θs::EulerAngles...) = compose_rotation(Θs...) * Θ
+@inline compose_rotation(Θ::EulerAngles, Θs::EulerAngles...) =
+    _compose_rotation_left((Θ, Θs...))
 
 @inline compose_rotation(q::Quaternion) = q
-@inline compose_rotation(q::Quaternion, qs::Quaternion...) = q * compose_rotation(qs...)
+@inline compose_rotation(q::Quaternion, qs::Quaternion...) = _compose_rotation_right((q, qs...))
 
 @inline compose_rotation(c::CRP) = c
-@inline compose_rotation(c::CRP, cs::CRP...) = compose_rotation(cs...) * c
+@inline compose_rotation(c::CRP, cs::CRP...) = _compose_rotation_left((c, cs...))
 
 @inline compose_rotation(m::MRP) = m
-@inline compose_rotation(m::MRP, ms::MRP...) = compose_rotation(ms...) * m
+@inline compose_rotation(m::MRP, ms::MRP...) = _compose_rotation_left((m, ms...))
+
+@inline function _compose_rotation_left(rotations::Tuple)
+    result = rotations[1]
+    @inbounds for i in 2:length(rotations)
+        result = rotations[i] * result
+    end
+    return result
+end
+
+@inline function _compose_rotation_right(rotations::Tuple)
+    result = rotations[end]
+    @inbounds for i in (length(rotations) - 1):-1:1
+        result = rotations[i] * result
+    end
+    return result
+end
 
 # This algorithm was proposed by @Per in
 #

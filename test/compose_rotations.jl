@@ -86,6 +86,41 @@
     end
 end
 
+@testset "Iterative rotation composition" begin
+    for T in (Float32, Float64)
+        # Use distinct rotations so that changing either the order or the
+        # parenthesization is observable.  The 32-element tuple also exercises
+        # composition beyond the old recursive call depth used by this API.
+        Ds = [
+            angle_to_dcm(T(0.013 * i), T(-0.021 * i), T(0.017 * i), :ZYX)
+            for i in 1:32
+        ]
+        rotations = (
+            Ds,
+            [convert(EulerAngleAxis, D) for D in Ds],
+            [convert(EulerAngles, D) for D in Ds],
+            [convert(Quaternion, D) for D in Ds],
+            [convert(CRP, D) for D in Ds],
+            [convert(MRP, D) for D in Ds],
+        )
+
+        for (j, Rs) in enumerate(rotations)
+            if j == 4
+                reference = Rs[end]
+                for i in (length(Rs) - 1):-1:1
+                    reference = Rs[i] * reference
+                end
+            else
+                reference = Rs[1]
+                for i in 2:length(Rs)
+                    reference = Rs[i] * reference
+                end
+            end
+            @test compose_rotation(Rs...) ≈ reference
+        end
+    end
+end
+
 # -- Operator ∘ ----------------------------------------------------------------------------
 
 @testset "Operator ∘" begin
