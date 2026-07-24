@@ -86,11 +86,10 @@
     end
 end
 
-@testset "Iterative rotation composition" begin
+@testset "Long-chain rotation composition" begin
     for T in (Float32, Float64)
         # Use distinct rotations so that changing either the order or the
-        # parenthesization is observable.  The 32-element tuple also exercises
-        # composition beyond the old recursive call depth used by this API.
+        # parenthesization is observable.
         Ds = [
             angle_to_dcm(T(0.013 * i), T(-0.021 * i), T(0.017 * i), :ZYX)
             for i in 1:32
