@@ -163,6 +163,11 @@ println("")
 end
 println("")
 
+@time @testset "Performance Contracts" verbose = true begin
+    include("./performance.jl")
+end
+println("")
+
 @time @testset "Test DCM Differentiation" begin
     include("differentiability/dcm.jl")
 end
