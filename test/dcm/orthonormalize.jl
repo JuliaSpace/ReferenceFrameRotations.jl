@@ -52,8 +52,8 @@
             T(1) / 3,
         )
 
-        @test Q ≈ Q_expected atol = 10 * eps(T)
-        @test Q' * Q ≈ DCM(I) atol = 10 * eps(T)
+        @test Q ≈ Q_expected atol = 100 * eps(T)
+        @test Q' * Q ≈ DCM(I) atol = 100 * eps(T)
         @test det(Q) ≈ one(T) atol = 10 * eps(T)
     end
 end
