@@ -20,13 +20,13 @@ function Tuple(dcm::DCM)
     return dcm.data
 end
 
-function similar_type(::Type{A}, ::Type{T}, s::Size{(3,3)}) where {A<:DCM, T}
+function similar_type(::Type{A}, ::Type{T}, s::Size{(3, 3)}) where {A <: DCM, T}
     return DCM{T}
 end
 
 # == Julia API =============================================================================
 
-function summary(io::IO, ::DCM{T}) where T
+function summary(io::IO, ::DCM{T}) where {T}
     print(io, "DCM{" * string(T) * "}")
 end
 

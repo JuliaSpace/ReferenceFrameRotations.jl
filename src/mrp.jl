@@ -28,7 +28,7 @@ function MRP(v::AbstractVector)
     return MRP(v[begin], v[begin + 1], v[begin + 2])
 end
 
-MRP(::UniformScaling{T}) where T = MRP(zero(T), zero(T), zero(T))
+MRP(::UniformScaling{T}) where {T} = MRP(zero(T), zero(T), zero(T))
 
 ############################################################################################
 #                                        Julia API                                         #
@@ -37,7 +37,7 @@ MRP(::UniformScaling{T}) where T = MRP(zero(T), zero(T), zero(T))
 # The following functions make sure that a MRP is an iterable object. This allows
 # broadcasting without allocations.
 Base.IndexStyle(::Type{<:MRP}) = IndexLinear()
-Base.eltype(::Type{MRP{T}}) where T = T
+Base.eltype(::Type{MRP{T}}) where {T} = T
 Base.firstindex(m::MRP) = 1
 Base.lastindex(m::MRP) = 3
 Base.length(::MRP) = 3
@@ -46,7 +46,7 @@ Base.ndims(m::MRP) = 1
 Base.size(::MRP) = (3,)
 Base.Broadcast.broadcastable(m::MRP) = m
 
-function Base.convert(::Type{MRP{T}}, m::MRP) where T
+function Base.convert(::Type{MRP{T}}, m::MRP) where {T}
     return MRP{T}(m.q1, m.q2, m.q3)
 end
 
@@ -62,7 +62,7 @@ end
     end
 end
 
-@inline function Base.getindex(m::MRP{T}, ::Colon) where T
+@inline function Base.getindex(m::MRP{T}, ::Colon) where {T}
     return SVector{3, T}(m.q1, m.q2, m.q3)
 end
 
@@ -91,7 +91,7 @@ end
 # We need to define `setindex!` with respect to vectors to allow operations such as:
 #
 #     v[4:6] = m
-@inline function setindex!(v::Vector{T}, m::MRP, I::UnitRange) where T
+@inline function setindex!(v::Vector{T}, m::MRP, I::UnitRange) where {T}
     # We can use all the functions in static arrays.
     return setindex!(v, m[:], I)
 end
@@ -164,7 +164,7 @@ function dmrp(m::MRP, wba_b::AbstractVector)
     return MRP(
         (k₁ * w₁ + 2k₂_₁ + ds_dot_w * m.q1) / 4,
         (k₁ * w₂ + 2k₂_₂ + ds_dot_w * m.q2) / 4,
-        (k₁ * w₃ + 2k₂_₃ + ds_dot_w * m.q3) / 4
+        (k₁ * w₃ + 2k₂_₃ + ds_dot_w * m.q3) / 4,
     )
 end
 
@@ -172,14 +172,14 @@ end
 #                                            IO                                            #
 ############################################################################################
 
-function show(io::IO, m::MRP{T}) where T
+function show(io::IO, m::MRP{T}) where {T}
     # Check if the user wants compact printing, defaulting to `true`.
     compact_printing = get(io, :compact, true)::Bool
 
     # Get the absolute values using `print`.
-    m₀ = sprint(print, abs(m.q1), context = :compact => compact_printing)
-    m₁ = sprint(print, abs(m.q2), context = :compact => compact_printing)
-    m₂ = sprint(print, abs(m.q3), context = :compact => compact_printing)
+    m₀ = sprint(print, abs(m.q1); context = :compact => compact_printing)
+    m₁ = sprint(print, abs(m.q2); context = :compact => compact_printing)
+    m₂ = sprint(print, abs(m.q3); context = :compact => compact_printing)
 
     print(io, "MRP{$(T)}: ")
     print(io, "[", m₀, ", ", m₁, ", ", m₂, "]")
@@ -187,7 +187,7 @@ function show(io::IO, m::MRP{T}) where T
     return nothing
 end
 
-function show(io::IO, ::MIME"text/plain", m::MRP{T}) where T
+function show(io::IO, ::MIME"text/plain", m::MRP{T}) where {T}
     # Check if the user wants colors.
     color = get(io, :color, false)::Bool
 
@@ -204,9 +204,9 @@ function show(io::IO, ::MIME"text/plain", m::MRP{T}) where T
     compact_printing = get(io, :compact, true)::Bool
 
     # Get the absolute values using `print`.
-    am₁ = sprint(print, abs(m.q1), context = context)
-    am₂ = sprint(print, abs(m.q2), context = context)
-    am₃ = sprint(print, abs(m.q3), context = context)
+    am₁ = sprint(print, abs(m.q1); context = context)
+    am₂ = sprint(print, abs(m.q2); context = context)
+    am₃ = sprint(print, abs(m.q3); context = context)
 
     # Get the signs.
     sm₁ = signbit(m.q1) ? "-" : "+"
@@ -217,7 +217,7 @@ function show(io::IO, ::MIME"text/plain", m::MRP{T}) where T
     println(io, "MRP{$(T)}:")
     println(io, "  ", b, "X : ", d, sm₁, " ", am₁)
     println(io, "  ", b, "Y : ", d, sm₂, " ", am₂)
-    print(  io, "  ", b, "Z : ", d, sm₃, " ", am₃)
+    print(io, "  ", b, "Z : ", d, sm₃, " ", am₃)
 
     return nothing
 end
@@ -274,7 +274,7 @@ function Base.:*(m1::MRP, m2::MRP)
     m1_x_m2₃ = m2.q1 * m1.q2 - m2.q2 * m1.q1
 
     k₁_m1 = 1 - norm_m1²
-    k₁_m2 = 1 - norm_m2² 
+    k₁_m2 = 1 - norm_m2²
 
     q1 = (k₁_m1 * m2.q1 + k₁_m2 * m1.q1 + 2 * m1_x_m2₁) / denom
     q2 = (k₁_m1 * m2.q2 + k₁_m2 * m1.q2 + 2 * m1_x_m2₂) / denom
@@ -310,20 +310,20 @@ Compute the Euclidean norm of the MRP `m`.
 """
 @inline norm(m::MRP) = √(m.q1^2 + m.q2^2 + m.q3^2)
 
-@inline one(::Type{MRP{T}}) where T = MRP{T}(T(0), T(0), T(0))
+@inline one(::Type{MRP{T}}) where {T} = MRP{T}(T(0), T(0), T(0))
 @inline one(::Type{MRP}) = MRP{Float64}(0, 0, 0)
-@inline one(m::MRP{T}) where T = one(MRP{T})
+@inline one(m::MRP{T}) where {T} = one(MRP{T})
 
-@inline zero(::Type{MRP{T}}) where T = MRP{T}(T(0), T(0), T(0))
+@inline zero(::Type{MRP{T}}) where {T} = MRP{T}(T(0), T(0), T(0))
 @inline zero(::Type{MRP}) = MRP{Float64}(0, 0, 0)
-@inline zero(::MRP{T}) where T = zero(MRP{T})
+@inline zero(::MRP{T}) where {T} = zero(MRP{T})
 
 """
     copy(m::MRP) -> MRP
 
 Create a copy of the MRP `m`.
 """
-@inline copy(m::MRP{T}) where T = MRP{T}(m.q1, m.q2, m.q3)
+@inline copy(m::MRP{T}) where {T} = MRP{T}(m.q1, m.q2, m.q3)
 
 """
     vect(m::MRP) -> SVector{3, T}

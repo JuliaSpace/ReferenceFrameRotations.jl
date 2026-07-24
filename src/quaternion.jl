@@ -141,9 +141,9 @@ function Quaternion(v::AbstractVector)
 end
 
 Quaternion(r::Number, v::AbstractVector) = Quaternion(r, v[1], v[2], v[3])
-Quaternion(u::UniformScaling{T}) where T = Quaternion{T}(T(u.λ), T(0), T(0), T(0))
-Quaternion{T}(u::UniformScaling) where T = Quaternion{T}(T(u.λ), T(0), T(0), T(0))
-Quaternion(::UniformScaling, ::Quaternion{T}) where T = Quaternion{T}(I)
+Quaternion(u::UniformScaling{T}) where {T} = Quaternion{T}(T(u.λ), T(0), T(0), T(0))
+Quaternion{T}(u::UniformScaling) where {T} = Quaternion{T}(T(u.λ), T(0), T(0), T(0))
+Quaternion(::UniformScaling, ::Quaternion{T}) where {T} = Quaternion{T}(I)
 
 ############################################################################################
 #                                        Operations                                        #
@@ -310,7 +310,7 @@ Quaternion{Float64}:
         q1.q0 * q2.q0 - q1.q1 * q2.q1 - q1.q2 * q2.q2 - q1.q3 * q2.q3,
         q1.q0 * q2.q1 + q1.q1 * q2.q0 + q1.q2 * q2.q3 - q1.q3 * q2.q2,
         q1.q0 * q2.q2 - q1.q1 * q2.q3 + q1.q2 * q2.q0 + q1.q3 * q2.q1,
-        q1.q0 * q2.q3 + q1.q1 * q2.q2 - q1.q2 * q2.q1 + q1.q3 * q2.q0
+        q1.q0 * q2.q3 + q1.q1 * q2.q2 - q1.q2 * q2.q1 + q1.q3 * q2.q0,
     )
 end
 
@@ -347,7 +347,7 @@ Quaternion{Float64}:
         -v[1] * q.q1 - v[2] * q.q2 - v[3] * q.q3,
         +v[1] * q.q0 + v[2] * q.q3 - v[3] * q.q2,
         -v[1] * q.q3 + v[2] * q.q0 + v[3] * q.q1,
-        +v[1] * q.q2 - v[2] * q.q1 + v[3] * q.q0
+        +v[1] * q.q2 - v[2] * q.q1 + v[3] * q.q0,
     )
 end
 
@@ -356,7 +356,7 @@ end
         - q.q1 * v[1] - q.q2 * v[2] - q.q3 * v[3],
         + q.q0 * v[1] + q.q2 * v[3] - q.q3 * v[2],
         + q.q0 * v[2] - q.q1 * v[3] + q.q3 * v[1],
-        + q.q0 * v[3] + q.q1 * v[2] - q.q2 * v[1]
+        + q.q0 * v[3] + q.q1 * v[2] - q.q2 * v[1],
     )
 end
 
@@ -385,10 +385,7 @@ Quaternion{Float64}:
     norm_q² = q.q0 * q.q0 + q.q1 * q.q1 + q.q2 * q.q2 + q.q3 * q.q3
 
     return Quaternion(
-        +λ * q.q0 / norm_q²,
-        -λ * q.q1 / norm_q²,
-        -λ * q.q2 / norm_q²,
-        -λ * q.q3 / norm_q²
+        +λ * q.q0 / norm_q², -λ * q.q1 / norm_q², -λ * q.q2 / norm_q², -λ * q.q3 / norm_q²
     )
 end
 
@@ -524,7 +521,7 @@ Quaternion{Float64}:
 
 Create a copy of the quaternion `q`.
 """
-@inline copy(q::Quaternion{T}) where T = Quaternion{T}(q.q0, q.q1, q.q2, q.q3)
+@inline copy(q::Quaternion{T}) where {T} = Quaternion{T}(q.q0, q.q1, q.q2, q.q3)
 # TODO: Do we really need a copy functions since Quaternion is not mutable?
 # Maybe it is necessary for DifferentialEquations.jl
 
@@ -579,12 +576,7 @@ Quaternion{Float64}:
     # Compute the inverse of the quaternion.
     norm_q² = q.q0 * q.q0 + q.q1 * q.q1 + q.q2 * q.q2 + q.q3 * q.q3
 
-    return Quaternion(
-        +q.q0 / norm_q²,
-        -q.q1 / norm_q²,
-        -q.q2 / norm_q²,
-        -q.q3 / norm_q²
-    )
+    return Quaternion(+q.q0 / norm_q², -q.q1 / norm_q², -q.q2 / norm_q², -q.q3 / norm_q²)
 end
 
 """
@@ -607,9 +599,9 @@ julia> norm(q)
 """
 @inline norm(q::Quaternion) = √(q.q0 * q.q0 + q.q1 * q.q1 + q.q2 * q.q2 + q.q3 * q.q3)
 
-@inline one(::Type{Quaternion{T}}) where T = Quaternion{T}(T(1), T(0), T(0), T(0))
+@inline one(::Type{Quaternion{T}}) where {T} = Quaternion{T}(T(1), T(0), T(0), T(0))
 @inline one(::Type{Quaternion}) = Quaternion{Float64}(1, 0, 0, 0)
-@inline one(q::Quaternion{T}) where T = one(Quaternion{T})
+@inline one(q::Quaternion{T}) where {T} = one(Quaternion{T})
 
 """
     real(q::Quaternion{T}) -> T
@@ -655,9 +647,9 @@ julia> vect(q)
 """
 @inline vect(q::Quaternion) = SVector{3}(q.q1, q.q2, q.q3)
 
-@inline zero(::Type{Quaternion{T}}) where T = Quaternion{T}(T(0), T(0), T(0), T(0))
+@inline zero(::Type{Quaternion{T}}) where {T} = Quaternion{T}(T(0), T(0), T(0), T(0))
 @inline zero(::Type{Quaternion}) = Quaternion{Float64}(0, 0, 0, 0)
-@inline zero(q::Quaternion{T}) where T = zero(Quaternion{T})
+@inline zero(q::Quaternion{T}) where {T} = zero(Quaternion{T})
 
 ############################################################################################
 #                                        Julia API                                         #
@@ -666,7 +658,7 @@ julia> vect(q)
 # The following functions make sure that a quaternion is an iterable object. This allows
 # broadcasting without allocations.
 Base.IndexStyle(::Type{<:Quaternion}) = IndexLinear()
-Base.eltype(::Type{Quaternion{T}}) where T = T
+Base.eltype(::Type{Quaternion{T}}) where {T} = T
 Base.firstindex(q::Quaternion) = 1
 Base.lastindex(q::Quaternion) = 4
 Base.length(::Quaternion) = 4
@@ -675,7 +667,7 @@ Base.ndims(q::Quaternion) = 1
 Base.size(::Quaternion) = (4,)
 Broadcast.broadcastable(q::Quaternion) = q
 
-function Base.convert(::Type{Quaternion{T}}, q::Quaternion) where T
+function Base.convert(::Type{Quaternion{T}}, q::Quaternion) where {T}
     return Quaternion{T}(q.q0, q.q1, q.q2, q.q3)
 end
 
@@ -693,7 +685,7 @@ end
     end
 end
 
-@inline function Base.getindex(q::Quaternion{T}, ::Colon) where T
+@inline function Base.getindex(q::Quaternion{T}, ::Colon) where {T}
     return SVector{4, T}(q.q0, q.q1, q.q2, q.q3)
 end
 
@@ -724,7 +716,7 @@ end
 # We need to define `setindex!` with respect to vectors to allow operations such as:
 #
 #     v[4:7] = q
-@inline function setindex!(v::Vector{T}, q::Quaternion, I::UnitRange) where T
+@inline function setindex!(v::Vector{T}, q::Quaternion, I::UnitRange) where {T}
     # We can use all the funcion in static arrays.
     return setindex!(v, q[:], I)
 end
@@ -739,25 +731,22 @@ end
 # If this function is not defined, then two quaternions are equal if and only if the
 # elements and the type are equals.
 @inline function ==(q1::Quaternion, q2::Quaternion)
-    return (q1.q0 == q2.q0) &&
-           (q1.q1 == q2.q1) &&
-           (q1.q2 == q2.q2) &&
-           (q1.q3 == q2.q3)
+    return (q1.q0 == q2.q0) && (q1.q1 == q2.q1) && (q1.q2 == q2.q2) && (q1.q3 == q2.q3)
 end
 
 ############################################################################################
 #                                            IO                                            #
 ############################################################################################
 
-function show(io::IO, q::Quaternion{T}) where T
+function show(io::IO, q::Quaternion{T}) where {T}
     # Check if the user wants compact printing, defaulting to `true`.
     compact_printing = get(io, :compact, true)::Bool
 
     # Get the absolute values using `print`.
-    aq0 = sprint(print, abs(q.q0), context = :compact => compact_printing)
-    aq1 = sprint(print, abs(q.q1), context = :compact => compact_printing)
-    aq2 = sprint(print, abs(q.q2), context = :compact => compact_printing)
-    aq3 = sprint(print, abs(q.q3), context = :compact => compact_printing)
+    aq0 = sprint(print, abs(q.q0); context = :compact => compact_printing)
+    aq1 = sprint(print, abs(q.q1); context = :compact => compact_printing)
+    aq2 = sprint(print, abs(q.q2); context = :compact => compact_printing)
+    aq3 = sprint(print, abs(q.q3); context = :compact => compact_printing)
 
     # Get the signs.
     sq0 = signbit(q.q0) ? "-" : "+"
@@ -766,17 +755,30 @@ function show(io::IO, q::Quaternion{T}) where T
     sq3 = signbit(q.q3) ? "-" : "+"
 
     print(io, "Quaternion{$(T)}: ")
-    print(io,
-        sq0, " ", aq0, " ",
-        sq1, " ", aq1, "⋅i ",
-        sq2, " ", aq2, "⋅j ",
-        sq3, " ", aq3, "⋅k"
+    print(
+        io,
+        sq0,
+        " ",
+        aq0,
+        " ",
+        sq1,
+        " ",
+        aq1,
+        "⋅i ",
+        sq2,
+        " ",
+        aq2,
+        "⋅j ",
+        sq3,
+        " ",
+        aq3,
+        "⋅k",
     )
 
     return nothing
 end
 
-function show(io::IO, mime::MIME"text/plain", q::Quaternion{T}) where T
+function show(io::IO, mime::MIME"text/plain", q::Quaternion{T}) where {T}
     # Check if the user wants colors.
     color = get(io, :color, false)::Bool
 
@@ -790,10 +792,10 @@ function show(io::IO, mime::MIME"text/plain", q::Quaternion{T}) where T
     d = color ? string(_d) : ""
 
     # Get the absolute values using `print`.
-    aq0 = sprint(print, abs(q.q0), context = context)
-    aq1 = sprint(print, abs(q.q1), context = context)
-    aq2 = sprint(print, abs(q.q2), context = context)
-    aq3 = sprint(print, abs(q.q3), context = context)
+    aq0 = sprint(print, abs(q.q0); context = context)
+    aq1 = sprint(print, abs(q.q1); context = context)
+    aq2 = sprint(print, abs(q.q2); context = context)
+    aq3 = sprint(print, abs(q.q3); context = context)
 
     # Get the signs.
     sq0 = signbit(q.q0) ? "-" : "+"
@@ -802,12 +804,36 @@ function show(io::IO, mime::MIME"text/plain", q::Quaternion{T}) where T
     sq3 = signbit(q.q3) ? "-" : "+"
 
     println(io, "Quaternion{$(T)}:")
-    print(io,
+    print(
+        io,
         "  ",
-        sq0, " ", aq0, " ",
-        sq1, " ", aq1, "⋅", b, "i", d, " ",
-        sq2, " ", aq2, "⋅", b, "j", d, " ",
-        sq3, " ", aq3, "⋅", b, "k", d
+        sq0,
+        " ",
+        aq0,
+        " ",
+        sq1,
+        " ",
+        aq1,
+        "⋅",
+        b,
+        "i",
+        d,
+        " ",
+        sq2,
+        " ",
+        aq2,
+        "⋅",
+        b,
+        "j",
+        d,
+        " ",
+        sq3,
+        " ",
+        aq3,
+        "⋅",
+        b,
+        "k",
+        d,
     )
 
     return nothing

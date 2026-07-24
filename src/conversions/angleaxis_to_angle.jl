@@ -38,7 +38,8 @@ EulerAngles{Float64}:
 """
 @inline function angleaxis_to_angle(θ::Number, v::AbstractVector, rot_seq::Symbol)
     # Check the arguments.
-    (length(v) ≠ 3) && throw(ArgumentError("The provided vector for the Euler axis must have 3 elements."))
+    (length(v) ≠ 3) &&
+        throw(ArgumentError("The provided vector for the Euler axis must have 3 elements."))
 
     # First we convert to DCM then to Euler angles.
     return dcm_to_angle(angleaxis_to_dcm(θ, v), rot_seq)

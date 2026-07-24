@@ -5,12 +5,12 @@ DocMeta.setdocmeta!(
     ReferenceFrameRotations,
     :DocTestSetup,
     :(using ReferenceFrameRotations);
-    recursive=true
+    recursive = true,
 )
 
-makedocs(
+makedocs(;
     modules = [ReferenceFrameRotations],
-    format = Documenter.HTML(
+    format = Documenter.HTML(;
         prettyurls = !("local" in ARGS),
         canonical = "https://juliaspace.github.io/ReferenceFrameRotations.jl/stable/",
     ),
@@ -33,7 +33,6 @@ makedocs(
     ],
 )
 
-deploydocs(
-    repo = "github.com/JuliaSpace/ReferenceFrameRotations.jl.git",
-    target = "build",
+deploydocs(;
+    repo = "github.com/JuliaSpace/ReferenceFrameRotations.jl.git", target = "build"
 )

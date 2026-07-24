@@ -94,9 +94,9 @@ end
     m3 = m2 * m1
 
     # Verify with DCM.
-    dcm1  = angle_to_dcm(eul1)
-    dcm2  = angle_to_dcm(eul2)
-    dcm3  = dcm2 * dcm1
+    dcm1 = angle_to_dcm(eul1)
+    dcm2 = angle_to_dcm(eul2)
+    dcm3 = dcm2 * dcm1
     dcm_m3 = mrp_to_dcm(m3)
     @test maximum(abs.(dcm3 - dcm_m3)) < 1e-12
 
@@ -114,12 +114,12 @@ end
     m3 = m1 + m2
     @test isapprox(m3.q1, 0.15; atol = 1e-12)
     @test isapprox(m3.q2, 0.15; atol = 1e-12)
-    @test isapprox(m3.q3, 0.4;  atol = 1e-12)
+    @test isapprox(m3.q3, 0.4; atol = 1e-12)
 
     m4 = m1 - m2
     @test isapprox(m4.q1, 0.05; atol = 1e-12)
     @test isapprox(m4.q2, 0.25; atol = 1e-12)
-    @test isapprox(m4.q3, 0.2;  atol = 1e-12)
+    @test isapprox(m4.q3, 0.2; atol = 1e-12)
 
     m_neg = -m1
     @test m_neg.q1 == -0.1
@@ -162,10 +162,10 @@ end
     m = MRP(3.0, 0.0, 4.0)
     @test norm(m) == 5.0
 
-    @test one(MRP)  == MRP(0.0, 0.0, 0.0)
-    @test one(m)    == MRP(0.0, 0.0, 0.0)
+    @test one(MRP) == MRP(0.0, 0.0, 0.0)
+    @test one(m) == MRP(0.0, 0.0, 0.0)
     @test zero(MRP) == MRP(0.0, 0.0, 0.0)
-    @test zero(m)   == MRP(0.0, 0.0, 0.0)
+    @test zero(m) == MRP(0.0, 0.0, 0.0)
 
     m_copy = copy(m)
     @test m_copy == m
@@ -176,12 +176,12 @@ end
     @test v[2] == m.q2
     @test v[3] == m.q3
 
-    @test I * m  == m
-    @test m * I  == m
-    @test I / m  == inv(m)
-    @test m / I  == m
-    @test I \ m  == m
-    @test m \ I  == inv(m)
+    @test I * m == m
+    @test m * I == m
+    @test I / m == inv(m)
+    @test m / I == m
+    @test I \ m == m
+    @test m \ I == inv(m)
 end
 
 # -- Functions: shadow_rotation -----------------------------------------------------------
@@ -255,15 +255,15 @@ end
 
     v[4:6] = m
 
-    @test v[1]  == 0
-    @test v[2]  == 0
-    @test v[3]  == 0
-    @test v[4]  == m.q1
-    @test v[5]  == m.q2
-    @test v[6]  == m.q3
-    @test v[7]  == 0
-    @test v[8]  == 0
-    @test v[9]  == 0
+    @test v[1] == 0
+    @test v[2] == 0
+    @test v[3] == 0
+    @test v[4] == m.q1
+    @test v[5] == m.q2
+    @test v[6] == m.q3
+    @test v[7] == 0
+    @test v[8] == 0
+    @test v[9] == 0
     @test v[10] == 0
 
     @test firstindex(m) === 1

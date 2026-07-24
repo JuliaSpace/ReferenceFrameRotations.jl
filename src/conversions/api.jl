@@ -14,38 +14,26 @@ Base.convert(::Type{<:DCM}, a::MRP)            = mrp_to_dcm(a)
 
 # == Conversion to Euler Angles ============================================================
 
-function Base.convert(::Type{<:_EulerAngleConversion{R}}, a) where R
+function Base.convert(::Type{<:_EulerAngleConversion{R}}, a) where {R}
     return _convert_to_euler_angles(a, Val{R}())
 end
 
 # Keep the sequence in the dispatch domain.  In particular, do not pass the type parameter
 # back as a Symbol before selecting the conversion implementation.
-@inline _convert_to_euler_angles(a, ::Val{:XYX}) =
-    dcm_to_angle(convert(DCM, a), :XYX)
-@inline _convert_to_euler_angles(a, ::Val{:XYZ}) =
-    dcm_to_angle(convert(DCM, a), :XYZ)
-@inline _convert_to_euler_angles(a, ::Val{:XZX}) =
-    dcm_to_angle(convert(DCM, a), :XZX)
-@inline _convert_to_euler_angles(a, ::Val{:XZY}) =
-    dcm_to_angle(convert(DCM, a), :XZY)
-@inline _convert_to_euler_angles(a, ::Val{:YXY}) =
-    dcm_to_angle(convert(DCM, a), :YXY)
-@inline _convert_to_euler_angles(a, ::Val{:YXZ}) =
-    dcm_to_angle(convert(DCM, a), :YXZ)
-@inline _convert_to_euler_angles(a, ::Val{:YZX}) =
-    dcm_to_angle(convert(DCM, a), :YZX)
-@inline _convert_to_euler_angles(a, ::Val{:YZY}) =
-    dcm_to_angle(convert(DCM, a), :YZY)
-@inline _convert_to_euler_angles(a, ::Val{:ZXY}) =
-    dcm_to_angle(convert(DCM, a), :ZXY)
-@inline _convert_to_euler_angles(a, ::Val{:ZXZ}) =
-    dcm_to_angle(convert(DCM, a), :ZXZ)
-@inline _convert_to_euler_angles(a, ::Val{:ZYX}) =
-    dcm_to_angle(convert(DCM, a), :ZYX)
-@inline _convert_to_euler_angles(a, ::Val{:ZYZ}) =
-    dcm_to_angle(convert(DCM, a), :ZYZ)
+@inline _convert_to_euler_angles(a, ::Val{:XYX}) = dcm_to_angle(convert(DCM, a), :XYX)
+@inline _convert_to_euler_angles(a, ::Val{:XYZ}) = dcm_to_angle(convert(DCM, a), :XYZ)
+@inline _convert_to_euler_angles(a, ::Val{:XZX}) = dcm_to_angle(convert(DCM, a), :XZX)
+@inline _convert_to_euler_angles(a, ::Val{:XZY}) = dcm_to_angle(convert(DCM, a), :XZY)
+@inline _convert_to_euler_angles(a, ::Val{:YXY}) = dcm_to_angle(convert(DCM, a), :YXY)
+@inline _convert_to_euler_angles(a, ::Val{:YXZ}) = dcm_to_angle(convert(DCM, a), :YXZ)
+@inline _convert_to_euler_angles(a, ::Val{:YZX}) = dcm_to_angle(convert(DCM, a), :YZX)
+@inline _convert_to_euler_angles(a, ::Val{:YZY}) = dcm_to_angle(convert(DCM, a), :YZY)
+@inline _convert_to_euler_angles(a, ::Val{:ZXY}) = dcm_to_angle(convert(DCM, a), :ZXY)
+@inline _convert_to_euler_angles(a, ::Val{:ZXZ}) = dcm_to_angle(convert(DCM, a), :ZXZ)
+@inline _convert_to_euler_angles(a, ::Val{:ZYX}) = dcm_to_angle(convert(DCM, a), :ZYX)
+@inline _convert_to_euler_angles(a, ::Val{:ZYZ}) = dcm_to_angle(convert(DCM, a), :ZYZ)
 
-@noinline function _convert_to_euler_angles(a, ::Val{R}) where R
+@noinline function _convert_to_euler_angles(a, ::Val{R}) where {R}
     throw(ArgumentError("The rotation sequence :$R is not valid."))
 end
 

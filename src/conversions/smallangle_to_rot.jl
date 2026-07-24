@@ -44,11 +44,7 @@ Quaternion{Float64}:
 end
 
 @inline function smallangle_to_rot(
-    ::Type{DCM},
-    θx::Number,
-    θy::Number,
-    θz::Number;
-    normalize = true
+    ::Type{DCM}, θx::Number, θy::Number, θz::Number; normalize = true
 )
     return smallangle_to_dcm(θx, θy, θz; normalize = normalize)
 end

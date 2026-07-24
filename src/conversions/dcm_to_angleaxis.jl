@@ -13,12 +13,12 @@ Convert the `dcm` to an Euler angle and axis representation.
 
 By convention, the returned Euler angle will always be in the interval [0, π].
 """
-function dcm_to_angleaxis(dcm::DCM{T}) where T<:Number
+function dcm_to_angleaxis(dcm::DCM{T}) where {T <: Number}
     cθ = (dcm[1, 1] + dcm[2, 2] + dcm[3, 3] - 1) / 2
 
     # Check the undefined case.
     if cθ ≥ 1 - eps()
-        return EulerAngleAxis(T(0), SVector{3,T}(0, 0, 0))
+        return EulerAngleAxis(T(0), SVector{3, T}(0, 0, 0))
     elseif cθ <= -1 + eps()
         v₁ = sqrt((1 + dcm[1, 1]) / 2)
         v₂ = sqrt((1 + dcm[2, 2]) / 2)
@@ -42,7 +42,7 @@ function dcm_to_angleaxis(dcm::DCM{T}) where T<:Number
             end
         end
 
-        return EulerAngleAxis(T(π), [s₁ * v₁, s₂ * v₂, s₃ * v₃ ])
+        return EulerAngleAxis(T(π), [s₁ * v₁, s₂ * v₂, s₃ * v₃])
     else
         sθ2 = 2sqrt(1 - cθ * cθ)
 

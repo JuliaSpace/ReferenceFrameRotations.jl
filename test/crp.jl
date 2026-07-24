@@ -94,9 +94,9 @@ end
     c3 = c2 * c1
 
     # Verify with DCM.
-    dcm1  = angle_to_dcm(eul1)
-    dcm2  = angle_to_dcm(eul2)
-    dcm3  = dcm2 * dcm1
+    dcm1 = angle_to_dcm(eul1)
+    dcm2 = angle_to_dcm(eul2)
+    dcm3 = dcm2 * dcm1
     dcm_c3 = crp_to_dcm(c3)
     @test maximum(abs.(dcm3 - dcm_c3)) < 1e-12
 
@@ -162,10 +162,10 @@ end
     c = CRP(3.0, 0.0, 4.0)
     @test norm(c) == 5.0
 
-    @test one(CRP)  == CRP(0.0, 0.0, 0.0)
-    @test one(c)    == CRP(0.0, 0.0, 0.0)
+    @test one(CRP) == CRP(0.0, 0.0, 0.0)
+    @test one(c) == CRP(0.0, 0.0, 0.0)
     @test zero(CRP) == CRP(0.0, 0.0, 0.0)
-    @test zero(c)   == CRP(0.0, 0.0, 0.0)
+    @test zero(c) == CRP(0.0, 0.0, 0.0)
 
     c_copy = copy(c)
     @test c_copy == c
@@ -176,12 +176,12 @@ end
     @test v[2] == c.q2
     @test v[3] == c.q3
 
-    @test I * c  == c
-    @test c * I  == c
-    @test I / c  == inv(c)
-    @test c / I  == c
-    @test I \ c  == c
-    @test c \ I  == inv(c)
+    @test I * c == c
+    @test c * I == c
+    @test I / c == inv(c)
+    @test c / I == c
+    @test I \ c == c
+    @test c \ I == inv(c)
 end
 
 # -- Functions: shadow_rotation -----------------------------------------------------------
@@ -242,15 +242,15 @@ end
 
     v[4:6] = c
 
-    @test v[1]  == 0
-    @test v[2]  == 0
-    @test v[3]  == 0
-    @test v[4]  == c.q1
-    @test v[5]  == c.q2
-    @test v[6]  == c.q3
-    @test v[7]  == 0
-    @test v[8]  == 0
-    @test v[9]  == 0
+    @test v[1] == 0
+    @test v[2] == 0
+    @test v[3] == 0
+    @test v[4] == c.q1
+    @test v[5] == c.q2
+    @test v[6] == c.q3
+    @test v[7] == 0
+    @test v[8] == 0
+    @test v[9] == 0
     @test v[10] == 0
 
     @test firstindex(c) === 1

@@ -26,6 +26,6 @@
 
         # Signs of quaternions can be flipped, so check for both.
         @test isapprox(q, q_ref; atol = 100 * eps(T)) ||
-              isapprox(q, -q_ref; atol = 100 * eps(T))
+            isapprox(q, -q_ref; atol = 100 * eps(T))
     end
 end

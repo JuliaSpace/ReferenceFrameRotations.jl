@@ -19,12 +19,7 @@ The rotation sequence is defined by a `:Symbol`. The possible values are: `:XYX`
 `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`, `:ZYX`, and `:ZYZ`. If no
 value is specified, it defaults to `:ZYX`.
 """
-@inline function angle_to_crp(
-    θ₁::Number,
-    θ₂::Number,
-    θ₃::Number,
-    rot_seq::Symbol = :ZYX
-)
+@inline function angle_to_crp(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
     return dcm_to_crp(angle_to_dcm(θ₁, θ₂, θ₃, rot_seq))
 end
 

@@ -28,7 +28,7 @@ include("types.jl")
 ############################################################################################
 
 # Pre-defined crayons.
-const _reset_crayon = Crayon(reset = true)
+const _reset_crayon = Crayon(; reset = true)
 const _crayon_bold  = crayon"bold"
 const _crayon_g     = crayon"bold green"
 const _crayon_u     = crayon"bold blue"

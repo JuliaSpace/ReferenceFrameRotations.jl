@@ -41,10 +41,14 @@ function mrp_to_crp(m::MRP)
     norm_q² = m₁^2 + m₂^2 + m₃^2
 
     if isapprox(norm_q², 1; atol = 1e-15)
-        throw(ArgumentError("The MRP represents a rotation of 180 degrees, which is a singularity for CRP."))
+        throw(
+            ArgumentError(
+                "The MRP represents a rotation of 180 degrees, which is a singularity for CRP.",
+            ),
+        )
     end
 
-    k  = 2 / (1 - norm_q²)
+    k = 2 / (1 - norm_q²)
 
     return CRP(k * m₁, k * m₂, k * m₃)
 end

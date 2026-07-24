@@ -97,7 +97,7 @@ end
 #                                            IO                                            #
 ############################################################################################
 
-function show(io::IO, Θ::EulerAngles{T}) where T
+function show(io::IO, Θ::EulerAngles{T}) where {T}
     # Get if `io` request a compact printing, defaulting to true.
     compact_printing = get(io, :compact, true)
 
@@ -113,7 +113,7 @@ function show(io::IO, Θ::EulerAngles{T}) where T
     return nothing
 end
 
-function show(io::IO, mime::MIME"text/plain", Θ::EulerAngles{T}) where T
+function show(io::IO, mime::MIME"text/plain", Θ::EulerAngles{T}) where {T}
     # Check if the user wants colors.
     color = get(io, :color, false)::Bool
 
@@ -143,21 +143,33 @@ function show(io::IO, mime::MIME"text/plain", Θ::EulerAngles{T}) where T
 
     alignment_pad = max(lθ₁, lθ₂, lθ₃)
 
-    θ₁_str *= " "^(alignment_pad - lθ₁) * " rad  (" *
-        θ₁_alg * sprint(print, rad2deg(Θ.a1); context = context) * "°)"
+    θ₁_str *=
+        " "^(alignment_pad - lθ₁) *
+        " rad  (" *
+        θ₁_alg *
+        sprint(print, rad2deg(Θ.a1); context = context) *
+        "°)"
 
-    θ₂_str *= " "^(alignment_pad - lθ₂) * " rad  (" *
-        θ₂_alg * sprint(print, rad2deg(Θ.a2); context = context) * "°)"
+    θ₂_str *=
+        " "^(alignment_pad - lθ₂) *
+        " rad  (" *
+        θ₂_alg *
+        sprint(print, rad2deg(Θ.a2); context = context) *
+        "°)"
 
-    θ₃_str *= " "^(alignment_pad - lθ₃) * " rad  (" *
-        θ₃_alg * sprint(print, rad2deg(Θ.a3); context = context) * "°)"
+    θ₃_str *=
+        " "^(alignment_pad - lθ₃) *
+        " rad  (" *
+        θ₃_alg *
+        sprint(print, rad2deg(Θ.a3); context = context) *
+        "°)"
 
     rot_seq = String(Θ.rot_seq)
 
     println(io, "EulerAngles{$T}:")
     println(io, "$g  R($(rot_seq[1])) : $d" * θ₁_str)
     println(io, "$y  R($(rot_seq[2])) : $d" * θ₂_str)
-    print(io,   "$u  R($(rot_seq[3])) : $d" * θ₃_str)
+    print(io, "$u  R($(rot_seq[3])) : $d" * θ₃_str)
 
     return nothing
 end
@@ -166,5 +178,4 @@ end
 #                                        Julia API                                         #
 ############################################################################################
 
-Base.eltype(::Type{EulerAngles{T}}) where T = T
-
+Base.eltype(::Type{EulerAngles{T}}) where {T} = T

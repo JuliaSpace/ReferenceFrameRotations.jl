@@ -48,11 +48,7 @@ EulerAngles{Float64}:
 ```
 """
 @inline function angle_to_angle(
-    θ₁::Number,
-    θ₂::Number,
-    θ₃::Number,
-    rot_seq_orig::Symbol,
-    rot_seq_dest::Symbol
+    θ₁::Number, θ₂::Number, θ₃::Number, rot_seq_orig::Symbol, rot_seq_dest::Symbol
 )
     return dcm_to_angle(angle_to_dcm(θ₁, θ₂, θ₃, rot_seq_orig), rot_seq_dest)
 end

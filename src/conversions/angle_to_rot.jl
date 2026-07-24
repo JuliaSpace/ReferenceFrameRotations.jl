@@ -87,21 +87,13 @@ end
 end
 
 @inline function angle_to_rot(
-    ::Type{DCM},
-    θ₁::Number,
-    θ₂::Number,
-    θ₃::Number,
-    rot_seq::Symbol
+    ::Type{DCM}, θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol
 )
     return angle_to_dcm(θ₁, θ₂, θ₃, rot_seq)
 end
 
 @inline function angle_to_rot(
-    ::Type{Quaternion},
-    θ₁::Number,
-    θ₂::Number,
-    θ₃::Number,
-    rot_seq::Symbol
+    ::Type{Quaternion}, θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol
 )
     return angle_to_quat(θ₁, θ₂, θ₃, rot_seq)
 end

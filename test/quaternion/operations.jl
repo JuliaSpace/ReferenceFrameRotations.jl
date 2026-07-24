@@ -8,7 +8,7 @@
 
 # -- Functions: + --------------------------------------------------------------------------
 
-@testset "Operations With Quaternions: +"  begin
+@testset "Operations With Quaternions: +" begin
     q1 = Quaternion(1, 0, 0, 0)
     q2 = Quaternion(0, cosd(60), 0, sind(60))
     q3 = q1 + q2
@@ -47,7 +47,7 @@ end
 
 # -- Functions: - --------------------------------------------------------------------------
 
-@testset "Operations With Quaternions: -"  begin
+@testset "Operations With Quaternions: -" begin
     q1 = Quaternion(1, 2, 3, 4)
     q2 = -q1
     @test q2.q0 == -1

@@ -40,8 +40,7 @@ function crp_to_mrp(c::CRP)
 
     norm_q² = c₁^2 + c₂^2 + c₃^2
 
-    k  = 1 / (1 + √(1 + norm_q²))
+    k = 1 / (1 + √(1 + norm_q²))
 
     return MRP(k * c₁, k * c₂, k * c₃)
 end
-

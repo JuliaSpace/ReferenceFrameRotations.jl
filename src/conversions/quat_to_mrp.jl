@@ -21,7 +21,11 @@ function quat_to_mrp(q::Quaternion)
     # So singularity is at q0 = -1.
 
     if isapprox(q.q0, -1; atol = 1e-15)
-        throw(ArgumentError("The quaternion represents a rotation of 360 degrees, which is a singularity for MRP."))
+        throw(
+            ArgumentError(
+                "The quaternion represents a rotation of 360 degrees, which is a singularity for MRP.",
+            ),
+        )
     end
 
     denom = 1 + q.q0

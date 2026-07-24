@@ -22,7 +22,7 @@ _rand_ang2(T = Float64) = -T(π) / 2 + T(π) * rand(T)
 _rand_ang3(T = Float64) = T(0.1) + T(1.4) * rand(T)
 
 # Normalize angle between [-π, +π].
-function _norm_ang(α::T) where T
+function _norm_ang(α::T) where {T}
     Tf = float(T)
     αr = mod(α, Tf(2π))  # Make sure α ∈ [0, 2π].
     if αr ≤ π
@@ -33,28 +33,10 @@ function _norm_ang(α::T) where T
 end
 
 # Available rotations.
-const valid_rot_seqs_2angles = [
-    :XY,
-    :XZ,
-    :YX,
-    :YZ,
-    :ZX,
-    :ZY,
-]
+const valid_rot_seqs_2angles = [:XY, :XZ, :YX, :YZ, :ZX, :ZY]
 
 const valid_rot_seqs = [
-    :XYX,
-    :XYZ,
-    :XZX,
-    :XZY,
-    :YXY,
-    :YXZ,
-    :YZX,
-    :YZY,
-    :ZXY,
-    :ZXZ,
-    :ZYX,
-    :ZYZ
+    :XYX, :XYZ, :XZX, :XZY, :YXY, :YXZ, :YZX, :YZY, :ZXY, :ZXZ, :ZYX, :ZYZ
 ]
 
 # Define the function `isapprox` for `EulerAngleAxis` to make the comparison easier.

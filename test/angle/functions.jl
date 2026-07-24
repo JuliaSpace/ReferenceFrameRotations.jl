@@ -44,7 +44,7 @@ end
 @testset "General Functions of Euler Angles: show" begin
     buf = IOBuffer()
     io = IOContext(buf)
-    ea = EulerAngles(π / 3, π / 6,  2 / 3 * π, :ZYX)
+    ea = EulerAngles(π / 3, π / 6, 2 / 3 * π, :ZYX)
 
     # Extended printing.
     show(io, MIME"text/plain"(), ea)

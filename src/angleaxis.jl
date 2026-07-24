@@ -59,7 +59,7 @@ function *(av₂::EulerAngleAxis{T1}, av₁::EulerAngleAxis{T2}) where {T1, T2}
 
     if abs(cθo2) >= 1 - eps()
         # In this case, the rotation is the identity.
-        return EulerAngleAxis(T(0), SVector{3,T}(0, 0, 0))
+        return EulerAngleAxis(T(0), SVector{3, T}(0, 0, 0))
     else
         # Compute `sin(θ/2)` in which `θ` is the new Euler angle.
         sθo2 = √(1 - cθo2 * cθo2)
@@ -111,7 +111,7 @@ EulerAngleAxis{Float64}:
   Euler axis  : [0.707107, 0.0, 0.707107]
 ```
 """
-@inline function inv(av::EulerAngleAxis{T}) where T<:Number
+@inline function inv(av::EulerAngleAxis{T}) where {T <: Number}
     Tout = float(T)
 
     # Make sure that the Euler angle is always in the inverval [0,π]
@@ -130,23 +130,33 @@ end
 #                                            IO                                            #
 ############################################################################################
 
-function show(io::IO, av::EulerAngleAxis{T}) where T
+function show(io::IO, av::EulerAngleAxis{T}) where {T}
     # Get if `io` request a compact printing, defaulting to true.
     compact_printing = get(io, :compact, true)
 
     # Convert the values using `print` and compact printing.
-    θ_str  = sprint(print, av.a;    context = :compact => compact_printing)
+    θ_str  = sprint(print, av.a; context = :compact => compact_printing)
     v₁_str = sprint(print, av.v[1]; context = :compact => compact_printing)
     v₂_str = sprint(print, av.v[2]; context = :compact => compact_printing)
     v₃_str = sprint(print, av.v[3]; context = :compact => compact_printing)
 
-    print(io, "EulerAngleAxis{$T}: θ = " * θ_str * " rad, v = [" *
-        v₁_str * ", " * v₂_str * ", " * v₃_str * "]")
+    print(
+        io,
+        "EulerAngleAxis{$T}: θ = " *
+        θ_str *
+        " rad, v = [" *
+        v₁_str *
+        ", " *
+        v₂_str *
+        ", " *
+        v₃_str *
+        "]",
+    )
 
     return nothing
 end
 
-function show(io::IO, mime::MIME"text/plain", av::EulerAngleAxis{T}) where T
+function show(io::IO, mime::MIME"text/plain", av::EulerAngleAxis{T}) where {T}
     # Check if the user wants colors.
     color = get(io, :color, false)::Bool
 
@@ -167,14 +177,14 @@ function show(io::IO, mime::MIME"text/plain", av::EulerAngleAxis{T}) where T
     v₃_str = sprint(print, av.v[3]; context = context)
 
     println(io, "EulerAngleAxis{$T}:")
-    print(  io, g)
-    print(  io, "  Euler angle : ")
-    print(  io, d)
-    print(  io, θ_str * " rad  ")
+    print(io, g)
+    print(io, "  Euler angle : ")
+    print(io, d)
+    print(io, θ_str * " rad  ")
     println(io, "(" * θd_str * "°)")
-    print(  io, y)
-    print(  io, "  Euler axis  : ")
-    print(  io, d)
+    print(io, y)
+    print(io, "  Euler axis  : ")
+    print(io, d)
     print(io, "[" * v₁_str * ", " * v₂_str * ", " * v₃_str * "]")
 
     return nothing
@@ -184,5 +194,4 @@ end
 #                                        Julia API                                         #
 ############################################################################################
 
-Base.eltype(::Type{EulerAngleAxis{T}}) where T = T
-
+Base.eltype(::Type{EulerAngleAxis{T}}) where {T} = T

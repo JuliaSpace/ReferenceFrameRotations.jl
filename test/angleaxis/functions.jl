@@ -14,13 +14,13 @@
         iav = inv(av)
         @test eltype(iav) === T
         @test iav.a ≈ deg2rad(T(20))
-        @test iav.v ≈ T[-sqrt(2) / 2, 0, -sqrt(2)/2]
+        @test iav.v ≈ T[-sqrt(2) / 2, 0, -sqrt(2) / 2]
 
         av = EulerAngleAxis(deg2rad(T(-20)), T[sqrt(2) / 2, 0, sqrt(2) / 2])
         iav = inv(av)
         @test eltype(iav) === T
         @test iav.a ≈ deg2rad(T(20))
-        @test iav.v ≈ T[sqrt(2) / 2, 0, sqrt(2)/2]
+        @test iav.v ≈ T[sqrt(2) / 2, 0, sqrt(2) / 2]
     end
 end
 

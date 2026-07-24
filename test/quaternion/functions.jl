@@ -227,15 +227,15 @@ end
 
     v[4:7] = q
 
-    @test v[1]  == 0
-    @test v[2]  == 0
-    @test v[3]  == 0
-    @test v[4]  == q.q0
-    @test v[5]  == q.q1
-    @test v[6]  == q.q2
-    @test v[7]  == q.q3
-    @test v[8]  == 0
-    @test v[9]  == 0
+    @test v[1] == 0
+    @test v[2] == 0
+    @test v[3] == 0
+    @test v[4] == q.q0
+    @test v[5] == q.q1
+    @test v[6] == q.q2
+    @test v[7] == q.q3
+    @test v[8] == 0
+    @test v[9] == 0
     @test v[10] == 0
 
     @test firstindex(q) === 1

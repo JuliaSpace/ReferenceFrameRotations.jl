@@ -75,7 +75,7 @@ function angle_to_quat(θ::Number, rot_seq::Symbol)
     end
 end
 
-function angle_to_quat(θ₁::T1, θ₂::T2, rot_seq::Symbol) where {T1<:Number, T2<:Number}
+function angle_to_quat(θ₁::T1, θ₂::T2, rot_seq::Symbol) where {T1 <: Number, T2 <: Number}
     T = promote_type(T1, T2)
 
     # Compute the sines and cosines of half angle.
@@ -88,58 +88,25 @@ function angle_to_quat(θ₁::T1, θ₂::T2, rot_seq::Symbol) where {T1<:Number,
     s = (q0 < 0) ? -1 : +1
 
     if rot_seq == :XY
-        return Quaternion(
-            s * q0,
-            s * (s₁ * c₂),
-            s * (c₁ * s₂),
-            s * (s₁ * s₂)
-        )
+        return Quaternion(s * q0, s * (s₁ * c₂), s * (c₁ * s₂), s * (s₁ * s₂))
     elseif rot_seq == :XZ
-        return Quaternion(
-            s * q0,
-            s * ( s₁ * c₂),
-            s * (-s₁ * s₂),
-            s * ( c₁ * s₂)
-        )
+        return Quaternion(s * q0, s * (s₁ * c₂), s * (-s₁ * s₂), s * (c₁ * s₂))
     elseif rot_seq == :YX
-        return Quaternion(
-            s * q0,
-            s * ( c₁ * s₂),
-            s * ( s₁ * c₂),
-            s * (-s₁ * s₂)
-        )
+        return Quaternion(s * q0, s * (c₁ * s₂), s * (s₁ * c₂), s * (-s₁ * s₂))
     elseif rot_seq == :YZ
-        return Quaternion(
-            s * q0,
-            s * (s₁ * s₂),
-            s * (s₁ * c₂),
-            s * (c₁ * s₂)
-        )
+        return Quaternion(s * q0, s * (s₁ * s₂), s * (s₁ * c₂), s * (c₁ * s₂))
     elseif rot_seq == :ZX
-        return Quaternion(
-            s * q0,
-            s * (c₁ * s₂),
-            s * (s₁ * s₂),
-            s * (s₁ * c₂)
-        )
+        return Quaternion(s * q0, s * (c₁ * s₂), s * (s₁ * s₂), s * (s₁ * c₂))
     elseif rot_seq == :ZY
-        return Quaternion(
-            s * q0,
-            s * (-s₁ * s₂),
-            s * ( c₁ * s₂),
-            s * ( s₁ * c₂)
-        )
+        return Quaternion(s * q0, s * (-s₁ * s₂), s * (c₁ * s₂), s * (s₁ * c₂))
     else
         throw(ArgumentError("The rotation sequence :$rot_seq is not valid."))
     end
 end
 
 function angle_to_quat(
-    θ₁::T1,
-    θ₂::T2,
-    θ₃::T3,
-    rot_seq::Symbol = :ZYX
-) where {T1<:Number, T2<:Number, T3<:Number}
+    θ₁::T1, θ₂::T2, θ₃::T3, rot_seq::Symbol = :ZYX
+) where {T1 <: Number, T2 <: Number, T3 <: Number}
     T = promote_type(T1, T2, T3)
 
     # Compute the sines and cosines of half angle.
@@ -156,7 +123,7 @@ function angle_to_quat(
             s * q0,
             s * (c₁ * c₂ * s₃ - s₁ * s₂ * c₃),
             s * (c₁ * s₂ * c₃ + s₁ * c₂ * s₃),
-            s * (s₁ * c₂ * c₃ - c₁ * s₂ * s₃)
+            s * (s₁ * c₂ * c₃ - c₁ * s₂ * s₃),
         )
     elseif rot_seq == :XYX
         q0 = c₁ * c₂ * c₃ - s₁ * c₂ * s₃
@@ -167,7 +134,7 @@ function angle_to_quat(
             s * q0,
             s * (c₁ * c₂ * s₃ + s₁ * c₂ * c₃),
             s * (c₁ * s₂ * c₃ + s₁ * s₂ * s₃),
-            s * (s₁ * s₂ * c₃ - c₁ * s₂ * s₃)
+            s * (s₁ * s₂ * c₃ - c₁ * s₂ * s₃),
         )
     elseif rot_seq == :XYZ
         q0 = c₁ * c₂ * c₃ - s₁ * s₂ * s₃
@@ -178,7 +145,7 @@ function angle_to_quat(
             s * q0,
             s * (s₁ * c₂ * c₃ + c₁ * s₂ * s₃),
             s * (c₁ * s₂ * c₃ - s₁ * c₂ * s₃),
-            s * (c₁ * c₂ * s₃ + s₁ * s₂ * c₃)
+            s * (c₁ * c₂ * s₃ + s₁ * s₂ * c₃),
         )
     elseif rot_seq == :XZX
         q0 = c₁ * c₂ * c₃ - s₁ * c₂ * s₃
@@ -189,7 +156,7 @@ function angle_to_quat(
             s * q0,
             s * (c₁ * c₂ * s₃ + s₁ * c₂ * c₃),
             s * (c₁ * s₂ * s₃ - s₁ * s₂ * c₃),
-            s * (c₁ * s₂ * c₃ + s₁ * s₂ * s₃)
+            s * (c₁ * s₂ * c₃ + s₁ * s₂ * s₃),
         )
     elseif rot_seq == :XZY
         q0 = c₁ * c₂ * c₃ + s₁ * s₂ * s₃
@@ -200,7 +167,7 @@ function angle_to_quat(
             s * q0,
             s * (s₁ * c₂ * c₃ - c₁ * s₂ * s₃),
             s * (c₁ * c₂ * s₃ - s₁ * s₂ * c₃),
-            s * (c₁ * s₂ * c₃ + s₁ * c₂ * s₃)
+            s * (c₁ * s₂ * c₃ + s₁ * c₂ * s₃),
         )
     elseif rot_seq == :YXY
         q0 = c₁ * c₂ * c₃ - s₁ * c₂ * s₃
@@ -211,7 +178,7 @@ function angle_to_quat(
             s * q0,
             s * (c₁ * s₂ * c₃ + s₁ * s₂ * s₃),
             s * (c₁ * c₂ * s₃ + s₁ * c₂ * c₃),
-            s * (c₁ * s₂ * s₃ - s₁ * s₂ * c₃)
+            s * (c₁ * s₂ * s₃ - s₁ * s₂ * c₃),
         )
     elseif rot_seq == :YXZ
         q0 = c₁ * c₂ * c₃ + s₁ * s₂ * s₃
@@ -222,7 +189,7 @@ function angle_to_quat(
             s * q0,
             s * (c₁ * s₂ * c₃ + s₁ * c₂ * s₃),
             s * (s₁ * c₂ * c₃ - c₁ * s₂ * s₃),
-            s * (c₁ * c₂ * s₃ - s₁ * s₂ * c₃)
+            s * (c₁ * c₂ * s₃ - s₁ * s₂ * c₃),
         )
     elseif rot_seq == :YZX
         q0 = c₁ * c₂ * c₃ - s₁ * s₂ * s₃
@@ -233,7 +200,7 @@ function angle_to_quat(
             s * q0,
             s * (c₁ * c₂ * s₃ + s₁ * s₂ * c₃),
             s * (s₁ * c₂ * c₃ + c₁ * s₂ * s₃),
-            s * (c₁ * s₂ * c₃ - s₁ * c₂ * s₃)
+            s * (c₁ * s₂ * c₃ - s₁ * c₂ * s₃),
         )
     elseif rot_seq == :YZY
         q0 = c₁ * c₂ * c₃ - s₁ * c₂ * s₃
@@ -244,7 +211,7 @@ function angle_to_quat(
             s * q0,
             s * (s₁ * s₂ * c₃ - c₁ * s₂ * s₃),
             s * (c₁ * c₂ * s₃ + s₁ * c₂ * c₃),
-            s * (c₁ * s₂ * c₃ + s₁ * s₂ * s₃)
+            s * (c₁ * s₂ * c₃ + s₁ * s₂ * s₃),
         )
     elseif rot_seq == :ZXY
         q0 = c₁ * c₂ * c₃ - s₁ * s₂ * s₃
@@ -255,7 +222,7 @@ function angle_to_quat(
             s * q0,
             s * (c₁ * s₂ * c₃ - s₁ * c₂ * s₃),
             s * (c₁ * c₂ * s₃ + s₁ * s₂ * c₃),
-            s * (s₁ * c₂ * c₃ + c₁ * s₂ * s₃)
+            s * (s₁ * c₂ * c₃ + c₁ * s₂ * s₃),
         )
     elseif rot_seq == :ZXZ
         q0 = c₁ * c₂ * c₃ - s₁ * c₂ * s₃
@@ -266,7 +233,7 @@ function angle_to_quat(
             s * q0,
             s * (c₁ * s₂ * c₃ + s₁ * s₂ * s₃),
             s * (s₁ * s₂ * c₃ - c₁ * s₂ * s₃),
-            s * (c₁ * c₂ * s₃ + s₁ * c₂ * c₃)
+            s * (c₁ * c₂ * s₃ + s₁ * c₂ * c₃),
         )
     elseif rot_seq == :ZYZ
         q0 = c₁ * c₂ * c₃ - s₁ * c₂ * s₃
@@ -277,7 +244,7 @@ function angle_to_quat(
             s * q0,
             s * (c₁ * s₂ * s₃ - s₁ * s₂ * c₃),
             s * (c₁ * s₂ * c₃ + s₁ * s₂ * s₃),
-            s * (c₁ * c₂ * s₃ + s₁ * c₂ * c₃)
+            s * (c₁ * c₂ * s₃ + s₁ * c₂ * c₃),
         )
     else
         throw(ArgumentError("The rotation sequence :$rot_seq is not valid."))

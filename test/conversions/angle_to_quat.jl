@@ -29,7 +29,7 @@
         @test eltype(v_r) === T
 
         # Get the sine of the angle between the representations.
-        sin_ang = ((v_r × v) / norm(v)^2)[1]
+        sin_ang = ((v_r × v) / norm(v) ^ 2)[1]
 
         # Test the angle between the two representations.
         @test abs(sin(ang) - sin_ang) ≈ 0 atol = √(eps(T))
@@ -48,7 +48,7 @@
         @test eltype(v_r) === T
 
         # Get the sine of the angle between the representations.
-        sin_ang = ((v_r × v) / norm(v)^2)[2]
+        sin_ang = ((v_r × v) / norm(v) ^ 2)[2]
 
         # Test the angle between the two representations.
         @test abs(sin(ang) - sin_ang) ≈ 0 atol = √(eps(T))
@@ -67,7 +67,7 @@
         @test eltype(v_r) === T
 
         # Get the sine of the angle between the representations.
-        sin_ang = ((v_r × v) / norm(v)^2)[3]
+        sin_ang = ((v_r × v) / norm(v) ^ 2)[3]
 
         # Test the angle between the two representations.
         @test abs(sin(ang) - sin_ang) ≈ 0 atol = √(eps(T))

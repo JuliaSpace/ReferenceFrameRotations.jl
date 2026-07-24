@@ -36,7 +36,7 @@
 
         # In the end, a vector perpendicular to `wba_a` must rotate the angle compatible
         # with the angular velocity and time of integration.
-        aux   = @SVector randn(T , 3)
+        aux   = @SVector randn(T, 3)
         aux   = aux / norm(aux)
         vr_a  = wba_a × aux
         vr_a  = vr_a / norm(vr_a)

@@ -29,7 +29,7 @@ EulerAngleAxis{Float64}:
   Euler axis  : [1.0, 0.0, 0.0]
 ```
 """
-function quat_to_angleaxis(q::Quaternion{T}) where T
+function quat_to_angleaxis(q::Quaternion{T}) where {T}
     # If `q0` is 1 or -1, then we have an identity rotation.
     if abs(q.q0) >= 1 - eps()
         return EulerAngleAxis(T(0), SVector{3, T}(0, 0, 0))

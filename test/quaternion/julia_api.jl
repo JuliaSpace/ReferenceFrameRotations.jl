@@ -27,10 +27,10 @@
 
         alloc = @allocated quat_bcast!(v, q)
 
-        @test v[1]  == q[1]
-        @test v[2]  == q[2]
-        @test v[3]  == q[3]
-        @test v[4]  == q[4]
+        @test v[1] == q[1]
+        @test v[2] == q[2]
+        @test v[3] == q[3]
+        @test v[4] == q[4]
         @test alloc == 0
     end
 end
@@ -69,10 +69,10 @@ end
 
         alloc = @allocated quat_setindex!(v, q)
 
-        @test v[4]  == q[1]
-        @test v[5]  == q[2]
-        @test v[6]  == q[3]
-        @test v[7]  == q[4]
+        @test v[4] == q[1]
+        @test v[5] == q[2]
+        @test v[6] == q[3]
+        @test v[7] == q[4]
         @test alloc == 0
     end
 end
@@ -98,4 +98,3 @@ end
     @test q_conv.q3 == Float32(q.q3)
     @test eltype(q_conv) === Float32
 end
-

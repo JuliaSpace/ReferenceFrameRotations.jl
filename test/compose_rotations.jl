@@ -19,10 +19,10 @@
         D4 = rand(DCM{T})
 
         # Test the function `compose_rotation`.
-        @test                D1 === compose_rotation(D1)
-        @test           D2 * D1  ≈  compose_rotation(D1,D2)
-        @test      D3 * D2 * D1  ≈  compose_rotation(D1,D2,D3)
-        @test D4 * D3 * D2 * D1  ≈  compose_rotation(D1,D2,D3,D4)
+        @test D1 === compose_rotation(D1)
+        @test D2 * D1 ≈ compose_rotation(D1, D2)
+        @test D3 * D2 * D1 ≈ compose_rotation(D1, D2, D3)
+        @test D4 * D3 * D2 * D1 ≈ compose_rotation(D1, D2, D3, D4)
 
         # == Euler Angle and Axis ==========================================================
 
@@ -42,10 +42,10 @@
         eac3 = compose_rotation(ea1, ea2, ea3, ea4)
 
         # Test the function `compose_rotation`.
-        @test  ea1 === compose_rotation(ea1)
-        @test ear1  ≈  eac1
-        @test ear2  ≈  eac2
-        @test ear3  ≈  eac3
+        @test ea1 === compose_rotation(ea1)
+        @test ear1 ≈ eac1
+        @test ear2 ≈ eac2
+        @test ear3 ≈ eac3
 
         # == Euler Angles ==================================================================
 
@@ -65,10 +65,10 @@
         Θc3 = compose_rotation(Θ1, Θ2, Θ3, Θ4)
 
         # Test the function `compose_rotation`.
-        @test  Θ1 === compose_rotation(Θ1)
-        @test Θr1  ≈  Θc1
-        @test Θr2  ≈  Θc2
-        @test Θr3  ≈  Θc3
+        @test Θ1 === compose_rotation(Θ1)
+        @test Θr1 ≈ Θc1
+        @test Θr2 ≈ Θc2
+        @test Θr3 ≈ Θc3
 
         # == Quaternions ===================================================================
 
@@ -79,10 +79,10 @@
         q4 = rand(Quaternion{T})
 
         # Test the function `compose_rotation`.
-        @test               q1 === compose_rotation(q1)
-        @test       (q1*q2)[:]  ≈  compose_rotation(q1,q2)[:]
-        @test    (q1*q2*q3)[:]  ≈  compose_rotation(q1,q2,q3)[:]
-        @test (q1*q2*q3*q4)[:]  ≈  compose_rotation(q1,q2,q3,q4)[:]
+        @test q1 === compose_rotation(q1)
+        @test (q1 * q2)[:] ≈ compose_rotation(q1, q2)[:]
+        @test (q1 * q2 * q3)[:] ≈ compose_rotation(q1, q2, q3)[:]
+        @test (q1 * q2 * q3 * q4)[:] ≈ compose_rotation(q1, q2, q3, q4)[:]
     end
 end
 
@@ -90,10 +90,7 @@ end
     for T in (Float32, Float64)
         # Use distinct rotations so that changing either the order or the
         # parenthesization is observable.
-        Ds = [
-            angle_to_dcm(T(0.013 * i), T(-0.021 * i), T(0.017 * i), :ZYX)
-            for i in 1:32
-        ]
+        Ds = [angle_to_dcm(T(0.013 * i), T(-0.021 * i), T(0.017 * i), :ZYX) for i in 1:32]
         rotations = (
             Ds,
             [convert(EulerAngleAxis, D) for D in Ds],

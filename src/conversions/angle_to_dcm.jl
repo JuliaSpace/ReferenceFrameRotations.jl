@@ -57,7 +57,7 @@ DCM{Float64}:
   0.707107     0.612372   0.353553
 ```
 """
-function angle_to_dcm(θ::T, rot_seq::Symbol) where {T<:Number}
+function angle_to_dcm(θ::T, rot_seq::Symbol) where {T <: Number}
     sa, ca = sincos(θ)
 
     if rot_seq == :X
@@ -83,7 +83,7 @@ function angle_to_dcm(θ::T, rot_seq::Symbol) where {T<:Number}
     end
 end
 
-function angle_to_dcm(θ₁::T1, θ₂::T2, rot_seq::Symbol) where {T1<:Number, T2<:Number}
+function angle_to_dcm(θ₁::T1, θ₂::T2, rot_seq::Symbol) where {T1 <: Number, T2 <: Number}
     T = promote_type(T1, T2)
 
     # Compute the sines and cosines.
@@ -132,11 +132,8 @@ function angle_to_dcm(θ₁::T1, θ₂::T2, rot_seq::Symbol) where {T1<:Number, 
 end
 
 function angle_to_dcm(
-    θ₁::T1,
-    θ₂::T2,
-    θ₃::T3,
-    rot_seq::Symbol = :ZYX
-) where {T1<:Number, T2<:Number, T3<:Number}
+    θ₁::T1, θ₂::T2, θ₃::T3, rot_seq::Symbol = :ZYX
+) where {T1 <: Number, T2 <: Number, T3 <: Number}
     T = promote_type(T1, T2, T3)
 
     # Compute the sines and cosines.

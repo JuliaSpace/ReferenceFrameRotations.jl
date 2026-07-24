@@ -34,9 +34,9 @@ function mrp_to_dcm(m::MRP)
     #                     (1 + |m|²)²
     #
 
-    m₁  = m.q1
-    m₂  = m.q2
-    m₃  = m.q3
+    m₁ = m.q1
+    m₂ = m.q2
+    m₃ = m.q3
 
     m₁² = m₁^2
     m₂² = m₂^2
@@ -44,8 +44,8 @@ function mrp_to_dcm(m::MRP)
 
     norm_m² = m₁² + m₂² + m₃²
 
-    k₂  = (1 - norm_m²)
-    d   = (1 + norm_m²)^2
+    k₂ = (1 - norm_m²)
+    d  = (1 + norm_m²)^2
 
     # Skew symmetric matrix components.
     #
@@ -55,12 +55,12 @@ function mrp_to_dcm(m::MRP)
     #        │ m₂  m₁  0  │
     #        └            ┘
 
-    mˣ₁₂  = -m₃
-    mˣ₁₃  =  m₂
-    mˣ₂₁  =  m₃
-    mˣ₂₃  = -m₁
-    mˣ₃₁  = -m₂
-    mˣ₃₂  =  m₁
+    mˣ₁₂ = -m₃
+    mˣ₁₃ = m₂
+    mˣ₂₁ = m₃
+    mˣ₂₃ = -m₁
+    mˣ₃₁ = -m₂
+    mˣ₃₂ = m₁
 
     # Squared skew symmetric matrix components.
     #

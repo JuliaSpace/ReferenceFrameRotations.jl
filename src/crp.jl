@@ -28,7 +28,7 @@ function CRP(v::AbstractVector)
     return CRP(v[begin], v[begin + 1], v[begin + 2])
 end
 
-CRP(::UniformScaling{T}) where T = CRP(zero(T), zero(T), zero(T))
+CRP(::UniformScaling{T}) where {T} = CRP(zero(T), zero(T), zero(T))
 
 ############################################################################################
 #                                        Julia API                                         #
@@ -37,7 +37,7 @@ CRP(::UniformScaling{T}) where T = CRP(zero(T), zero(T), zero(T))
 # The following functions make sure that a CRP is an iterable object. This allows
 # broadcasting without allocations.
 Base.IndexStyle(::Type{<:CRP}) = IndexLinear()
-Base.eltype(::Type{CRP{T}}) where T = T
+Base.eltype(::Type{CRP{T}}) where {T} = T
 Base.firstindex(c::CRP) = 1
 Base.lastindex(c::CRP) = 3
 Base.length(::CRP) = 3
@@ -46,7 +46,7 @@ Base.ndims(c::CRP) = 1
 Base.size(::CRP) = (3,)
 Base.Broadcast.broadcastable(c::CRP) = c
 
-function Base.convert(::Type{CRP{T}}, c::CRP) where T
+function Base.convert(::Type{CRP{T}}, c::CRP) where {T}
     return CRP{T}(c.q1, c.q2, c.q3)
 end
 
@@ -62,7 +62,7 @@ end
     end
 end
 
-@inline function Base.getindex(c::CRP{T}, ::Colon) where T
+@inline function Base.getindex(c::CRP{T}, ::Colon) where {T}
     return SVector{3, T}(c.q1, c.q2, c.q3)
 end
 
@@ -91,7 +91,7 @@ end
 # We need to define `setindex!` with respect to vectors to allow operations such as:
 #
 #     v[4:6] = c
-@inline function setindex!(v::Vector{T}, c::CRP, I::UnitRange) where T
+@inline function setindex!(v::Vector{T}, c::CRP, I::UnitRange) where {T}
     # We can use all the functions in static arrays.
     return setindex!(v, c[:], I)
 end
@@ -163,7 +163,7 @@ function dcrp(c::CRP, wba_b::AbstractVector)
     return CRP(
         (w₁ + k₂_₁ + c_dot_w * c.q1) / 2,
         (w₂ + k₂_₂ + c_dot_w * c.q2) / 2,
-        (w₃ + k₂_₃ + c_dot_w * c.q3) / 2
+        (w₃ + k₂_₃ + c_dot_w * c.q3) / 2,
     )
 end
 
@@ -171,14 +171,14 @@ end
 #                                            IO                                            #
 ############################################################################################
 
-function show(io::IO, c::CRP{T}) where T
+function show(io::IO, c::CRP{T}) where {T}
     # Check if the user wants compact printing, defaulting to `true`.
     compact_printing = get(io, :compact, true)::Bool
 
     # Get the absolute values using `print`.
-    c₀ = sprint(print, abs(c.q1), context = :compact => compact_printing)
-    c₁ = sprint(print, abs(c.q2), context = :compact => compact_printing)
-    c₂ = sprint(print, abs(c.q3), context = :compact => compact_printing)
+    c₀ = sprint(print, abs(c.q1); context = :compact => compact_printing)
+    c₁ = sprint(print, abs(c.q2); context = :compact => compact_printing)
+    c₂ = sprint(print, abs(c.q3); context = :compact => compact_printing)
 
     print(io, "CRP{$(T)}: ")
     print(io, "[", c₀, ", ", c₁, ", ", c₂, "]")
@@ -186,7 +186,7 @@ function show(io::IO, c::CRP{T}) where T
     return nothing
 end
 
-function show(io::IO, ::MIME"text/plain", c::CRP{T}) where T
+function show(io::IO, ::MIME"text/plain", c::CRP{T}) where {T}
     # Check if the user wants colors.
     color = get(io, :color, false)::Bool
 
@@ -203,9 +203,9 @@ function show(io::IO, ::MIME"text/plain", c::CRP{T}) where T
     compact_printing = get(io, :compact, true)::Bool
 
     # Get the absolute values using `print`.
-    ac₁ = sprint(print, abs(c.q1), context = context)
-    ac₂ = sprint(print, abs(c.q2), context = context)
-    ac₃ = sprint(print, abs(c.q3), context = context)
+    ac₁ = sprint(print, abs(c.q1); context = context)
+    ac₂ = sprint(print, abs(c.q2); context = context)
+    ac₃ = sprint(print, abs(c.q3); context = context)
 
     # Get the signs.
     sc₁ = signbit(c.q1) ? "-" : "+"
@@ -216,7 +216,7 @@ function show(io::IO, ::MIME"text/plain", c::CRP{T}) where T
     println(io, "CRP{$(T)}:")
     println(io, "  ", b, "X : ", d, sc₁, " ", ac₁)
     println(io, "  ", b, "Y : ", d, sc₂, " ", ac₂)
-    print(  io, "  ", b, "Z : ", d, sc₃, " ", ac₃)
+    print(io, "  ", b, "Z : ", d, sc₃, " ", ac₃)
 
     return nothing
 end
@@ -253,7 +253,9 @@ function Base.:*(c1::CRP, c2::CRP)
 
     # TODO: Return a specific error?
     isapprox(norm_c1_c2, 1; atol = 1e-15) && throw(
-        ArgumentError("The composition of these CRPs results in a specific singularity (180° rotation).")
+        ArgumentError(
+            "The composition of these CRPs results in a specific singularity (180° rotation).",
+        ),
     )
 
     denom = 1 - norm_c1_c2
@@ -261,7 +263,7 @@ function Base.:*(c1::CRP, c2::CRP)
     return CRP(
         (c1.q1 + c2.q1 - c1.q2 * c2.q3 + c1.q3 * c2.q2) / denom,
         (c1.q2 + c2.q2 - c1.q3 * c2.q1 + c1.q1 * c2.q3) / denom,
-        (c1.q3 + c2.q3 - c1.q1 * c2.q2 + c1.q2 * c2.q1) / denom
+        (c1.q3 + c2.q3 - c1.q1 * c2.q2 + c1.q2 * c2.q1) / denom,
     )
 end
 
@@ -292,20 +294,20 @@ Compute the Euclidean norm of the CRP `c`.
 """
 @inline norm(c::CRP) = √(c.q1^2 + c.q2^2 + c.q3^2)
 
-@inline one(::Type{CRP{T}}) where T = CRP{T}(T(0), T(0), T(0))
+@inline one(::Type{CRP{T}}) where {T} = CRP{T}(T(0), T(0), T(0))
 @inline one(::Type{CRP}) = CRP{Float64}(0, 0, 0)
-@inline one(c::CRP{T}) where T = one(CRP{T})
+@inline one(c::CRP{T}) where {T} = one(CRP{T})
 
-@inline zero(::Type{CRP{T}}) where T = CRP{T}(T(0), T(0), T(0))
+@inline zero(::Type{CRP{T}}) where {T} = CRP{T}(T(0), T(0), T(0))
 @inline zero(::Type{CRP}) = CRP{Float64}(0, 0, 0)
-@inline zero(::CRP{T}) where T = zero(CRP{T})
+@inline zero(::CRP{T}) where {T} = zero(CRP{T})
 
 """
     copy(c::CRP) -> CRP
 
 Create a copy of the CRP `c`.
 """
-@inline copy(c::CRP{T}) where T = CRP{T}(c.q1, c.q2, c.q3)
+@inline copy(c::CRP{T}) where {T} = CRP{T}(c.q1, c.q2, c.q3)
 
 """
     vect(c::CRP) -> SVector{3, T}

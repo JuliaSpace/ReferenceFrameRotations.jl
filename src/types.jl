@@ -30,7 +30,7 @@ DCM{Int64}:
 struct DCM{T} <: StaticMatrix{3, 3, T}
     data::NTuple{9, T}
 
-    function DCM(x::NTuple{9, T}) where T
+    function DCM(x::NTuple{9, T}) where {T}
         return new{T}(x)
     end
 
@@ -39,11 +39,11 @@ struct DCM{T} <: StaticMatrix{3, 3, T}
         return new{T}(StaticArrays.convert_ntuple(T, x))
     end
 
-    function DCM{T}(x::NTuple{9, T}) where T
+    function DCM{T}(x::NTuple{9, T}) where {T}
         return new{T}(x)
     end
 
-    function DCM{T}(x::NTuple{9, Any}) where T
+    function DCM{T}(x::NTuple{9, Any}) where {T}
         return new{T}(StaticArrays.convert_ntuple(T, x))
     end
 end
@@ -98,12 +98,7 @@ struct EulerAngles{T}
     rot_seq::Symbol
 end
 
-function EulerAngles(
-    a1::T1,
-    a2::T2,
-    a3::T3,
-    rot_seq::Symbol = :ZYX
-) where {T1, T2, T3}
+function EulerAngles(a1::T1, a2::T2, a3::T3, rot_seq::Symbol = :ZYX) where {T1, T2, T3}
     T = promote_type(T1, T2, T3)
 
     return EulerAngles(T(a1), T(a2), T(a3), rot_seq)
@@ -115,8 +110,7 @@ end
 This private structure is used only to enable the rotation conversion to Euler angles using
 the Julia API.
 """
-struct _EulerAngleConversion{R}
-end
+struct _EulerAngleConversion{R} end
 
 function EulerAngles(rot_seq::Symbol)
     return _EulerAngleConversion{rot_seq}
@@ -155,10 +149,10 @@ struct EulerAngleAxis{T}
     a::T
     v::SVector{3, T}
 
-    EulerAngleAxis(a::T, v::SVector{3, T}) where T<:Number = new{T}(a, v)
+    EulerAngleAxis(a::T, v::SVector{3, T}) where {T <: Number} = new{T}(a, v)
 end
 
-function EulerAngleAxis(a::T1, v::AbstractVector{T2}) where {T1,T2}
+function EulerAngleAxis(a::T1, v::AbstractVector{T2}) where {T1, T2}
     (length(v) != 3) && error("The vector `v` must have 3 dimensions.")
     T = promote_type(T1, T2)
 
@@ -259,11 +253,4 @@ end
 
 A `Union` of all supported rotation types.
 """
-const ReferenceFrameRotation = Union{
-    DCM,
-    EulerAngles,
-    EulerAngleAxis,
-    Quaternion,
-    CRP,
-    MRP
-}
+const ReferenceFrameRotation = Union{DCM, EulerAngles, EulerAngleAxis, Quaternion, CRP, MRP}

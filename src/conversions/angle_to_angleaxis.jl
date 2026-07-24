@@ -36,10 +36,7 @@ EulerAngleAxis{Float64}:
 ```
 """
 @inline function angle_to_angleaxis(
-    θ₁::Number,
-    θ₂::Number,
-    θ₃::Number,
-    rot_seq::Symbol = :ZYX
+    θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX
 )
     # First convert to DCM and then to Euler angle and axis.
     return dcm_to_angleaxis(angle_to_dcm(θ₁, θ₂, θ₃, rot_seq))

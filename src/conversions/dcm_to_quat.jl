@@ -37,7 +37,7 @@ Quaternion{Float64}:
 - **[1]**: http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/
 """
 function dcm_to_quat(dcm::DCM)
-    if  tr(dcm) > 0
+    if tr(dcm) > 0
         # f = 4 * q0
         f = 2sqrt(tr(dcm) + 1)
 
@@ -45,7 +45,7 @@ function dcm_to_quat(dcm::DCM)
             f / 4,
             (dcm[2, 3] - dcm[3, 2]) / f,
             (dcm[3, 1] - dcm[1, 3]) / f,
-            (dcm[1, 2] - dcm[2, 1]) / f
+            (dcm[1, 2] - dcm[2, 1]) / f,
         )
     elseif (dcm[1, 1] > dcm[2, 2]) && (dcm[1, 1] > dcm[3, 3])
         # f = 4 * q1
@@ -61,7 +61,7 @@ function dcm_to_quat(dcm::DCM)
             s * q0,
             s * f / 4,
             s * (dcm[1, 2] + dcm[2, 1]) / f,
-            s * (dcm[3, 1] + dcm[1, 3]) / f
+            s * (dcm[3, 1] + dcm[1, 3]) / f,
         )
     elseif (dcm[2, 2] > dcm[3, 3])
         # f = 4 * q2
@@ -77,7 +77,7 @@ function dcm_to_quat(dcm::DCM)
             s * q0,
             s * (dcm[1, 2] + dcm[2, 1]) / f,
             s * f / 4,
-            s * (dcm[3, 2] + dcm[2, 3]) / f
+            s * (dcm[3, 2] + dcm[2, 3]) / f,
         )
     else
         # f = 4 * q3
@@ -93,7 +93,7 @@ function dcm_to_quat(dcm::DCM)
             s * q0,
             s * (dcm[1, 3] + dcm[3, 1]) / f,
             s * (dcm[2, 3] + dcm[3, 2]) / f,
-            s * f / 4
+            s * f / 4,
         )
     end
 end

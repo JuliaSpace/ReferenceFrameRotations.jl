@@ -25,10 +25,8 @@ Quaternion{Float64}:
 ```
 """
 function smallangle_to_quat(
-    θx::T1,
-    θy::T2,
-    θz::T3
-) where {T1<:Number, T2<:Number, T3<:Number}
+    θx::T1, θy::T2, θz::T3
+) where {T1 <: Number, T2 <: Number, T3 <: Number}
     T = promote_type(T1, T2, T3)
 
     q0     = T(1)

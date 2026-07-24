@@ -43,7 +43,8 @@ DCM{Float64}:
 """
 @inline function angleaxis_to_dcm(a::T1, v::AbstractVector{T2}) where {T1, T2}
     # Check the arguments.
-    (length(v) ≠ 3) && throw(ArgumentError("The provided vector for the Euler axis must have 3 elements."))
+    (length(v) ≠ 3) &&
+        throw(ArgumentError("The provided vector for the Euler axis must have 3 elements."))
 
     # Obtain the output type.
     T = float(promote_type(T1, T2))

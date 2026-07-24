@@ -11,7 +11,7 @@
 
 # == Euler angle and axis ==================================================================
 
-function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where R <: EulerAngleAxis
+function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where {R <: EulerAngleAxis}
     T = eltype(R)
     if T == Any
         T = Float64
@@ -22,7 +22,7 @@ end
 
 # == Euler angles ==========================================================================
 
-function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where R <: EulerAngles
+function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where {R <: EulerAngles}
     T = eltype(R)
     if T == Any
         T = Float64
@@ -34,8 +34,7 @@ function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where R <: Euler
     a₃ = k * rand(rng, T)
 
     rot_seq = rand(
-        rng,
-        (:XYX, :XYZ, :XZX, :XZY, :YXY, :YXZ, :YZX, :YZY, :ZXY, :ZXZ, :ZYX, :ZYZ)
+        rng, (:XYX, :XYZ, :XZX, :XZY, :YXY, :YXZ, :YZX, :YZY, :ZXY, :ZXZ, :ZYX, :ZYZ)
     )
 
     return EulerAngles{T}(a₁, a₂, a₃, rot_seq)
@@ -43,7 +42,7 @@ end
 
 # == DCM ===================================================================================
 
-function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where R <: DCM
+function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where {R <: DCM}
     T = eltype(R)
     if T == Any
         T = Float64
@@ -54,7 +53,7 @@ end
 
 # == Quaternion ============================================================================
 
-function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where R <: Quaternion
+function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where {R <: Quaternion}
     T = eltype(R)
     if T == Any
         T = Float64
@@ -65,7 +64,7 @@ end
 
 # == CRP ===================================================================================
 
-function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where R <: CRP
+function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where {R <: CRP}
     T = eltype(R)
     if T == Any
         T = Float64
@@ -76,7 +75,7 @@ end
 
 # == MRP ===================================================================================
 
-function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where R <: MRP
+function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where {R <: MRP}
     T = eltype(R)
     if T == Any
         T = Float64

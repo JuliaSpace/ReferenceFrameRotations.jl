@@ -14,7 +14,7 @@
         D = DCM{T}((1, 0, 0, 0, 1, 0, 0, 0, 1))
         @test dcm_to_crp(D) == CRP(T(0), T(0), T(0))
 
-        for axis in (SVector{3,T}(1, 0, 0), normalize(SVector{3,T}(1, 2, 3)))
+        for axis in (SVector{3, T}(1, 0, 0), normalize(SVector{3, T}(1, 2, 3)))
             Dπ = angleaxis_to_dcm(T(π), axis)
             if T === Float64
                 @test_throws ArgumentError dcm_to_crp(Dπ)
@@ -32,8 +32,8 @@
         # resulting CRP represents the same rotation.
         testset = [
             (_rand_ang(T), _rand_ang2(T), _rand_ang(T), :Z, :Y, :X)
-            (T(1.0),       T(0.5),        T(-0.2),      :Z, :Y, :X)
-            (T(0.5),       T(-0.3),       T(0.4),       :X, :Y, :Z)
+            (T(1.0), T(0.5), T(-0.2), :Z, :Y, :X)
+            (T(0.5), T(-0.3), T(0.4), :X, :Y, :Z)
         ]
 
         for test in testset

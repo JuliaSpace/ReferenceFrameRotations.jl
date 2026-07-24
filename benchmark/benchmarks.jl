@@ -16,8 +16,7 @@ for T in (Float32, Float64)
     SUITE["DCM to quaternion", T] = @benchmarkable dcm_to_quat($dcm)
     SUITE["DCM to MRP", T] = @benchmarkable dcm_to_mrp($dcm)
     SUITE["DCM to CRP", T] = @benchmarkable dcm_to_crp($dcm)
-    SUITE["fixed-sequence convert", T] =
-        @benchmarkable convert(EulerAngles(:ZYX), $dcm)
+    SUITE["fixed-sequence convert", T] = @benchmarkable convert(EulerAngles(:ZYX), $dcm)
 
     for n in (2, 8, 32)
         rotations = ntuple(_ -> dcm, n)
