@@ -34,4 +34,24 @@
         Do = orthonormalize(D1)
         @test eltype(Do) === T
     end
+
+    # A genuinely nonorthogonal, full-rank matrix checks the modified
+    # Gram-Schmidt result rather than only column-wise rescaling.
+    for T in (Float32, Float64)
+        A = DCM(
+            T(1), T(2), T(2),
+            T(2), T(5), T(6),
+            T(1), T(0), T(0)
+        )
+        Q = orthonormalize(A)
+        Q_expected = DCM(
+            T(1) / 3, T(2) / 3, T(2) / 3,
+            -T(2) / 3, -T(1) / 3, T(2) / 3,
+            T(2) / 3, -T(2) / 3, T(1) / 3
+        )
+
+        @test Q ≈ Q_expected atol = 10 * eps(T)
+        @test Q' * Q ≈ DCM(I) atol = 10 * eps(T)
+        @test det(Q) ≈ one(T) atol = 10 * eps(T)
+    end
 end

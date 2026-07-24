@@ -58,9 +58,9 @@ DCM{Float64}:
 ```
 """
 function orthonormalize(dcm::DCM)
-    e₁ = SVector{3}(dcm[:, 1])
-    e₂ = SVector{3}(dcm[:, 2])
-    e₃ = SVector{3}(dcm[:, 3])
+    e₁ = SVector(dcm[1, 1], dcm[2, 1], dcm[3, 1])
+    e₂ = SVector(dcm[1, 2], dcm[2, 2], dcm[3, 2])
+    e₃ = SVector(dcm[1, 3], dcm[2, 3], dcm[3, 3])
 
     en₁  = e₁ / norm(e₁)
     enj₂ = e₂ - (en₁ ⋅ e₂) * en₁
@@ -69,7 +69,11 @@ function orthonormalize(dcm::DCM)
     enj₃ = enj₃ - (en₂ ⋅ enj₃) * en₂
     en₃  = enj₃ / norm(enj₃)
 
-    return DCM(hcat(en₁, en₂, en₃))
+    return DCM(
+        en₁[1], en₁[2], en₁[3],
+        en₂[1], en₂[2], en₂[3],
+        en₃[1], en₃[2], en₃[3]
+    )
 end
 
 ############################################################################################
