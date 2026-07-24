@@ -68,7 +68,7 @@ together with a rotation sequence `rot_seq`.
     are:
 
     - `:XYX`, `:XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`,
-        `:ZXZ`, `:ZYX`, and `ZYZ`.
+        `:ZXZ`, `:ZYX`, and `:ZYZ`.
 
 # Constructor
 
@@ -267,4 +267,3 @@ const ReferenceFrameRotation = Union{
     CRP,
     MRP
 }
-

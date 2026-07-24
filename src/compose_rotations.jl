@@ -33,9 +33,10 @@ The rotations can be described by:
 - Classical Rodrigues parameters ([`CRP`](@ref)); or
 - Modified Rodrigues parameters ([`MRP`](@ref)).
 
-Notice, however, that all rotations **must be** of the same type.
+Mixed rotation types are supported through the composition operator `∘`.
 
-The output will have the same type as the inputs.
+For same-type inputs, the output will have the same type as the inputs. With mixed types, the
+composition operator uses the type of its first operand for the output.
 
 # Example
 

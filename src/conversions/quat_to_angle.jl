@@ -12,7 +12,7 @@ export quat_to_angle
 Convert the quaternion `q` to Euler Angles (see [`EulerAngles`](@ref)) given a rotation
 sequence `rot_seq`.
 
-The rotation sequence is defined by a `:Symbol`. The possible values are: `:XYX`, `XYZ`,
+The rotation sequence is defined by a `:Symbol`. The possible values are: `:XYX`, `:XYZ`,
 `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`, `:ZYX`, and `:ZYZ`. If no
 value is specified, it defaults to `:ZYX`.
 

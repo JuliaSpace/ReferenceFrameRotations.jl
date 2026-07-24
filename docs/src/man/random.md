@@ -10,8 +10,10 @@ using ReferenceFrameRotations
 
 Sometimes it is necessary to generate random rotations. For example, if you are testing a
 stochastic system numerically, you need to perform a Monte Carlo simulation sampling the
-initial conditions. **ReferenceFrameRotations.jl** defines `rand` function for all rotation
-representations, which samples a random rotation uniformly in SO(3).
+initial conditions. **ReferenceFrameRotations.jl** defines a `rand` function for all rotation
+representations. For all representations except `EulerAngles`, it samples a random rotation
+uniformly in SO(3). `rand(EulerAngles)` samples Euler parameters and is not uniform over
+rotations.
 
 ```@repl random
 rand(Quaternion)

@@ -84,7 +84,7 @@ crp_to_quat(c)
 
 ## DCMs to CRP
 
-A Direct Cosine Matrix (DCM) can be converted to CRP using the following method:
+A Direction Cosine Matrix (DCM) can be converted to CRP using the following method:
 
 ```julia
 function dcm_to_crp(dcm::DCM)
@@ -137,7 +137,7 @@ dcm_to_angle(D, :XYX)
 
 ## DCMs to Euler Angle and Axis
 
-A DCM can be converto to an Euler angle and axis representation using the following method:
+A DCM can be converted to an Euler angle and axis representation using the following method:
 
 ```julia
 function dcm_to_angleaxis(dcm::DCM)
@@ -200,7 +200,7 @@ angle_to_crp(Θ)
 
 ## Euler Angle and Axis to DCMs
 
-An Euler angle and axis representation can be converted to DCM using using these two
+An Euler angle and axis representation can be converted to DCM using these two
 methods:
 
 ```julia
@@ -222,7 +222,7 @@ angleaxis_to_dcm(angleaxis)
 
 ## Euler Angle and Axis to Euler Angles
 
-An Euler angle and axis representation can be converto to Euler angles using these two
+An Euler angle and axis representation can be converted to Euler angles using these two
 methods:
 
 ```julia
@@ -586,7 +586,7 @@ convert(MRP, q)
 
 If it is desired to convert to `EulerAngles`, then one should use the help function
 `EulerAngles(rot_seq)`, where `rot_seq` is a symbol specifying the rotation sequence. If
-`EulerAngles` is used, then it defaults to `ZYX` rotation sequence:
+`EulerAngles` is used, then it defaults to `:ZYX` rotation sequence:
 
 ```@repl conversions
 dcm = angle_to_dcm(pi / 4, pi / 7, pi / 5)

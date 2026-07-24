@@ -51,7 +51,7 @@ Perform the Gram-Schmidt orthonormalization process in the `dcm` and return the 
 julia> D = DCM(3I)
 
 julia> orthonormalize(D)
-3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
+DCM{Float64}:
  1.0  0.0  0.0
  0.0  1.0  0.0
  0.0  0.0  1.0

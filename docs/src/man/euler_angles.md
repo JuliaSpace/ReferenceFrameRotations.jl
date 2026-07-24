@@ -23,7 +23,7 @@ in which `a1`, `a2`, and `a3` define the angles and the `rot_seq` is a symbol th
 the axes. The valid values for `rot_seq` are:
 
 - `:XYX`, `:XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`,
-  `:ZXZ`, `:ZYX`, and `ZYZ`.
+  `:ZXZ`, `:ZYX`, and `:ZYZ`.
 
 The constructor for this structure is:
 

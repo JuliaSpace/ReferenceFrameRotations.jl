@@ -14,8 +14,8 @@ Convert MRP `m` to a quaternion.
 # Remarks
 
 By convention, the real part of the quaternion will always be positive. Moreover, the
-function does not check if `dcm` is a valid direction cosine matrix. This must be handle by
-the user.
+function does not check if `m` is a valid modified Rodrigues parameter vector. This must be
+handled by the user.
 
 # Example
 

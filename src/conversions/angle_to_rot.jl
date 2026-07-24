@@ -10,18 +10,18 @@ export angle_to_rot
     angle_to_rot([T,] θ₁::Number[, θ₂::Number[, θ₃::Number]], rot_seq::Symbol) -> T
     angle_to_rot([T,] Θ::EulerAngles) -> T
 
-Create a rotation description of type `T` that perform a set of rotations (`θ₁`, `θ₂`, `θ₃`)
+Create a rotation description of type `T` that performs a set of rotations (`θ₁`, `θ₂`, `θ₃`)
 about the coordinate axes specified in `rot_seq`.
 
-The input values of the origin Euler angles can also be passed inside the structure `Θ` (see
+The input values of the original Euler angles can also be passed inside the structure `Θ` (see
 [`EulerAngles`](@ref)).
 
-The rotation sequence is defined by a `Symbol` specifing the rotation axes. The possible
+The rotation sequence is defined by a `Symbol` specifying the rotation axes. The possible
 values depends on the number of rotations as follows:
 
 - **1 rotation** (`θ₁`): `:X`, `:Y`, or `:Z`.
 - **2 rotations** (`θ₁`, `θ₂`): `:XY`, `:XZ`, `:YX`, `:YZ`, `:ZX`, or `:ZY`.
-- **3 rotations** (`θ₁`, `θ₂`, `θ₃`): `:XYX`, `XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`,
+- **3 rotations** (`θ₁`, `θ₂`, `θ₃`): `:XYX`, `:XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`,
     `:YZY`, `:ZXY`, `:ZXZ`, `:ZYX`, or `:ZYZ`
 
 # Example
