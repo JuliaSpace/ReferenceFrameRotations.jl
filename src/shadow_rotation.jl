@@ -18,12 +18,18 @@ The shadow rotation of a CRP is the rotation itself: `c`.
 """
     shadow_rotation(m::MRP) -> MRP
 
-Compute the shadow rotation of the MRP `m`.
+Compute the shadow rotation `-m / |m|²` of the MRP `m`. It represents the same rotation as
+`m`, and its norm is the reciprocal of the norm of `m`. Hence, a unit MRP maps to its
+antipode.
 
-The shadow rotation of a MRP `m` is formed by the values `q` such that:
-
-    |q| > 1
-
-and represents the same rotation as `m`.
+The shadow set is undefined for the zero MRP, for which this function throws a
+`DomainError`. For nonzero inputs, scalar types whose reciprocal remains in the same type,
+such as `Rational` and `BigFloat`, are preserved.
 """
-@inline shadow_rotation(m::MRP) = -m / (norm(m)^2)
+@inline function shadow_rotation(m::MRP)
+    norm² = m.q1 * m.q1 + m.q2 * m.q2 + m.q3 * m.q3
+    iszero(norm²) && throw(DomainError(m, "The zero MRP does not have a shadow rotation."))
+
+    inv_norm² = inv(norm²)
+    return MRP(-m.q1 * inv_norm², -m.q2 * inv_norm², -m.q3 * inv_norm²)
+end

@@ -1,4 +1,4 @@
-## Desription ##############################################################################
+## Description #############################################################################
 #
 # Tests related to the Modified Rodrigues Parameters (MRP).
 #
@@ -197,6 +197,20 @@ end
     dcm        = mrp_to_dcm(m)
     dcm_shadow = mrp_to_dcm(m_shadow)
     @test maximum(abs.(dcm - dcm_shadow)) < 1e-12
+
+    @test_throws DomainError shadow_rotation(MRP(0.0, 0.0, 0.0))
+
+    unit_shadow = shadow_rotation(MRP(1.0f0, 0.0f0, 0.0f0))
+    @test unit_shadow === MRP(-1.0f0, -0.0f0, -0.0f0)
+    @test eltype(unit_shadow) === Float32
+
+    rational_shadow = shadow_rotation(MRP(1 // 2, 1 // 3, 1 // 6))
+    @test rational_shadow == MRP(-9 // 7, -6 // 7, -3 // 7)
+    @test eltype(rational_shadow) === Rational{Int}
+
+    big_shadow = shadow_rotation(MRP(big"0.5", big"0.25", big"0.125"))
+    @test eltype(big_shadow) === BigFloat
+    @test big_shadow == MRP(big"-32" / 21, big"-16" / 21, big"-8" / 21)
 end
 
 # -- Functions: rand -----------------------------------------------------------------------
