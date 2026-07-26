@@ -9,7 +9,7 @@ export quat_to_angleaxis
 """
     quat_to_angleaxis(q::Quaternion{T}) where T -> EulerAngleAxis
 
-Convert the quaternion `q` to a Euler angle and axis representation (see
+Convert the quaternion `q` to an Euler angle and axis representation (see
 [`EulerAngleAxis`](@ref)). By convention, the Euler angle will be kept between `[0, π]` rad.
 
 # Remarks

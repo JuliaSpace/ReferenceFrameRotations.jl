@@ -1,4 +1,4 @@
-## Desription ##############################################################################
+## Description #############################################################################
 #
 # Tests related to conversion from direction cosine matrices to Euler angles.
 #

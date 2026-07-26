@@ -1,10 +1,10 @@
-## Desription ##############################################################################
+## Description #############################################################################
 #
 # Tests related to conversion from quaternions to direction cosine matrices.
 #
 ############################################################################################
 
-# == File: ./src/conversions/quaternion_to_dcm.jl ==========================================
+# == File: ./src/conversions/quat_to_dcm.jl ================================================
 
 # -- Functions: quat_to_dcm ----------------------------------------------------------------
 
@@ -13,7 +13,7 @@
         # Create a random quaternion.
         q = rand(Quaternion{T})
 
-        # Convert to quaternion and test the conversion.
+        # Convert to a DCM and test the conversion.
         D = quat_to_dcm(q)
         @test eltype(D) === T
 

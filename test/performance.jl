@@ -46,7 +46,5 @@ function _test_performance_contracts(::Type{T}) where {T}
     return nothing
 end
 
-@testset "Performance Contracts" begin
-    _test_performance_contracts(Float32)
-    _test_performance_contracts(Float64)
-end
+_test_performance_contracts(Float32)
+_test_performance_contracts(Float64)

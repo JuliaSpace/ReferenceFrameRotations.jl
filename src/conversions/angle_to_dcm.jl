@@ -26,7 +26,7 @@ values depends on the number of rotations as follows:
 
 # Remarks
 
-This function assigns `dcm = A3 * A2 * A1` in which `Ai` is the DCM related with the _i_-th
+This function assigns `dcm = A3 * A2 * A1` in which `Ai` is the DCM related to the _i_-th
 rotation, `i ∈ [1,2,3]`. If the _i_-th rotation is not specified, then `Ai = I`.
 
 # Example

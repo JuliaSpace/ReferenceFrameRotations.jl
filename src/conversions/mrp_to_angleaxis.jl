@@ -9,7 +9,8 @@ export mrp_to_angleaxis
 """
     mrp_to_angleaxis(m::MRP) -> EulerAngleAxis
 
-Convert the MRP `m` to a Euler angle and axis representation (see [`EulerAngleAxis`](@ref)).
+Convert the MRP `m` to an Euler angle and axis representation (see
+[`EulerAngleAxis`](@ref)).
 By convention, the Euler angle will be kept between `[0, π]` rad.
 
 # Examples

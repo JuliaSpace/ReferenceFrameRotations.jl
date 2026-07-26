@@ -30,7 +30,7 @@ values depends on the number of rotations as follows:
 
 # Remarks
 
-This function assigns `q = q1 * q2 * q3` in which `qi` is the quaternion related with the
+This function assigns `q = q1 * q2 * q3` in which `qi` is the quaternion related to the
 _i_-th rotation, `i ∈ [1,2,3]`. If the _i_-th rotation is not specified, then
 `qi = Quaternion(I)`.
 

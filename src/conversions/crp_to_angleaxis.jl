@@ -9,7 +9,8 @@ export crp_to_angleaxis
 """
     crp_to_angleaxis(c::CRP) -> EulerAngleAxis
 
-Convert the CRP `c` to a Euler angle and axis representation (see [`EulerAngleAxis`](@ref)).
+Convert the CRP `c` to an Euler angle and axis representation (see
+[`EulerAngleAxis`](@ref)).
 By convention, the Euler angle will be kept between `[0, π]` rad.
 
 # Examples

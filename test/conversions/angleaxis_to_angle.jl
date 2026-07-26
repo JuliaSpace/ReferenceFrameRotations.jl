@@ -1,4 +1,4 @@
-## Desription ##############################################################################
+## Description #############################################################################
 #
 # Tests related to conversion from Euler angle and axis to Euler angles.
 #
