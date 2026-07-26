@@ -108,7 +108,9 @@ end
 
 const ReverseCompositionRotation = Union{DCM, EulerAngleAxis, EulerAngles, CRP, MRP}
 
-function compose_rotation(Rs::Tuple{T, Vararg{T}}) where {T <: ReverseCompositionRotation}
+@inline function compose_rotation(
+    Rs::Tuple{T, Vararg{T}}
+) where {T <: ReverseCompositionRotation}
     R = last(Rs)
     for i in (lastindex(Rs) - 1):-1:firstindex(Rs)
         R = R * Rs[i]
@@ -116,7 +118,9 @@ function compose_rotation(Rs::Tuple{T, Vararg{T}}) where {T <: ReverseCompositio
     return R
 end
 
-function compose_rotation(Rs::AbstractVector{T}) where {T <: ReverseCompositionRotation}
+@inline function compose_rotation(
+    Rs::AbstractVector{T}
+) where {T <: ReverseCompositionRotation}
     isempty(Rs) && throw(ArgumentError("cannot compose an empty collection of rotations"))
     R = last(Rs)
     for i in (lastindex(Rs) - 1):-1:firstindex(Rs)
@@ -125,7 +129,7 @@ function compose_rotation(Rs::AbstractVector{T}) where {T <: ReverseCompositionR
     return R
 end
 
-function compose_rotation(qs::Tuple{T, Vararg{T}}) where {T <: Quaternion}
+@inline function compose_rotation(qs::Tuple{T, Vararg{T}}) where {T <: Quaternion}
     q = last(qs)
     for i in (lastindex(qs) - 1):-1:firstindex(qs)
         q = qs[i] * q
@@ -133,7 +137,7 @@ function compose_rotation(qs::Tuple{T, Vararg{T}}) where {T <: Quaternion}
     return q
 end
 
-function compose_rotation(qs::AbstractVector{T}) where {T <: Quaternion}
+@inline function compose_rotation(qs::AbstractVector{T}) where {T <: Quaternion}
     isempty(qs) && throw(ArgumentError("cannot compose an empty collection of rotations"))
     q = last(qs)
     for i in (lastindex(qs) - 1):-1:firstindex(qs)
