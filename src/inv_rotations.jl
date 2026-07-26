@@ -1,6 +1,6 @@
 ## Description #############################################################################
 #
-# Generic function to inverse rotations.
+# Generic function to invert rotations.
 #
 ############################################################################################
 
@@ -26,14 +26,14 @@ The output will have the same type as `R`.
 
 !!! note
 
-    If `R` is a DCM, than its transpose is computed instead of its inverse to reduce the
-    computational burden. The both are equal if the DCM has unit norm. This must be verified
+    If `R` is a DCM, then its transpose is computed instead of its inverse to reduce the
+    computational burden. The two are equal if the DCM is orthonormal. This must be verified
     by the user.
 
 !!! note
 
-    If `R` is a quaternion, than its conjugate is computed instead of its inverse to reduce
-    the computational burden. The both are equal if the quaternion has unit norm. This must
+    If `R` is a quaternion, then its conjugate is computed instead of its inverse to reduce
+    the computational burden. The two are equal if the quaternion has unit norm. This must
     be verified by the user.
 
 # Example

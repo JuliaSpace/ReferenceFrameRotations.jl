@@ -8,7 +8,7 @@ CurrentModule = ReferenceFrameRotations
 using ReferenceFrameRotations
 ```
 
-Quaternions are hypercomplex number with 4 dimensions that can be used to represent 3D
+Quaternions are four-dimensional hypercomplex numbers that can be used to represent 3D
 rotations. In this package, a quaternion ``\mathbf{q}`` is represented by
 
 ```math
@@ -38,7 +38,7 @@ There are several ways to create a quaternion.
 q = Quaternion(1.0, 0.0, 0.0, 0.0)
 ```
 
-- Provide the real and imaginary parts as separated numbers:
+- Provide the real and imaginary parts as separate values:
 
 ```@repl quaternions
 r = sqrt(2) / 2
@@ -90,7 +90,7 @@ q = zero(Quaternion{Float32})
 a = zero(q)
 ```
 
-- Create an multiplicative identity quaternion using the `one` function:
+- Create a multiplicative identity quaternion using the `one` function:
 
 ```@repl quaternions
 q = one(Quaternion)
@@ -125,7 +125,7 @@ a = one(q)
 !!! warning
 
     Since the type `Quaternion` is **immutable**, its components cannot be changed
-    individually after the creation. Hence, the following operation will lead to an error:
+    individually after creation. Hence, the following operation will lead to an error:
 
     ```julia
     q.q0 = 1.0  # This is not defined and will not work.
@@ -138,8 +138,8 @@ a = one(q)
     q = Quaternion(1.0, q.q1, q.q2, q.q3)
     ```
 
-    This can be annoying sometimes, but using an immutable type provided a huge performance
-    boost for the algorithm.
+    This can be annoying sometimes, but using an immutable type provides a significant
+    performance boost for the algorithm.
 
 ## Operations
 
@@ -292,8 +292,8 @@ q1 \ q2 * q1 / q2
 
 If a division operation (right-division or left-division) is performed between a vector
 ``\mathbf{v}`` and a quaternion, then the vector ``\mathbf{v}`` is converted to a quaternion
-real part 0, ``\mathbf{q}_v = 0 + \mathbf{v}``, and the division operation is performed as
-defined earlier.
+with real part 0, ``\mathbf{q}_v = 0 + \mathbf{v}``, and the division operation is performed
+as defined earlier.
 
 ```math
 \begin{aligned}
@@ -344,9 +344,9 @@ vect(q)  # Returns the vectorial / imaginary part of the quaternion.
 
 ### Converting reference frames using quaternions
 
-Given the reference frames **A** and **B**, let ``\mathbf{w}`` be a unitary vector in which
-a rotation about it of an angle ``\theta`` aligns the reference frame **A** with the
-reference frame **B** (in this case, ``\mathbf{w}`` is aligned with the Euler Axis and
+Given the reference frames **A** and **B**, let ``\mathbf{w}`` be a unit vector such that a
+rotation about it by an angle ``\theta`` aligns the reference frame **A** with the reference
+frame **B** (in this case, ``\mathbf{w}`` is aligned with the Euler axis and
 ``\theta`` is the Euler angle). Construct the following quaternion:
 
 ```math

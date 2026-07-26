@@ -22,7 +22,7 @@ The CRP is a 3-element parameterization of a rotation. In this package, it can b
 the stereographic parameter obtained from a quaternion by dividing the vector part by the
 real part. Hence, it is singular for rotations of ``180^\circ``.
 
-If a rotation is represented by the Euler angle ``\phi`` and the unitary Euler vector
+If a rotation is represented by the Euler angle ``\phi`` and the unit Euler vector
 ``\mathbf{e}``, then the corresponding CRP ``\mathbf{c}`` is defined by:
 
 ```math

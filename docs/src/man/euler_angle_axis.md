@@ -17,7 +17,7 @@ struct EulerAngleAxis{T}
 end
 ```
 
-in which `a` is the Euler Angle and `v` is a unitary vector aligned with the Euler axis.
+in which `a` is the Euler angle and `v` is a unit vector aligned with the Euler axis.
 
 The constructor for this structure is:
 
@@ -25,7 +25,7 @@ The constructor for this structure is:
 function EulerAngleAxis(a::T1, v::AbstractVector{T2}) where {T1,T2}
 ```
 
-in which a `EulerAngleAxis` with angle `a` [rad] and vector `v` will be created. Notice that
+in which an `EulerAngleAxis` with angle `a` [rad] and vector `v` will be created. Notice that
 the type of the returned structure will be selected according to the input types `T1` and
 `T2`. Furthermore, the vector `v` **will not** be normalized.
 
@@ -58,7 +58,7 @@ result will always be in the interval ``[0, \pi]`` rad.
 !!! warning
 
     This operation is only valid if the vector of the Euler angle and axis set
-    is unitary. The multiplication function does not verify this and does not
+    has unit norm. The multiplication function does not verify this and does not
     normalize the vector.
 
 ```@repl euler_angle_axis
@@ -72,7 +72,7 @@ ea2 * ea1
 ### Inversion
 
 The `inv` function applied to Euler angle and axis will return the inverse rotation. Hence,
-if the Euler angle is `a` and the Euler axis is aligned with the unitary vector `v`, then it
+if the Euler angle is `a` and the Euler axis is aligned with the unit vector `v`, then it
   will return `a` as the Euler angle and `-v` as the Euler axis. By convention, the Euler
   angle of the result will always be in the interval ``[0, \pi]`` rad.
 

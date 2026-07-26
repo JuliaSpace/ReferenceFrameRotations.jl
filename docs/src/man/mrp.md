@@ -22,7 +22,7 @@ The MRP is a 3-element parameterization of a rotation related to quaternions by 
 stereographic projection. Compared with CRP, it moves the singularity to ``360^\circ`` and
 therefore remains finite at ``180^\circ``.
 
-If a rotation is represented by the Euler angle ``\phi`` and the unitary Euler vector
+If a rotation is represented by the Euler angle ``\phi`` and the unit Euler vector
 ``\mathbf{e}``, then the corresponding MRP ``\mathbf{m}`` is defined by:
 
 ```math

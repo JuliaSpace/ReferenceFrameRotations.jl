@@ -20,11 +20,11 @@ in which `R` must be one of the supported rotation types.
 !!! note
 
     If `R` is a DCM, then the transpose matrix will be returned. Hence, the user must ensure
-    that the input matrix is ortho-normalized. Otherwise, the result will not be the inverse
+    that the input matrix is orthonormal. Otherwise, the result will not be the inverse
     matrix of the input.
 
     If `R` is a Quaternion, then the conjugate quaternion will be returned. Hence, the user
-    must ensure that the input quaternion is normalized (have unit norm). Otherwise, the
+    must ensure that the input quaternion is normalized (has unit norm). Otherwise, the
     result will not be the inverse quaternion of the input.
 
     For Euler angle and axis, Euler angles, CRP, and MRP, the type-specific `inv` method is

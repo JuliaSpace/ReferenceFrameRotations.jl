@@ -165,7 +165,7 @@ dcm_to_mrp(dcm)
 
 ## DCMs to Quaternions
 
-A DCM can be converted to quaternion using the following method:
+A DCM can be converted to a quaternion using the following method:
 
 ```julia
 function dcm_to_quat(dcm::DCM)
@@ -250,7 +250,7 @@ angleaxis_to_angle(angleaxis, :ZYX)
 
 ## Euler Angle and Axis to Quaternions
 
-An Euler angle and axis representation can be converted to quaternion using these two
+An Euler angle and axis representation can be converted to a quaternion using these two
 methods:
 
 ```julia
@@ -412,7 +412,7 @@ mrp_to_crp(m)
 
 ## MRPs to DCMs
 
-A MRP can be converted to DCM using the following method:
+An MRP can be converted to a DCM using the following method:
 
 ```julia
 function mrp_to_dcm(m::MRP)
@@ -426,7 +426,7 @@ mrp_to_dcm(m)
 
 ## MRPs to Euler Angle and Axis
 
-A MRP can be converted to Euler angle and axis using the following method:
+An MRP can be converted to an Euler angle and axis using the following method:
 
 ```julia
 function mrp_to_angleaxis(m::MRP)
@@ -440,7 +440,7 @@ mrp_to_angleaxis(m)
 
 ## MRPs to Euler Angles
 
-A MRP can be converted to Euler angles using the following method:
+An MRP can be converted to Euler angles using the following method:
 
 ```julia
 function mrp_to_angle(m::MRP, rot_seq::Symbol = :ZYX)
@@ -454,7 +454,7 @@ mrp_to_angle(m, :XYZ)
 
 ## MRPs to Quaternions
 
-A MRP can be converted to quaternions using the following method:
+An MRP can be converted to quaternions using the following method:
 
 ```julia
 function mrp_to_quat(m::MRP)
@@ -501,7 +501,7 @@ q = smallangle_to_quat(0.001, -0.002, +0.003)
 
 ## Quaternions to DCMs
 
-A quaternion can be converted to DCM using the following method:
+A quaternion can be converted to a DCM using the following method:
 
 ```julia
 function quat_to_dcm(q::Quaternion)
@@ -515,7 +515,7 @@ dcm = quat_to_dcm(q)
 
 ## Quaternions to Euler Angle and Axis
 
-A quaternion can be converted to Euler Angle and Axis representation using the following
+A quaternion can be converted to an Euler angle and axis representation using the following
 function:
 
 ```julia
@@ -534,14 +534,14 @@ quat_to_angleaxis(q)
 
 ## Quaternions to Euler Angles
 
-There is one method to convert quaternions to Euler Angles:
+There is one method to convert quaternions to Euler angles:
 
 ```julia
 function quat_to_angle(q::Quaternion, rot_seq=:ZYX)
 ```
 
 However, it first transforms the quaternion to DCM using `quat_to_dcm` and then transforms
-the DCM into the Euler Angles. Hence, the performance will be poor. The improvement of this
+the DCM into Euler angles. Hence, the performance will be poor. The improvement of this
 conversion will be addressed in a future version of **ReferenceFrameRotations.jl**.
 
 ```@repl conversions
@@ -584,7 +584,7 @@ convert(CRP, q)
 convert(MRP, q)
 ```
 
-If it is desired to convert to `EulerAngles`, then one should use the help function
+To convert to `EulerAngles`, use the helper function
 `EulerAngles(rot_seq)`, where `rot_seq` is a symbol specifying the rotation sequence. If
 `EulerAngles` is used, then it defaults to `:ZYX` rotation sequence:
 
