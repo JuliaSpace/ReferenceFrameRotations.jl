@@ -1,4 +1,4 @@
-## Desription ##############################################################################
+## Description #############################################################################
 #
 # Tests related to the general functions using Euler angle and axis.
 #
@@ -39,7 +39,7 @@ end
           Euler axis  : [0.57735, -0.57735, 0.57735]"""
     @test String(take!(io.io)) == expected
 
-    # Comapct printing.
+    # Compact printing.
     show(io, av)
     expected = """
         EulerAngleAxis{Float64}: θ = 1.0472 rad, v = [0.57735, -0.57735, 0.57735]"""
