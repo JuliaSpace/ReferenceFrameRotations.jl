@@ -106,9 +106,9 @@ end
 @inline compose_rotation(m::MRP) = m
 @inline compose_rotation(m::MRP, ms::MRP...) = compose_rotation(ms...) * m
 
-const _ReverseCompositionRotation = Union{DCM, EulerAngleAxis, EulerAngles, CRP, MRP}
+const ReverseCompositionRotation = Union{DCM, EulerAngleAxis, EulerAngles, CRP, MRP}
 
-function compose_rotation(Rs::Tuple{T, Vararg{T}}) where {T <: _ReverseCompositionRotation}
+function compose_rotation(Rs::Tuple{T, Vararg{T}}) where {T <: ReverseCompositionRotation}
     R = last(Rs)
     for i in (lastindex(Rs) - 1):-1:firstindex(Rs)
         R = R * Rs[i]
@@ -116,7 +116,7 @@ function compose_rotation(Rs::Tuple{T, Vararg{T}}) where {T <: _ReverseCompositi
     return R
 end
 
-function compose_rotation(Rs::AbstractVector{T}) where {T <: _ReverseCompositionRotation}
+function compose_rotation(Rs::AbstractVector{T}) where {T <: ReverseCompositionRotation}
     isempty(Rs) && throw(ArgumentError("cannot compose an empty collection of rotations"))
     R = last(Rs)
     for i in (lastindex(Rs) - 1):-1:firstindex(Rs)

@@ -45,7 +45,7 @@ end
 
 # == Conversion to Euler Angles ============================================================
 
-function Base.convert(::Type{<:_EulerAngleConversion{R}}, a) where {R}
+function Base.convert(::Type{<:EulerAngleConversion{R}}, a) where {R}
     return _convert_to_euler_angles(a, Val{R}())
 end
 

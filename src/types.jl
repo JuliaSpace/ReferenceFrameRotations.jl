@@ -105,15 +105,15 @@ function EulerAngles(a1::T1, a2::T2, a3::T3, rot_seq::Symbol = :ZYX) where {T1, 
 end
 
 """
-    struct _EulerAngleConversion{R}
+    struct EulerAngleConversion{R}
 
 This private structure is used only to enable the rotation conversion to Euler angles using
 the Julia API.
 """
-struct _EulerAngleConversion{R} end
+struct EulerAngleConversion{R} end
 
 function EulerAngles(rot_seq::Symbol)
-    return _EulerAngleConversion{rot_seq}
+    return EulerAngleConversion{rot_seq}
 end
 
 """
