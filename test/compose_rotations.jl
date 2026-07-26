@@ -145,6 +145,45 @@ end
     end
 end
 
+@testset "CRP collection singular intermediate" begin
+    singularity_message =
+        "The composition of these CRPs results in a specific " *
+        "singularity (180° rotation)."
+
+    for T in (Float32, Float64)
+        # A CRP for a 90° rotation about X is exactly [1, 0, 0]. Thus, the required
+        # tree `(c90 * c90) * c30` encounters a singular 180° intermediate. The
+        # alternate tree `c90 * (c90 * c30)` does not encounter that intermediate.
+        c30 = CRP(tan(T(π) / T(12)), zero(T), zero(T))
+        c90 = CRP(one(T), zero(T), zero(T))
+        rotations = (c30, c90, c90)
+
+        vararg_error = try
+            compose_rotation(rotations...)
+        catch error
+            error
+        end
+        tuple_error = try
+            compose_rotation(rotations)
+        catch error
+            error
+        end
+        vector_error = try
+            compose_rotation(collect(rotations))
+        catch error
+            error
+        end
+
+        @test vararg_error isa ArgumentError
+        @test tuple_error isa ArgumentError
+        @test vector_error isa ArgumentError
+        @test vararg_error.msg == singularity_message
+        @test tuple_error.msg == vararg_error.msg
+        @test vector_error.msg == vararg_error.msg
+        @test c90 * (c90 * c30) isa CRP{T}
+    end
+end
+
 # -- Operator ∘ ----------------------------------------------------------------------------
 
 @testset "Operator ∘" begin
