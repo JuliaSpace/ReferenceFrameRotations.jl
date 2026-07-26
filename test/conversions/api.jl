@@ -10,8 +10,6 @@
 
 @testset "Julia Conversion API: To DCM" begin
     for T in (Float32, Float64)
-        T = Float64
-
         # == Euler Angles ==================================================================
 
         ea = rand(EulerAngles{T})
@@ -51,6 +49,91 @@
         D_api = convert(DCM, m)
         @test D_api === D_exp
         @test eltype(D_api) === T
+    end
+end
+
+# -- Concrete conversion targets -----------------------------------------------------------
+
+@testset "Julia conversion API: Concrete targets" begin
+    representation_types = (DCM, EulerAngles, EulerAngleAxis, Quaternion, CRP, MRP)
+
+    for source_T in (Float32, Float64)
+        sources = (
+            rand(DCM{source_T}),
+            rand(EulerAngles{source_T}),
+            rand(EulerAngleAxis{source_T}),
+            rand(Quaternion{source_T}),
+            rand(CRP{source_T}),
+            rand(MRP{source_T}),
+        )
+
+        for source in sources, Representation in representation_types
+            result = @inferred convert(Representation, source)
+            @test eltype(result) === source_T
+        end
+    end
+
+    for source_T in (Float32, Float64), target_T in (Float32, Float64)
+        sources = (
+            rand(DCM{source_T}),
+            rand(EulerAngles{source_T}),
+            rand(EulerAngleAxis{source_T}),
+            rand(Quaternion{source_T}),
+            rand(CRP{source_T}),
+            rand(MRP{source_T}),
+        )
+
+        for source in sources, Representation in representation_types
+            result = @inferred convert(Representation{target_T}, source)
+            @test typeof(result) === Representation{target_T}
+        end
+    end
+
+    ea = EulerAngles(1.0, 2.0, 3.0, :XZY)
+    ea32 = @inferred convert(EulerAngles{Float32}, ea)
+    @test ea32 === EulerAngles{Float32}(1, 2, 3, :XZY)
+    @test ea32.rot_seq === :XZY
+    @test convert(EulerAngles{Float32}, Quaternion(1.0, 0, 0, 0)).rot_seq === :ZYX
+
+    integer_sources = (
+        DCM{Int}(1, 0, 0, 0, 1, 0, 0, 0, 1),
+        EulerAngles(0, 0, 0, :XYZ),
+        EulerAngleAxis(0, [1, 0, 0]),
+        Quaternion(1, 0, 0, 0),
+        CRP(0, 0, 0),
+        MRP(0, 0, 0),
+    )
+    for (Representation, source) in zip(representation_types, integer_sources)
+        @test (@inferred convert(Representation{Int}, source)) === source
+    end
+    @test convert(DCM{Int}, Quaternion(1, 0, 0, 0)) === integer_sources[1]
+
+    nonintegral = EulerAngles(0.2, 0.3, 0.4)
+    for Representation in representation_types
+        @test_throws InexactError convert(Representation{Int}, nonintegral)
+    end
+
+    m = MRP(0.1, -0.2, 0.3)
+    c = CRP(0.1, -0.2, 0.3)
+    @test convert(CRP, m) === mrp_to_crp(m)
+    @test convert(MRP, c) === crp_to_mrp(c)
+end
+
+# -- Mixed-representation composition ------------------------------------------------------
+
+@testset "Julia conversion API: Mixed composition result types" begin
+    representations = (
+        rand(DCM{Float32}),
+        rand(EulerAngles{Float32}),
+        rand(EulerAngleAxis{Float32}),
+        rand(Quaternion{Float32}),
+        rand(CRP{Float32}),
+        rand(MRP{Float32}),
+    )
+
+    for outer in representations, inner in reverse(representations)
+        result = @inferred outer ∘ inner
+        @test typeof(result) === typeof(outer)
     end
 end
 
