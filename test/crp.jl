@@ -1,4 +1,4 @@
-## Desription ##############################################################################
+## Description #############################################################################
 #
 # Tests related to the Classical Rodrigues Parameters (CRP).
 #
@@ -103,6 +103,38 @@ end
     # Verify compose_rotation.
     c_comp = compose_rotation(c1, c2)
     @test isapprox(c_comp, c3; atol = 1e-12)
+
+    msg = "The composition of these CRPs results in a specific singularity (180° rotation)."
+    err = try
+        CRP(1.0, 0.0, 0.0) * CRP(1.0, 0.0, 0.0)
+    catch e
+        e
+    end
+    @test err isa ArgumentError
+    @test err.msg == msg
+
+    for T in (Float32, Float64, BigFloat)
+        exact = CRP(one(T), zero(T), zero(T))
+        @test_throws ArgumentError exact * exact
+
+        inside = T(4) * eps(T)
+        outside = T(16) * eps(T)
+        @test_throws ArgumentError exact * CRP(one(T) + inside, zero(T), zero(T))
+        @test exact * CRP(one(T) + outside, zero(T), zero(T)) isa CRP{T}
+    end
+
+    @test_throws ArgumentError CRP(1 // 1, 0, 0) * CRP(1 // 1, 0, 0)
+    @test CRP(1 // 1, 0, 0) * CRP(1 // 1 + 1 // 10^16, 0, 0) isa CRP{Rational{Int}}
+
+    mixed32 = CRP(1.0f0, 0.0f0, 0.0f0)
+    @test_throws ArgumentError mixed32 * CRP(1.0 + 4eps(Float64), 0.0, 0.0)
+    @test mixed32 * CRP(1.0 + 16eps(Float64), 0.0, 0.0) isa CRP{Float64}
+
+    # The tolerance must account for cancellation among products, not only their sum.
+    A = 1.0e8
+    cancellation_left = CRP(A, A, 1.0)
+    cancellation_right = CRP(1.0, -1.0, 1.0 + 1.0e-8)
+    @test_throws ArgumentError cancellation_left * cancellation_right
 end
 
 # -- Operators: +, -, *, / ----------------------------------------------------------------

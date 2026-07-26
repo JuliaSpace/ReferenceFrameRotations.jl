@@ -249,16 +249,26 @@ Compute the composition of two CRPs `c1` and `c2`.
 which means that `C3` acts as `C1` followed by `C2`.
 """
 function Base.:*(c1::CRP, c2::CRP)
-    norm_c1_c2 = c1.q1 * c2.q1 + c1.q2 * c2.q2 + c1.q3 * c2.q3
+    T = promote_type(eltype(c1), eltype(c2))
+    p1 = c1.q1 * c2.q1
+    p2 = c1.q2 * c2.q2
+    p3 = c1.q3 * c2.q3
+    norm_c1_c2 = p1 + p2 + p3
+    denom = one(T) - norm_c1_c2
 
-    # TODO: Return a specific error?
-    isapprox(norm_c1_c2, 1; atol = 1e-15) && throw(
+    singular = if T <: AbstractFloat
+        scale = max(one(T), abs(p1) + abs(p2) + abs(p3))
+        tol = T(8) * eps(T) * scale
+        iszero(denom) || abs(denom) <= tol
+    else
+        iszero(denom)
+    end
+
+    singular && throw(
         ArgumentError(
             "The composition of these CRPs results in a specific singularity (180° rotation).",
         ),
     )
-
-    denom = 1 - norm_c1_c2
 
     return CRP(
         (c1.q1 + c2.q1 - c1.q2 * c2.q3 + c1.q3 * c2.q2) / denom,
