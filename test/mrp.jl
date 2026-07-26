@@ -198,7 +198,10 @@ end
     dcm_shadow = mrp_to_dcm(m_shadow)
     @test maximum(abs.(dcm - dcm_shadow)) < 1e-12
 
-    @test_throws DomainError shadow_rotation(MRP(0.0, 0.0, 0.0))
+    for T in (Int, Rational{Int}, Float32, Float64, BigFloat)
+        z = zero(T)
+        @test_throws DomainError shadow_rotation(MRP(z, z, z))
+    end
 
     unit_shadow = shadow_rotation(MRP(1.0f0, 0.0f0, 0.0f0))
     @test unit_shadow === MRP(-1.0f0, -0.0f0, -0.0f0)
