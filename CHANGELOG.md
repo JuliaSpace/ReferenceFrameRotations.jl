@@ -1,6 +1,36 @@
 ReferenceFrameRotations.jl Changelog
 ====================================
 
+Version 3.4.0
+-------------
+
+- ![Feature][badge-feature] Add allocation-free tuple and vector overloads to
+  `compose_rotation` for long homogeneous rotation chains.
+- ![Enhancement][badge-enhancement] Reduce Euler-to-CRP/MRP and CRP/MRP conversion work and
+  eliminate dynamic-vector allocation in angle-axis-to-quaternion conversion.
+- ![Enhancement][badge-enhancement] Replace the full-Jacobian Zygote rule for DCM
+  orthonormalization with an analytic, allocation-free static-vector pullback.
+- ![Bugfix][badge-bugfix] Honor concrete scalar target types in the conversion API and
+  preserve the documented first-operand type in mixed-representation composition.
+- ![Bugfix][badge-bugfix] Stabilize DCM and quaternion angle conversions for integer,
+  rational, floating-point, and `BigFloat` inputs.
+- ![Bugfix][badge-bugfix] Canonicalize the quaternion scalar component to positive zero for
+  exact half-turn DCMs.
+- ![Bugfix][badge-bugfix] Validate that quaternion vector constructors receive exactly the
+  required number of components.
+- ![Bugfix][badge-bugfix] Define zero-MRP shadow conversion as a `DomainError` and eliminate
+  its redundant square root for nonzero inputs.
+- ![Bugfix][badge-bugfix] Scale CRP composition singularity checks according to scalar
+  precision and product magnitude.
+- ![Bugfix][badge-bugfix] Stabilize Euler angle-axis composition near identity rotations and
+  across mixed scalar types.
+- ![Bugfix][badge-bugfix] Preserve Zygote gradients through same- and cross-precision DCM
+  conversions.
+- ![Info][badge-info] Clarify inverse-rotation normalization requirements and rotation
+  terminology throughout the documentation.
+- ![Info][badge-info] Clarify that random Euler angles sample coordinates rather than
+  rotations uniformly over SO(3).
+
 Version 3.3.0
 -------------
 
