@@ -1,4 +1,4 @@
-## Desription ##############################################################################
+## Description #############################################################################
 #
 # Tests related to the generation of random rotation representations.
 #
@@ -6,7 +6,7 @@
 
 using StableRNGs
 
-# Julia random number generator can change its output with the same seed accross minor
+# Julia's random number generator can change its output with the same seed across minor
 # versions. Hence, we need to use StableRNGs.jl to ensure that the tests are consistent. For
 # more information, see:
 #
