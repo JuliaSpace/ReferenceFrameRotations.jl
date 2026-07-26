@@ -1,10 +1,14 @@
 [deps]
 BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
+ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
 ReferenceFrameRotations = "74f56ac7-18b3-5285-802d-d4bd4f104033"
+Zygote = "e88e6eb3-aa80-5325-afca-941959d7151f"
 
 [compat]
 BenchmarkTools = "1"
+ForwardDiff = "0.10, 1"
 ReferenceFrameRotations = "3.2"
+Zygote = "0.6, 0.7"
 julia = "1.10"
 
 [sources]
