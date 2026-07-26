@@ -44,8 +44,12 @@ Quaternion{Float64}:
     # Keep `q0` positive.
     s = (cθo2 < 0) ? -1 : +1
 
-    # Create the quaternion.
-    return Quaternion(s * cθo2, s * sθo2 * T.(v))
+    # Extract and convert each component directly to avoid materializing the vector part.
+    q1 = s * sθo2 * T(v[1])
+    q2 = s * sθo2 * T(v[2])
+    q3 = s * sθo2 * T(v[3])
+
+    return Quaternion(s * cθo2, q1, q2, q3)
 end
 
 @inline angleaxis_to_quat(av::EulerAngleAxis) = angleaxis_to_quat(av.a, av.v)

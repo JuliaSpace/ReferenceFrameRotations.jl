@@ -20,7 +20,7 @@ The rotation sequence is defined by a `:Symbol`. The possible values are: `:XYX`
 value is specified, it defaults to `:ZYX`.
 """
 @inline function angle_to_mrp(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
-    return dcm_to_mrp(angle_to_dcm(θ₁, θ₂, θ₃, rot_seq))
+    return quat_to_mrp(angle_to_quat(θ₁, θ₂, θ₃, rot_seq))
 end
 
 @inline angle_to_mrp(Θ::EulerAngles) = angle_to_mrp(Θ.a1, Θ.a2, Θ.a3, Θ.rot_seq)
