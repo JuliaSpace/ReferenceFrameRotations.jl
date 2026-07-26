@@ -14,15 +14,20 @@ Convert the `dcm` to an Euler angle and axis representation.
 By convention, the returned Euler angle will always be in the interval [0, π].
 """
 function dcm_to_angleaxis(dcm::DCM{T}) where {T <: Number}
-    cθ = (dcm[1, 1] + dcm[2, 2] + dcm[3, 3] - 1) / 2
+    Tf = float(T)
+    dcm = DCM{Tf}(Tuple(dcm))
+    z = zero(Tf)
+    o = one(Tf)
+    two = Tf(2)
+    cθ = (dcm[1, 1] + dcm[2, 2] + dcm[3, 3] - o) / two
 
     # Check the undefined case.
-    if cθ ≥ 1 - eps()
-        return EulerAngleAxis(T(0), SVector{3, T}(0, 0, 0))
-    elseif cθ <= -1 + eps()
-        v₁ = sqrt((1 + dcm[1, 1]) / 2)
-        v₂ = sqrt((1 + dcm[2, 2]) / 2)
-        v₃ = sqrt((1 + dcm[3, 3]) / 2)
+    if cθ ≥ o - eps(Tf)
+        return EulerAngleAxis(z, SVector{3, Tf}(z, z, z))
+    elseif cθ <= -o + eps(Tf)
+        v₁ = sqrt(max(z, (o + dcm[1, 1]) / two))
+        v₂ = sqrt(max(z, (o + dcm[2, 2]) / two))
+        v₃ = sqrt(max(z, (o + dcm[3, 3]) / two))
 
         # Compute the sign of the vector components.
         if dcm[1, 2] ≥ 0
@@ -42,14 +47,15 @@ function dcm_to_angleaxis(dcm::DCM{T}) where {T <: Number}
             end
         end
 
-        return EulerAngleAxis(T(π), [s₁ * v₁, s₂ * v₂, s₃ * v₃])
+        return EulerAngleAxis(Tf(π), SVector{3, Tf}(s₁ * v₁, s₂ * v₂, s₃ * v₃))
     else
-        sθ2 = 2sqrt(1 - cθ * cθ)
+        cθc = clamp(cθ, -o, o)
+        sθ2 = two * sqrt(max(z, o - cθc * cθc))
 
         v₁ = (dcm[2, 3] - dcm[3, 2]) / sθ2
         v₂ = (dcm[3, 1] - dcm[1, 3]) / sθ2
         v₃ = (dcm[1, 2] - dcm[2, 1]) / sθ2
 
-        return EulerAngleAxis(acos(cθ), [v₁, v₂, v₃])
+        return EulerAngleAxis(acos(cθc), SVector{3, Tf}(v₁, v₂, v₃))
     end
 end

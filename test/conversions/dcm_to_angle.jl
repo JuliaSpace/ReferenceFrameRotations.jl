@@ -165,3 +165,32 @@ end
         @test isfinite(ReferenceFrameRotations._mod_acos(-one(T) - eps(T)))
     end
 end
+
+@testset "DCM => Euler angles (generic numeric stability)" begin
+    for T in (Int, Rational{Int}, Float32, Float64, BigFloat)
+        Tf = float(T)
+        I₃ = DCM(T[1 0 0; 0 1 0; 0 0 1])
+        ea = @inferred dcm_to_angle(I₃, :ZYX)
+        @test ea isa EulerAngles{Tf}
+        @test (ea.a1, ea.a2, ea.a3) == (zero(Tf), zero(Tf), zero(Tf))
+
+        # A 120° cyclic permutation is exactly representable by every numeric family.
+        D = DCM(T[0 1 0; 0 0 1; 1 0 0])
+        ea = @inferred dcm_to_angle(D, :ZYX)
+        @test ea isa EulerAngles{Tf}
+        @test angle_to_dcm(ea) ≈ D atol = 20sqrt(eps(Tf))
+
+        Dπ = DCM(T[1 0 0; 0 -1 0; 0 0 -1])
+        eaπ = @inferred dcm_to_angle(Dπ, :XYX)
+        @test eaπ isa EulerAngles{Tf}
+        @test angle_to_dcm(eaπ) ≈ Dπ atol = 20sqrt(eps(Tf))
+    end
+
+    for T in (Float32, Float64, BigFloat)
+        x = one(T) + eps(T)
+        D = DCM(T[1 0 -x; 0 1 0; 0 0 1])
+        ea = @inferred dcm_to_angle(D, :ZYX)
+        @test ea isa EulerAngles{T}
+        @test isfinite(ea.a2)
+    end
+end

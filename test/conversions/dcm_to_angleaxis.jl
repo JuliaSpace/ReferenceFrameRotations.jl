@@ -43,6 +43,38 @@
     end
 end
 
+
+@testset "DCM => Euler Angle and Axis (generic numeric stability)" begin
+    for T in (Int, Rational{Int}, Float32, Float64, BigFloat)
+        Tf = float(T)
+        I₃ = DCM(T[1 0 0; 0 1 0; 0 0 1])
+        av = @inferred dcm_to_angleaxis(I₃)
+        @test av isa EulerAngleAxis{Tf}
+        @test av.a == zero(Tf)
+
+        D = DCM(T[0 1 0; 0 0 1; 1 0 0])
+        av = @inferred dcm_to_angleaxis(D)
+        @test av isa EulerAngleAxis{Tf}
+        @test angleaxis_to_dcm(av) ≈ D atol = 20sqrt(eps(Tf))
+
+        Dπ = DCM(T[1 0 0; 0 -1 0; 0 0 -1])
+        avπ = @inferred dcm_to_angleaxis(Dπ)
+        @test avπ isa EulerAngleAxis{Tf}
+        @test avπ.a ≈ Tf(π)
+        @test avπ.v == SVector{3, Tf}(one(Tf), zero(Tf), zero(Tf))
+    end
+
+    for T in (Float32, Float64, BigFloat)
+        # Roundoff outside the trace bound must not reach sqrt or acos unchecked.
+        x = one(T) + eps(T)
+        D = DCM(T[x 0 0; 0 -1 0; 0 0 -1])
+        av = @inferred dcm_to_angleaxis(D)
+        @test av isa EulerAngleAxis{T}
+        @test isfinite(av.a)
+        @test all(isfinite, av.v)
+    end
+end
+
 @testset "DCM => Euler Angle and Axis (Special Cases)" begin
     for T in (Float32, Float64)
         D = DCM(T(1) * I)

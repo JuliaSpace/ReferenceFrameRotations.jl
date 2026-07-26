@@ -36,8 +36,8 @@
             # Test quaternion type.
             @test eltype(q) === T
 
-            # The real part must always be positive.
-            @test q.q0 > 0
+            # The real part is nonnegative; it is zero for exact half-turns.
+            @test q.q0 >= 0
 
             # The quaternion must be unitary.
             @test √(q.q0^2 + q.q1^2 + q.q2^2 + q.q3^2) ≈ 1
@@ -51,5 +51,38 @@
             @test vrd ≈ vrq
             @test eltype(vrd) === eltype(vrq) === T
         end
+    end
+end
+
+
+@testset "DCM => Quaternion (generic numeric stability and half-turn convention)" begin
+    for T in (Int, Rational{Int}, Float32, Float64, BigFloat)
+        Tf = float(T)
+        I₃ = DCM(T[1 0 0; 0 1 0; 0 0 1])
+        qI = @inferred dcm_to_quat(I₃)
+        @test qI isa Quaternion{Tf}
+        @test (qI.q0, qI.q1, qI.q2, qI.q3) ==
+              (one(Tf), zero(Tf), zero(Tf), zero(Tf))
+
+        D = DCM(T[0 1 0; 0 0 1; 1 0 0])
+        q = @inferred dcm_to_quat(D)
+        @test q isa Quaternion{Tf}
+        @test quat_to_dcm(q) ≈ D atol = 20sqrt(eps(Tf))
+        @test q.q0 >= zero(Tf)
+
+        Dπ = DCM(T[1 0 0; 0 -1 0; 0 0 -1])
+        qπ = @inferred dcm_to_quat(Dπ)
+        @test qπ isa Quaternion{Tf}
+        @test qπ.q0 == zero(Tf)
+        @test !signbit(qπ.q0)
+        @test (qπ.q1, qπ.q2, qπ.q3) == (one(Tf), zero(Tf), zero(Tf))
+    end
+
+    for T in (Float32, Float64, BigFloat)
+        # A one-ULP negative radicand excursion is guarded rather than sent to sqrt.
+        D = DCM(T[-1 - eps(T) 0 0; 0 1 0; 0 0 -1])
+        q = @inferred dcm_to_quat(D)
+        @test q isa Quaternion{T}
+        @test all(isfinite, (q.q0, q.q1, q.q2, q.q3))
     end
 end
