@@ -32,8 +32,7 @@ end
         near_boundary = angle_to_mrp(π + 1e-8, 0.0, 0.0, rot_seq)
 
         @test at_boundary ≈ quat_to_mrp(angle_to_quat(π, 0.0, 0.0, rot_seq))
-        @test near_boundary ≈
-              quat_to_mrp(angle_to_quat(π + 1e-8, 0.0, 0.0, rot_seq))
+        @test near_boundary ≈ quat_to_mrp(angle_to_quat(π + 1e-8, 0.0, 0.0, rot_seq))
         @test all(isfinite, (near_boundary.q1, near_boundary.q2, near_boundary.q3))
     end
 end

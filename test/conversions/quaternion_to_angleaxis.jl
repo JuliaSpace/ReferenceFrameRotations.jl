@@ -24,7 +24,6 @@
     end
 end
 
-
 @testset "Quaternion => Euler Angle and Axis (generic numeric stability)" begin
     for T in (Int, Rational{Int}, Float32, Float64, BigFloat)
         Tf = float(T)

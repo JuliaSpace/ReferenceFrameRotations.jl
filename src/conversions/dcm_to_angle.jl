@@ -70,10 +70,7 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol = :ZYX) where {T <: Number}
             )
         else
             return EulerAngles{Tf}(
-                _mod_atan(-dcm[2, 1], +dcm[2, 2]),
-                _mod_asin(-dcm[1, 3]),
-                zero(Tf),
-                rot_seq,
+                _mod_atan(-dcm[2, 1], +dcm[2, 2]), _mod_asin(-dcm[1, 3]), zero(Tf), rot_seq
             )
         end
     elseif rot_seq == :XYX
@@ -87,10 +84,7 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol = :ZYX) where {T <: Number}
             )
         else
             return EulerAngles{Tf}(
-                _mod_atan(+dcm[2, 3], +dcm[2, 2]),
-                _mod_acos(dcm[1, 1]),
-                zero(Tf),
-                rot_seq,
+                _mod_atan(+dcm[2, 3], +dcm[2, 2]), _mod_acos(dcm[1, 1]), zero(Tf), rot_seq
             )
         end
     elseif rot_seq == :XYZ
@@ -104,10 +98,7 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol = :ZYX) where {T <: Number}
             )
         else
             return EulerAngles{Tf}(
-                _mod_atan(+dcm[2, 3], +dcm[2, 2]),
-                _mod_asin(+dcm[3, 1]),
-                zero(Tf),
-                rot_seq,
+                _mod_atan(+dcm[2, 3], +dcm[2, 2]), _mod_asin(+dcm[3, 1]), zero(Tf), rot_seq
             )
         end
     elseif rot_seq == :XZX
@@ -121,10 +112,7 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol = :ZYX) where {T <: Number}
             )
         else
             return EulerAngles{Tf}(
-                _mod_atan(-dcm[3, 2], +dcm[3, 3]),
-                _mod_acos(dcm[1, 1]),
-                zero(Tf),
-                rot_seq,
+                _mod_atan(-dcm[3, 2], +dcm[3, 3]), _mod_acos(dcm[1, 1]), zero(Tf), rot_seq
             )
         end
     elseif rot_seq == :XZY
@@ -138,10 +126,7 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol = :ZYX) where {T <: Number}
             )
         else
             return EulerAngles{Tf}(
-                _mod_atan(-dcm[3, 2], +dcm[3, 3]),
-                _mod_asin(-dcm[2, 1]),
-                zero(Tf),
-                rot_seq,
+                _mod_atan(-dcm[3, 2], +dcm[3, 3]), _mod_asin(-dcm[2, 1]), zero(Tf), rot_seq
             )
         end
     elseif rot_seq == :YXY
@@ -155,10 +140,7 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol = :ZYX) where {T <: Number}
             )
         else
             return EulerAngles{Tf}(
-                _mod_atan(-dcm[1, 3], +dcm[1, 1]),
-                _mod_acos(dcm[2, 2]),
-                zero(Tf),
-                rot_seq,
+                _mod_atan(-dcm[1, 3], +dcm[1, 1]), _mod_acos(dcm[2, 2]), zero(Tf), rot_seq
             )
         end
     elseif rot_seq == :YXZ
@@ -171,10 +153,7 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol = :ZYX) where {T <: Number}
             )
         else
             return EulerAngles{Tf}(
-                _mod_atan(-dcm[1, 3], +dcm[1, 1]),
-                _mod_asin(-dcm[3, 2]),
-                zero(Tf),
-                rot_seq,
+                _mod_atan(-dcm[1, 3], +dcm[1, 1]), _mod_asin(-dcm[3, 2]), zero(Tf), rot_seq
             )
         end
     elseif rot_seq == :YZX
@@ -188,10 +167,7 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol = :ZYX) where {T <: Number}
             )
         else
             return EulerAngles{Tf}(
-                _mod_atan(+dcm[3, 1], +dcm[3, 3]),
-                _mod_asin(+dcm[1, 2]),
-                zero(Tf),
-                rot_seq,
+                _mod_atan(+dcm[3, 1], +dcm[3, 3]), _mod_asin(+dcm[1, 2]), zero(Tf), rot_seq
             )
         end
     elseif rot_seq == :YZY
@@ -205,10 +181,7 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol = :ZYX) where {T <: Number}
             )
         else
             return EulerAngles{Tf}(
-                _mod_atan(dcm[3, 1], dcm[3, 3]),
-                _mod_acos(dcm[2, 2]),
-                zero(Tf),
-                rot_seq,
+                _mod_atan(dcm[3, 1], dcm[3, 3]), _mod_acos(dcm[2, 2]), zero(Tf), rot_seq
             )
         end
     elseif rot_seq == :ZXY
@@ -222,10 +195,7 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol = :ZYX) where {T <: Number}
             )
         else
             return EulerAngles{Tf}(
-                _mod_atan(+dcm[1, 2], +dcm[1, 1]),
-                _mod_asin(+dcm[2, 3]),
-                zero(Tf),
-                rot_seq,
+                _mod_atan(+dcm[1, 2], +dcm[1, 1]), _mod_asin(+dcm[2, 3]), zero(Tf), rot_seq
             )
         end
     elseif rot_seq == :ZXZ
@@ -239,10 +209,7 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol = :ZYX) where {T <: Number}
             )
         else
             return EulerAngles{Tf}(
-                _mod_atan(dcm[1, 2], dcm[1, 1]),
-                _mod_acos(dcm[3, 3]),
-                zero(Tf),
-                rot_seq,
+                _mod_atan(dcm[1, 2], dcm[1, 1]), _mod_acos(dcm[3, 3]), zero(Tf), rot_seq
             )
         end
     elseif rot_seq == :ZYZ
@@ -256,10 +223,7 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol = :ZYX) where {T <: Number}
             )
         else
             return EulerAngles{Tf}(
-                _mod_atan(-dcm[2, 1], dcm[2, 2]),
-                _mod_acos(dcm[3, 3]),
-                zero(Tf),
-                rot_seq,
+                _mod_atan(-dcm[2, 1], dcm[2, 2]), _mod_acos(dcm[3, 3]), zero(Tf), rot_seq
             )
         end
     else
