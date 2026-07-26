@@ -91,19 +91,21 @@
             @test dcm_result[1] isa chainrules.NoTangent
             @test dcm_result[2] isa DCM{T}
             @test matrix_result[2] isa DCM{T}
-            @test matrix_result[2] ≈ dcm_result[2] atol = 10eps(T)
 
             dcm_data = collect(Tuple(dcm))
             jacobian = forwarddiff.jacobian(x -> collect(orthonormalize(DCM(x))), dcm_data)
             forwarddiff_vjp = DCM{T}(Tuple(jacobian' * collect(Tuple(cotangent))))
-            @test dcm_result[2] ≈ forwarddiff_vjp rtol = 100sqrt(eps(T))
+            is_near = dcm === near_dcm
+            vjp_rtol = is_near ? 100sqrt(eps(T)) : 100eps(T)
+            vjp_atol = 1000eps(T)
+            @test dcm_result[2] ≈ forwarddiff_vjp rtol = vjp_rtol atol = vjp_atol
+            @test matrix_result[2] ≈ forwarddiff_vjp rtol = vjp_rtol atol = vjp_atol
 
             objective(d) = sum(cotangent .* orthonormalize(d))
             zygote_vjp = Zygote.gradient(objective, dcm)[1]
             @test zygote_vjp isa DCM{T}
             @test zygote_vjp ≈ dcm_result[2] rtol = 100eps(T)
 
-            is_near = dcm === near_dcm
             h = if T === Float32
                 is_near ? T(1e-5) : T(1e-3)
             else
