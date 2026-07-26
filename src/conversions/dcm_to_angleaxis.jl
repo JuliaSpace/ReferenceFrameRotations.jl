@@ -15,7 +15,7 @@ By convention, the returned Euler angle will always be in the interval [0, π].
 """
 function dcm_to_angleaxis(dcm::DCM{T}) where {T <: Number}
     Tf = float(T)
-    dcm = DCM{Tf}(Tuple(dcm))
+    dcm = _float_dcm(dcm)
     z = zero(Tf)
     o = one(Tf)
     two = Tf(2)

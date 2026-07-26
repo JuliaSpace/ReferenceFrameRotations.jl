@@ -89,6 +89,11 @@ end
         end
     end
 
+    for T in (Int, Rational{Int}, Float32, Float64, BigFloat)
+        D = DCM{T}(1, 0, 0, 0, 1, 0, 0, 0, 1)
+        @test (@inferred convert(DCM{T}, D)) === D
+    end
+
     ea = EulerAngles(1.0, 2.0, 3.0, :XZY)
     ea32 = @inferred convert(EulerAngles{Float32}, ea)
     @test ea32 === EulerAngles{Float32}(1, 2, 3, :XZY)

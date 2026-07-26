@@ -57,7 +57,7 @@ EulerAngles{Float64}:
 """
 function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol = :ZYX) where {T <: Number}
     Tf = float(T)
-    dcm = DCM{Tf}(Tuple(dcm))
+    dcm = _float_dcm(dcm)
 
     if rot_seq == :ZYX
         # Check for singularities.

@@ -8,18 +8,26 @@
 # the representation using its natural scalar type, then cast its components.  Thus,
 # requesting an integer representation has the usual `InexactError` semantics.
 
-@inline _cast_rotation(::Type{DCM{T}}, D::DCM) where {T} = DCM{T}(D.data)
+@inline _cast_rotation(::Type{DCM{T}}, D::DCM{T}) where {T} = D
+@inline _cast_rotation(::Type{DCM{T}}, D::DCM) where {T} = _cast_dcm(DCM{T}, D)
+@inline _cast_dcm(::Type{DCM{T}}, D::DCM) where {T} = DCM{T}(map(T, D.data))
 @inline function _cast_rotation(::Type{EulerAngles{T}}, a::EulerAngles) where {T}
     return EulerAngles{T}(T(a.a1), T(a.a2), T(a.a3), a.rot_seq)
 end
 @inline function _cast_rotation(::Type{EulerAngleAxis{T}}, a::EulerAngleAxis) where {T}
-    return EulerAngleAxis(T(a.a), SVector{3,T}(a.v))
+    return EulerAngleAxis(T(a.a), SVector{3, T}(a.v))
 end
 @inline function _cast_rotation(::Type{Quaternion{T}}, q::Quaternion) where {T}
     return convert(Quaternion{T}, q)
 end
 @inline _cast_rotation(::Type{CRP{T}}, c::CRP) where {T} = convert(CRP{T}, c)
 @inline _cast_rotation(::Type{MRP{T}}, m::MRP) where {T} = convert(MRP{T}, m)
+
+# Preserve the original DCM when its elements are already floating point.  Besides avoiding
+# an unnecessary reconstruction, this keeps the input visible to source-to-source AD tools.
+@inline _float_dcm(dcm::DCM{T}) where {T} = _float_dcm(float(T), dcm)
+@inline _float_dcm(::Type{T}, dcm::DCM{T}) where {T} = dcm
+@inline _float_dcm(::Type{T}, dcm::DCM) where {T} = DCM{T}(Tuple(dcm))
 
 # == Conversions to DCM ====================================================================
 
@@ -67,8 +75,9 @@ end
 @inline _convert_to_euler_angles_default(a::MRP) = mrp_to_angle(a, :ZYX)
 
 Base.convert(::Type{EulerAngles}, a::EulerAngles) = a
-Base.convert(::Type{EulerAngles}, a::ReferenceFrameRotation) =
-    _convert_to_euler_angles_default(a)
+Base.convert(::Type{EulerAngles}, a::ReferenceFrameRotation) = _convert_to_euler_angles_default(
+    a
+)
 function Base.convert(::Type{EulerAngles{T}}, a::EulerAngles) where {T}
     return _cast_rotation(EulerAngles{T}, a)
 end

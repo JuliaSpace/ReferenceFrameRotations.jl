@@ -39,7 +39,7 @@ Quaternion{Float64}:
 """
 function dcm_to_quat(dcm::DCM{T}) where {T <: Number}
     Tf = float(T)
-    dcm = DCM{Tf}(Tuple(dcm))
+    dcm = _float_dcm(dcm)
     z = zero(Tf)
     o = one(Tf)
     two = Tf(2)
@@ -67,7 +67,7 @@ function dcm_to_quat(dcm::DCM{T}) where {T <: Number}
         s = (q0 < z) ? -o : o
 
         return Quaternion{Tf}(
-            s * q0,
+            abs(q0),
             s * f / four,
             s * (dcm[1, 2] + dcm[2, 1]) / f,
             s * (dcm[3, 1] + dcm[1, 3]) / f,
@@ -83,7 +83,7 @@ function dcm_to_quat(dcm::DCM{T}) where {T <: Number}
         s = (q0 < z) ? -o : o
 
         return Quaternion{Tf}(
-            s * q0,
+            abs(q0),
             s * (dcm[1, 2] + dcm[2, 1]) / f,
             s * f / four,
             s * (dcm[3, 2] + dcm[2, 3]) / f,
@@ -99,7 +99,7 @@ function dcm_to_quat(dcm::DCM{T}) where {T <: Number}
         s = (q0 < z) ? -o : o
 
         return Quaternion{Tf}(
-            s * q0,
+            abs(q0),
             s * (dcm[1, 3] + dcm[3, 1]) / f,
             s * (dcm[2, 3] + dcm[3, 2]) / f,
             s * f / four,

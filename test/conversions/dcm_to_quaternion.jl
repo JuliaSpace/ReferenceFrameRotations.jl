@@ -54,15 +54,13 @@
     end
 end
 
-
 @testset "DCM => Quaternion (generic numeric stability and half-turn convention)" begin
     for T in (Int, Rational{Int}, Float32, Float64, BigFloat)
         Tf = float(T)
         I₃ = DCM(T[1 0 0; 0 1 0; 0 0 1])
         qI = @inferred dcm_to_quat(I₃)
         @test qI isa Quaternion{Tf}
-        @test (qI.q0, qI.q1, qI.q2, qI.q3) ==
-              (one(Tf), zero(Tf), zero(Tf), zero(Tf))
+        @test (qI.q0, qI.q1, qI.q2, qI.q3) == (one(Tf), zero(Tf), zero(Tf), zero(Tf))
 
         D = DCM(T[0 1 0; 0 0 1; 1 0 0])
         q = @inferred dcm_to_quat(D)
@@ -84,5 +82,21 @@ end
         q = @inferred dcm_to_quat(D)
         @test q isa Quaternion{T}
         @test all(isfinite, (q.q0, q.q1, q.q2, q.q3))
+    end
+
+    for T in (Float32, Float64, BigFloat)
+        z = zero(T)
+        signed_zero_half_turns = (
+            DCM(T[1 z z; z -1 -z; z +z -1]),
+            DCM(T[-1 z +z; z 1 z; -z z -1]),
+            DCM(T[-1 -z z; +z -1 z; z z 1]),
+        )
+
+        for (axis, Dπ) in enumerate(signed_zero_half_turns)
+            qπ = @inferred dcm_to_quat(Dπ)
+            @test qπ.q0 == z
+            @test !signbit(qπ.q0)
+            @test getfield(qπ, Symbol(:q, axis)) == one(T)
+        end
     end
 end
