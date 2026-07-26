@@ -1,3 +1,21 @@
+function _test_composition_performance(Rs::Vector{R}, n, ::Type{T}) where {R, T}
+    vector = Rs[1:n]
+    tuple = Tuple(vector)
+
+    compose_rotation(tuple)
+    compose_rotation(vector)
+
+    @test @inferred(compose_rotation(tuple)) isa R
+    @test @inferred(compose_rotation(vector)) isa R
+
+    tuple_allocations = @allocated compose_rotation(tuple)
+    vector_allocations = @allocated compose_rotation(vector)
+    @test tuple_allocations == 0
+    @test vector_allocations == 0
+
+    return nothing
+end
+
 """
     _test_performance_contracts(::Type{T}) -> Nothing where {T}
 
@@ -34,6 +52,19 @@ function _test_performance_contracts(::Type{T}) where {T}
     convert(EulerAngles(:ZYX), dcm)
     for rotations in (rotations2, rotations8, rotations32)
         compose_rotation(rotations...)
+    end
+
+    dcms = [angle_to_dcm(T(0.0007 * i), T(-0.0009 * i), T(0.0005 * i), :ZYX) for i in 1:64]
+    collection_rotations = (
+        dcms,
+        [convert(EulerAngleAxis, D) for D in dcms],
+        [convert(EulerAngles(:ZYX), D) for D in dcms],
+        [convert(Quaternion, D) for D in dcms],
+        [convert(CRP, D) for D in dcms],
+        [convert(MRP, D) for D in dcms],
+    )
+    for Rs in collection_rotations, n in (33, 64)
+        _test_composition_performance(Rs, n, T)
     end
 
     @test @allocated(orthonormalize(perturbed)) == 0

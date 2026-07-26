@@ -86,34 +86,62 @@
     end
 end
 
-@testset "Long-chain rotation composition" begin
+@testset "Collection rotation composition" begin
     for T in (Float32, Float64)
-        # Use distinct rotations so that changing either the order or the
-        # parenthesization is observable.
-        Ds = [angle_to_dcm(T(0.013 * i), T(-0.021 * i), T(0.017 * i), :ZYX) for i in 1:32]
+        # Distinct, small rotations make changes to the multiplication order observable
+        # while keeping CRP and MRP compositions away from singularities.
+        Ds = [
+            angle_to_dcm(T(0.0007 * i), T(-0.0009 * i), T(0.0005 * i), :ZYX) for i in 1:64
+        ]
         rotations = (
             Ds,
             [convert(EulerAngleAxis, D) for D in Ds],
-            [convert(EulerAngles, D) for D in Ds],
+            [convert(EulerAngles(:ZYX), D) for D in Ds],
             [convert(Quaternion, D) for D in Ds],
             [convert(CRP, D) for D in Ds],
             [convert(MRP, D) for D in Ds],
         )
 
-        for (j, Rs) in enumerate(rotations)
-            if j == 4
-                reference = Rs[end]
-                for i in (length(Rs) - 1):-1:1
-                    reference = Rs[i] * reference
+        for Rs in rotations
+            for n in (1, 4, 33, 64)
+                vector = Rs[1:n]
+                tuple = Tuple(vector)
+
+                if eltype(Rs) <: Quaternion
+                    reference = vector[end]
+                    for i in (n - 1):-1:1
+                        reference = vector[i] * reference
+                    end
+                else
+                    reference = vector[end]
+                    for i in (n - 1):-1:1
+                        reference = reference * vector[i]
+                    end
                 end
-            else
-                reference = Rs[1]
-                for i in 2:length(Rs)
-                    reference = Rs[i] * reference
+
+                tuple_result = compose_rotation(tuple)
+                vector_result = compose_rotation(vector)
+                tolerance = 200 * sqrt(eps(T))
+
+                @test typeof(tuple_result) === eltype(Rs)
+                @test typeof(vector_result) === eltype(Rs)
+                @test convert(DCM, tuple_result) ≈ convert(DCM, reference) atol = tolerance
+                @test convert(DCM, vector_result) ≈ convert(DCM, reference) atol = tolerance
+
+                if eltype(Rs) <: EulerAngles
+                    @test tuple_result.rot_seq === :ZYX
+                    @test vector_result.rot_seq === :ZYX
                 end
             end
-            @test compose_rotation(Rs...) ≈ reference
+
+            @test_throws ArgumentError compose_rotation(Tuple{}())
+            @test_throws ArgumentError compose_rotation(eltype(Rs)[])
         end
+
+        D32 = angle_to_dcm(Float32(0.01), Float32(-0.02), Float32(0.03), :ZYX)
+        D64 = angle_to_dcm(0.04, -0.05, 0.06, :ZYX)
+        mixed = (D32, D64)
+        @test compose_rotation(mixed) ≈ compose_rotation(mixed...)
     end
 end
 

@@ -12,6 +12,8 @@ export compose_rotation
 
 """
     compose_rotation(R1::T, [, R2::T, R3::T, R4::T, R5::T, ...]) -> T
+    compose_rotation(rotations::Tuple) -> T
+    compose_rotation(rotations::AbstractVector) -> T
 
 Compute a composed rotation using the rotations `R1`, `R2`, `R3`, `R4`, ..., in the
 following order:
@@ -37,6 +39,11 @@ Mixed rotation types are supported through the composition operator `∘`.
 
 For same-type inputs, the output will have the same type as the inputs. With mixed types, the
 composition operator uses the type of its first operand for the output.
+
+A nonempty tuple or vector of rotations can also be passed as one argument.
+Homogeneous collections preserve their concrete rotation type and are the preferred path for
+long chains.
+Heterogeneous tuples use the same behavior as splatting the tuple into `compose_rotation`.
 
 # Example
 
@@ -98,6 +105,50 @@ end
 
 @inline compose_rotation(m::MRP) = m
 @inline compose_rotation(m::MRP, ms::MRP...) = compose_rotation(ms...) * m
+
+const _ReverseCompositionRotation = Union{DCM, EulerAngleAxis, EulerAngles, CRP, MRP}
+
+function compose_rotation(Rs::Tuple{T, Vararg{T}}) where {T <: _ReverseCompositionRotation}
+    R = last(Rs)
+    for i in (lastindex(Rs) - 1):-1:firstindex(Rs)
+        R = R * Rs[i]
+    end
+    return R
+end
+
+function compose_rotation(Rs::AbstractVector{T}) where {T <: _ReverseCompositionRotation}
+    isempty(Rs) && throw(ArgumentError("cannot compose an empty collection of rotations"))
+    R = last(Rs)
+    for i in (lastindex(Rs) - 1):-1:firstindex(Rs)
+        R = R * Rs[i]
+    end
+    return R
+end
+
+function compose_rotation(qs::Tuple{T, Vararg{T}}) where {T <: Quaternion}
+    q = last(qs)
+    for i in (lastindex(qs) - 1):-1:firstindex(qs)
+        q = qs[i] * q
+    end
+    return q
+end
+
+function compose_rotation(qs::AbstractVector{T}) where {T <: Quaternion}
+    isempty(qs) && throw(ArgumentError("cannot compose an empty collection of rotations"))
+    q = last(qs)
+    for i in (lastindex(qs) - 1):-1:firstindex(qs)
+        q = qs[i] * q
+    end
+    return q
+end
+
+compose_rotation(::Tuple{}) = throw(
+    ArgumentError("cannot compose an empty tuple of rotations")
+)
+
+function compose_rotation(Rs::Tuple{ReferenceFrameRotation, Vararg{ReferenceFrameRotation}})
+    return compose_rotation(Rs...)
+end
 
 # This algorithm was proposed by @Per in
 #
