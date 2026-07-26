@@ -82,6 +82,7 @@ Create a quaternion with real part `r` and vectorial or imaginary part `v`:
 !!! note
 
     The quaternion type is obtained by promoting the type of `r` and the elements of `v`.
+    The vector `v` must have exactly 3 components; otherwise, an `ArgumentError` is thrown.
 
 # Examples
 
@@ -129,18 +130,24 @@ end
 
 function Quaternion(v::AbstractVector)
     # The vector must have 3 or 4 components.
-    if (length(v) != 3) && (length(v) != 4)
+    n = length(v)
+    if (n != 3) && (n != 4)
         throw(ArgumentError("The input vector must have 3 or 4 components."))
     end
 
-    if length(v) == 3
+    if n == 3
         return Quaternion(0, v[1], v[2], v[3])
     else
         return Quaternion(v[1], v[2], v[3], v[4])
     end
 end
 
-Quaternion(r::Number, v::AbstractVector) = Quaternion(r, v[1], v[2], v[3])
+function Quaternion(r::Number, v::AbstractVector)
+    n = length(v)
+    n == 3 || throw(ArgumentError("The input vector must have 3 components."))
+
+    return Quaternion(r, v[1], v[2], v[3])
+end
 Quaternion(u::UniformScaling{T}) where {T} = Quaternion{T}(T(u.λ), T(0), T(0), T(0))
 Quaternion{T}(u::UniformScaling) where {T} = Quaternion{T}(T(u.λ), T(0), T(0), T(0))
 Quaternion(::UniformScaling, ::Quaternion{T}) where {T} = Quaternion{T}(I)
@@ -195,7 +202,7 @@ end
 """
     -(q::Quaternion) -> Quaternion
 
-Return the quaterion `-q`.
+Return the quaternion `-q`.
 
 # Examples
 
@@ -717,7 +724,7 @@ end
 #
 #     v[4:7] = q
 @inline function setindex!(v::Vector{T}, q::Quaternion, I::UnitRange) where {T}
-    # We can use all the funcion in static arrays.
+    # We can use all the functions in static arrays.
     return setindex!(v, q[:], I)
 end
 

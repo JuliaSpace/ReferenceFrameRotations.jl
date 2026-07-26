@@ -1,4 +1,4 @@
-## Desription ##############################################################################
+## Description #############################################################################
 #
 # Tests related to the constructors of the quaternions.
 #
@@ -48,7 +48,7 @@
     @test q.q3 == 0
     @test eltype(q) === eltype(v)
 
-    # Constructores with one element and one vector.
+    # Constructors with one element and one vector.
     r = cosd(60)
     v = [0, sind(60), 0]
     q = Quaternion(r, v)
@@ -111,4 +111,6 @@ end
 @testset "Constructors of the Quaternions (Errors)" begin
     @test_throws ArgumentError Quaternion([1, 1])
     @test_throws ArgumentError Quaternion([1, 1, 2, 3, 4])
+    @test_throws ArgumentError Quaternion(1, [1, 2])
+    @test_throws ArgumentError Quaternion(1, [1, 2, 3, 4])
 end
