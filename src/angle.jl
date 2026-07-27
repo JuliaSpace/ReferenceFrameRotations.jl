@@ -34,7 +34,7 @@ EulerAngles{Float64}:
 julia> ea2 * ea1
 EulerAngles{Float64}:
   R(Z) :  0.0    rad  ( 0.0°)
-  R(Y) : -0.0    rad  (-0.0°)
+  R(Y) :  0.0    rad  ( 0.0°)
   R(X) :  1.0472 rad  ( 60.0°)
 ```
 """
