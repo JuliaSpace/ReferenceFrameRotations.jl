@@ -61,10 +61,11 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol = :ZYX) where {T <: Number}
 
     if rot_seq == :ZYX
         # Check for singularities.
-        if !(abs(dcm[1, 3]) ≥ one(Tf) - eps(Tf))
+        h = hypot(dcm[1, 1], dcm[1, 2])
+        if h > eps(Tf)
             return EulerAngles{Tf}(
                 _mod_atan(+dcm[1, 2], +dcm[1, 1]),
-                _mod_asin(-dcm[1, 3]),
+                _mod_atan(-dcm[1, 3], h),
                 _mod_atan(+dcm[2, 3], +dcm[3, 3]),
                 rot_seq,
             )
@@ -75,10 +76,11 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol = :ZYX) where {T <: Number}
         end
     elseif rot_seq == :XYX
         # Check for singularities.
-        if !(abs(dcm[1, 1]) ≥ one(Tf) - eps(Tf))
+        h = hypot(dcm[1, 2], dcm[1, 3])
+        if h > eps(Tf)
             return EulerAngles{Tf}(
                 _mod_atan(+dcm[1, 2], -dcm[1, 3]),
-                _mod_acos(+dcm[1, 1]),
+                _mod_atan(h, +dcm[1, 1]),
                 _mod_atan(+dcm[2, 1], +dcm[3, 1]),
                 rot_seq,
             )
@@ -89,10 +91,11 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol = :ZYX) where {T <: Number}
         end
     elseif rot_seq == :XYZ
         # Check for singularities.
-        if !(abs(dcm[3, 1]) ≥ one(Tf) - eps(Tf))
+        h = hypot(dcm[3, 2], dcm[3, 3])
+        if h > eps(Tf)
             return EulerAngles{Tf}(
                 _mod_atan(-dcm[3, 2], +dcm[3, 3]),
-                _mod_asin(+dcm[3, 1]),
+                _mod_atan(+dcm[3, 1], h),
                 _mod_atan(-dcm[2, 1], +dcm[1, 1]),
                 rot_seq,
             )
@@ -103,10 +106,11 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol = :ZYX) where {T <: Number}
         end
     elseif rot_seq == :XZX
         # Check for singularities.
-        if !(abs(dcm[1, 1]) ≥ one(Tf) - eps(Tf))
+        h = hypot(dcm[1, 2], dcm[1, 3])
+        if h > eps(Tf)
             return EulerAngles{Tf}(
                 _mod_atan(+dcm[1, 3], +dcm[1, 2]),
-                _mod_acos(+dcm[1, 1]),
+                _mod_atan(h, +dcm[1, 1]),
                 _mod_atan(+dcm[3, 1], -dcm[2, 1]),
                 rot_seq,
             )
@@ -117,10 +121,11 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol = :ZYX) where {T <: Number}
         end
     elseif rot_seq == :XZY
         # Check for singularities.
-        if !(abs(dcm[2, 1]) ≥ one(Tf) - eps(Tf))
+        h = hypot(dcm[2, 2], dcm[2, 3])
+        if h > eps(Tf)
             return EulerAngles{Tf}(
                 _mod_atan(+dcm[2, 3], +dcm[2, 2]),
-                _mod_asin(-dcm[2, 1]),
+                _mod_atan(-dcm[2, 1], h),
                 _mod_atan(+dcm[3, 1], +dcm[1, 1]),
                 rot_seq,
             )
@@ -131,10 +136,11 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol = :ZYX) where {T <: Number}
         end
     elseif rot_seq == :YXY
         # Check for singularities.
-        if !(abs(dcm[2, 2]) ≥ one(Tf) - eps(Tf))
+        h = hypot(dcm[2, 1], dcm[2, 3])
+        if h > eps(Tf)
             return EulerAngles{Tf}(
                 _mod_atan(+dcm[2, 1], +dcm[2, 3]),
-                _mod_acos(+dcm[2, 2]),
+                _mod_atan(h, +dcm[2, 2]),
                 _mod_atan(+dcm[1, 2], -dcm[3, 2]),
                 rot_seq,
             )
@@ -144,10 +150,11 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol = :ZYX) where {T <: Number}
             )
         end
     elseif rot_seq == :YXZ
-        if !(abs(dcm[3, 2]) ≥ one(Tf) - eps(Tf))
+        h = hypot(dcm[3, 1], dcm[3, 3])
+        if h > eps(Tf)
             return EulerAngles{Tf}(
                 _mod_atan(+dcm[3, 1], +dcm[3, 3]),
-                _mod_asin(-dcm[3, 2]),
+                _mod_atan(-dcm[3, 2], h),
                 _mod_atan(+dcm[1, 2], +dcm[2, 2]),
                 rot_seq,
             )
@@ -158,10 +165,11 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol = :ZYX) where {T <: Number}
         end
     elseif rot_seq == :YZX
         # Check for singularities.
-        if !(abs(dcm[1, 2]) ≥ one(Tf) - eps(Tf))
+        h = hypot(dcm[1, 1], dcm[1, 3])
+        if h > eps(Tf)
             return EulerAngles{Tf}(
                 _mod_atan(-dcm[1, 3], +dcm[1, 1]),
-                _mod_asin(+dcm[1, 2]),
+                _mod_atan(+dcm[1, 2], h),
                 _mod_atan(-dcm[3, 2], +dcm[2, 2]),
                 rot_seq,
             )
@@ -172,10 +180,11 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol = :ZYX) where {T <: Number}
         end
     elseif rot_seq == :YZY
         # Check for singularities.
-        if !(abs(dcm[2, 2]) ≥ one(Tf) - eps(Tf))
+        h = hypot(dcm[2, 1], dcm[2, 3])
+        if h > eps(Tf)
             return EulerAngles{Tf}(
                 _mod_atan(+dcm[2, 3], -dcm[2, 1]),
-                _mod_acos(+dcm[2, 2]),
+                _mod_atan(h, +dcm[2, 2]),
                 _mod_atan(+dcm[3, 2], +dcm[1, 2]),
                 rot_seq,
             )
@@ -186,10 +195,11 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol = :ZYX) where {T <: Number}
         end
     elseif rot_seq == :ZXY
         # Check for singularities.
-        if !(abs(dcm[2, 3]) ≥ one(Tf) - eps(Tf))
+        h = hypot(dcm[2, 1], dcm[2, 2])
+        if h > eps(Tf)
             return EulerAngles{Tf}(
                 _mod_atan(-dcm[2, 1], +dcm[2, 2]),
-                _mod_asin(+dcm[2, 3]),
+                _mod_atan(+dcm[2, 3], h),
                 _mod_atan(-dcm[1, 3], +dcm[3, 3]),
                 rot_seq,
             )
@@ -200,10 +210,11 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol = :ZYX) where {T <: Number}
         end
     elseif rot_seq == :ZXZ
         # Check for singularities.
-        if !(abs(dcm[3, 3]) ≥ one(Tf) - eps(Tf))
+        h = hypot(dcm[3, 1], dcm[3, 2])
+        if h > eps(Tf)
             return EulerAngles{Tf}(
                 _mod_atan(+dcm[3, 1], -dcm[3, 2]),
-                _mod_acos(+dcm[3, 3]),
+                _mod_atan(h, +dcm[3, 3]),
                 _mod_atan(+dcm[1, 3], +dcm[2, 3]),
                 rot_seq,
             )
@@ -214,10 +225,11 @@ function dcm_to_angle(dcm::DCM{T}, rot_seq::Symbol = :ZYX) where {T <: Number}
         end
     elseif rot_seq == :ZYZ
         # Check for singularities.
-        if !(abs(dcm[3, 3]) ≥ one(Tf) - eps(Tf))
+        h = hypot(dcm[3, 1], dcm[3, 2])
+        if h > eps(Tf)
             return EulerAngles{Tf}(
                 _mod_atan(+dcm[3, 2], +dcm[3, 1]),
-                _mod_acos(+dcm[3, 3]),
+                _mod_atan(h, +dcm[3, 3]),
                 _mod_atan(+dcm[2, 3], -dcm[1, 3]),
                 rot_seq,
             )

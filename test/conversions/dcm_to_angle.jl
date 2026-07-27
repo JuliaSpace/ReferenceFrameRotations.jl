@@ -166,6 +166,29 @@ end
     end
 end
 
+@testset "DCM => Euler angles (near gimbal lock)" begin
+    # Its sine lies within eps(Float32) of one, while its cosine is large enough
+    # to distinguish it from an exact singularity.
+    T = Float32
+    a₁, a₂, a₃ = T(-0.86634374), -T(π / 2) + T(0.0004136), T(1.6752636)
+
+    for rot_seq in (:XYZ, :XZY, :YXZ, :YZX, :ZXY, :ZYX)
+        ea = dcm_to_angle(angle_to_dcm(a₁, a₂, a₃, rot_seq), rot_seq)
+        @test ea.a1 ≈ a₁ atol = 50 * eps(T)
+        @test ea.a2 ≈ a₂ atol = 50 * eps(T)
+        @test ea.a3 ≈ a₃ atol = 50 * eps(T)
+    end
+
+    for a₂ in (T(0.0004136), T(π) - T(0.0004136))
+        for rot_seq in (:XYX, :XZX, :YXY, :YZY, :ZXZ, :ZYZ)
+            ea = dcm_to_angle(angle_to_dcm(a₁, a₂, a₃, rot_seq), rot_seq)
+            @test ea.a1 ≈ a₁ atol = 50 * eps(T)
+            @test ea.a2 ≈ a₂ atol = 50 * eps(T)
+            @test ea.a3 ≈ a₃ atol = 50 * eps(T)
+        end
+    end
+end
+
 @testset "DCM => Euler angles (generic numeric stability)" begin
     for T in (Int, Rational{Int}, Float32, Float64, BigFloat)
         Tf = float(T)
