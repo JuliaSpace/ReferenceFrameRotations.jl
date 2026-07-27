@@ -11,12 +11,14 @@ export compose_rotation
 ############################################################################################
 
 """
-    compose_rotation(R1::T, [, R2::T, R3::T, R4::T, R5::T, ...]) -> T
+    compose_rotation(
+        R1::ReferenceFrameRotation,
+        Rs::ReferenceFrameRotation...
+    ) -> ReferenceFrameRotation
     compose_rotation(rotations::Tuple) -> T
     compose_rotation(rotations::AbstractVector) -> T
 
-Compute a composed rotation using the rotations `R1`, `R2`, `R3`, `R4`, ..., in the
-following order:
+Compose the rotations `R1`, `R2`, `R3`, `R4`, ..., in the following order:
 
      First rotation
      |
@@ -37,13 +39,13 @@ The rotations can be described by:
 
 Mixed rotation types are supported through the composition operator `∘`.
 
-For same-type inputs, the output will have the same type as the inputs. With mixed types, the
-composition operator uses the type of its first operand for the output.
+For inputs of the same type, the output has that type. With mixed types, the composition
+operator uses the type of its first operand for the output.
 
-A nonempty tuple or vector of rotations can also be passed as one argument.
-Homogeneous collections preserve their concrete rotation type and are the preferred path for
-long chains.
-Heterogeneous tuples use the same behavior as splatting the tuple into `compose_rotation`.
+A nonempty tuple or vector of rotations can also be passed as one argument. Homogeneous
+collections preserve their concrete rotation type and are the preferred path for long
+chains. Heterogeneous tuples use the same behavior as splatting the tuple into
+`compose_rotation`.
 
 # Example
 
@@ -160,6 +162,11 @@ end
 
 # == Operator: ∘ ===========================================================================
 
+"""
+    ∘(R2::ReferenceFrameRotation, R1::ReferenceFrameRotation) -> ReferenceFrameRotation
+
+Compose `R1` followed by `R2`, converting `R1` to the type of `R2` before composition.
+"""
 function ∘(
     R2::T1, R1::T2
 ) where {T1 <: ReferenceFrameRotation, T2 <: ReferenceFrameRotation}

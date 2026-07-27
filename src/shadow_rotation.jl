@@ -9,7 +9,7 @@ export shadow_rotation
 """
     shadow_rotation(c::CRP) -> CRP
 
-Compute the shadow rotation of the CRP `c`.
+Return the shadow rotation of the CRP `c`.
 
 The shadow rotation of a CRP is the rotation itself: `c`.
 """
@@ -18,7 +18,7 @@ The shadow rotation of a CRP is the rotation itself: `c`.
 """
     shadow_rotation(m::MRP) -> MRP
 
-Compute the shadow rotation `-m / |m|²` of the MRP `m`. It represents the same rotation as
+Return the shadow rotation `-m / |m|²` of the MRP `m`. It represents the same rotation as
 `m`, and its norm is the reciprocal of the norm of `m`. Hence, a unit MRP maps to its
 antipode.
 

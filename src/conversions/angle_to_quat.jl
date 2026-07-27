@@ -7,22 +7,23 @@
 export angle_to_quat
 
 """
-    angle_to_quat(θ₁::T1[, θ₂::T2[, θ₃::T3]], rot_seq::Symbol = :ZYX) where {T1<:Number, T2<:Number, T3<:Number} -> Quaternion
-    angle_to_quat(eulerang::EulerAngles) -> Quaternion
+    angle_to_quat(θ::Number, rot_seq::Symbol) -> Quaternion
+    angle_to_quat(θ₁::Number, θ₂::Number, rot_seq::Symbol) -> Quaternion
+    angle_to_quat(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX) -> Quaternion
+    angle_to_quat(Θ::EulerAngles) -> Quaternion
 
 Create a quaternion that performs a set of rotations (`θ₁`, `θ₂`, `θ₃`) about the coordinate
 axes specified in `rot_seq`.
 
-The input values of the original Euler angles can also be passed inside the structure `Θ` (see
-[`EulerAngles`](@ref)).
+The input values can also be passed in the `Θ` structure (see [`EulerAngles`](@ref)).
 
 The rotation sequence is defined by a `Symbol` specifying the rotation axes. The possible
 values depends on the number of rotations as follows:
 
 - **1 rotation** (`θ₁`): `:X`, `:Y`, or `:Z`.
 - **2 rotations** (`θ₁`, `θ₂`): `:XY`, `:XZ`, `:YX`, `:YZ`, `:ZX`, or `:ZY`.
-- **3 rotations** (`θ₁`, `θ₂`, `θ₃`): `:XYX`, `:XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`,
-    `:YZY`, `:ZXY`, `:ZXZ`, `:ZYX`, or `:ZYZ`
+- **3 rotations** (`θ₁`, `θ₂`, `θ₃`): `:XYX`, `:XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`,
+    `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`, `:ZYX`, or `:ZYZ`
 
 !!! note
 
@@ -30,9 +31,9 @@ values depends on the number of rotations as follows:
 
 # Remarks
 
-This function assigns `q = q1 * q2 * q3` in which `qi` is the quaternion related to the
-_i_-th rotation, `i ∈ [1,2,3]`. If the _i_-th rotation is not specified, then
-`qi = Quaternion(I)`.
+This function assign `q = q1 * q2 * q3`, where `qi` is the quaternion related to the _i_-th
+rotation, `i ∈ [1, 2, 3]`. If the _i_-th rotation is not specified, then `qi =
+Quaternion(I)`.
 
 # Example
 

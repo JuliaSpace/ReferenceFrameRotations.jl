@@ -7,7 +7,7 @@
 export mrp_to_angle
 
 """
-    mrp_to_angle(m::MRP, rot_seq::Symbol) -> EulerAngles
+    mrp_to_angle(m::MRP, rot_seq::Symbol = :ZYX) -> EulerAngles
 
 Convert MRP `m` to Euler Angles (see [`EulerAngles`](@ref)) given a rotation sequence
 `rot_seq`.

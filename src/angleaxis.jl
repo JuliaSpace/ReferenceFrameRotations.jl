@@ -9,16 +9,16 @@
 ############################################################################################
 
 """
-    *(av₂::EulerAngleAxis{T1}, av₁::EulerAngleAxis{T2}) where {T1, T2} -> EulerAngleAxis{T3}
+    *(av₂::EulerAngleAxis, av₁::EulerAngleAxis) -> EulerAngleAxis
 
-Compute the composed rotation of `av₁ -> av₂`.
+Compose `av₁` followed by `av₂`.
 
-The rotation will be represented by an Euler angle and axis (see
+Represent the result as an Euler angle and axis (see
 [`EulerAngleAxis`](@ref)). By convention, the output angle will always be in the
-range `[0, π] rad`.
+range `[0, π]` [rad].
 
-Notice that the vector representing the axis in `av₁` and `av₂` must have unit length.
-This function neither verifies this nor normalizes the vector.
+Require the vectors representing the axes in `av₁` and `av₂` to have unit length; this
+function neither verifies nor normalizes them.
 
 !!! note
 
@@ -87,9 +87,9 @@ end
 """
     inv(av::EulerAngleAxis) -> EulerAngleAxis
 
-Compute the inverse rotation of the Euler angle and axis `av`.
+Return the inverse rotation of the Euler angle and axis `av`.
 
-The Euler angle returned by this function will always be in the interval `[0, π]` rad.
+Return an Euler angle in the interval `[0, π]` [rad].
 
 # Examples
 

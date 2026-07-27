@@ -7,7 +7,12 @@
 export angle_to_angleaxis
 
 """
-    angle_to_angleaxis(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX) -> EulerAngleAxis
+    angle_to_angleaxis(
+        θ₁::Number,
+        θ₂::Number,
+        θ₃::Number,
+        rot_seq::Symbol = :ZYX
+    ) -> EulerAngleAxis
     angle_to_angleaxis(Θ::EulerAngles) -> EulerAngleAxis
 
 Convert the Euler angles `θ₁`, `θ₂`, and `θ₃` [rad] with the rotation sequence `rot_seq` to

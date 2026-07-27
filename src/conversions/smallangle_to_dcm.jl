@@ -7,13 +7,18 @@
 export smallangle_to_dcm
 
 """
-    smallangle_to_dcm(θx::Number, θy::Number, θz::Number; normalize = true) -> DCM
+    smallangle_to_dcm(θx::Number, θy::Number, θz::Number; kwargs...) -> DCM
 
 Create a direction cosine matrix from three small rotations of angles `θx`, `θy`, and `θz`
 [rad] about the axes X, Y, and Z, respectively.
 
 If the keyword `normalize` is `true`, the matrix will be normalized using the function
 `orthonormalize`.
+
+# Keywords
+
+- `normalize::Bool`: Orthonormalize the resulting matrix.
+    (**Default**: `true`)
 
 # Example
 

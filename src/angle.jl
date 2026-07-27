@@ -11,9 +11,9 @@
 """
     *(Θ₂::EulerAngles, Θ₁::EulerAngles) -> EulerAngles
 
-Compute the composed rotation of `Θ₁ -> Θ₂`.
+Compose `Θ₁` followed by `Θ₂`.
 
-The rotation will be represented by Euler angles (see [`EulerAngles`](@ref))
+Represent the result with Euler angles (see [`EulerAngles`](@ref))
 with the same rotation sequence as `Θ₂`.
 
 # Examples
@@ -50,7 +50,7 @@ end
 """
     inv(Θ::EulerAngles) -> EulerAngles
 
-Return the Euler angles that represent the inverse rotation of `Θ`.
+Return Euler angles representing the inverse rotation of `Θ`.
 
 The rotation sequence of the result will be the inverse of the input. Hence, if the input
 rotation sequence is, for example, `:XYZ`, then the result will be represented using `:ZYX`.

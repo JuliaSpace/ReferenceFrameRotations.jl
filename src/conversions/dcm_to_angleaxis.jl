@@ -7,11 +7,11 @@
 export dcm_to_angleaxis
 
 """
-    dcm_to_angleaxis(dcm::DCM{T}) where T<:Number -> EulerAngleAxis
+    dcm_to_angleaxis(dcm::DCM) -> EulerAngleAxis
 
 Convert the `dcm` to an Euler angle and axis representation.
 
-By convention, the returned Euler angle will always be in the interval [0, π].
+Return an angle in the interval `[0, π]` [rad] by convention.
 """
 function dcm_to_angleaxis(dcm::DCM{T}) where {T <: Number}
     Tf = float(T)

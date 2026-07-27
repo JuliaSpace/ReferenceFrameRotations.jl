@@ -12,10 +12,20 @@ export ddcm, orthonormalize
 
 # == StaticArray.jl API ====================================================================
 
+"""
+    getindex(dcm::DCM, i::Int) -> Any
+
+Return an element of `dcm` using the indexing conventions provided by `StaticArrays`.
+"""
 @inline Base.@propagate_inbounds function getindex(dcm::DCM, i::Int)
     return dcm.data[i]
 end
 
+"""
+    Tuple(dcm::DCM{T}) where {T} -> NTuple{9, T}
+
+Return the column-major elements of `dcm` as a tuple.
+"""
 function Tuple(dcm::DCM)
     return dcm.data
 end
@@ -85,9 +95,9 @@ end
 """
     ddcm(Dba::DCM, wba_b::AbstractArray) -> SMatrix{3, 3}
 
-Compute the time-derivative of the `dcm` that rotates a reference frame `a` into alignment
-with the reference frame `b` in which the angular velocity of `b` with respect to `a`, and
-represented in `b`, is `wba_b`.
+Compute the time derivative of `Dba` that rotates reference frame `a` into alignment with
+the reference frame `b` in which the angular velocity of `b` with respect to `a`, and
+represented in `b`, is `wba_b` [rad/s].
 
 # Example
 

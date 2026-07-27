@@ -10,14 +10,14 @@ export angleaxis_to_angle
     angleaxis_to_angle(θ::Number, v::AbstractVector, rot_seq::Symbol) -> EulerAngles
     angleaxis_to_angle(av::EulerAngleAxis, rot_seq::Symbol) -> EulerAngles
 
-Convert the Euler angle `θ` [rad]  and Euler axis `v` to Euler angles with rotation sequence
+Convert the Euler angle `θ` [rad] and Euler axis `v` to Euler angles with rotation sequence
 `rot_seq`.
 
 Those values can also be passed inside the structure `av` (see [`EulerAngleAxis`](@ref)).
 
 The rotation sequence is defined by a `:Symbol`. The possible values are: `:XYX`, `:XYZ`,
-`:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`, `:ZYX`, and `:ZYZ`. If no
-value is specified, it defaults to `:ZYX`.
+`:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`, `:ZXZ`, `:ZYX`, and `:ZYZ`. The
+rotation sequence is required for both calling forms.
 
 !!! warning
 

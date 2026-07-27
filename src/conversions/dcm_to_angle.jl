@@ -7,7 +7,7 @@
 export dcm_to_angle
 
 """
-    dcm_to_angle(dcm::DCM, rot_seq::Symbol=:ZYX) -> EulerAngles
+    dcm_to_angle(dcm::DCM, rot_seq::Symbol = :ZYX) -> EulerAngles
 
 Convert the `dcm` to Euler Angles (see [`EulerAngles`](@ref)) given a rotation sequence
 `rot_seq`.
@@ -19,9 +19,9 @@ value is specified, it defaults to `:ZYX`.
 # Gimbal-lock and special cases
 
 If the rotations are about three different axes, *e.g.* `:XYZ`, `:ZYX`, etc., then a second
-rotation of `±90˚` yields a gimbal-lock. This means that the rotations between the first and
-third axes have the same effect. In this case, the net rotation angle is assigned to the
-first rotation, and the angle of the third rotation is set to 0.
+rotation of `±90` [°] yields gimbal lock. The rotations between the first and third axes
+have the same effect. In this case, the net rotation angle is assigned to the first
+rotation, and the angle of the third rotation is set to 0.
 
 If the rotations are about two different axes, *e.g.* `:XYX`, `:YXY`, etc., then a rotation
 about the duplicated axis yields multiple representations. In this case, the entire angle is

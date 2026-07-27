@@ -7,7 +7,7 @@
 export crp_to_angle
 
 """
-    crp_to_angle(c::CRP, rot_seq::Symbol) -> EulerAngles
+    crp_to_angle(c::CRP, rot_seq::Symbol = :ZYX) -> EulerAngles
 
 Convert CRP `c` to Euler Angles (see [`EulerAngles`](@ref)) given a rotation sequence
 `rot_seq`.

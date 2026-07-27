@@ -11,6 +11,14 @@
 
 # == Euler angle and axis ==================================================================
 
+"""
+    rand(
+        rng::AbstractRNG,
+        ::Random.SamplerType{R}
+    ) where {R <: EulerAngleAxis} -> R
+
+Sample a uniformly distributed random Euler angle-axis rotation using `rng`.
+"""
 function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where {R <: EulerAngleAxis}
     T = eltype(R)
     if T == Any
@@ -22,6 +30,14 @@ end
 
 # == Euler angles ==========================================================================
 
+"""
+    rand(
+        rng::AbstractRNG,
+        ::Random.SamplerType{R}
+    ) where {R <: EulerAngles} -> R
+
+Sample a random Euler-angle representation using `rng`.
+"""
 function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where {R <: EulerAngles}
     T = eltype(R)
     if T == Any
@@ -42,6 +58,14 @@ end
 
 # == DCM ===================================================================================
 
+"""
+    rand(
+        rng::AbstractRNG,
+        ::Random.SamplerType{R}
+    ) where {R <: DCM} -> R
+
+Sample a uniformly distributed random rotation as a DCM using `rng`.
+"""
 function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where {R <: DCM}
     T = eltype(R)
     if T == Any
@@ -53,6 +77,14 @@ end
 
 # == Quaternion ============================================================================
 
+"""
+    rand(
+        rng::AbstractRNG,
+        ::Random.SamplerType{R}
+    ) where {R <: Quaternion} -> R
+
+Sample a uniformly distributed random unit quaternion using `rng`.
+"""
 function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where {R <: Quaternion}
     T = eltype(R)
     if T == Any
@@ -64,6 +96,14 @@ end
 
 # == CRP ===================================================================================
 
+"""
+    rand(
+        rng::AbstractRNG,
+        ::Random.SamplerType{R}
+    ) where {R <: CRP} -> R
+
+Sample a random CRP rotation using `rng`.
+"""
 function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where {R <: CRP}
     T = eltype(R)
     if T == Any
@@ -75,6 +115,14 @@ end
 
 # == MRP ===================================================================================
 
+"""
+    rand(
+        rng::AbstractRNG,
+        ::Random.SamplerType{R}
+    ) where {R <: MRP} -> R
+
+Sample a random MRP rotation using `rng`.
+"""
 function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where {R <: MRP}
     T = eltype(R)
     if T == Any

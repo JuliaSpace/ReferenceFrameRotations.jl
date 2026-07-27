@@ -17,9 +17,10 @@ export dmrp
 ############################################################################################
 
 """
-    MRP(v::AbstractVector)
+    MRP(v::AbstractVector) -> MRP
+    MRP(::UniformScaling{T}) where {T} -> MRP{T}
 
-Create a `MRP` from the vector `v`.
+Construct an MRP from the three-component vector `v`.
 """
 function MRP(v::AbstractVector)
     # The vector must have 3 components.
@@ -46,6 +47,11 @@ Base.ndims(m::MRP) = 1
 Base.size(::MRP) = (3,)
 Base.Broadcast.broadcastable(m::MRP) = m
 
+"""
+    convert(::Type{MRP{T}}, m::MRP) where {T} -> MRP{T}
+
+Convert MRP `m` to scalar type `T`.
+"""
 function Base.convert(::Type{MRP{T}}, m::MRP) where {T}
     return MRP{T}(m.q1, m.q2, m.q3)
 end
@@ -91,6 +97,11 @@ end
 # We need to define `setindex!` with respect to vectors to allow operations such as:
 #
 #     v[4:6] = m
+"""
+    setindex!(v::Vector{T}, m::MRP, I::UnitRange) where {T} -> Vector{T}
+
+Write the three components of `m` into `v` at the positions in `I`, mutating `v`.
+"""
 @inline function setindex!(v::Vector{T}, m::MRP, I::UnitRange) where {T}
     # We can use all the functions in static arrays.
     return setindex!(v, m[:], I)
@@ -100,6 +111,15 @@ end
     return (m1.q1 == m2.q1) && (m1.q2 == m2.q2) && (m1.q3 == m2.q3)
 end
 
+"""
+    isapprox(m1::MRP, m2::MRP; kwargs...) -> Bool
+
+Compare corresponding components of `m1` and `m2` using approximate equality.
+
+# Keywords
+
+- `kwargs...`: Forwarded approximate-comparison keywords such as `atol` and `rtol`.
+"""
 @inline function Base.isapprox(m1::MRP, m2::MRP; kwargs...)
     return isapprox(m1.q1, m2.q1; kwargs...) &&
            isapprox(m1.q2, m2.q2; kwargs...) &&
@@ -113,9 +133,9 @@ end
 """
     dmrp(m::MRP, wba_b::AbstractVector) -> MRP
 
-Compute the time-derivative of the MRP `m` that rotates a reference frame `a` into alignment
+Compute the time derivative of MRP `m` that rotates reference frame `a` into alignment
 with the reference frame `b` in which the angular velocity of `b` with respect to `a`, and
-represented in `b`, is `wba_b` **[1]**.
+represented in `b`, is `wba_b` [rad/s] **[1]**.
 
 # Example
 
@@ -228,15 +248,32 @@ end
 
 # == Operation: + ==========================================================================
 
+"""
+    +(m1::MRP, m2::MRP) -> MRP
+
+Add the corresponding components of `m1` and `m2`.
+"""
 @inline +(m1::MRP, m2::MRP) = MRP(m1.q1 + m2.q1, m1.q2 + m2.q2, m1.q3 + m2.q3)
 
 # == Operation: - ==========================================================================
 
+"""
+    -(m::MRP) -> MRP
+    -(m1::MRP, m2::MRP) -> MRP
+
+Negate `m`, or subtract `m2` from `m1` componentwise.
+"""
 @inline -(m::MRP) = MRP(-m.q1, -m.q2, -m.q3)
 @inline -(m1::MRP, m2::MRP) = MRP(m1.q1 - m2.q1, m1.q2 - m2.q2, m1.q3 - m2.q3)
 
 # == Operation: * ==========================================================================
 
+"""
+    *(λ::Number, m::MRP) -> MRP
+    *(m::MRP, λ::Number) -> MRP
+
+Scale `m` by the scalar `λ`.
+"""
 @inline *(λ::Number, m::MRP) = MRP(λ * m.q1, λ * m.q2, λ * m.q3)
 @inline *(m::MRP, λ::Number) = MRP(m.q1 * λ, m.q2 * λ, m.q3 * λ)
 
@@ -285,11 +322,22 @@ end
 
 # == Operation: / ==========================================================================
 
+"""
+    /(m::MRP, λ::Number) -> MRP
+    /(m1::MRP, m2::MRP) -> MRP
+
+Divide `m` by `λ`, or compose `m1` with the inverse of `m2`.
+"""
 @inline /(m::MRP, λ::Number) = MRP(m.q1 / λ, m.q2 / λ, m.q3 / λ)
 @inline /(m1::MRP, m2::MRP) = m1 * inv(m2)
 
 # == Operation: \ ==========================================================================
 
+"""
+    \\(m1::MRP, m2::MRP) -> MRP
+
+Compute the relative rotation from `m1` to `m2`.
+"""
 @inline \(m1::MRP, m2::MRP) = inv(m1) * m2
 
 ############################################################################################

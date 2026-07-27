@@ -17,9 +17,10 @@ export dcrp
 ############################################################################################
 
 """
-    CRP(v::AbstractVector)
+    CRP(v::AbstractVector) -> CRP
+    CRP(::UniformScaling{T}) where {T} -> CRP{T}
 
-Create a `CRP` from the vector `v`.
+Construct a CRP from the three-component vector `v`.
 """
 function CRP(v::AbstractVector)
     # The vector must have 3 components.
@@ -46,6 +47,11 @@ Base.ndims(c::CRP) = 1
 Base.size(::CRP) = (3,)
 Base.Broadcast.broadcastable(c::CRP) = c
 
+"""
+    convert(::Type{CRP{T}}, c::CRP) where {T} -> CRP{T}
+
+Convert CRP `c` to scalar type `T`.
+"""
 function Base.convert(::Type{CRP{T}}, c::CRP) where {T}
     return CRP{T}(c.q1, c.q2, c.q3)
 end
@@ -91,6 +97,11 @@ end
 # We need to define `setindex!` with respect to vectors to allow operations such as:
 #
 #     v[4:6] = c
+"""
+    setindex!(v::Vector{T}, c::CRP, I::UnitRange) where {T} -> Vector{T}
+
+Write the three components of `c` into `v` at the positions in `I`, mutating `v`.
+"""
 @inline function setindex!(v::Vector{T}, c::CRP, I::UnitRange) where {T}
     # We can use all the functions in static arrays.
     return setindex!(v, c[:], I)
@@ -100,6 +111,15 @@ end
     return (c1.q1 == c2.q1) && (c1.q2 == c2.q2) && (c1.q3 == c2.q3)
 end
 
+"""
+    isapprox(c1::CRP, c2::CRP; kwargs...) -> Bool
+
+Compare corresponding components of `c1` and `c2` using approximate equality.
+
+# Keywords
+
+- `kwargs...`: Forwarded approximate-comparison keywords such as `atol` and `rtol`.
+"""
 @inline function Base.isapprox(c1::CRP, c2::CRP; kwargs...)
     return isapprox(c1.q1, c2.q1; kwargs...) &&
            isapprox(c1.q2, c2.q2; kwargs...) &&
@@ -113,9 +133,9 @@ end
 """
     dcrp(c::CRP, wba_b::AbstractVector) -> CRP
 
-Compute the time-derivative of the CRP `c` that rotates a reference frame `a` into alignment
+Compute the time derivative of CRP `c` that rotates reference frame `a` into alignment
 with the reference frame `b` in which the angular velocity of `b` with respect to `a`, and
-represented in `b`, is `wba_b` **[1]**.
+represented in `b`, is `wba_b` [rad/s] **[1]**.
 
 # Example
 
@@ -227,15 +247,32 @@ end
 
 # == Operation: + ==========================================================================
 
+"""
+    +(c1::CRP, c2::CRP) -> CRP
+
+Add the corresponding components of `c1` and `c2`.
+"""
 @inline +(c1::CRP, c2::CRP) = CRP(c1.q1 + c2.q1, c1.q2 + c2.q2, c1.q3 + c2.q3)
 
 # == Operation: - ==========================================================================
 
+"""
+    -(c::CRP) -> CRP
+    -(c1::CRP, c2::CRP) -> CRP
+
+Negate `c`, or subtract `c2` from `c1` componentwise.
+"""
 @inline -(c::CRP) = CRP(-c.q1, -c.q2, -c.q3)
 @inline -(c1::CRP, c2::CRP) = CRP(c1.q1 - c2.q1, c1.q2 - c2.q2, c1.q3 - c2.q3)
 
 # == Operation: * ==========================================================================
 
+"""
+    *(λ::Number, c::CRP) -> CRP
+    *(c::CRP, λ::Number) -> CRP
+
+Scale `c` by the scalar `λ`.
+"""
 @inline *(λ::Number, c::CRP) = CRP(λ * c.q1, λ * c.q2, λ * c.q3)
 @inline *(c::CRP, λ::Number) = CRP(c.q1 * λ, c.q2 * λ, c.q3 * λ)
 
@@ -279,11 +316,22 @@ end
 
 # == Operation: / ==========================================================================
 
+"""
+    /(c::CRP, λ::Number) -> CRP
+    /(c1::CRP, c2::CRP) -> CRP
+
+Divide `c` by `λ`, or compose `c1` with the inverse of `c2`.
+"""
 @inline /(c::CRP, λ::Number) = CRP(c.q1 / λ, c.q2 / λ, c.q3 / λ)
 @inline /(c1::CRP, c2::CRP) = c1 * inv(c2)
 
 # == Operation: \ ==========================================================================
 
+"""
+    \\(c1::CRP, c2::CRP) -> CRP
+
+Compute the relative rotation from `c1` to `c2`.
+"""
 @inline \(c1::CRP, c2::CRP) = inv(c1) * c2
 
 ############################################################################################

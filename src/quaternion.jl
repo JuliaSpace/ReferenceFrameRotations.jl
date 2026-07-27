@@ -11,7 +11,12 @@ export dquat, norm, vect
 ############################################################################################
 
 """
-    Quaternion(q0::T0, q1::T1, q2::T2, q3::T3) where {T0, T1, T2, T3}
+    Quaternion(q0::Any, q1::Any, q2::Any, q3::Any) -> Quaternion
+    Quaternion(v::AbstractVector) -> Quaternion
+    Quaternion(r::Number, v::AbstractVector) -> Quaternion
+    Quaternion(u::UniformScaling{T}) where {T} -> Quaternion{T}
+    Quaternion{T}(u::UniformScaling) where {T} -> Quaternion{T}
+    Quaternion(u::UniformScaling, q::Quaternion{T}) where {T} -> Quaternion{T}
 
 Create the following quaternion:
 
@@ -42,7 +47,7 @@ Quaternion{Float64}:
 
 ---
 
-    Quaternion(v::AbstractVector)
+    Quaternion(v::AbstractVector) -> Quaternion
 
 If the vector `v` has 3 components, then create a quaternion in which the real part is `0`
 and the vectorial or imaginary part has the same components of the vector `v`. In other
@@ -73,7 +78,7 @@ Quaternion{Float64}:
 
 ---
 
-    Quaternion(r::Number, v::AbstractVector)
+    Quaternion(r::Number, v::AbstractVector) -> Quaternion
 
 Create a quaternion with real part `r` and vectorial or imaginary part `v`:
 
@@ -93,10 +98,6 @@ Quaternion{Float64}:
 ```
 
 ---
-
-    Quaternion(u::UniformScaling{T}) where T
-    Quaternion{T}(u::UniformScaling) where T
-    Quaternion(u::UniformScaling, Q::Quaternion{T}) where T
 
 Create the quaternion `u.λ + 0.i + 0.j + 0.k`.
 
@@ -524,7 +525,7 @@ Quaternion{Float64}:
 @inline conj(q::Quaternion) = Quaternion(q.q0, -q.q1, -q.q2, -q.q3)
 
 """
-    copy(q::Quaternion{T}) where T -> Quaternion
+    copy(q::Quaternion{T}) where {T} -> Quaternion
 
 Create a copy of the quaternion `q`.
 """
@@ -674,6 +675,11 @@ Base.ndims(q::Quaternion) = 1
 Base.size(::Quaternion) = (4,)
 Broadcast.broadcastable(q::Quaternion) = q
 
+"""
+    convert(::Type{Quaternion{T}}, q::Quaternion) where {T} -> Quaternion{T}
+
+Convert quaternion `q` to scalar type `T`.
+"""
 function Base.convert(::Type{Quaternion{T}}, q::Quaternion) where {T}
     return Quaternion{T}(q.q0, q.q1, q.q2, q.q3)
 end
@@ -723,11 +729,25 @@ end
 # We need to define `setindex!` with respect to vectors to allow operations such as:
 #
 #     v[4:7] = q
+"""
+    setindex!(v::Vector{T}, q::Quaternion, I::UnitRange) where {T} -> Vector{T}
+
+Write the four components of `q` into `v` at the positions in `I`, mutating `v`.
+"""
 @inline function setindex!(v::Vector{T}, q::Quaternion, I::UnitRange) where {T}
     # We can use all the functions in static arrays.
     return setindex!(v, q[:], I)
 end
 
+"""
+    ≈(q1::Quaternion, q2::Quaternion; kwargs...) -> Bool
+
+Compare corresponding components of `q1` and `q2` using `isapprox`.
+
+# Keywords
+
+- `kwargs...`: Forwarded approximate-comparison keywords such as `atol` and `rtol`.
+"""
 @inline function ≈(q1::Quaternion, q2::Quaternion; kwargs...)
     return ≈(q1.q0, q2.q0; kwargs...) &&
            ≈(q1.q1, q2.q1; kwargs...) &&
@@ -853,9 +873,9 @@ end
 """
     dquat(qba::Quaternion, wba_b::AbstractVector) -> Quaternion
 
-Compute the time-derivative of the quaternion `qba` that rotates a reference frame `a` into
+Compute the time derivative of quaternion `qba` that rotates reference frame `a` into
 alignment to the reference frame `b` in which the angular velocity of `b` with respect to
-`a`, and represented in `b`, is `wba_b`.
+`a`, and represented in `b`, is `wba_b` [rad/s].
 
 # Examples
 

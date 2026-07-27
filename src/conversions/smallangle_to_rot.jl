@@ -8,7 +8,9 @@
 export smallangle_to_rot
 
 """
-    smallangle_to_rot([T,] θx::Number, θy::Number, θz::Number[; normalize = true]) -> T
+    smallangle_to_rot(θx::Number, θy::Number, θz::Number; kwargs...) -> DCM
+    smallangle_to_rot(::Type{DCM}, θx::Number, θy::Number, θz::Number; kwargs...) -> DCM
+    smallangle_to_rot(::Type{Quaternion}, θx::Number, θy::Number, θz::Number) -> Quaternion
 
 Create a rotation description of type `T` from three small rotations of angles `θx`, `θy`,
 and `θz` [rad] about the axes X, Y, and Z, respectively.
@@ -16,8 +18,13 @@ and `θz` [rad] about the axes X, Y, and Z, respectively.
 The type `T` of the rotation description can be `DCM` or `Quaternion`. If the type `T` is
 not specified, if defaults to `DCM`.
 
-If `T` is `DCM`, the resulting matrix will be orthonormalized using the `orthonormalize`
-function if the keyword `normalize` is `true`.
+If `T` is `DCM`, orthonormalize the resulting matrix using `orthonormalize` function if the
+keyword `normalize` is `true`.
+
+# Keywords
+
+- `normalize::Any`: Orthonormalize a DCM result when `true`.
+    (**Default**: `true`)
 
 # Example
 

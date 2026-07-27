@@ -7,9 +7,13 @@
 export DCM, EulerAngles, EulerAngleAxis, Quaternion, CRP, MRP, ReferenceFrameRotation
 
 """
-    DCM{T}
+    struct DCM{T}
 
-Direction Cosine Matrix (DCM) of type `T`, which is a 3x3 static matrix of type `T`.
+Store a Direction Cosine Matrix (DCM) whose nine elements have type `T`.
+
+# Fields
+
+- `data::NTuple{9, T}`: Matrix elements in column-major order.
 
 # Examples
 
@@ -49,9 +53,9 @@ struct DCM{T} <: StaticMatrix{3, 3, T}
 end
 
 """
-    EulerAngles{T}
+    struct EulerAngles{T}
 
-The definition of Euler Angles, which is composed of three angles `a1`, `a2`, and `a3`
+Store three Euler angles `a1`, `a2`, and `a3`
 together with a rotation sequence `rot_seq`.
 
 # Fields
@@ -70,17 +74,6 @@ together with a rotation sequence `rot_seq`.
     - `:XYX`, `:XYZ`, `:XZX`, `:XZY`, `:YXY`, `:YXZ`, `:YZX`, `:YZY`, `:ZXY`,
         `:ZXZ`, `:ZYX`, and `:ZYZ`.
 
-# Constructor
-
-    EulerAngles(a1::T1, a2::T2, a3::T3, rot_seq::Symbol = :ZYX) where {T1, T2, T3}
-
-Create a new instance of `EulerAngles` with the angles `a1`, `a2`, and `a3` and the rotation
-sequence `rot_seq`.
-
-The type will be inferred from `T1`, `T2`, and `T3`.
-
-If `rot_seq` is not provided, then it defaults to `:ZYX`.
-
 # Examples
 
 ```julia-repl
@@ -98,6 +91,14 @@ struct EulerAngles{T}
     rot_seq::Symbol
 end
 
+"""
+    EulerAngles(a1::Any, a2::Any, a3::Any, rot_seq::Symbol = :ZYX) -> EulerAngles
+
+Construct Euler angles `a1`, `a2`, and `a3` [rad] with rotation sequence `rot_seq`.
+
+Require `rot_seq` to be one of the supported rotation sequences listed for
+[`EulerAngles`](@ref).
+"""
 function EulerAngles(a1::T1, a2::T2, a3::T3, rot_seq::Symbol = :ZYX) where {T1, T2, T3}
     T = promote_type(T1, T2, T3)
 
@@ -107,8 +108,7 @@ end
 """
     struct EulerAngleConversion{R}
 
-This private structure is used only to enable the rotation conversion to Euler angles using
-the Julia API.
+Enable conversion to Euler angles using the Julia API.
 """
 struct EulerAngleConversion{R} end
 
@@ -117,24 +117,15 @@ function EulerAngles(rot_seq::Symbol)
 end
 
 """
-    EulerAngleAxis{T}
+    struct EulerAngleAxis{T}
 
-The definition of Euler Angle and Axis to represent a 3D rotation.
+Represent a 3D rotation with an Euler angle and axis.
 
 # Fields
 
 - `a::T`: The Euler angle [rad].
-- `v::SVector{3, T}`: The unitary vector aligned with the Euler axis.
-
-# Constructor
-
-    EulerAngleAxis(a::T1, v::AbstractVector{T2}) where {T1,T2}
-
-Create an Euler Angle and Axis representation structure with angle `a` [rad] and vector `v`.
-
-The vector `v` will not be normalized.
-
-The returned structure type will be selected according to the input types.
+- `v::SVector{3, T}`: Vector aligned with the Euler axis; callers must provide a unit
+    vector.
 
 # Examples
 
@@ -152,6 +143,13 @@ struct EulerAngleAxis{T}
     EulerAngleAxis(a::T, v::SVector{3, T}) where {T <: Number} = new{T}(a, v)
 end
 
+"""
+    EulerAngleAxis(a::Any, v::AbstractVector) -> EulerAngleAxis
+
+Construct an Euler angle and axis from `a` [rad] and the three-component vector `v`.
+Do not assume that `v` is normalized; this constructor does not normalize it, so callers
+must provide a unit axis when a valid rotation representation is required.
+"""
 function EulerAngleAxis(a::T1, v::AbstractVector{T2}) where {T1, T2}
     (length(v) != 3) && error("The vector `v` must have 3 dimensions.")
     T = promote_type(T1, T2)
@@ -160,9 +158,9 @@ function EulerAngleAxis(a::T1, v::AbstractVector{T2}) where {T1, T2}
 end
 
 """
-    Quaternion{T}
+    struct Quaternion{T}
 
-The definition of the quaternion.
+Represent a quaternion with scalar-first components.
 
 # Fields
 
@@ -193,21 +191,16 @@ struct Quaternion{T}
 end
 
 """
-    CRP{T}
+    struct CRP{T}
 
-The definition of Classical Rodrigues Parameters (CRP).
+Represent Classical Rodrigues Parameters (CRP).
 
 # Fields
 
-- `q1::T`: First component of the CRP.
-- `q2::T`: Second component of the CRP.
-- `q3::T`: Third component of the CRP.
+- `q1::T`: First dimensionless CRP component [-].
+- `q2::T`: Second dimensionless CRP component [-].
+- `q3::T`: Third dimensionless CRP component [-].
 
-# Constructor
-
-    CRP(q1::T1, q2::T2, q3::T3) where {T1, T2, T3}
-
-Create a new instance of `CRP` with coordinates `q1`, `q2`, and `q3`.
 """
 struct CRP{T}
     q1::T
@@ -215,27 +208,27 @@ struct CRP{T}
     q3::T
 end
 
+"""
+    CRP(q1::Any, q2::Any, q3::Any) -> CRP
+
+Construct CRP coordinates `q1`, `q2`, and `q3` [-] after promoting their types.
+"""
 function CRP(q1::T1, q2::T2, q3::T3) where {T1, T2, T3}
     T = promote_type(T1, T2, T3)
     return CRP{T}(T(q1), T(q2), T(q3))
 end
 
 """
-    MRP{T}
+    struct MRP{T}
 
-The definition of Modified Rodrigues Parameters (MRP).
+Represent Modified Rodrigues Parameters (MRP).
 
 # Fields
 
-- `q1::T`: First component of the MRP.
-- `q2::T`: Second component of the MRP.
-- `q3::T`: Third component of the MRP.
+- `q1::T`: First dimensionless MRP component [-].
+- `q2::T`: Second dimensionless MRP component [-].
+- `q3::T`: Third dimensionless MRP component [-].
 
-# Constructor
-
-    MRP(q1::T1, q2::T2, q3::T3) where {T1, T2, T3}
-
-Create a new instance of `MRP` with coordinates `q1`, `q2`, and `q3`.
 """
 struct MRP{T}
     q1::T
@@ -243,6 +236,11 @@ struct MRP{T}
     q3::T
 end
 
+"""
+    MRP(q1::Any, q2::Any, q3::Any) -> MRP
+
+Construct MRP coordinates `q1`, `q2`, and `q3` [-] after promoting their types.
+"""
 function MRP(q1::T1, q2::T2, q3::T3) where {T1, T2, T3}
     T = promote_type(T1, T2, T3)
     return MRP{T}(T(q1), T(q2), T(q3))
@@ -251,6 +249,6 @@ end
 """
     ReferenceFrameRotation
 
-A `Union` of all supported rotation types.
+Represent the union of all supported rotation types.
 """
 const ReferenceFrameRotation = Union{DCM, EulerAngles, EulerAngleAxis, Quaternion, CRP, MRP}

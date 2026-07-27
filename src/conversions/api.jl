@@ -38,6 +38,13 @@ end
 @inline _convert_to_dcm(a::CRP) = crp_to_dcm(a)
 @inline _convert_to_dcm(a::MRP) = mrp_to_dcm(a)
 
+"""
+    convert(::Type{DCM}, a::ReferenceFrameRotation) -> DCM
+    convert(::Type{DCM{T}}, a::ReferenceFrameRotation) where {T} -> DCM{T}
+
+Convert rotation `a` to a direction cosine matrix, optionally converting its scalar type to
+`T`.
+"""
 Base.convert(::Type{DCM}, a::ReferenceFrameRotation) = _convert_to_dcm(a)
 function Base.convert(::Type{DCM{T}}, a::ReferenceFrameRotation) where {T}
     return _cast_rotation(DCM{T}, _convert_to_dcm(a))
@@ -74,6 +81,15 @@ end
 @inline _convert_to_euler_angles_default(a::CRP) = crp_to_angle(a, :ZYX)
 @inline _convert_to_euler_angles_default(a::MRP) = mrp_to_angle(a, :ZYX)
 
+"""
+    convert(::Type{EulerAngles}, a::EulerAngles) -> EulerAngles
+    convert(::Type{EulerAngles}, a::ReferenceFrameRotation) -> EulerAngles
+    convert(::Type{EulerAngles{T}}, a::EulerAngles) where {T} -> EulerAngles{T}
+    convert(::Type{EulerAngles{T}}, a::ReferenceFrameRotation) where {T} -> EulerAngles{T}
+
+Convert rotation `a` to Euler angles using the default `:ZYX` sequence, or preserve the
+sequence when `a` is already an `EulerAngles` value.
+"""
 Base.convert(::Type{EulerAngles}, a::EulerAngles) = a
 Base.convert(::Type{EulerAngles}, a::ReferenceFrameRotation) = _convert_to_euler_angles_default(
     a
@@ -93,6 +109,17 @@ end
 @inline _convert_to_angleaxis(a::CRP) = crp_to_angleaxis(a)
 @inline _convert_to_angleaxis(a::MRP) = mrp_to_angleaxis(a)
 
+"""
+    convert(::Type{EulerAngleAxis}, a::EulerAngleAxis) -> EulerAngleAxis
+    convert(::Type{EulerAngleAxis}, a::ReferenceFrameRotation) -> EulerAngleAxis
+    convert(::Type{EulerAngleAxis{T}}, a::EulerAngleAxis) where {T} -> EulerAngleAxis{T}
+    convert(
+        ::Type{EulerAngleAxis{T}},
+        a::ReferenceFrameRotation
+    ) -> EulerAngleAxis{T}
+
+Convert rotation `a` to an Euler angle-axis representation.
+"""
 Base.convert(::Type{EulerAngleAxis}, a::EulerAngleAxis) = a
 Base.convert(::Type{EulerAngleAxis}, a::ReferenceFrameRotation) = _convert_to_angleaxis(a)
 function Base.convert(::Type{EulerAngleAxis{T}}, a::EulerAngleAxis) where {T}
@@ -110,6 +137,14 @@ end
 @inline _convert_to_quaternion(a::CRP) = crp_to_quat(a)
 @inline _convert_to_quaternion(a::MRP) = mrp_to_quat(a)
 
+"""
+    convert(::Type{Quaternion}, q::Quaternion) -> Quaternion
+    convert(::Type{Quaternion}, a::ReferenceFrameRotation) -> Quaternion
+    convert(::Type{Quaternion{T}}, a::ReferenceFrameRotation) where {T} -> Quaternion{T}
+
+Convert rotation `a` to a scalar-first quaternion, optionally converting its scalar type to
+`T`.
+"""
 Base.convert(::Type{Quaternion}, q::Quaternion) = q
 Base.convert(::Type{Quaternion}, a::ReferenceFrameRotation) = _convert_to_quaternion(a)
 function Base.convert(::Type{Quaternion{T}}, a::ReferenceFrameRotation) where {T}
@@ -124,6 +159,14 @@ end
 @inline _convert_to_crp(a::EulerAngleAxis) = dcm_to_crp(angleaxis_to_dcm(a))
 @inline _convert_to_crp(a::MRP) = mrp_to_crp(a)
 
+"""
+    convert(::Type{CRP}, c::CRP) -> CRP
+    convert(::Type{CRP}, a::ReferenceFrameRotation) -> CRP
+    convert(::Type{CRP{T}}, a::ReferenceFrameRotation) where {T} -> CRP{T}
+
+Convert rotation `a` to classical Rodrigues parameters, optionally changing its scalar type.
+to `T`.
+"""
 Base.convert(::Type{CRP}, c::CRP) = c
 Base.convert(::Type{CRP}, a::ReferenceFrameRotation) = _convert_to_crp(a)
 function Base.convert(::Type{CRP{T}}, a::ReferenceFrameRotation) where {T}
@@ -138,6 +181,14 @@ end
 @inline _convert_to_mrp(a::EulerAngleAxis) = dcm_to_mrp(angleaxis_to_dcm(a))
 @inline _convert_to_mrp(a::CRP) = crp_to_mrp(a)
 
+"""
+    convert(::Type{MRP}, m::MRP) -> MRP
+    convert(::Type{MRP}, a::ReferenceFrameRotation) -> MRP
+    convert(::Type{MRP{T}}, a::ReferenceFrameRotation) where {T} -> MRP{T}
+
+Convert rotation `a` to modified Rodrigues parameters, optionally converting its scalar type
+to `T`.
+"""
 Base.convert(::Type{MRP}, m::MRP) = m
 Base.convert(::Type{MRP}, a::ReferenceFrameRotation) = _convert_to_mrp(a)
 function Base.convert(::Type{MRP{T}}, a::ReferenceFrameRotation) where {T}
