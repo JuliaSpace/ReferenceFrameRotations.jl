@@ -1,6 +1,59 @@
 ReferenceFrameRotations.jl Changelog
 ====================================
 
+Version 3.5.0
+-------------
+
+- ![BREAKING][badge-breaking] The compact `show` of `CRP` and `MRP` now prints the sign of
+  each component. Previously, it printed the absolute values, so two different rotations
+  produced identical output.
+- ![BREAKING][badge-breaking] `Quaternion(u::UniformScaling, q::Quaternion)` now uses `u.λ`
+  as the real part, as documented, instead of always returning the identity quaternion.
+- ![BREAKING][badge-breaking] Composing two `MRP`s that yield a 360° rotation now throws an
+  `ArgumentError`, matching the `CRP` behavior, instead of silently returning `NaN`.
+- ![Feature][badge-feature] Add `angleaxis_to_crp` and `angleaxis_to_mrp`, completing the
+  conversion matrix.
+- ![Feature][badge-feature] `compose_rotation` now supports heterogeneous tuples and vectors
+  of rotations, which previously threw a `MethodError`. Such collections are folded with
+  `∘`, so the output has the type of the last rotation.
+- ![Feature][badge-feature] Add `hash` and `isequal` for `Quaternion`, `CRP`, and `MRP`, so
+  that they behave correctly as `Set` elements and `Dict` keys.
+- ![Bugfix][badge-bugfix] `dcm_to_angleaxis` returned a reflected axis for 180° rotations
+  whose axis had a vanishing first component, and lost up to eight significant digits for
+  angles near `π`. It is now computed through the quaternion representation, which is well
+  conditioned everywhere.
+- ![Bugfix][badge-bugfix] `quat_to_angleaxis` and `*(::EulerAngleAxis, ::EulerAngleAxis)`
+  now recover the rotation angle with `atan` instead of `acos`, removing a relative error of
+  up to `1e-2` for small angles and the hard truncation to zero below `~1e-7` rad.
+- ![Bugfix][badge-bugfix] `q / λ` is now computed componentwise instead of as `q * (1 / λ)`,
+  which rounded twice.
+- ![Bugfix][badge-bugfix] `inv(::EulerAngleAxis)` now computes `2π` at the output precision,
+  preserving `BigFloat` accuracy.
+- ![Bugfix][badge-bugfix] `smallangle_to_dcm` now has a return type that does not depend on
+  the runtime value of the `normalize` keyword.
+- ![Bugfix][badge-bugfix] The one- and two-rotation forms of `angle_to_dcm` now accept
+  `Irrational` angles, matching the three-rotation form.
+- ![Bugfix][badge-bugfix] Quaternion constructors, products, kinematics, `ddcm`, and the
+  Euler angle-axis conversions now respect the indexing conventions of the input vector,
+  supporting offset arrays.
+- ![Bugfix][badge-bugfix] `*(q, v)`, `*(v, q)`, and `v \ q` now validate that the vector has
+  three components, and `v \ q` treats `v` as the vectorial part, as documented.
+- ![Bugfix][badge-bugfix] The Zygote rule for the `DCM` constructor no longer errors when
+  the output cotangent is a zero tangent.
+- ![Enhancement][badge-enhancement] Add a precompilation workload, reducing the measured
+  first-call latency of the common operations from about 1070 ms to about 10 ms.
+- ![Enhancement][badge-enhancement] `rand(R, dims)` now returns a concrete-eltype array for
+  the unparameterized rotation types instead of a boxed, abstract-eltype array.
+- ![Enhancement][badge-enhancement] Hoist the repeated divisions in `crp_to_dcm`,
+  `mrp_to_dcm`, and `dcm_to_quat`.
+- ![Enhancement][badge-enhancement] Convert `EulerAngleAxis` to `CRP`/`MRP` through the
+  quaternion instead of the DCM.
+- ![Info][badge-info] The Zygote extension is no longer triggered by `ForwardDiff`, which it
+  never used.
+- ![Info][badge-info] Fix incorrect docstrings, rotted examples, wrong comments, and typos
+  throughout the package, and convert the remaining `julia-repl` blocks to `jldoctest` so
+  that CI verifies them.
+
 Version 3.4.0
 -------------
 
