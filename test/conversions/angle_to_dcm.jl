@@ -179,3 +179,17 @@ end
     dcm = smallangle_to_dcm(Int64(1), Int32(0), Float16(0))
     @test eltype(dcm) === Float16
 end
+
+@testset "Small Euler Angles => DCM (Type Stability)" begin
+    # The return type must not depend on the runtime value of `normalize`, which requires
+    # promoting the input types to a float.
+    @test @inferred(smallangle_to_dcm(1//10, 2//10, 3//10)) isa DCM{Float64}
+    @test @inferred(smallangle_to_dcm(1//10, 2//10, 3//10; normalize = false)) isa
+        DCM{Float64}
+    @test Base.return_types(
+        smallangle_to_dcm, (Rational{Int}, Rational{Int}, Rational{Int})
+    ) == Any[DCM{Float64}]
+
+    @test @inferred(smallangle_to_dcm(1, 2, 3)) isa DCM{Float64}
+    @test @inferred(smallangle_to_dcm(0.1f0, 0.2f0, 0.3f0)) isa DCM{Float32}
+end
