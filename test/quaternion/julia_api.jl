@@ -98,3 +98,27 @@ end
     @test q_conv.q3 == Float32(q.q3)
     @test eltype(q_conv) === Float32
 end
+
+@testset "hash / isequal Contract" begin
+    qi = Quaternion(1, 0, 0, 0)
+    qf = Quaternion(1.0, 0.0, 0.0, 0.0)
+
+    @test qi == qf
+    @test isequal(qi, qf)
+    @test hash(qi) == hash(qf)
+    @test length(Set([qi, qf])) == 1
+    @test get(Dict(qi => "a"), qf, "MISSING") == "a"
+
+    # `isequal` must be reflexive, even for `NaN`.
+    qn = Quaternion(NaN, 0.0, 0.0, 0.0)
+    @test isequal(qn, qn)
+    @test findfirst(isequal(qn), [qn]) == 1
+    @test length(Set([qn, qn])) == 1
+
+    # `isequal` must distinguish `-0.0` from `0.0`, unlike `==`.
+    z1 = Quaternion(0.0, 0.0, 0.0, 0.0)
+    z2 = Quaternion(-0.0, 0.0, 0.0, 0.0)
+    @test z1 == z2
+    @test !isequal(z1, z2)
+    @test length(Set([z1, z2])) == 2
+end

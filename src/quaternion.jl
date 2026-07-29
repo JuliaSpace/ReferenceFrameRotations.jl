@@ -744,6 +744,14 @@ end
 
 Compare corresponding components of `q1` and `q2` using `isapprox`.
 
+!!! warning
+
+    The comparison is performed componentwise. Since the default `atol` is `0`, a component
+    that is (nearly) zero in one operand but exactly zero in the other makes the comparison
+    fail. This differs from the norm-based semantics of `isapprox` for `AbstractVector`.
+    Hence, pass `atol` explicitly when comparing rotations that may have near-zero
+    components.
+
 # Keywords
 
 - `kwargs...`: Forwarded approximate-comparison keywords such as `atol` and `rtol`.
@@ -759,6 +767,20 @@ end
 # elements and the type are equals.
 @inline function ==(q1::Quaternion, q2::Quaternion)
     return (q1.q0 == q2.q0) && (q1.q1 == q2.q1) && (q1.q2 == q2.q2) && (q1.q3 == q2.q3)
+end
+
+# `isequal` and `hash` must be defined together with `==` so that the `isequal`/`hash`
+# contract holds. Otherwise, `Set` and `Dict` misbehave for quaternions that compare equal
+# but have different element types, and `isequal` breaks for `NaN` and `-0.0`.
+@inline function Base.isequal(q1::Quaternion, q2::Quaternion)
+    return isequal(q1.q0, q2.q0) &&
+           isequal(q1.q1, q2.q1) &&
+           isequal(q1.q2, q2.q2) &&
+           isequal(q1.q3, q2.q3)
+end
+
+function Base.hash(q::Quaternion, h::UInt)
+    return hash(q.q3, hash(q.q2, hash(q.q1, hash(q.q0, hash(:Quaternion, h)))))
 end
 
 ############################################################################################

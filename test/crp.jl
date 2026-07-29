@@ -294,3 +294,27 @@ end
     @test v[2] == c.q2
     @test v[3] == c.q3
 end
+
+@testset "CRP hash / isequal Contract" begin
+    ci = CRP(1, 0, 0)
+    cf = CRP(1.0, 0.0, 0.0)
+
+    @test ci == cf
+    @test isequal(ci, cf)
+    @test hash(ci) == hash(cf)
+    @test length(Set([ci, cf])) == 1
+    @test get(Dict(ci => "a"), cf, "MISSING") == "a"
+
+    cn = CRP(NaN, 0.0, 0.0)
+    @test isequal(cn, cn)
+    @test length(Set([cn, cn])) == 1
+
+    z1 = CRP(0.0, 0.0, 0.0)
+    z2 = CRP(-0.0, 0.0, 0.0)
+    @test z1 == z2
+    @test !isequal(z1, z2)
+    @test length(Set([z1, z2])) == 2
+
+    # A CRP must not be confused with an MRP holding the same components.
+    @test hash(CRP(1.0, 2.0, 3.0)) != hash(MRP(1.0, 2.0, 3.0))
+end

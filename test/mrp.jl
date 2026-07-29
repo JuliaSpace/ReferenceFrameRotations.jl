@@ -292,3 +292,24 @@ end
     @test v[2] == m.q2
     @test v[3] == m.q3
 end
+
+@testset "MRP hash / isequal Contract" begin
+    mi = MRP(1, 0, 0)
+    mf = MRP(1.0, 0.0, 0.0)
+
+    @test mi == mf
+    @test isequal(mi, mf)
+    @test hash(mi) == hash(mf)
+    @test length(Set([mi, mf])) == 1
+    @test get(Dict(mi => "a"), mf, "MISSING") == "a"
+
+    mn = MRP(NaN, 0.0, 0.0)
+    @test isequal(mn, mn)
+    @test length(Set([mn, mn])) == 1
+
+    z1 = MRP(0.0, 0.0, 0.0)
+    z2 = MRP(-0.0, 0.0, 0.0)
+    @test z1 == z2
+    @test !isequal(z1, z2)
+    @test length(Set([z1, z2])) == 2
+end

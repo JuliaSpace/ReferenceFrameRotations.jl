@@ -111,10 +111,29 @@ end
     return (c1.q1 == c2.q1) && (c1.q2 == c2.q2) && (c1.q3 == c2.q3)
 end
 
+# `isequal` and `hash` must be defined together with `==` so that the `isequal`/`hash`
+# contract holds. Otherwise, `Set` and `Dict` misbehave for CRPs that compare equal but have
+# different element types, and `isequal` breaks for `NaN` and `-0.0`.
+@inline function Base.isequal(c1::CRP, c2::CRP)
+    return isequal(c1.q1, c2.q1) && isequal(c1.q2, c2.q2) && isequal(c1.q3, c2.q3)
+end
+
+function Base.hash(c::CRP, h::UInt)
+    return hash(c.q3, hash(c.q2, hash(c.q1, hash(:CRP, h))))
+end
+
 """
     isapprox(c1::CRP, c2::CRP; kwargs...) -> Bool
 
 Compare corresponding components of `c1` and `c2` using approximate equality.
+
+!!! warning
+
+    The comparison is performed componentwise. Since the default `atol` is `0`, a component
+    that is (nearly) zero in one operand but exactly zero in the other makes the comparison
+    fail. This differs from the norm-based semantics of `isapprox` for `AbstractVector`.
+    Hence, pass `atol` explicitly when comparing rotations that may have near-zero
+    components.
 
 # Keywords
 
