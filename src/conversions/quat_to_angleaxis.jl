@@ -12,6 +12,14 @@ export quat_to_angleaxis
 Convert the quaternion `q` to an Euler angle and axis representation (see
 [`EulerAngleAxis`](@ref)). By convention, keep the Euler angle between `[0, π]` [rad].
 
+If `q` is the identity rotation, the Euler axis is undefined. In this case, return the zero
+vector `[0, 0, 0]` as the axis.
+
+!!! note
+
+    If the rotation is a half turn (`θ = π`), then `v` and `-v` describe exactly the same
+    rotation. Hence, the sign of the returned axis is arbitrary.
+
 # Remarks
 
 This function will not fail if the quaternion norm is not 1. However, the meaning of the
@@ -39,15 +47,17 @@ function quat_to_angleaxis(q::Quaternion{T}) where {T}
     o = one(Tf)
     two = Tf(2)
 
-    # If `q0` is 1 or -1, then we have an identity rotation.
-    if abs(q0) >= o - eps(Tf)
+    # Compute sin(θ/2) from the vectorial part.
+    sθo2 = sqrt(q1 * q1 + q2 * q2 + q3 * q3)
+
+    # If the vectorial part vanishes, the rotation is the identity and the axis is undefined.
+    # Return the zero axis by convention.
+    if iszero(sθo2)
         return EulerAngleAxis(z, SVector{3, Tf}(z, z, z))
     else
-        # Compute sin(θ/2).
-        sθo2 = sqrt(max(z, q1 * q1 + q2 * q2 + q3 * q3))
-
-        # Compute θ in range [0, 2π].
-        θ = two * acos(clamp(q0, -o, o))
+        # Compute θ in range [0, 2π]. `atan` is well conditioned everywhere, unlike
+        # `acos(q0)`, which loses precision for θ near 0.
+        θ = two * atan(sθo2, q0)
 
         # Keep θ between [0, π].
         s = o

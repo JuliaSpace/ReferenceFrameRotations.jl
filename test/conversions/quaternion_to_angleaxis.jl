@@ -68,3 +68,13 @@ end
         @test av.v == [0, 0, 0]
     end
 end
+
+@testset "Quaternion => Euler Angle and Axis (Small Angles)" begin
+    for θ in (1e-6, 1e-8, 1e-12)
+        q = Quaternion(cos(θ / 2), sin(θ / 2), 0.0, 0.0)
+        av = quat_to_angleaxis(q)
+
+        @test av.a ≈ θ rtol = 1e-12
+        @test av.v ≈ [1.0, 0.0, 0.0]
+    end
+end
