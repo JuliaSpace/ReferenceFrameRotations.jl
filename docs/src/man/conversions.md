@@ -220,6 +220,58 @@ angleaxis = EulerAngleAxis(a, v)
 angleaxis_to_dcm(angleaxis)
 ```
 
+## Euler Angle and Axis to CRPs
+
+An Euler angle and axis representation can be converted to classical Rodrigues parameters
+using these two methods:
+
+```julia
+function angleaxis_to_crp(a::Number, v::AbstractVector)
+function angleaxis_to_crp(av::EulerAngleAxis)
+```
+
+```@repl conversions
+a = 60.0 * pi / 180;
+
+v = [sqrt(3) / 3, sqrt(3) / 3, sqrt(3) / 3]
+
+angleaxis_to_crp(a, v)
+
+angleaxis = EulerAngleAxis(a, v)
+
+angleaxis_to_crp(angleaxis)
+```
+
+!!! note
+
+    CRP is singular for rotations of ``180^\circ``.
+
+## Euler Angle and Axis to MRPs
+
+An Euler angle and axis representation can be converted to modified Rodrigues parameters
+using these two methods:
+
+```julia
+function angleaxis_to_mrp(a::Number, v::AbstractVector)
+function angleaxis_to_mrp(av::EulerAngleAxis)
+```
+
+```@repl conversions
+a = 60.0 * pi / 180;
+
+v = [sqrt(3) / 3, sqrt(3) / 3, sqrt(3) / 3]
+
+angleaxis_to_mrp(a, v)
+
+angleaxis = EulerAngleAxis(a, v)
+
+angleaxis_to_mrp(angleaxis)
+```
+
+!!! note
+
+    MRP is singular for rotations of ``360^\circ``.
+
 ## Euler Angle and Axis to Euler Angles
 
 An Euler angle and axis representation can be converted to Euler angles using these two

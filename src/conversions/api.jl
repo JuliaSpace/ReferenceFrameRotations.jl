@@ -156,7 +156,7 @@ end
 @inline _convert_to_crp(a::DCM) = dcm_to_crp(a)
 @inline _convert_to_crp(a::Quaternion) = quat_to_crp(a)
 @inline _convert_to_crp(a::EulerAngles) = angle_to_crp(a)
-@inline _convert_to_crp(a::EulerAngleAxis) = dcm_to_crp(angleaxis_to_dcm(a))
+@inline _convert_to_crp(a::EulerAngleAxis) = angleaxis_to_crp(a)
 @inline _convert_to_crp(a::MRP) = mrp_to_crp(a)
 
 """
@@ -178,7 +178,7 @@ end
 @inline _convert_to_mrp(a::DCM) = dcm_to_mrp(a)
 @inline _convert_to_mrp(a::Quaternion) = quat_to_mrp(a)
 @inline _convert_to_mrp(a::EulerAngles) = angle_to_mrp(a)
-@inline _convert_to_mrp(a::EulerAngleAxis) = dcm_to_mrp(angleaxis_to_dcm(a))
+@inline _convert_to_mrp(a::EulerAngleAxis) = angleaxis_to_mrp(a)
 @inline _convert_to_mrp(a::CRP) = crp_to_mrp(a)
 
 """
