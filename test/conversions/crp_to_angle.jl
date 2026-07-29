@@ -12,8 +12,10 @@
     for T in (Float32, Float64)
         # The conversion is tested by creating CRPs from known Euler angles and verifying
         # that the converted angles match the originals.
+        # Keep the second angle away from the gimbal lock at ±π/2. Recovering the Euler
+        # angles there is ill conditioned, so a tight tolerance would be meaningless.
         a₁ = _rand_ang(T)
-        a₂ = _rand_ang2(T)
+        a₂ = _rand_ang3(T)
         a₃ = _rand_ang(T)
 
         D = angle_to_dcm(a₃, :X) * angle_to_dcm(a₂, :Y) * angle_to_dcm(a₁, :Z)
