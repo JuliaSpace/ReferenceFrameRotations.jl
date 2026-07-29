@@ -59,27 +59,33 @@ DCM{Float64}:
   0.707107     0.612372   0.353553
 ```
 """
-function angle_to_dcm(θ::T, rot_seq::Symbol) where {T <: Number}
+function angle_to_dcm(θ::Number, rot_seq::Symbol)
     sa, ca = sincos(θ)
+
+    # Obtain the element type from the trigonometric result so that types without an integer
+    # constructor, such as `Irrational`, are supported.
+    T = promote_type(typeof(sa), typeof(ca))
+    z = zero(T)
+    o = one(T)
 
     #! format: off
     if rot_seq == :X
         return DCM(
-            T(1), T(0), T(0),
-            T(0), +ca,  +sa,
-            T(0), -sa,  +ca
+             o,  z,  z,
+             z, +ca, +sa,
+             z, -sa, +ca
         )'
     elseif rot_seq == :Y
         return DCM(
-            +ca,  T(0), -sa,
-            T(0), T(1), T(0),
-            +sa,  T(0), +ca
+            +ca,  z, -sa,
+             z,   o,  z,
+            +sa,  z, +ca
         )'
     elseif rot_seq == :Z
         return DCM(
-            +ca,  +sa,  T(0),
-            -sa,  +ca,  T(0),
-            T(0), T(0), T(1)
+            +ca, +sa,  z,
+            -sa, +ca,  z,
+             z,   z,   o
         )'
     else
         throw(ArgumentError("rot_seq must be :X, :Y, or :Z"))
@@ -87,29 +93,33 @@ function angle_to_dcm(θ::T, rot_seq::Symbol) where {T <: Number}
     #! format: on
 end
 
-function angle_to_dcm(θ₁::T1, θ₂::T2, rot_seq::Symbol) where {T1 <: Number, T2 <: Number}
-    T = promote_type(T1, T2)
+function angle_to_dcm(θ₁::Number, θ₂::Number, rot_seq::Symbol)
+    # Promote the angles instead of their types so that types without an integer constructor,
+    # such as `Irrational`, are supported.
+    θ₁p, θ₂p = promote(θ₁, θ₂)
 
     # Compute the sines and cosines.
-    s₁, c₁ = sincos(T(θ₁))
-    s₂, c₂ = sincos(T(θ₂))
+    s₁, c₁ = sincos(θ₁p)
+    s₂, c₂ = sincos(θ₂p)
+
+    z = zero(promote_type(typeof(s₁), typeof(c₁)))
 
     #! format: off
     if rot_seq == :XY
         return DCM(
               c₂,  s₁ * s₂, -c₁ * s₂,
-            T(0),       c₁,       s₁,
+               z,       c₁,       s₁,
               s₂, -s₁ * c₂,  c₁ * c₂
         )'
     elseif rot_seq == :XZ
         return DCM(
               c₂, c₁ * s₂, s₁ * s₂,
              -s₂, c₁ * c₂, s₁ * c₂,
-            T(0),     -s₁,      c₁
+               z,     -s₁,      c₁
         )'
     elseif rot_seq == :YX
         return DCM(
-                 c₁, T(0),      -s₁,
+                 c₁,    z,      -s₁,
             s₁ * s₂,   c₂,  c₁ * s₂,
             s₁ * c₂,  -s₂,  c₁ * c₂
         )'
@@ -117,18 +127,18 @@ function angle_to_dcm(θ₁::T1, θ₂::T2, rot_seq::Symbol) where {T1 <: Number
         return DCM(
              c₁ * c₂,   s₂, -s₁ * c₂,
             -c₁ * s₂,   c₂,  s₁ * s₂,
-                  s₁, T(0),       c₁
+                  s₁,    z,       c₁
         )'
     elseif rot_seq == :ZX
         return DCM(
-                  c₁,       s₁, T(0),
+                  c₁,       s₁,    z,
             -c₂ * s₁,  c₂ * c₁,   s₂,
              s₂ * s₁, -s₂ * c₁,   c₂
         )'
     elseif rot_seq == :ZY
         return DCM(
             c₂ * c₁, c₂ * s₁, -s₂ ,
-                -s₁,      c₁, T(0),
+                -s₁,      c₁,    z,
             s₂ * c₁, s₂ * s₁,  c₂
         )'
     else
@@ -137,15 +147,15 @@ function angle_to_dcm(θ₁::T1, θ₂::T2, rot_seq::Symbol) where {T1 <: Number
     #! format: on
 end
 
-function angle_to_dcm(
-    θ₁::T1, θ₂::T2, θ₃::T3, rot_seq::Symbol = :ZYX
-) where {T1 <: Number, T2 <: Number, T3 <: Number}
-    T = promote_type(T1, T2, T3)
+function angle_to_dcm(θ₁::Number, θ₂::Number, θ₃::Number, rot_seq::Symbol = :ZYX)
+    # Promote the angles instead of their types so that types without an integer constructor,
+    # such as `Irrational`, are supported.
+    θ₁p, θ₂p, θ₃p = promote(θ₁, θ₂, θ₃)
 
     # Compute the sines and cosines.
-    s₁, c₁ = sincos(T(θ₁))
-    s₂, c₂ = sincos(T(θ₂))
-    s₃, c₃ = sincos(T(θ₃))
+    s₁, c₁ = sincos(θ₁p)
+    s₂, c₂ = sincos(θ₂p)
+    s₃, c₃ = sincos(θ₃p)
 
     #! format: off
     if rot_seq == :ZYX

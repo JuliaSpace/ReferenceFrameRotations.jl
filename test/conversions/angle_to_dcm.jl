@@ -193,3 +193,16 @@ end
     @test @inferred(smallangle_to_dcm(1, 2, 3)) isa DCM{Float64}
     @test @inferred(smallangle_to_dcm(0.1f0, 0.2f0, 0.3f0)) isa DCM{Float32}
 end
+
+@testset "Euler Angles => DCM (Irrational)" begin
+    # Types without an integer constructor, such as `Irrational`, must be supported by every
+    # form of `angle_to_dcm`.
+    @test angle_to_dcm(π, :X) ≈ angle_to_dcm(Float64(π), :X)
+    @test angle_to_dcm(π, π, :XY) ≈ angle_to_dcm(Float64(π), Float64(π), :XY)
+    @test angle_to_dcm(π, π, π, :ZYX) ≈
+        angle_to_dcm(Float64(π), Float64(π), Float64(π), :ZYX)
+
+    @test angle_to_dcm(π, :X) isa DCM{Float64}
+    @test angle_to_dcm(π, π, :XY) isa DCM{Float64}
+    @test angle_to_dcm(π, π, π, :ZYX) isa DCM{Float64}
+end
