@@ -282,3 +282,21 @@ end
     q2 = q1 \ I
     @test q2 == inv(q1)
 end
+
+@testset "Operations With Quaternions: / (Extended Precision)" begin
+    setprecision(BigFloat, 256) do
+        q = Quaternion(big"1.0", big"0.0", big"0.0", big"0.0")
+
+        # Dividing componentwise is exact, whereas multiplying by `1 / λ` would round twice.
+        @test (q / 3).q0 == big"1.0" / 3
+        @test (q / 7).q0 == big"1.0" / 7
+    end
+
+    # `Float64` division must be correctly rounded.
+    rng = MersenneTwister(20260729)
+    for _ in 1:10_000
+        x = randn(rng)
+        λ = randn(rng)
+        @test (Quaternion(x, 0.0, 0.0, 0.0) / λ).q0 === x / λ
+    end
+end

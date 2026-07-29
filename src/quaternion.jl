@@ -397,7 +397,9 @@ Quaternion{Float64}:
     )
 end
 
-@inline /(q::Quaternion, λ::Number) = q * (1 / λ)
+@inline function /(q::Quaternion, λ::Number)
+    return Quaternion(q.q0 / λ, q.q1 / λ, q.q2 / λ, q.q3 / λ)
+end
 
 """
     /(q1::Quaternion, q2::Quaternion) -> Quaternion
