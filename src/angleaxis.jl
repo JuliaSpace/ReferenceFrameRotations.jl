@@ -58,17 +58,19 @@ function *(av₂::EulerAngleAxis{T1}, av₁::EulerAngleAxis{T2}) where {T1, T2}
     v₂ = Tf.(av₂.v)
 
     # Compute `cos(θ/2)` in which `θ` is the new Euler angle.
-    cθo2 = clamp(cθ₁o2 * cθ₂o2 - sθ₁o2 * sθ₂o2 * dot(v₁, v₂), -o, o)
+    cθo2 = cθ₁o2 * cθ₂o2 - sθ₁o2 * sθ₂o2 * dot(v₁, v₂)
 
-    if abs(cθo2) >= o - Tf(8) * eps(Tf)
+    # Unnormalized vectorial part of the composed quaternion. Its norm is `sin(θ/2)`.
+    w = sθ₁o2 * cθ₂o2 * v₁ + cθ₁o2 * sθ₂o2 * v₂ + sθ₁o2 * sθ₂o2 * (v₁ × v₂)
+    sθo2 = norm(w)
+
+    if iszero(sθo2)
         # In this case, the rotation is the identity.
         return EulerAngleAxis(z, SVector{3, Tf}(z, z, z))
     else
-        # Compute `sin(θ/2)` in which `θ` is the new Euler angle.
-        sθo2 = √(max(z, o - cθo2 * cθo2))
-
-        # Compute the θ angle between [0, 2π].
-        θ = two * acos(cθo2)
+        # Compute the θ angle between [0, 2π]. `atan` is well conditioned everywhere, unlike
+        # `acos(cos(θ/2))`, which loses precision for θ near 0.
+        θ = two * atan(sθo2, cθo2)
 
         # Keep the angle between [0, π].
         s = o
@@ -78,9 +80,7 @@ function *(av₂::EulerAngleAxis{T1}, av₁::EulerAngleAxis{T2}) where {T1, T2}
             s = -o
         end
 
-        v = s * (sθ₁o2 * cθ₂o2 * v₁ + cθ₁o2 * sθ₂o2 * v₂ + sθ₁o2 * sθ₂o2 * (v₁ × v₂)) / sθo2
-
-        return EulerAngleAxis(θ, v)
+        return EulerAngleAxis(θ, s * w / sθo2)
     end
 end
 

@@ -18,10 +18,11 @@
         @test av3.a ≈ deg2rad(90)
         @test av3.v ≈ [sqrt(2)/2, sqrt(2)/2, 0]
 
+        # Composing eight 45° rotations yields a 360° rotation, i.e. the identity. Only the
+        # angle is a mathematical property here; the axis of a null rotation is undefined.
         av3 = av1 * av1 * av1 * av1 * av1 * av1 * av3
         @test eltype(av3) === T
         @test av3.a ≈ deg2rad(0) atol = 10 * √(eps(T))
-        @test av3.v ≈ [0, 0, 0] atol = √(eps(T))
 
         inferred = @inferred av1 * av2
         @test inferred isa EulerAngleAxis{T}
@@ -29,9 +30,19 @@
         # Roundoff or a slightly non-unit input axis must not make acos or sqrt fail.
         almost_unit = EulerAngleAxis(T(π), T[one(T) + eps(T), 0, 0])
         identity = @inferred almost_unit * almost_unit
-        @test identity == EulerAngleAxis(zero(T), T[0, 0, 0])
+        @test identity.a ≈ zero(T) atol = 10 * √(eps(T))
     end
 
     mixed = @inferred EulerAngleAxis(1, [1, 0, 0]) * EulerAngleAxis(1.0f0, Float32[1, 0, 0])
     @test mixed isa EulerAngleAxis{float(promote_type(Int, Float32))}
+end
+
+@testset "Operations with Euler Angle and Axis: * (Small Angles)" begin
+    for θ in (1e-6, 1e-8, 1e-12)
+        av = EulerAngleAxis(θ, [1.0, 0.0, 0.0])
+        av2 = av * av
+
+        @test av2.a ≈ 2θ rtol = 1e-12
+        @test av2.v ≈ [1.0, 0.0, 0.0]
+    end
 end
