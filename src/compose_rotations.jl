@@ -15,8 +15,8 @@ export compose_rotation
         R1::ReferenceFrameRotation,
         Rs::ReferenceFrameRotation...
     ) -> ReferenceFrameRotation
-    compose_rotation(rotations::Tuple) -> T
-    compose_rotation(rotations::AbstractVector) -> T
+    compose_rotation(rotations::Tuple) -> ReferenceFrameRotation
+    compose_rotation(rotations::AbstractVector) -> ReferenceFrameRotation
 
 Compose the rotations `R1`, `R2`, `R3`, `R4`, ..., in the following order:
 
@@ -44,12 +44,12 @@ operator uses the type of its first operand for the output.
 
 A nonempty tuple or vector of rotations can also be passed as one argument. Homogeneous
 collections preserve their concrete rotation type and are the preferred path for long
-chains. Heterogeneous tuples use the same behavior as splatting the tuple into
-`compose_rotation`.
+chains. Heterogeneous collections are folded with the composition operator `∘`, so the
+output has the type of the **last** rotation in the collection.
 
 # Example
 
-```julia-repl
+```jldoctest
 julia> D1 = angle_to_dcm(pi / 3, pi / 4, pi / 5, :ZYX);
 
 julia> D2 = angle_to_dcm(-pi / 5, -pi / 4, -pi / 3, :XYZ);
@@ -88,6 +88,10 @@ Quaternion{Float64}:
   + 1.0 + 0.0⋅i + 2.08167e-17⋅j + 5.55112e-17⋅k
 ```
 """
+# The recursive splatting algorithm below was proposed by @Per in
+#
+#   https://discourse.julialang.org/t/improve-the-performance-of-multiplication-of-an-arbitrary-number-of-matrices/10835/24
+
 @inline compose_rotation(D::DCM) = D
 @inline compose_rotation(D::DCM, Ds::DCM...) = compose_rotation(Ds...) * D
 
@@ -148,17 +152,19 @@ end
     return q
 end
 
-compose_rotation(::Tuple{}) = throw(
-    ArgumentError("cannot compose an empty tuple of rotations")
-)
+compose_rotation(::Tuple{}) =
+    throw(ArgumentError("cannot compose an empty tuple of rotations"))
 
+# Heterogeneous collections are folded with `∘`, which converts each rotation to the type of
+# its left operand. Hence, the output has the type of the last rotation in the collection.
 function compose_rotation(Rs::Tuple{ReferenceFrameRotation, Vararg{ReferenceFrameRotation}})
-    return compose_rotation(Rs...)
+    return foldl((acc, R) -> R ∘ acc, Base.tail(Rs); init = first(Rs))
 end
 
-# This algorithm was proposed by @Per in
-#
-#   https://discourse.julialang.org/t/improve-the-performance-of-multiplication-of-an-arbitrary-number-of-matrices/10835/24
+function compose_rotation(Rs::AbstractVector{<:ReferenceFrameRotation})
+    isempty(Rs) && throw(ArgumentError("cannot compose an empty collection of rotations"))
+    return foldl((acc, R) -> R ∘ acc, @view(Rs[(begin + 1):end]); init = first(Rs))
+end
 
 # == Operator: ∘ ===========================================================================
 

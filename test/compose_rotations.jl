@@ -232,3 +232,30 @@ end
         @test R ≈ R_exp atol = √(eps(T))
     end
 end
+
+@testset "Heterogeneous collection composition" begin
+    D1 = angle_to_dcm(0.1, 0.2, 0.3, :ZYX)
+    q1 = angle_to_quat(-0.3, 0.5, 0.2, :XYZ)
+    c1 = angle_to_crp(0.2, -0.1, 0.4, :ZYX)
+
+    expected = compose_rotation(D1, convert(DCM, q1), convert(DCM, c1))
+
+    # Heterogeneous collections are folded with `∘`, so the output type is the type of the
+    # last rotation in the collection.
+    tuple_result = compose_rotation((D1, q1, c1))
+    @test tuple_result isa CRP{Float64}
+    @test convert(DCM, tuple_result) ≈ expected
+
+    vector_result = compose_rotation(ReferenceFrameRotation[D1, q1, c1])
+    @test vector_result isa CRP{Float64}
+    @test convert(DCM, vector_result) ≈ expected
+
+    pair_result = compose_rotation((D1, q1))
+    @test pair_result isa Quaternion{Float64}
+    @test convert(DCM, pair_result) ≈ compose_rotation(D1, convert(DCM, q1))
+
+    # An abstract-eltype but homogeneous vector must also work.
+    @test compose_rotation(ReferenceFrameRotation[D1, D1]) ≈ compose_rotation(D1, D1)
+
+    @test_throws ArgumentError compose_rotation(ReferenceFrameRotation[])
+end
