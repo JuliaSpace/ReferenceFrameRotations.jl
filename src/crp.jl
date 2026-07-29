@@ -195,13 +195,13 @@ function show(io::IO, c::CRP{T}) where {T}
     # Check if the user wants compact printing, defaulting to `true`.
     compact_printing = get(io, :compact, true)::Bool
 
-    # Get the absolute values using `print`.
-    c₀ = sprint(print, abs(c.q1); context = :compact => compact_printing)
-    c₁ = sprint(print, abs(c.q2); context = :compact => compact_printing)
-    c₂ = sprint(print, abs(c.q3); context = :compact => compact_printing)
+    # Convert the values using `print`.
+    c₁ = sprint(print, c.q1; context = :compact => compact_printing)
+    c₂ = sprint(print, c.q2; context = :compact => compact_printing)
+    c₃ = sprint(print, c.q3; context = :compact => compact_printing)
 
     print(io, "CRP{$(T)}: ")
-    print(io, "[", c₀, ", ", c₁, ", ", c₂, "]")
+    print(io, "[", c₁, ", ", c₂, ", ", c₃, "]")
 
     return nothing
 end

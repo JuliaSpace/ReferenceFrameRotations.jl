@@ -68,7 +68,7 @@ end
 
     # Compact printing.
     show(io, m)
-    expected = "MRP{Float64}: [1.0, 2.0, 3.0]"
+    expected = "MRP{Float64}: [1.0, -2.0, 3.0]"
     @test String(take!(io.io)) == expected
 
     # Colors.

@@ -196,13 +196,13 @@ function show(io::IO, m::MRP{T}) where {T}
     # Check if the user wants compact printing, defaulting to `true`.
     compact_printing = get(io, :compact, true)::Bool
 
-    # Get the absolute values using `print`.
-    m₀ = sprint(print, abs(m.q1); context = :compact => compact_printing)
-    m₁ = sprint(print, abs(m.q2); context = :compact => compact_printing)
-    m₂ = sprint(print, abs(m.q3); context = :compact => compact_printing)
+    # Convert the values using `print`.
+    m₁ = sprint(print, m.q1; context = :compact => compact_printing)
+    m₂ = sprint(print, m.q2; context = :compact => compact_printing)
+    m₃ = sprint(print, m.q3; context = :compact => compact_printing)
 
     print(io, "MRP{$(T)}: ")
-    print(io, "[", m₀, ", ", m₁, ", ", m₂, "]")
+    print(io, "[", m₁, ", ", m₂, ", ", m₃, "]")
 
     return nothing
 end
