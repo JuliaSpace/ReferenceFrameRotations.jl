@@ -91,9 +91,8 @@ Convert rotation `a` to Euler angles using the default `:ZYX` sequence, or prese
 sequence when `a` is already an `EulerAngles` value.
 """
 Base.convert(::Type{EulerAngles}, a::EulerAngles) = a
-Base.convert(::Type{EulerAngles}, a::ReferenceFrameRotation) = _convert_to_euler_angles_default(
-    a
-)
+Base.convert(::Type{EulerAngles}, a::ReferenceFrameRotation) =
+    _convert_to_euler_angles_default(a)
 function Base.convert(::Type{EulerAngles{T}}, a::EulerAngles) where {T}
     return _cast_rotation(EulerAngles{T}, a)
 end
