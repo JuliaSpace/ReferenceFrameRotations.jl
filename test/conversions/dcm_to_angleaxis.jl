@@ -82,23 +82,28 @@ end
         @test av.a ≈ 0
         @test av.v ≈ [0, 0, 0]
 
+        # For a half turn, `v` and `-v` describe exactly the same rotation. Hence, the sign
+        # of the returned axis is arbitrary and we must compare using its absolute value.
         D = angle_to_dcm(T(π), :X)
         av = dcm_to_angleaxis(D)
         @test eltype(av) === T
         @test av.a ≈ π
-        @test av.v ≈ [1, 0, 0]
+        @test abs.(av.v) ≈ [1, 0, 0]
+        @test angleaxis_to_dcm(av) ≈ D atol = 10 * eps(T)
 
         D = angle_to_dcm(T(π), :Y)
         av = dcm_to_angleaxis(D)
         @test eltype(av) === T
         @test av.a ≈ π
-        @test av.v ≈ [0, 1, 0]
+        @test abs.(av.v) ≈ [0, 1, 0]
+        @test angleaxis_to_dcm(av) ≈ D atol = 10 * eps(T)
 
         D = angle_to_dcm(T(π), :Z)
         av = dcm_to_angleaxis(D)
         @test eltype(av) === T
         @test av.a ≈ π
-        @test av.v ≈ [0, 0, 1]
+        @test abs.(av.v) ≈ [0, 0, 1]
+        @test angleaxis_to_dcm(av) ≈ D atol = 10 * eps(T)
 
         D = angle_to_dcm(T(2π / 3), :X)
         av = dcm_to_angleaxis(D)
@@ -142,10 +147,11 @@ end
         @test av.a ≈ 2.4188584057763776
         @test av.v ≈ [0.6546536707079772, -0.37796447300922736, -0.6546536707079772]
 
+        # Half turn about [1, -1, -1] / √3, that is, `D = 2vvᵀ - I`.
         #! format: off
         D = DCM(
-            T(-1 / 3), T(-2 / 3), T(-1 / 3),
-            T(-1 / 3), T(-1 / 3), T(+2 / 3),
+            T(-1 / 3), T(-2 / 3), T(-2 / 3),
+            T(-2 / 3), T(-1 / 3), T(+2 / 3),
             T(-2 / 3), T(+2 / 3), T(-1 / 3)
         )'
         #! format: on
@@ -153,6 +159,51 @@ end
         av = dcm_to_angleaxis(D)
         @test eltype(av) === T
         @test av.a ≈ T(π)
-        @test av.v ≈ [T(√3 / 3), T(-√3 / 3), T(-√3 / 3)]
+        @test abs.(av.v) ≈ [T(√3 / 3), T(√3 / 3), T(√3 / 3)]
+        @test angleaxis_to_dcm(av) ≈ D atol = 10 * eps(T)
     end
+end
+
+@testset "DCM => Euler Angle and Axis (Half Turns With a Zero Component)" begin
+    # For `θ = π` the DCM is `2vvᵀ - I`, and the relative sign between two components is only
+    # observable through an off-diagonal element that involves both. Hence, we must sweep
+    # axes in which each component vanishes in turn.
+    axes_180 = (
+        SVector(0.0, +1 / √2, -1 / √2),
+        SVector(0.0, +1 / √2, +1 / √2),
+        SVector(+1 / √2, 0.0, -1 / √2),
+        SVector(+1 / √2, 0.0, +1 / √2),
+        SVector(+1 / √2, -1 / √2, 0.0),
+        SVector(+1 / √2, +1 / √2, 0.0),
+        SVector(0.0, 0.6, -0.8),
+        SVector(0.0, -0.6, -0.8),
+        SVector(-0.8, 0.0, 0.6),
+        SVector(0.6, -0.8, 0.0),
+    )
+
+    for T in (Float32, Float64)
+        for v in axes_180
+            vt = SVector{3, T}(v)
+            D = DCM(2 * vt * vt' - I)
+
+            av = dcm_to_angleaxis(D)
+            @test eltype(av) === T
+            @test av.a ≈ T(π) atol = 10 * eps(T)
+            @test abs.(av.v) ≈ abs.(vt) atol = 10 * eps(T)
+            @test angleaxis_to_dcm(av) ≈ D atol = 100 * eps(T)
+        end
+    end
+end
+
+@testset "DCM => Euler Angle and Axis (Round-Trip Accuracy)" begin
+    rng = MersenneTwister(20260729)
+
+    worst = 0.0
+    for _ in 1:100_000
+        D = rand(rng, DCM)
+        av = dcm_to_angleaxis(D)
+        worst = max(worst, maximum(abs, angleaxis_to_dcm(av) - D))
+    end
+
+    @test worst < 1e-14
 end
