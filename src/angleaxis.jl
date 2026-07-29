@@ -118,13 +118,17 @@ EulerAngleAxis{Float64}:
 @inline function inv(av::EulerAngleAxis{T}) where {T <: Number}
     Tout = float(T)
 
+    # Compute 2π at the output precision. Notice that `Tout(2π)` would convert the `Float64`
+    # value `2 * π` instead, destroying the precision of extended types like `BigFloat`.
+    k2π = 2 * Tout(π)
+
     # Make sure that the Euler angle is always in the interval [0, π].
     s = -1
-    θ = mod(Tout(av.a), Tout(2π))
+    θ = mod(Tout(av.a), k2π)
 
     if θ > π
         s = 1
-        θ = Tout(2π) - θ
+        θ = k2π - θ
     end
 
     return EulerAngleAxis(θ, s * av.v)

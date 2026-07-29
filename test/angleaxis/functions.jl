@@ -54,3 +54,16 @@ end
         \e[33;1m  Euler axis  : \e[0m[0.57735, -0.57735, 0.57735]"""
     @test String(take!(io.io)) == expected
 end
+
+@testset "General Functions of Euler Angle and Axis: inv (Extended Precision)" begin
+    setprecision(BigFloat, 256) do
+        for a in (big"100.0", big"1000.0")
+            av = EulerAngleAxis(a, SVector{3, BigFloat}(1, 0, 0))
+            D = angleaxis_to_dcm(av)
+
+            # `2π` must be computed at `BigFloat` precision. Otherwise, the modulo operation
+            # loses roughly 60 decimal digits per revolution.
+            @test maximum(abs, angleaxis_to_dcm(inv(av)) - D') < 1e-70
+        end
+    end
+end
