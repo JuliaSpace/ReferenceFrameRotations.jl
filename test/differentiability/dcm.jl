@@ -53,6 +53,21 @@
     )
     @test cast_dcm32 === convert(DCM{Float32}, dcm64)
 
+    # The `DCM` constructor rule must return a zero tangent instead of failing when the
+    # output gradient is zero, which happens for unused or non-differentiable branches.
+    dcm_data_tuple = ntuple(i -> Float64(i), 9)
+    _, dcm_ctor_pullback = chainrules.rrule(DCM, dcm_data_tuple)
+
+    for zero_cotangent in (chainrules.ZeroTangent(), chainrules.NoTangent())
+        zero_ctor_pullback = dcm_ctor_pullback(zero_cotangent)
+        @test zero_ctor_pullback[1] isa chainrules.NoTangent
+        @test zero_ctor_pullback[2] === zero_cotangent
+    end
+
+    ordinary_ctor_pullback = dcm_ctor_pullback(DCM(dcm_data_tuple))
+    @test ordinary_ctor_pullback[1] isa chainrules.NoTangent
+    @test ordinary_ctor_pullback[2] === dcm_data_tuple
+
     zero_tangent = chainrules.ZeroTangent()
     zero_pullback = cast_pullback(zero_tangent)
     @test zero_pullback[1] isa chainrules.NoTangent

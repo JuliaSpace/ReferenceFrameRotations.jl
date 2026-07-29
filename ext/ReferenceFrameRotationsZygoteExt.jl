@@ -18,6 +18,9 @@ function ChainRulesCore.rrule(::Type{<:DCM}, data::NTuple{9, T}) where {T}
 
     function DCM_pullback(Δ)
         Δ_unthunked = unthunk(Δ)
+        if Δ_unthunked isa AbstractZero
+            return (NoTangent(), Δ_unthunked)
+        end
         return (NoTangent(), Tuple(Δ_unthunked))
     end
 
