@@ -104,7 +104,7 @@ end
     c_comp = compose_rotation(c1, c2)
     @test isapprox(c_comp, c3; atol = 1e-12)
 
-    msg = "The composition of these CRPs results in a specific singularity (180° rotation)."
+    msg = "The composition of these CRPs results in a singularity (180° rotation)."
     err = try
         CRP(1.0, 0.0, 0.0) * CRP(1.0, 0.0, 0.0)
     catch e

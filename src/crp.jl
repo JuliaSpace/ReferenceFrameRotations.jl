@@ -295,14 +295,27 @@ Scale `c` by the scalar `λ`.
 @inline *(λ::Number, c::CRP) = CRP(λ * c.q1, λ * c.q2, λ * c.q3)
 @inline *(c::CRP, λ::Number) = CRP(c.q1 * λ, c.q2 * λ, c.q3 * λ)
 
+# Check whether `denom` is numerically zero, which indicates a singular composition of
+# Rodrigues parameters. When the scalar type supports `eps` (`AbstractFloat` and automatic
+# differentiation types such as `ForwardDiff.Dual`), use a relative tolerance scaled by
+# `scale`; otherwise, fall back to an exact comparison against zero. This function is also
+# used by the MRP composition.
+@inline function _is_singular_denominator(denom::T, scale::Number) where {T <: Number}
+    iszero(denom) && return true
+    applicable(eps, T) || return false
+    return abs(denom) <= 8 * eps(T) * max(one(T), scale)
+end
+
 """
     *(c1::CRP, c2::CRP) -> CRP
 
-Compute the composition of two CRPs `c1` and `c2`.
+Compute the composition of the CRPs `c1` and `c2`, which is the rotation `c2` followed by the
+rotation `c1`.
 
-    C3 = C2 * C1
+!!! warning
 
-which means that `C3` acts as `C1` followed by `C2`.
+    Throw an `ArgumentError` if the composition is singular, which happens when it represents
+    a 180° rotation.
 """
 function Base.:*(c1::CRP, c2::CRP)
     T = promote_type(eltype(c1), eltype(c2))
@@ -312,17 +325,9 @@ function Base.:*(c1::CRP, c2::CRP)
     norm_c1_c2 = p1 + p2 + p3
     denom = one(T) - norm_c1_c2
 
-    singular = if T <: AbstractFloat
-        scale = max(one(T), abs(p1) + abs(p2) + abs(p3))
-        tol = T(8) * eps(T) * scale
-        iszero(denom) || abs(denom) <= tol
-    else
-        iszero(denom)
-    end
-
-    singular && throw(
+    _is_singular_denominator(denom, abs(p1) + abs(p2) + abs(p3)) && throw(
         ArgumentError(
-            "The composition of these CRPs results in a specific singularity (180° rotation).",
+            "The composition of these CRPs results in a singularity (180° rotation)."
         ),
     )
 

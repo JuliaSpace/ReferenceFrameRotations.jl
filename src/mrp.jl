@@ -299,22 +299,20 @@ Scale `m` by the scalar `λ`.
 """
     *(m1::MRP, m2::MRP) -> MRP
 
-Compute the composition of two MRPs `m1` and `m2`.
+Compute the composition of the MRPs `m1` and `m2`, which is the rotation `m2` followed by the
+rotation `m1`.
 
-    M3 = M2 * M1
+!!! warning
 
-which means that `M3` acts as `M1` followed by `M2`.
+    Throw an `ArgumentError` if the composition is singular, which happens when it represents
+    a 360° rotation.
 """
 function Base.:*(m1::MRP, m2::MRP)
     # Direct formula for MRP composition (Attitude Addition).
     #
-    #     a        b      a
-    #   m₃   =  m₂   ⋅ m₃
-    #     c        c      b
-    #
-    #    a     (1 - |m1|²) m2 + (1 - |m2|²) m1 - 2(m2 x m1)
-    #  m₃   = ──────────────────────────────────────────────
-    #    c            1 + |m1|² |m2|² - 2(m1 ⋅ m2)
+    #          (1 - |m1|²) m2 + (1 - |m2|²) m1 + 2(m2 × m1)
+    #   m₃  = ──────────────────────────────────────────────
+    #                1 + |m1|² |m2|² - 2(m1 ⋅ m2)
     #
 
     norm_m1² = m1.q1^2 + m1.q2^2 + m1.q3^2
@@ -324,17 +322,23 @@ function Base.:*(m1::MRP, m2::MRP)
 
     denom = 1 + norm_m1² * norm_m2² - 2 * dot_prod
 
-    # Using cross product inline for performance
-    m1_x_m2₁ = m2.q2 * m1.q3 - m2.q3 * m1.q2
-    m1_x_m2₂ = m2.q3 * m1.q1 - m2.q1 * m1.q3
-    m1_x_m2₃ = m2.q1 * m1.q2 - m2.q2 * m1.q1
+    _is_singular_denominator(denom, norm_m1² * norm_m2²) && throw(
+        ArgumentError(
+            "The composition of these MRPs results in a singularity (360° rotation)."
+        ),
+    )
+
+    # Using cross product inline for performance.
+    m2_x_m1₁ = m2.q2 * m1.q3 - m2.q3 * m1.q2
+    m2_x_m1₂ = m2.q3 * m1.q1 - m2.q1 * m1.q3
+    m2_x_m1₃ = m2.q1 * m1.q2 - m2.q2 * m1.q1
 
     k₁_m1 = 1 - norm_m1²
     k₁_m2 = 1 - norm_m2²
 
-    q1 = (k₁_m1 * m2.q1 + k₁_m2 * m1.q1 + 2 * m1_x_m2₁) / denom
-    q2 = (k₁_m1 * m2.q2 + k₁_m2 * m1.q2 + 2 * m1_x_m2₂) / denom
-    q3 = (k₁_m1 * m2.q3 + k₁_m2 * m1.q3 + 2 * m1_x_m2₃) / denom
+    q1 = (k₁_m1 * m2.q1 + k₁_m2 * m1.q1 + 2 * m2_x_m1₁) / denom
+    q2 = (k₁_m1 * m2.q2 + k₁_m2 * m1.q2 + 2 * m2_x_m1₂) / denom
+    q3 = (k₁_m1 * m2.q3 + k₁_m2 * m1.q3 + 2 * m2_x_m1₃) / denom
 
     return MRP(q1, q2, q3)
 end

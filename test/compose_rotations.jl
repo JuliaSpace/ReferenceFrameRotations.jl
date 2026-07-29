@@ -146,9 +146,7 @@ end
 end
 
 @testset "CRP collection singular intermediate" begin
-    singularity_message =
-        "The composition of these CRPs results in a specific " *
-        "singularity (180° rotation)."
+    singularity_message = "The composition of these CRPs results in a singularity (180° rotation)."
 
     for T in (Float32, Float64)
         # A CRP for a 90° rotation about X is exactly [1, 0, 0]. Thus, the required

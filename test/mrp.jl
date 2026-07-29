@@ -313,3 +313,29 @@ end
     @test !isequal(z1, z2)
     @test length(Set([z1, z2])) == 2
 end
+
+@testset "MRP Composition Singularity" begin
+    msg = "The composition of these MRPs results in a singularity (360° rotation)."
+
+    for T in (Float32, Float64)
+        # Two 180° rotations about X compose into a 360° rotation, the MRP singularity.
+        m180 = MRP(one(T), zero(T), zero(T))
+
+        error = try
+            m180 * m180
+        catch e
+            e
+        end
+
+        @test error isa ArgumentError
+        @test error.msg == msg
+    end
+
+    # Regular compositions must not trigger the guard.
+    rng = MersenneTwister(20260729)
+    for _ in 1:10_000
+        m1 = rand(rng, MRP{Float64})
+        m2 = rand(rng, MRP{Float64})
+        @test m1 * m2 isa MRP{Float64}
+    end
+end
