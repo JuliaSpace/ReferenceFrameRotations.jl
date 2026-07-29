@@ -34,18 +34,19 @@ function crp_to_dcm(c::CRP)
     c₁² = c₁^2
     c₂² = c₂^2
     c₃² = c₃^2
-    d   = 1 + (c₁² + c₂² + c₃²)
 
-    # Auxiliary variables to reduce computational burden.
+    # Auxiliary variables to reduce computational burden. Notice that we hoist the division
+    # by the common denominator to avoid performing it nine times.
+    id   = inv(1 + (c₁² + c₂² + c₃²))
     c₁c₂ = c₁ * c₂
     c₁c₃ = c₁ * c₃
     c₂c₃ = c₂ * c₃
 
     #! format: off
     return DCM(
-        (1 + c₁² - c₂² - c₃²) / d,     2 * (c₁c₂ + c₃) / d,       2 * (c₁c₃ - c₂) / d,
-           2 * (c₁c₂ - c₃) / d,    (1 - c₁² + c₂² - c₃²) / d,     2 * (c₂c₃ + c₁) / d,
-           2 * (c₁c₃ + c₂) / d,        2 * (c₂c₃ - c₁) / d,   (1 - c₁² - c₂² + c₃²) / d
+        (1 + c₁² - c₂² - c₃²) * id,     2 * (c₁c₂ + c₃) * id,       2 * (c₁c₃ - c₂) * id,
+           2 * (c₁c₂ - c₃) * id,    (1 - c₁² + c₂² - c₃²) * id,     2 * (c₂c₃ + c₁) * id,
+           2 * (c₁c₃ + c₂) * id,        2 * (c₂c₃ - c₁) * id,   (1 - c₁² - c₂² + c₃²) * id
     )'
     #! format: on
 end

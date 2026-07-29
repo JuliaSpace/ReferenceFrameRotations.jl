@@ -44,15 +44,18 @@ function mrp_to_dcm(m::MRP)
 
     norm_m² = m₁² + m₂² + m₃²
 
-    k₂ = (1 - norm_m²)
-    d  = (1 + norm_m²)^2
+    # Hoist the division by the common denominator to avoid performing it nine times.
+    id = inv((1 + norm_m²)^2)
+
+    # Combine the factor 4(1 - |m|²) and the common denominator into a single constant.
+    k = 4 * (1 - norm_m²) * id
 
     # Skew symmetric matrix components.
     #
     #        ┌            ┐
     #        │ 0  -m₃  m₂ │
     #   mˣ = │ m₃  0  -m₁ │
-    #        │ m₂  m₁  0  │
+    #        │-m₂  m₁  0  │
     #        └            ┘
 
     mˣ₁₂ = -m₃
@@ -80,17 +83,17 @@ function mrp_to_dcm(m::MRP)
     mˣ²₃₃ = -m₂² - m₁²
 
     # Combine
-    d₁₁ = 1 + 8mˣ²₁₁ / d
-    d₁₂ = (8mˣ²₁₂ - 4k₂ * mˣ₁₂) / d
-    d₁₃ = (8mˣ²₁₃ - 4k₂ * mˣ₁₃) / d
+    d₁₁ = 1 + 8mˣ²₁₁ * id
+    d₁₂ = 8mˣ²₁₂ * id - k * mˣ₁₂
+    d₁₃ = 8mˣ²₁₃ * id - k * mˣ₁₃
 
-    d₂₁ = (8mˣ²₂₁ - 4k₂ * mˣ₂₁) / d
-    d₂₂ = 1 + 8mˣ²₂₂ / d
-    d₂₃ = (8mˣ²₂₃ - 4k₂ * mˣ₂₃) / d
+    d₂₁ = 8mˣ²₂₁ * id - k * mˣ₂₁
+    d₂₂ = 1 + 8mˣ²₂₂ * id
+    d₂₃ = 8mˣ²₂₃ * id - k * mˣ₂₃
 
-    d₃₁ = (8mˣ²₃₁ - 4k₂ * mˣ₃₁) / d
-    d₃₂ = (8mˣ²₃₂ - 4k₂ * mˣ₃₂) / d
-    d₃₃ = 1 + 8mˣ²₃₃ / d
+    d₃₁ = 8mˣ²₃₁ * id - k * mˣ₃₁
+    d₃₂ = 8mˣ²₃₂ * id - k * mˣ₃₂
+    d₃₃ = 1 + 8mˣ²₃₃ * id
 
     return DCM(d₁₁, d₁₂, d₁₃, d₂₁, d₂₂, d₂₃, d₃₁, d₃₂, d₃₃)'
 end

@@ -49,19 +49,21 @@ function dcm_to_quat(dcm::DCM{T}) where {T <: Number}
     if td > z
         # f = 4 * q0
         f = two * sqrt(max(z, td + o))
+        g = inv(f)
 
         return Quaternion{Tf}(
             f / four,
-            (dcm[2, 3] - dcm[3, 2]) / f,
-            (dcm[3, 1] - dcm[1, 3]) / f,
-            (dcm[1, 2] - dcm[2, 1]) / f,
+            (dcm[2, 3] - dcm[3, 2]) * g,
+            (dcm[3, 1] - dcm[1, 3]) * g,
+            (dcm[1, 2] - dcm[2, 1]) * g,
         )
     elseif (dcm[1, 1] > dcm[2, 2]) && (dcm[1, 1] > dcm[3, 3])
         # f = 4 * q1
         f = two * sqrt(max(z, o + dcm[1, 1] - dcm[2, 2] - dcm[3, 3]))
+        g = inv(f)
 
         # Real part.
-        q0 = (dcm[2, 3] - dcm[3, 2]) / f
+        q0 = (dcm[2, 3] - dcm[3, 2]) * g
 
         # Make sure that the real part is always nonnegative.
         s = (q0 < z) ? -o : o
@@ -69,39 +71,41 @@ function dcm_to_quat(dcm::DCM{T}) where {T <: Number}
         return Quaternion{Tf}(
             abs(q0),
             s * f / four,
-            s * (dcm[1, 2] + dcm[2, 1]) / f,
-            s * (dcm[3, 1] + dcm[1, 3]) / f,
+            s * (dcm[1, 2] + dcm[2, 1]) * g,
+            s * (dcm[3, 1] + dcm[1, 3]) * g,
         )
     elseif (dcm[2, 2] > dcm[3, 3])
         # f = 4 * q2
         f = two * sqrt(max(z, o + dcm[2, 2] - dcm[1, 1] - dcm[3, 3]))
+        g = inv(f)
 
         # Real part.
-        q0 = (dcm[3, 1] - dcm[1, 3]) / f
+        q0 = (dcm[3, 1] - dcm[1, 3]) * g
 
         # Make sure that the real part is always nonnegative.
         s = (q0 < z) ? -o : o
 
         return Quaternion{Tf}(
             abs(q0),
-            s * (dcm[1, 2] + dcm[2, 1]) / f,
+            s * (dcm[1, 2] + dcm[2, 1]) * g,
             s * f / four,
-            s * (dcm[3, 2] + dcm[2, 3]) / f,
+            s * (dcm[3, 2] + dcm[2, 3]) * g,
         )
     else
         # f = 4 * q3
         f = two * sqrt(max(z, o + dcm[3, 3] - dcm[1, 1] - dcm[2, 2]))
+        g = inv(f)
 
         # Real part.
-        q0 = (dcm[1, 2] - dcm[2, 1]) / f
+        q0 = (dcm[1, 2] - dcm[2, 1]) * g
 
         # Make sure that the real part is always nonnegative.
         s = (q0 < z) ? -o : o
 
         return Quaternion{Tf}(
             abs(q0),
-            s * (dcm[1, 3] + dcm[3, 1]) / f,
-            s * (dcm[2, 3] + dcm[3, 2]) / f,
+            s * (dcm[1, 3] + dcm[3, 1]) * g,
+            s * (dcm[2, 3] + dcm[3, 2]) * g,
             s * f / four,
         )
     end
