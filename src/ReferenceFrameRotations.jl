@@ -96,4 +96,10 @@ include("./conversions/smallangle_to_dcm.jl")
 include("./conversions/smallangle_to_quat.jl")
 include("./conversions/smallangle_to_rot.jl")
 
+############################################################################################
+#                                     Precompilation                                       #
+############################################################################################
+
+include("precompile.jl")
+
 end # module
