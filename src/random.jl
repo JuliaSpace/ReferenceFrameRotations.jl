@@ -132,6 +132,25 @@ function Random.rand(rng::AbstractRNG, ::Random.SamplerType{R}) where {R <: MRP}
     return quat_to_mrp(_rand_quat(rng, T))
 end
 
+# == Arrays of random rotations ============================================================
+
+# `Base` implements `rand(rng, ::Type{X}, dims)` as `rand!(rng, Array{X}(undef, dims), X)`,
+# which yields an abstract-eltype, boxed array when `X` is one of our unparameterized types.
+# Hence, forward those calls to the default `Float64` parameterization.
+for R in (:DCM, :EulerAngles, :EulerAngleAxis, :Quaternion, :CRP, :MRP)
+    @eval begin
+        """
+            rand(rng::AbstractRNG, ::Type{$($R)}, dims::Dims) -> Array{$($R){Float64}}
+
+        Sample an array of random rotations with the default `Float64` scalar type, avoiding
+        an abstract-eltype container.
+        """
+        function Random.rand(rng::AbstractRNG, ::Type{$R}, dims::Dims)
+            return rand(rng, $R{Float64}, dims)
+        end
+    end
+end
+
 ############################################################################################
 #                                    Private Functions                                     #
 ############################################################################################
