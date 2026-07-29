@@ -43,9 +43,7 @@
         ReferenceFrameRotations, :ReferenceFrameRotationsZygoteExt
     )
     chainrules = getproperty(zygote_ext, :ChainRulesCore)
-    forwarddiff = Base.root_module(
-        Base.PkgId(Base.UUID("f6369f11-7733-5829-9624-2563aa707210"), "ForwardDiff")
-    )
+    forwarddiff = ForwardDiff
 
     dcm64 = angle_to_dcm(0.4, :X)
     cast_dcm32, cast_pullback = chainrules.rrule(
