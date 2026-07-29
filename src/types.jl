@@ -17,7 +17,7 @@ Store a Direction Cosine Matrix (DCM) whose nine elements have type `T`.
 
 # Examples
 
-```julia-repl
+```jldoctest
 julia> DCM(1.0I)
 DCM{Float64}:
  1.0  0.0  0.0
@@ -76,12 +76,12 @@ together with a rotation sequence `rot_seq`.
 
 # Examples
 
-```julia-repl
+```jldoctest
 julia> EulerAngles(pi / 2, pi / 4, -pi, :XYZ)
 EulerAngles{Float64}:
-  R(X) :  1.5707963267948966 rad  ( 90.0°)
-  R(Y) :  0.7853981633974483 rad  ( 45.0°)
-  R(Z) : -3.141592653589793  rad  (-180.0°)
+  R(X) :  1.5708   rad  ( 90.0°)
+  R(Y) :  0.785398 rad  ( 45.0°)
+  R(Z) : -3.14159  rad  (-180.0°)
 ```
 """
 struct EulerAngles{T}
@@ -96,8 +96,11 @@ end
 
 Construct Euler angles `a1`, `a2`, and `a3` [rad] with rotation sequence `rot_seq`.
 
-Require `rot_seq` to be one of the supported rotation sequences listed for
-[`EulerAngles`](@ref).
+!!! note
+
+    This constructor does not validate `rot_seq`. Conversions require it to be one of the
+    supported rotation sequences listed for [`EulerAngles`](@ref); otherwise, they throw an
+    `ArgumentError`.
 """
 function EulerAngles(a1::T1, a2::T2, a3::T3, rot_seq::Symbol = :ZYX) where {T1, T2, T3}
     T = promote_type(T1, T2, T3)
@@ -129,11 +132,11 @@ Represent a 3D rotation with an Euler angle and axis.
 
 # Examples
 
-```julia-repl
-julia> EulerAngleAxis(pi / 3, [sqrt(2), sqrt(2), 0])
+```jldoctest
+julia> EulerAngleAxis(pi / 3, [sqrt(2) / 2, sqrt(2) / 2, 0])
 EulerAngleAxis{Float64}:
-  Euler angle:   1.0472 rad ( 60.0000 deg)
-   Euler axis: [  1.4142,   1.4142,   0.0000]
+  Euler angle : 1.0472 rad  (60.0°)
+  Euler axis  : [0.707107, 0.707107, 0.0]
 ```
 """
 struct EulerAngleAxis{T}
@@ -177,10 +180,10 @@ Represent a quaternion with scalar-first components.
 
 # Example
 
-```julia-repl
+```jldoctest
 julia> Quaternion(cosd(45), sind(45), 0, 0)
 Quaternion{Float64}:
-  + 0.7071067811865476 + 0.7071067811865476.i + 0.0.j + 0.0.k
+  + 0.707107 + 0.707107⋅i + 0.0⋅j + 0.0⋅k
 ```
 """
 struct Quaternion{T}

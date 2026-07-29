@@ -13,9 +13,9 @@ Convert MRP `m` to a quaternion.
 
 # Remarks
 
-By convention, the real part of the quaternion will always be positive. Moreover, the
-function does not check if `m` is a valid modified Rodrigues parameter vector. This must be
-handled by the user.
+The real part of the resulting quaternion is positive if `|m| < 1` and negative if `|m| > 1`
+(the shadow MRP set). Moreover, the function does not check if `m` is a valid modified
+Rodrigues parameter vector. This must be handled by the user.
 
 # Example
 

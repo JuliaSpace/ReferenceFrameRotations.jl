@@ -32,7 +32,7 @@ The input values of the original Euler angles can also be passed inside the stru
 (see [`EulerAngles`](@ref)).
 
 The rotation sequence is defined by a `Symbol` specifying the rotation axes. The possible
-values depends on the number of rotations as follows:
+values depend on the number of rotations as follows:
 
 - **1 rotation** (`θ₁`): `:X`, `:Y`, or `:Z`.
 - **2 rotations** (`θ₁`, `θ₂`): `:XY`, `:XZ`, `:YX`, `:YZ`, `:ZX`, or `:ZY`.
@@ -41,9 +41,9 @@ values depends on the number of rotations as follows:
 
 # Example
 
-```julia-repl
+```jldoctest
 julia> dcm = angle_to_rot(pi / 5, :Z)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
   0.809017  0.587785  0.0
  -0.587785  0.809017  0.0
   0.0       0.0       1.0
@@ -53,7 +53,7 @@ Quaternion{Float64}:
   + 0.951057 + 0.0⋅i + 0.0⋅j + 0.309017⋅k
 
 julia> dcm = angle_to_rot(pi / 5, pi / 7, :YZ)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
   0.728899  0.433884  -0.529576
  -0.351019  0.900969   0.25503
   0.587785  0.0        0.809017
@@ -63,7 +63,7 @@ Quaternion{Float64}:
   + 0.927212 + 0.0687628⋅i + 0.301269⋅j + 0.21163⋅k
 
 julia> dcm = angle_to_rot(pi / 2, pi / 3, pi / 4, :ZYX)
-3×3 StaticArrays.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+DCM{Float64}:
   3.06162e-17  0.5       -0.866025
  -0.707107     0.612372   0.353553
   0.707107     0.612372   0.353553

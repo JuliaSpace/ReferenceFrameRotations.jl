@@ -13,7 +13,7 @@ export ddcm, orthonormalize
 # == StaticArray.jl API ====================================================================
 
 """
-    getindex(dcm::DCM, i::Int) -> Any
+    getindex(dcm::DCM{T}, i::Int) where {T} -> T
 
 Return an element of `dcm` using the indexing conventions provided by `StaticArrays`.
 """
@@ -47,18 +47,24 @@ end
 """
     orthonormalize(dcm::DCM) -> DCM
 
-Perform the Gram-Schmidt orthonormalization process in the `dcm` and return the new matrix.
+Perform the Gram-Schmidt orthonormalization process on the `dcm` and return the new matrix.
 
 !!! warning
 
     This function does not check if the columns of the input matrix span a three-dimensional
-    space. If not, then the returned matrix should have `NaN`. Notice, however, that such
+    space. If not, then the returned matrix will contain `NaN`s. Notice, however, that such
     input matrix is not a valid direction cosine matrix.
+
+!!! warning
+
+    The Gram-Schmidt process preserves the handedness of the input matrix. Hence, this
+    function does **not** restore `det(dcm) == +1`: if the input matrix is improper, the
+    returned matrix is orthonormal but also improper.
 
 # Example
 
-```julia-repl
-julia> D = DCM(3I)
+```jldoctest
+julia> D = DCM(3I);
 
 julia> orthonormalize(D)
 DCM{Float64}:

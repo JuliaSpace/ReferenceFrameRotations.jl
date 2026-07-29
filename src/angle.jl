@@ -57,7 +57,7 @@ rotation sequence is, for example, `:XYZ`, then the result will be represented u
 
 # Examples
 
-```julia-repl
+```jldoctest
 julia> ea = EulerAngles(π / 3, π / 6,  2 / 3 * π, :ZYX)
 EulerAngles{Float64}:
   R(Z) :  1.0472   rad  ( 60.0°)
@@ -99,7 +99,7 @@ end
 
 function show(io::IO, Θ::EulerAngles{T}) where {T}
     # Get if `io` request a compact printing, defaulting to true.
-    compact_printing = get(io, :compact, true)
+    compact_printing = get(io, :compact, true)::Bool
 
     # Convert the values using `print` and compact printing.
     θ₁_str = sprint(print, Θ.a1; context = :compact => compact_printing)

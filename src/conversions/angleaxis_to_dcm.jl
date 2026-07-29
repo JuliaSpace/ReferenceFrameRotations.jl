@@ -12,7 +12,7 @@ export angleaxis_to_dcm
 
 Convert the Euler angle `a` [rad] and Euler axis `v` to a DCM.
 
-Those values can also be passed inside the structure `ea` (see [`EulerAngleAxis`](@ref)).
+Those values can also be passed inside the structure `av` (see [`EulerAngleAxis`](@ref)).
 
 !!! warning
 
@@ -62,7 +62,7 @@ DCM{Float64}:
         v₁ * v₂ * aux - v₃ * sθ, cθ + v₂ * v₂ * aux,      v₂ * v₃ * aux + v₁ * sθ,
         v₁ * v₃ * aux + v₂ * sθ, v₂ * v₃ * aux - v₁ * sθ, cθ + v₃ * v₃ * aux
     )'
-    #! format: off
+    #! format: on
 end
 
 @inline angleaxis_to_dcm(av::EulerAngleAxis) = angleaxis_to_dcm(av.a, av.v)

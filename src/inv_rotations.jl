@@ -11,7 +11,7 @@ export inv_rotation
 ############################################################################################
 
 """
-    inv_rotation(R::T) -> T
+    inv_rotation(R::ReferenceFrameRotation) -> ReferenceFrameRotation
 
 Compute the inverse rotation of `R`, which can be:
 
@@ -19,10 +19,11 @@ Compute the inverse rotation of `R`, which can be:
 - An Euler angle and axis (`EulerAngleAxis`);
 - A set of Euler angles (`EulerAngles`);
 - A quaternion (`Quaternion`);
-- A classical Rodrigues parameter (`CRP`); or
-- A modified Rodrigues parameter (`MRP`).
+- Classical Rodrigues parameters (`CRP`); or
+- Modified Rodrigues parameters (`MRP`).
 
-The output will have the same type as `R`.
+The output will have the same type as `R`, except that an `EulerAngleAxis` is promoted to a
+floating-point element type.
 
 !!! note
 

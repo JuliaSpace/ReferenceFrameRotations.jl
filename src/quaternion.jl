@@ -31,7 +31,8 @@ in which:
 
 !!! note
 
-    The quaternion type is obtained by promoting `T0`, `T1`, `T2`, and `T3`.
+    The quaternion element type is obtained by promoting the types of `q0`, `q1`, `q2`, and
+    `q3`.
 
 # Examples
 
@@ -101,8 +102,8 @@ Quaternion{Float64}:
 
 Create the quaternion `u.λ + 0.i + 0.j + 0.k`.
 
-If a quaternion is passed as in the third signature, then the new quaternion will have the
-same type.
+If a quaternion is passed as in the sixth signature, then the new quaternion will have the
+same element type as it.
 
 # Examples
 
@@ -525,7 +526,7 @@ end
 """
     conj(q::Quaternion) -> Quaternion
 
-Compute the complex conjugate of the quaternion `q`:
+Compute the conjugate of the quaternion `q`:
 
     q0 - q1.i - q2.j - q3.k
 
@@ -551,8 +552,6 @@ Quaternion{Float64}:
 Create a copy of the quaternion `q`.
 """
 @inline copy(q::Quaternion{T}) where {T} = Quaternion{T}(q.q0, q.q1, q.q2, q.q3)
-# TODO: Do we really need a copy functions since Quaternion is not mutable?
-# Maybe it is necessary for DifferentialEquations.jl
 
 """
     imag(q::Quaternion{T}) -> SVector{3, T}

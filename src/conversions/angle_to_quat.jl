@@ -18,7 +18,7 @@ axes specified in `rot_seq`.
 The input values can also be passed in the `Θ` structure (see [`EulerAngles`](@ref)).
 
 The rotation sequence is defined by a `Symbol` specifying the rotation axes. The possible
-values depends on the number of rotations as follows:
+values depend on the number of rotations as follows:
 
 - **1 rotation** (`θ₁`): `:X`, `:Y`, or `:Z`.
 - **2 rotations** (`θ₁`, `θ₂`): `:XY`, `:XZ`, `:YX`, `:YZ`, `:ZX`, or `:ZY`.
@@ -27,11 +27,12 @@ values depends on the number of rotations as follows:
 
 !!! note
 
-    The type of the new quaternion will be obtained by promoting `T1`, `T2`, and `T3`.
+    The element type of the new quaternion is obtained by promoting the types of the input
+    angles to a float.
 
 # Remarks
 
-This function assign `q = q1 * q2 * q3`, where `qi` is the quaternion related to the _i_-th
+This function assigns `q = q1 * q2 * q3`, where `qi` is the quaternion related to the _i_-th
 rotation, `i ∈ [1, 2, 3]`. If the _i_-th rotation is not specified, then `qi =
 Quaternion(I)`.
 

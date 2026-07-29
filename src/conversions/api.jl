@@ -164,7 +164,7 @@ end
     convert(::Type{CRP}, a::ReferenceFrameRotation) -> CRP
     convert(::Type{CRP{T}}, a::ReferenceFrameRotation) where {T} -> CRP{T}
 
-Convert rotation `a` to classical Rodrigues parameters, optionally changing its scalar type.
+Convert rotation `a` to classical Rodrigues parameters, optionally changing its scalar type
 to `T`.
 """
 Base.convert(::Type{CRP}, c::CRP) = c

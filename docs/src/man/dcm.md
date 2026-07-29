@@ -66,7 +66,7 @@ DCM([-1.0 0.0 0.0; 0.0 -1.0 0.0; 0.0 0.0 1.0])
 Since a DCM is a static matrix (`<: StaticMatrix`), then all the operations available for
 general matrices in Julia are also available for DCMs.
 
-### Orthonomalization
+### Orthonormalization
 
 A DCM can be orthonormalized using the Gram-Schmidt algorithm by the function:
 
@@ -93,5 +93,11 @@ Dn * Dn'
 !!! warning
 
     This function does not check if the columns of the input matrix span a three-dimensional
-    space. If not, then the returned matrix should have `NaN`. Notice, however, that such
+    space. If not, then the returned matrix will contain `NaN`s. Notice, however, that such
     input matrix is not a valid direction cosine matrix.
+
+!!! warning
+
+    The Gram-Schmidt process preserves the handedness of the input matrix. Hence, this
+    function does **not** restore `det(dcm) == +1`: if the input matrix is improper, the
+    returned matrix is orthonormal but also improper.

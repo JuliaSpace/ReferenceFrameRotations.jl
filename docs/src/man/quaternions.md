@@ -321,7 +321,7 @@ There are also the following functions available:
 ```@repl quaternions
 q = Quaternion(1.0, 2.0, 3.0, 4.0)
 
-conj(q)  # Returns the complex conjugate of the quaternion.
+conj(q)  # Returns the conjugate of the quaternion.
 
 copy(q)  # Creates a copy of the quaternion.
 

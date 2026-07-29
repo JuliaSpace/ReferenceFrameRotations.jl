@@ -12,14 +12,7 @@ export quat_to_mrp
 Convert Quaternion `q` to MRP.
 """
 function quat_to_mrp(q::Quaternion)
-    # Check for singularity: q0 = -1 (360 degrees rotation, which is 0 mod 360, but MRP singularity is at 360?
-    # Wait, MRP singularity is at +/- 360 degrees (q0 = -1).
-    # Normal MRP is singular at +/- 360 deg?
-    # No, MRP is singular at +/- 360 degrees (4*arctan(sigma)).
-    # sigma = tan(Phi/4). Phi = 360 -> tan(90) = inf.
-    # q0 = cos(Phi/2) = cos(180) = -1.
-    # So singularity is at q0 = -1.
-
+    # MRP = tan(Φ/4)⋅ê is singular at Φ = 2π, i.e. q0 = cos(Φ/2) = -1.
     if isapprox(q.q0, -1; atol = 1e-15)
         throw(
             ArgumentError(

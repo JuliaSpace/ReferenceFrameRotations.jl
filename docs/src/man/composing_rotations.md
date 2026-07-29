@@ -8,7 +8,7 @@ CurrentModule = ReferenceFrameRotations
 using ReferenceFrameRotations
 ```
 
-Multiple rotations represented can be composed using the function:
+Multiple rotations can be composed using the function:
 
 ```julia
 compose_rotation(R1, R2, R3, R4...)
@@ -84,7 +84,7 @@ R = R5 ∘ R4 ∘ R3 ∘ R2 ∘ R1
 ```
 
 The advantage of using `∘` lies when composing rotations represented by different entities.
-In this case, they will be automatically converted by the type of the left object.
+In this case, they will be automatically converted to the type of the left object.
 
 ```@repl composing_rotations
 D = angle_to_dcm(0.5, 0, 0, :ZYX)

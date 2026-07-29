@@ -22,7 +22,8 @@ function neither verifies nor normalizes them.
 
 !!! note
 
-    The output type `T3` is obtained by promoting `T1` and `T2` to a float.
+    The element type of the output is `float(promote_type(...))` of the element types of
+    `av₁` and `av₂`.
 
 # Examples
 

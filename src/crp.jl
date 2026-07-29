@@ -158,7 +158,7 @@ represented in `b`, is `wba_b` [rad/s] **[1]**.
 
 # Example
 
-```julia-repl
+```jldoctest
 julia> c = CRP(0.0, 0.0, 0.0)
 CRP{Float64}:
   X : + 0.0
@@ -238,9 +238,6 @@ function show(io::IO, ::MIME"text/plain", c::CRP{T}) where {T}
     b = color ? string(_b) : ""
     d = color ? string(_d) : ""
 
-    # Check if the user wants compact printing, defaulting to `true`.
-    compact_printing = get(io, :compact, true)::Bool
-
     # Get the absolute values using `print`.
     ac₁ = sprint(print, abs(c.q1); context = context)
     ac₂ = sprint(print, abs(c.q2); context = context)
@@ -251,7 +248,6 @@ function show(io::IO, ::MIME"text/plain", c::CRP{T}) where {T}
     sc₂ = signbit(c.q2) ? "-" : "+"
     sc₃ = signbit(c.q3) ? "-" : "+"
 
-    # Assemble the context.
     println(io, "CRP{$(T)}:")
     println(io, "  ", b, "X : ", d, sc₁, " ", ac₁)
     println(io, "  ", b, "Y : ", d, sc₂, " ", ac₂)

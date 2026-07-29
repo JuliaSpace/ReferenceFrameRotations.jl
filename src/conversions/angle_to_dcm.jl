@@ -19,7 +19,7 @@ The input values of the original Euler angles can also be passed inside the stru
 (see [`EulerAngles`](@ref)).
 
 The rotation sequence is defined by a `Symbol` specifying the rotation axes. The possible
-values depends on the number of rotations as follows:
+values depend on the number of rotations as follows:
 
 - **1 rotation** (`θ₁`): `:X`, `:Y`, or `:Z`.
 - **2 rotations** (`θ₁`, `θ₂`): `:XY`, `:XZ`, `:YX`, `:YZ`, `:ZX`, or `:ZY`.

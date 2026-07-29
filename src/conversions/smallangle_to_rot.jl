@@ -16,14 +16,14 @@ Create a rotation description of type `T` from three small rotations of angles `
 and `θz` [rad] about the axes X, Y, and Z, respectively.
 
 The type `T` of the rotation description can be `DCM` or `Quaternion`. If the type `T` is
-not specified, if defaults to `DCM`.
+not specified, it defaults to `DCM`.
 
 If `T` is `DCM`, orthonormalize the resulting matrix using `orthonormalize` function if the
 keyword `normalize` is `true`.
 
 # Keywords
 
-- `normalize::Any`: Orthonormalize a DCM result when `true`.
+- `normalize::Bool`: Orthonormalize a DCM result when `true`.
     (**Default**: `true`)
 
 # Example

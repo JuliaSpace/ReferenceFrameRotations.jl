@@ -12,7 +12,8 @@ export angleaxis_to_quat
 
 Convert the Euler angle `θ` [rad] and Euler axis `v` to a quaternion.
 
-Those values can also be passed inside the structure `ea` (see [`EulerAngleAxis`](@ref)).
+Those values can also be passed inside the structure `angleaxis` (see
+[`EulerAngleAxis`](@ref)).
 
 !!! warning
 

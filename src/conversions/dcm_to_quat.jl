@@ -17,9 +17,8 @@ The type of the quaternion will be automatically selected by the constructor
 # Remarks
 
 By convention, the real part of the quaternion will always be nonnegative (and is zero for
-exact half-turns). Moreover, the
-function does not check if `dcm` is a valid direction cosine matrix. This must be handled by
-the user.
+exact half-turns). Moreover, the function does not check if `dcm` is a valid direction cosine
+matrix. This must be handled by the user.
 
 This algorithm was obtained from **[1]**.
 
