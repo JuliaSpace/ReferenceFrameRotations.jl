@@ -52,9 +52,9 @@ DCM{Float64}:
     sθ, cθ = sincos(T(a))
     aux    = 1 - cθ
 
-    v₁ = T(v[1])
-    v₂ = T(v[2])
-    v₃ = T(v[3])
+    v₁ = T(v[begin])
+    v₂ = T(v[begin + 1])
+    v₃ = T(v[begin + 2])
 
     #! format: off
     return DCM(

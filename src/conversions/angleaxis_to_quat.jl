@@ -45,9 +45,9 @@ Quaternion{Float64}:
     s = (cθo2 < 0) ? -1 : +1
 
     # Extract and convert each component directly to avoid materializing the vector part.
-    q1 = s * sθo2 * T(v[1])
-    q2 = s * sθo2 * T(v[2])
-    q3 = s * sθo2 * T(v[3])
+    q1 = s * sθo2 * T(v[begin])
+    q2 = s * sθo2 * T(v[begin + 1])
+    q3 = s * sθo2 * T(v[begin + 2])
 
     return Quaternion(s * cθo2, q1, q2, q3)
 end

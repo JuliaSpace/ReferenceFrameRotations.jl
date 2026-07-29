@@ -101,30 +101,32 @@ represented in `b`, is `wba_b` [rad/s].
 
 # Example
 
-```julia-repl
+```jldoctest
 julia> D = DCM(1.0I);
 
 julia> ddcm(D, [1, 0, 0])
-3×3 StaticArrays.SArray{Tuple{3,3},Float64,2,9}:
+3×3 StaticArraysCore.SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
  0.0   0.0  0.0
  0.0   0.0  1.0
  0.0  -1.0  0.0
 ```
 """
 function ddcm(Dba::DCM, wba_b::AbstractArray)
-    # Auxiliary variable.
-    w = wba_b
-
     # Check the dimensions.
     if length(wba_b) != 3
         throw(ArgumentError("The angular velocity vector must have three components."))
     end
 
+    # Auxiliary variables.
+    w₁ = wba_b[begin]
+    w₂ = wba_b[begin + 1]
+    w₃ = wba_b[begin + 2]
+
     #! format: off
     wx = SMatrix{3, 3}(
-          0  , -w[3], +w[2],
-        +w[3],   0  , -w[1],
-        -w[2], +w[1],   0,
+          0 , -w₃, +w₂,
+        +w₃,   0 , -w₁,
+        -w₂, +w₁,   0,
     )'
     #! format: on
 

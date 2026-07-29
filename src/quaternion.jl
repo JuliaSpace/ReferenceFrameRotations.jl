@@ -137,9 +137,9 @@ function Quaternion(v::AbstractVector)
     end
 
     if n == 3
-        return Quaternion(0, v[1], v[2], v[3])
+        return Quaternion(0, v[begin], v[begin + 1], v[begin + 2])
     else
-        return Quaternion(v[1], v[2], v[3], v[4])
+        return Quaternion(v[begin], v[begin + 1], v[begin + 2], v[begin + 3])
     end
 end
 
@@ -147,11 +147,13 @@ function Quaternion(r::Number, v::AbstractVector)
     n = length(v)
     n == 3 || throw(ArgumentError("The input vector must have 3 components."))
 
-    return Quaternion(r, v[1], v[2], v[3])
+    return Quaternion(r, v[begin], v[begin + 1], v[begin + 2])
 end
 Quaternion(u::UniformScaling{T}) where {T} = Quaternion{T}(T(u.λ), T(0), T(0), T(0))
 Quaternion{T}(u::UniformScaling) where {T} = Quaternion{T}(T(u.λ), T(0), T(0), T(0))
-Quaternion(::UniformScaling, ::Quaternion{T}) where {T} = Quaternion{T}(I)
+function Quaternion(u::UniformScaling, ::Quaternion{T}) where {T}
+    return Quaternion{T}(T(u.λ), T(0), T(0), T(0))
+end
 
 ############################################################################################
 #                                        Operations                                        #
@@ -217,7 +219,7 @@ Quaternion{Int64}:
   - 1 + 0⋅i + 0⋅j + 0⋅k
 ```
 """
-@inline -(q::Quaternion) = -1 * q
+@inline -(q::Quaternion) = Quaternion(-q.q0, -q.q1, -q.q2, -q.q3)
 
 """
     -(qa::Quaternion, qb::Quaternion) -> Quaternion
@@ -351,20 +353,32 @@ Quaternion{Float64}:
 ```
 """
 @inline function *(v::AbstractVector, q::Quaternion)
+    length(v) == 3 || throw(ArgumentError("The input vector must have 3 components."))
+
+    v₁ = v[begin]
+    v₂ = v[begin + 1]
+    v₃ = v[begin + 2]
+
     return Quaternion(
-        -v[1] * q.q1 - v[2] * q.q2 - v[3] * q.q3,
-        +v[1] * q.q0 + v[2] * q.q3 - v[3] * q.q2,
-        -v[1] * q.q3 + v[2] * q.q0 + v[3] * q.q1,
-        +v[1] * q.q2 - v[2] * q.q1 + v[3] * q.q0,
+        -v₁ * q.q1 - v₂ * q.q2 - v₃ * q.q3,
+        +v₁ * q.q0 + v₂ * q.q3 - v₃ * q.q2,
+        -v₁ * q.q3 + v₂ * q.q0 + v₃ * q.q1,
+        +v₁ * q.q2 - v₂ * q.q1 + v₃ * q.q0,
     )
 end
 
 @inline function *(q::Quaternion, v::AbstractVector)
+    length(v) == 3 || throw(ArgumentError("The input vector must have 3 components."))
+
+    v₁ = v[begin]
+    v₂ = v[begin + 1]
+    v₃ = v[begin + 2]
+
     return Quaternion(
-        - q.q1 * v[1] - q.q2 * v[2] - q.q3 * v[3],
-        + q.q0 * v[1] + q.q2 * v[3] - q.q3 * v[2],
-        + q.q0 * v[2] - q.q1 * v[3] + q.q3 * v[1],
-        + q.q0 * v[3] + q.q1 * v[2] - q.q2 * v[1],
+        - q.q1 * v₁ - q.q2 * v₂ - q.q3 * v₃,
+        + q.q0 * v₁ + q.q2 * v₃ - q.q3 * v₂,
+        + q.q0 * v₂ - q.q1 * v₃ + q.q3 * v₁,
+        + q.q0 * v₃ + q.q1 * v₂ - q.q2 * v₁,
     )
 end
 
@@ -497,7 +511,12 @@ Quaternion{Float64}:
 ```
 """
 @inline \(q::Quaternion, v::AbstractVector) = inv(q) * v
-@inline \(v::AbstractVector, q::Quaternion) = inv(Quaternion(v)) * q
+
+@inline function \(v::AbstractVector, q::Quaternion)
+    length(v) == 3 || throw(ArgumentError("The input vector must have 3 components."))
+
+    return inv(Quaternion(0, v[begin], v[begin + 1], v[begin + 2])) * q
+end
 
 ############################################################################################
 #                                        Functions                                         #
@@ -912,13 +931,15 @@ Quaternion{Float64}:
 ```
 """
 function dquat(qba::Quaternion, wba_b::AbstractVector)
-    # Auxiliary variable.
-    w = wba_b
-
     # Check the dimensions.
     if length(wba_b) != 3
         throw(ArgumentError("The angular velocity vector must have three components."))
     end
+
+    # Auxiliary variables.
+    w₁ = wba_b[begin]
+    w₂ = wba_b[begin + 1]
+    w₃ = wba_b[begin + 2]
 
     # Return the time-derivative.
     #         1         x
@@ -927,10 +948,10 @@ function dquat(qba::Quaternion, wba_b::AbstractVector)
 
     #! format: off
     return Quaternion(
-                          - w[1] / 2 * qba.q1 - w[2] / 2 * qba.q2 - w[3] / 2 * qba.q3,
-        w[1] / 2 * qba.q0                     + w[3] / 2 * qba.q2 - w[2] / 2 * qba.q3,
-        w[2] / 2 * qba.q0 - w[3] / 2 * qba.q1                     + w[1] / 2 * qba.q3,
-        w[3] / 2 * qba.q0 + w[2] / 2 * qba.q1 - w[1] / 2 * qba.q2
+                        - w₁ / 2 * qba.q1 - w₂ / 2 * qba.q2 - w₃ / 2 * qba.q3,
+        w₁ / 2 * qba.q0                   + w₃ / 2 * qba.q2 - w₂ / 2 * qba.q3,
+        w₂ / 2 * qba.q0 - w₃ / 2 * qba.q1                   + w₁ / 2 * qba.q3,
+        w₃ / 2 * qba.q0 + w₂ / 2 * qba.q1 - w₁ / 2 * qba.q2
     )
     #! format: on
 end
